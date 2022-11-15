@@ -296,7 +296,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           image: _tokenImage,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),

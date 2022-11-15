@@ -22,6 +22,7 @@ abstract class AthleteDetailsWidget {
 
   Widget athletePageDetails();
   Widget athletePageKeyStatistics();
+  Widget athletePageKeyStatisticsForMobile();
   Widget athleteDetailsCardsForWeb(
     bool team,
     double _width,
@@ -44,6 +45,13 @@ class NoStatsShownWidget implements AthleteDetailsWidget {
 
   @override
   Widget athletePageKeyStatistics() {
+    return const Center(
+      child: Text('No statistics shown for selected athlete'),
+    );
+  }
+
+  @override
+  Widget athletePageKeyStatisticsForMobile() {
     return const Center(
       child: Text('No statistics shown for selected athlete'),
     );

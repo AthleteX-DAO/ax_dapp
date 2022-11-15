@@ -34,7 +34,7 @@ class RewardsClaimedDialog extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(width: 5),
+                      const SizedBox(width: 5),
                       Text(
                         'Rewards Claimed',
                         style: textStyle(

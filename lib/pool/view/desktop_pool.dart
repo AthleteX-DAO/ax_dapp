@@ -1,6 +1,5 @@
 import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -73,7 +72,11 @@ class _DesktopPoolState extends State<DesktopPool> {
                   height: isWeb ? 40 : layoutHgt * 0.06,
                   margin: EdgeInsets.symmetric(vertical: layoutHgt * 0.01),
                   decoration: boxDecoration(
-                      Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+                    Colors.grey[900]!,
+                    100,
+                    1,
+                    Colors.grey[400]!,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -98,13 +101,17 @@ class _DesktopPoolState extends State<DesktopPool> {
                               currentTabIndex = 0;
                             });
                           },
-                          child: Text(
-                            'Add Liquidity',
-                            style: textStyle(
-                              Colors.white,
-                              16,
-                              isBold: true,
-                              isUline: false,
+                          child: FittedBox(
+                            child: SizedBox(
+                              child: Text(
+                                'Add Liquidity',
+                                style: textStyle(
+                                  Colors.white,
+                                  16,
+                                  isBold: true,
+                                  isUline: false,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -130,13 +137,17 @@ class _DesktopPoolState extends State<DesktopPool> {
                               currentTabIndex = 1;
                             });
                           },
-                          child: Text(
-                            'My Liquidity',
-                            style: textStyle(
-                              Colors.white,
-                              16,
-                              isBold: true,
-                              isUline: false,
+                          child: FittedBox(
+                            child: SizedBox(
+                              child: Text(
+                                'My Liquidity',
+                                style: textStyle(
+                                  Colors.white,
+                                  16,
+                                  isBold: true,
+                                  isUline: false,
+                                ),
+                              ),
                             ),
                           ),
                         ),

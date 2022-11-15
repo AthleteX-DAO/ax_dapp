@@ -1,7 +1,6 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/widgets/widget_factories/athlete_details_widget.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/abbreviation_mappings_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
@@ -344,6 +343,146 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                       ),
                     ),
                   ],
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget athletePageKeyStatisticsForMobile() {
+    return SizedBox(
+      height: 150,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Key Statistics',
+              style: textStyle(
+                Colors.white,
+                24,
+                isBold: false,
+                isUline: false,
+              ),
+            ),
+          ),
+          Divider(thickness: 1, color: greyTextColor),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'AtBat',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.atBats.toString(),
+                //toDo add map for the different league
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'HR',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.homeRuns.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'SB',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.stolenBases.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Err',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.errors.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'InPl',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.inningsPlayed.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
                 ),
               )
             ],

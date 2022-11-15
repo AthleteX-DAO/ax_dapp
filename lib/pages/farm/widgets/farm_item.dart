@@ -29,9 +29,7 @@ class FarmItem extends StatelessWidget {
     if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
 
     final txStyle =
-        textStyle(Colors.grey[600]!, 14, isBold: false, isUline: false);
-    Widget farmTitleWidget;
-    farmTitleWidget = SingleLogoFarmTitle(farm: farm, cardWidth: cardWidth);
+        textStyle(Colors.grey[600]!, 20, isBold: false, isUline: false);
 
     return Container(
       height: cardHeight,
@@ -47,15 +45,16 @@ class FarmItem extends StatelessWidget {
         Colors.grey[600]!,
       ),
       child: FittedBox(
-        fit: BoxFit.scaleDown,
         child: SizedBox(
           height: cardHeight,
           width: cardWidth,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              farmTitleWidget,
-              // Current Balance
+              SingleLogoFarmTitle(
+                farm: farm,
+                cardWidth: cardWidth,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

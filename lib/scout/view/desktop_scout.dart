@@ -160,11 +160,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   _selectedSport = SupportedSport.MLB;
                                 },
                               );
-                              context.read<ScoutPageBloc>().add(
-                                    const SelectedSportChanged(
-                                      selectedSport: SupportedSport.MLB,
-                                    ),
-                                  );
+                              bloc.add(
+                                const SelectedSportChanged(
+                                  selectedSport: SupportedSport.MLB,
+                                ),
+                              );
                             },
                             child: Text(
                               'MLB',
@@ -193,11 +193,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   _selectedSport = SupportedSport.NFL;
                                 },
                               );
-                              context.read<ScoutPageBloc>().add(
-                                    const SelectedSportChanged(
-                                      selectedSport: SupportedSport.NFL,
-                                    ),
-                                  );
+                              bloc.add(
+                                const SelectedSportChanged(
+                                  selectedSport: SupportedSport.NFL,
+                                ),
+                              );
                             },
                             child: Text(
                               'NFL',
@@ -226,11 +226,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   _selectedSport = SupportedSport.NBA;
                                 },
                               );
-                              context.read<ScoutPageBloc>().add(
-                                    const SelectedSportChanged(
-                                      selectedSport: SupportedSport.NBA,
-                                    ),
-                                  );
+                              bloc.add(
+                                const SelectedSportChanged(
+                                  selectedSport: SupportedSport.NBA,
+                                ),
+                              );
                             },
                             child: Text(
                               'NBA',
@@ -373,12 +373,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                                           input = value;
                                         },
                                       );
-                                      context.read<ScoutPageBloc>().add(
-                                            AthleteSearchChanged(
-                                              searchedName: value,
-                                              selectedSport: _selectedSport,
-                                            ),
-                                          );
+                                      bloc.add(
+                                        AthleteSearchChanged(
+                                          searchedName: value,
+                                          selectedSport: _selectedSport,
+                                        ),
+                                      );
                                     },
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
