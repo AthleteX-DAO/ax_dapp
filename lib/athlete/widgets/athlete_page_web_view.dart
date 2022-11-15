@@ -46,39 +46,7 @@ class AthletePageWebView extends StatelessWidget {
         ),
       );
     }
-    // dual scroll mode
-    if (_width > 1160 && _height <= 660) {
-      _containerHgt = _height * 0.95 - 57;
-      _containerWdt = _width * 0.9;
-      return SizedBox(
-        height: _containerHgt,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(
-                child: SizedBox(
-                  width: _containerWdt,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GraphSide(
-                        athlete: athlete,
-                        chartStats: chartStats,
-                        containerHeight: _containerHgt,
-                        containerWidth: _containerWdt,
-                      ),
-                      StatsSide(
-                        athlete: athlete,
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      );
-    }
+
     // stacked scroll (portrait mode)
     _containerHgt = (_height * 0.90) - AppBar().preferredSize.height;
     _containerWdt = _width * 0.95;

@@ -20,7 +20,10 @@ class AthletePageLongGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return SfCartesianChart(
       tooltipBehavior: _longToolTipBehavior,
-      legend: Legend(isVisible: true),
+      legend: Legend(
+        isVisible: true,
+        position: LegendPosition.bottom,
+      ),
       zoomPanBehavior: _zoomPanBehavior,
       series: [
         FastLineSeries<GraphData, DateTime>(
