@@ -169,8 +169,8 @@ class GraphSide extends StatelessWidget {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          athletePageToolTip(),
+                        children: const [
+                          AthletePageToolTip(),
                         ],
                       ),
                     ],

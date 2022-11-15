@@ -46,7 +46,7 @@ class AthletePageWebView extends StatelessWidget {
         ),
       );
     }
-    
+
     // stacked scroll (portrait mode)
     _containerHgt = (_height * 0.90) - AppBar().preferredSize.height;
     _containerWdt = _width * 0.95;
