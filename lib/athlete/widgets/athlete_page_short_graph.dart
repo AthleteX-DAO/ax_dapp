@@ -15,13 +15,16 @@ class AthletePageShortGraph extends StatelessWidget {
   final List<GraphData> chartStats;
   final TooltipBehavior _shortToolTipBehavior;
   final ZoomPanBehavior _zoomPanBehavior;
-  
+
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
       tooltipBehavior: _shortToolTipBehavior,
       zoomPanBehavior: _zoomPanBehavior,
-      legend: Legend(isVisible: true),
+      legend: Legend(
+        isVisible: true,
+        position: LegendPosition.bottom,
+      ),
       series: [
         FastLineSeries<GraphData, DateTime>(
           name: 'Price',
