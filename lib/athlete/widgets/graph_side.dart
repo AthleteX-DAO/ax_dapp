@@ -41,7 +41,7 @@ class GraphSide extends StatelessWidget {
     );
     final _longToolTipBehavior = TooltipBehavior(enable: true);
     final _shortToolTipBehavior = TooltipBehavior(enable: true);
-    const _isPortraitMode = false;
+    final _isPortraitMode = MediaQuery.of(context).orientation == Orientation.portrait;
     return Container(
       height: _height / 1.5,
       constraints: const BoxConstraints(minHeight: 650, maxHeight: 850),
