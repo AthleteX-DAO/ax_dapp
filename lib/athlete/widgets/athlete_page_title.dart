@@ -67,7 +67,7 @@ class AthletePageTitle extends StatelessWidget {
                         athleteName,
                         style: textStyle(
                           Colors.white,
-                          26,
+                          20,
                           isBold: false,
                           isUline: false,
                         ),
