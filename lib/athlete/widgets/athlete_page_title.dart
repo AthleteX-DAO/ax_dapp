@@ -61,13 +61,16 @@ class AthletePageTitle extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      athleteName,
-                      style: textStyle(
-                        Colors.white,
-                        26,
-                        isBold: false,
-                        isUline: false,
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        athleteName,
+                        style: textStyle(
+                          Colors.white,
+                          26,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
