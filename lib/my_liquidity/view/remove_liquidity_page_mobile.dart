@@ -51,6 +51,8 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     const metricsTextSize = 20.0;
+    var containerLayoutHeight = _height * 0.6;
+    if (_width >= 600 && _width <= 1024) containerLayoutHeight = _height * 0.5;
     final tokenOneRemoveAmount =
         double.parse(infoOfSelectedCard.token0LpAmount) * (value / 100);
     final tokenTwoRemoveAmount =
@@ -60,7 +62,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       height: _height * 0.7,
       child: Container(
-        height: _height * 0.6,
+        height: containerLayoutHeight,
         width: _width * 0.7,
         padding: const EdgeInsets.symmetric(
           horizontal: 22,
@@ -349,6 +351,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                   child: Text(
                                     tokenOneRemoveAmount.toStringAsFixed(6),
                                     textAlign: TextAlign.end,
+                                    style: const TextStyle(fontSize: metricsTextSize, color: Colors.white,),
                                   ),
                                 ),
                               ],
@@ -402,6 +405,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                   child: Text(
                                     tokenTwoRemoveAmount.toStringAsFixed(6),
                                     textAlign: TextAlign.end,
+                                    style: const TextStyle(fontSize: metricsTextSize, color: Colors.white,),
                                   ),
                                 ),
                               ],
