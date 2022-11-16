@@ -1,5 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars, avoid_positional_boolean_parameters
-
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/widgets/mobile_athlete_contents.dart';
@@ -169,6 +167,15 @@ class _MobileScoutState extends State<MobileScout> {
                                                   allSportsTitle = 'All Sports';
                                                   _selectedSport =
                                                       SupportedSport.all;
+                                                  context
+                                                      .read<ScoutPageBloc>()
+                                                      .add(
+                                                        const SelectedSportChanged(
+                                                          selectedSport:
+                                                              SupportedSport
+                                                                  .all,
+                                                        ),
+                                                      );
                                                 },
                                               );
                                             }
@@ -573,7 +580,8 @@ class _MobileScoutState extends State<MobileScout> {
                       Row(
                         children: <Widget>[
                           SizedBox(
-                              width: (constraints.maxWidth > 290) ? 66 : 10),
+                            width: (constraints.maxWidth > 290) ? 66 : 10,
+                          ),
                           const SizedBox(
                             width: 107,
                             child: Text(

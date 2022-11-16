@@ -1,14 +1,13 @@
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/scout/widgets/buy_text.dart';
 import 'package:ax_dapp/scout/widgets/mobile_market_book_price.dart';
+import 'package:ax_dapp/scout/widgets/widget_factories/athlete_details_widget.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import 'buy_text.dart';
-import 'widget_factories/athlete_details_widget.dart';
 
 class MobileAthleteContents extends StatefulWidget {
   const MobileAthleteContents({
@@ -37,14 +36,10 @@ class _MobileAthleteContentsState extends State<MobileAthleteContents> {
           height: 70,
           child: OutlinedButton(
             onPressed: () {
-              setState(
-                () {
-                  context.goNamed(
-                    'athlete',
-                    params: {
-                      'id': widget.athlete.id.toString() + widget.athlete.name
-                    },
-                  );
+              context.goNamed(
+                'athlete',
+                params: {
+                  'id': widget.athlete.id.toString() + widget.athlete.name
                 },
               );
             },
@@ -106,16 +101,11 @@ class _MobileAthleteContentsState extends State<MobileAthleteContents> {
                               context.showWalletWarningToast();
                               return;
                             }
-
-                            setState(
-                              () {
-                                context.goNamed(
-                                  'athlete',
-                                  params: {
-                                    'id': widget.athlete.id.toString() +
-                                        widget.athlete.name
-                                  },
-                                );
+                            context.goNamed(
+                              'athlete',
+                              params: {
+                                'id': widget.athlete.id.toString() +
+                                    widget.athlete.name
                               },
                             );
                           },

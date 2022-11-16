@@ -2,11 +2,13 @@ import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class DesktopBookPrice extends StatelessWidget {
-  const DesktopBookPrice(
-      {required this.athlete, required this.isLongToken, super.key});
+  const DesktopBookPrice({
+    required this.athlete,
+    required this.isLongToken,
+    super.key,
+  });
 
   final AthleteScoutModel athlete;
   final bool isLongToken;

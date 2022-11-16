@@ -4,8 +4,11 @@ import 'package:ax_dapp/util/percent_helper.dart';
 import 'package:flutter/material.dart';
 
 class DesktopMarketPrice extends StatelessWidget {
-  const DesktopMarketPrice(
-      {required this.athlete, required this.isLongToken, super.key});
+  const DesktopMarketPrice({
+    required this.athlete,
+    required this.isLongToken,
+    super.key,
+  });
 
   final AthleteScoutModel athlete;
   final bool isLongToken;

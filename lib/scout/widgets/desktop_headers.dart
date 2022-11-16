@@ -16,7 +16,9 @@ class DesktopHeaders extends StatelessWidget {
     final _width = MediaQuery.of(context).size.width;
     return Row(
       children: <Widget>[
-        Container(width: 66),
+        const SizedBox(
+          width: 66,
+        ),
         const SizedBox(
           width: 140,
           child: Align(

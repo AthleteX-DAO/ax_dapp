@@ -15,8 +15,11 @@ import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class ScoutBuyButton extends StatelessWidget {
-  const ScoutBuyButton(
-      {required this.athlete, required this.isLongToken, super.key});
+  const ScoutBuyButton({
+    required this.athlete,
+    required this.isLongToken,
+    super.key,
+  });
 
   final AthleteScoutModel athlete;
   final bool isLongToken;
