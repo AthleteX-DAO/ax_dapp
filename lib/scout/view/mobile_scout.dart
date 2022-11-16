@@ -130,37 +130,34 @@ class _MobileScoutState extends State<MobileScout> {
                                     ),
                                   ),
                                   // sport filter dropdown
-                                  SizedBox(
+                                  Container(
+                                    alignment: Alignment.center,
                                     child: PopupMenuButton(
                                       // dropdown options
                                       itemBuilder: (context) => [
                                         PopupMenuItem(
                                           value: 1,
                                           child: ListTile(
-                                            title: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'All Sports',
-                                                  style: textSwapState(
-                                                    condition: allSportsTitle ==
-                                                        'All Sports',
-                                                    tabNotSelected: textStyle(
-                                                      Colors.white,
-                                                      sportFilterTxSz,
-                                                      isBold: false,
-                                                      isUline: false,
-                                                    ),
-                                                    tabSelected: textStyle(
-                                                      Colors.amber[400]!,
-                                                      sportFilterTxSz,
-                                                      isBold: false,
-                                                      isUline: true,
-                                                    ),
+                                            title: Align(
+                                              child: Text(
+                                                'All Sports',
+                                                style: textSwapState(
+                                                  condition: allSportsTitle ==
+                                                      'All Sports',
+                                                  tabNotSelected: textStyle(
+                                                    Colors.white,
+                                                    sportFilterTxSz,
+                                                    isBold: false,
+                                                    isUline: false,
+                                                  ),
+                                                  tabSelected: textStyle(
+                                                    Colors.amber[400]!,
+                                                    sportFilterTxSz,
+                                                    isBold: false,
+                                                    isUline: true,
                                                   ),
                                                 ),
-                                              ],
+                                              ),
                                             ),
                                           ),
                                           onTap: () {
@@ -385,13 +382,9 @@ class _MobileScoutState extends State<MobileScout> {
                                       // Long
                                       PopupMenuItem(
                                         value: 1,
-                                        child: ListTile(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const [
-                                              Text('Long'),
-                                            ],
+                                        child: const ListTile(
+                                          title: Align(
+                                            child: Text('Long'),
                                           ),
                                         ),
                                         onTap: () {
@@ -406,13 +399,9 @@ class _MobileScoutState extends State<MobileScout> {
                                       PopupMenuItem(
                                         height: 5,
                                         value: 1,
-                                        child: ListTile(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const [
-                                              Text('Short'),
-                                            ],
+                                        child: const ListTile(
+                                          title: Align(
+                                            child: Text('Short'),
                                           ),
                                         ),
                                         onTap: () {
