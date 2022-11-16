@@ -22,12 +22,11 @@ class MobileMarketBookPrice extends StatelessWidget {
     return IndexedStack(
       index: marketVsBookPriceIndex,
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Row(
           children: [
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // price
                 Text(
                   isLongToken
                       ? '${athlete.longTokenPrice!.toStringAsFixed(4)} AX'
@@ -39,9 +38,25 @@ class MobileMarketBookPrice extends StatelessWidget {
                     isUline: false,
                   ),
                 ),
-                if (_width > 355) ...[
-                  Container(width: 10),
-                  // change
+                Text(
+                  isLongToken
+                      ? '${athlete.longTokenPrice!.toStringAsFixed(4)} AX'
+                      : '${athlete.shortTokenPrice!.toStringAsFixed(4)} AX',
+                  style: textStyle(
+                    Colors.amberAccent,
+                    14,
+                    isBold: false,
+                    isUline: false,
+                  ),
+                )
+              ],
+            ),
+            if (_width > 355) ...[
+              const SizedBox(width: 10),
+              // change
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Text(
                     isLongToken
                         ? getPercentageDesc(
@@ -68,22 +83,76 @@ class MobileMarketBookPrice extends StatelessWidget {
                             isUline: false,
                           ),
                   ),
-                ]
-              ],
-            ),
-            Text(
-              isLongToken
-                  ? '${athlete.longTokenPrice!.toStringAsFixed(4)} AX'
-                  : '${athlete.shortTokenPrice!.toStringAsFixed(4)} AX',
-              style: textStyle(
-                Colors.amberAccent,
-                14,
-                isBold: false,
-                isUline: false,
+                  const SizedBox(
+                    height: 26,
+                  )
+                ],
               ),
-            ),
+            ]
           ],
         ),
+        // Column(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     Row(
+        //       children: [
+        //         // price
+        //         Text(
+        //           isLongToken
+        //               ? '${athlete.longTokenPrice!.toStringAsFixed(4)} AX'
+        //               : '${athlete.shortTokenPrice!.toStringAsFixed(4)} AX',
+        //           style: textStyle(
+        //             Colors.white,
+        //             16,
+        //             isBold: false,
+        //             isUline: false,
+        //           ),
+        //         ),
+        //         if (_width > 355) ...[
+        //           Container(width: 10),
+        //           // change
+        //           Text(
+        //             isLongToken
+        //                 ? getPercentageDesc(
+        //                     athlete.longTokenPercentage!,
+        //                   )
+        //                 : getPercentageDesc(
+        //                     athlete.shortTokenPercentage!,
+        //                   ),
+        //             style: isLongToken
+        //                 ? textStyle(
+        //                     getPercentageColor(
+        //                       athlete.longTokenPercentage!,
+        //                     ),
+        //                     12,
+        //                     isBold: false,
+        //                     isUline: false,
+        //                   )
+        //                 : textStyle(
+        //                     getPercentageColor(
+        //                       athlete.shortTokenPercentage!,
+        //                     ),
+        //                     12,
+        //                     isBold: false,
+        //                     isUline: false,
+        //                   ),
+        //           ),
+        //         ]
+        //       ],
+        //     ),
+        //     Text(
+        //       isLongToken
+        //           ? '${athlete.longTokenPrice!.toStringAsFixed(4)} AX'
+        //           : '${athlete.shortTokenPrice!.toStringAsFixed(4)} AX',
+        //       style: textStyle(
+        //         Colors.amberAccent,
+        //         14,
+        //         isBold: false,
+        //         isUline: false,
+        //       ),
+        //     ),
+        //   ],
+        // ),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

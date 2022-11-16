@@ -347,7 +347,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                           Container(
                             width: (constraints.maxWidth > 800)
                                 ? constraints.maxWidth * 0.26
-                                : constraints.maxWidth - 590,
+                                : constraints.maxWidth - 610,
                             height: 160,
                             decoration: boxDecoration(
                               const Color.fromRGBO(118, 118, 128, 0.24),

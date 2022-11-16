@@ -2,21 +2,16 @@
 
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
-import 'package:ax_dapp/scout/widgets/buy_text.dart';
 import 'package:ax_dapp/scout/widgets/mobile_athlete_contents.dart';
-import 'package:ax_dapp/scout/widgets/mobile_market_book_price.dart';
 import 'package:ax_dapp/scout/widgets/mobile_market_book_text.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:ax_dapp/util/percent_helper.dart';
 import 'package:ax_dapp/util/util.dart';
-import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class MobileScout extends StatefulWidget {
