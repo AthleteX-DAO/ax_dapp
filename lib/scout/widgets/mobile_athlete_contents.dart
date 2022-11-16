@@ -1,7 +1,5 @@
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/scout/widgets/buy_text.dart';
-import 'package:ax_dapp/scout/widgets/mobile_market_book_price.dart';
-import 'package:ax_dapp/scout/widgets/widget_factories/athlete_details_widget.dart';
+import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';

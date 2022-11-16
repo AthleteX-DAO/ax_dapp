@@ -1,5 +1,4 @@
-import 'package:ax_dapp/scout/view/desktop_scout.dart';
-import 'package:ax_dapp/scout/view/mobile_scout.dart';
+import 'package:ax_dapp/scout/view/view.dart';
 import 'package:flutter/material.dart';
 
 class Scout extends StatelessWidget {

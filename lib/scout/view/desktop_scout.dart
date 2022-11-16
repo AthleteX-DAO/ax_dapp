@@ -2,8 +2,6 @@
 
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
-import 'package:ax_dapp/scout/widgets/desktop_athlete_contents.dart';
-import 'package:ax_dapp/scout/widgets/desktop_headers.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';

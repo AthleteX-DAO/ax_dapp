@@ -1,7 +1,5 @@
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
-import 'package:ax_dapp/scout/widgets/mobile_athlete_contents.dart';
-import 'package:ax_dapp/scout/widgets/mobile_market_book_text.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';

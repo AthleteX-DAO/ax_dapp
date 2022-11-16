@@ -1,9 +1,5 @@
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/scout/widgets/desktop_book_value.dart';
-import 'package:ax_dapp/scout/widgets/desktop_market_value.dart';
-import 'package:ax_dapp/scout/widgets/scout_buy_button.dart';
-import 'package:ax_dapp/scout/widgets/view_button.dart';
-import 'package:ax_dapp/scout/widgets/widget_factories/athlete_details_widget.dart';
+import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
