@@ -34,7 +34,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   EthereumChain? _selectedChain;
   List<AthleteScoutModel> filteredAthletes = [];
   double minTeamWidth = 875;
-  double minViewWidth = 1030;
+  double minViewWidth = 1090;
 
   @override
   void dispose() {

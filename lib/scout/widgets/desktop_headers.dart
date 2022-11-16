@@ -32,7 +32,8 @@ class DesktopHeaders extends StatelessWidget {
         ),
         if (_width >= minTeamWidth)
           SizedBox(
-            width: 125,
+            // width: 125,
+            width: _width * 0.12 > 125 ? _width * 0.12 : 125,
             child: Text(
               'Team',
               style: textStyle(
@@ -44,7 +45,8 @@ class DesktopHeaders extends StatelessWidget {
             ),
           ),
         SizedBox(
-          width: 175,
+          // width: 175,
+          width: _width * 0.18 > 175 ? _width * 0.18 : 175,
           child: Text(
             'Market Price / Change',
             style: textStyle(
@@ -56,7 +58,8 @@ class DesktopHeaders extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 175,
+          // width: 175,
+          width: _width * 0.18 > 175 ? _width * 0.18 : 175,
           child: Text(
             'Book Value / Change',
             style: textStyle(

@@ -557,7 +557,8 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
         ),
         if (team)
           SizedBox(
-            width: 125,
+            // width: 125,
+            width: _width * 0.12 > 125 ? _width * 0.12 : 125,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,

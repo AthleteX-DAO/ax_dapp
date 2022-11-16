@@ -12,8 +12,11 @@ class DesktopMarketPrice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+
     return SizedBox(
-      width: 175,
+      // width: 175,
+      width: _width * 0.18 > 175 ? _width * 0.18 : 175,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
