@@ -99,8 +99,10 @@ class _MaterialApp extends StatelessWidget {
       routerConfig: GoRouter(
         // ignore: body_might_complete_normally_nullable
         redirect: (context, state) {
-          // auto connect wallet if cached
-          context.read<WalletBloc>().add(const ConnectWalletRequested());
+          // try auto connect wallet if disconnected (on reload)
+          if (context.read<WalletRepository>().currentWallet.isDisconnected) {
+            context.read<WalletBloc>().add(const ConnectWalletRequested());
+          }
           if (state.location.contains('/athlete') &&
               Global().athleteList.isEmpty) {
             return '/scout';
