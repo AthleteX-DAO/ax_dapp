@@ -26,11 +26,10 @@ abstract class AthleteDetailsWidget {
   Widget athleteDetailsCardsForWeb(
     bool team,
     double _width,
-    double athNameBx,
   );
 
   Widget athleteDetailsCardsForMobile(
-    bool team,
+    bool showIcon,
     double _width,
     double athNameBx,
   );
@@ -62,7 +61,6 @@ class NoStatsShownWidget implements AthleteDetailsWidget {
   Widget athleteDetailsCardsForWeb(
     bool team,
     double? _width,
-    double? athNameBx,
   ) {
     return const Center(
       child: Text('No data shown for Athlete Card'),
@@ -71,7 +69,7 @@ class NoStatsShownWidget implements AthleteDetailsWidget {
 
   @override
   Widget athleteDetailsCardsForMobile(
-    bool team,
+    bool showIcon,
     double _width,
     double athNameBx,
   ) {
