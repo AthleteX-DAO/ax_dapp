@@ -17,7 +17,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
-import 'package:ax_dapp/scout/view/desktop_scout.dart';
+import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
@@ -132,7 +132,7 @@ class _MaterialApp extends StatelessWidget {
                     ],
                   ),
                 ),
-                child: const DesktopScout(),
+                child: const Scout(),
               );
             },
             routes: [

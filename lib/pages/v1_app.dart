@@ -15,6 +15,7 @@ import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/scout/scout.dart';
+import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
@@ -163,7 +164,7 @@ class _V1AppState extends State<V1App> {
                   ],
                 ),
               ),
-              child: const DesktopScout(),
+              child: const Scout(),
             )
           else if (pageNumber == Pages.trade)
             BlocProvider(
@@ -214,7 +215,7 @@ class _V1AppState extends State<V1App> {
                 ],
               ),
             ),
-            child: const DesktopScout(),
+            child: const Scout(),
           ),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
