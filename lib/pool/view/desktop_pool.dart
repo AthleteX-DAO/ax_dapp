@@ -42,22 +42,22 @@ class _DesktopPoolState extends State<DesktopPool> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaquery = MediaQuery.of(context);
-    final _height = mediaquery.size.height;
-    final _width = mediaquery.size.width;
+    final _height = MediaQuery.of(context).size.height;
+    final _width = MediaQuery.of(context).size.width;
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-    final layoutHgt = _height * 0.85;
-    final layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
-
-    final toggleWdt = isWeb ? 260.0 : layoutWdt;
+    var layoutHeight = _height * 0.85;
+    if (_width < 600) layoutHeight = _height * 0.75;
+    if (_width >= 600 && _width < 1024) layoutHeight = _height * 0.8;
+    final layoutWidth = isWeb ? _width * 0.8 : _width * 0.9;
+    final toggleWidth = isWeb ? 260.0 : layoutWidth;
 
     return global.buildPage(
       context,
       SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         child: Container(
-          width: layoutWdt,
+          width: layoutWidth,
           height: _height - AppBar().preferredSize.height - 10,
           // Top margin of Pool section is equal to height + 1 of AppBar on
           // mobile only
@@ -68,9 +68,9 @@ class _DesktopPoolState extends State<DesktopPool> {
               Container(
                 alignment: Alignment.center,
                 child: Container(
-                  width: toggleWdt,
-                  height: isWeb ? 40 : layoutHgt * 0.06,
-                  margin: EdgeInsets.symmetric(vertical: layoutHgt * 0.01),
+                  width: toggleWidth,
+                  height: isWeb ? 40 : layoutHeight * 0.06,
+                  margin: EdgeInsets.symmetric(vertical: layoutHeight * 0.01),
                   decoration: boxDecoration(
                     Colors.grey[900]!,
                     100,
@@ -81,7 +81,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        width: isWeb ? 120 : (toggleWdt / 2) - 5,
+                        width: isWeb ? 120 : (toggleWidth / 2) - 5,
                         decoration: currentTabIndex == 0
                             ? boxDecoration(
                                 Colors.grey[600]!,
@@ -117,7 +117,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                         ),
                       ),
                       Container(
-                        width: isWeb ? 120 : (toggleWdt / 2) - 5,
+                        width: isWeb ? 120 : (toggleWidth / 2) - 5,
                         decoration: (currentTabIndex == 1)
                             ? boxDecoration(
                                 Colors.grey[600]!,
@@ -161,7 +161,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 index: currentTabIndex,
                 children: [
                   SizedBox(
-                    height: layoutHgt,
+                    height: layoutHeight,
                     child: BlocProvider(
                       create: (BuildContext context) => AddLiquidityBloc(
                         walletRepository: context.read<WalletRepository>(),
