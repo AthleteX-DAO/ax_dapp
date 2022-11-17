@@ -463,45 +463,41 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                         ),
                                       ),
                                     ),
-                                    ConstrainedBox(
-                                      constraints: BoxConstraints(
-                                        maxWidth: elementWdt * 0.5,
-                                      ),
-                                      child: IntrinsicWidth(
-                                        child: TextFormField(
-                                          keyboardType: const TextInputType
-                                              .numberWithOptions(decimal: true),
-                                          controller: _tokenAmountOneController,
-                                          onChanged: (tokenInput) {
-                                            onTokenInputChange(
-                                              1,
-                                              tokenInput,
-                                            );
-                                          },
-                                          style: textStyle(
+                                    SizedBox(
+                                      width: 60,
+                                      child: TextFormField(
+                                        keyboardType: const TextInputType
+                                            .numberWithOptions(decimal: true),
+                                        controller: _tokenAmountOneController,
+                                        onChanged: (tokenInput) {
+                                          onTokenInputChange(
+                                            1,
+                                            tokenInput,
+                                          );
+                                        },
+                                        style: textStyle(
+                                          Colors.grey[400]!,
+                                          22,
+                                          isBold: false,
+                                          isUline: false,
+                                        ),
+                                        decoration: InputDecoration(
+                                          hintText: '0.00',
+                                          hintStyle: textStyle(
                                             Colors.grey[400]!,
                                             22,
                                             isBold: false,
                                             isUline: false,
                                           ),
-                                          decoration: InputDecoration(
-                                            hintText: '0.00',
-                                            hintStyle: textStyle(
-                                              Colors.grey[400]!,
-                                              22,
-                                              isBold: false,
-                                              isUline: false,
-                                            ),
-                                            contentPadding:
-                                                const EdgeInsets.all(9),
-                                            border: InputBorder.none,
-                                          ),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow(
-                                              RegExp(r'^(\d+)?\.?\d{0,6}'),
-                                            ),
-                                          ],
+                                          contentPadding:
+                                              const EdgeInsets.all(9),
+                                          border: InputBorder.none,
                                         ),
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                            RegExp(r'^(\d+)?\.?\d{0,6}'),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
