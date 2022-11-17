@@ -71,11 +71,13 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final layoutHgt = _height * 0.8;
     final layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
+    var textInputFontSize = 22.0;
 
     if (_width < 900) {
       showDetailsHeader = false;
       showLiquidityDetails = false;
       showInputMessage = false;
+      textInputFontSize = 18.0;
     }
 
     return BlocListener<WalletBloc, WalletState>(
@@ -463,43 +465,21 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 60,
-                                      child: TextFormField(
-                                        keyboardType: const TextInputType
-                                            .numberWithOptions(decimal: true),
-                                        controller: _tokenAmountOneController,
-                                        onChanged: (tokenInput) {
-                                          onTokenInputChange(
-                                            1,
-                                            tokenInput,
-                                          );
-                                        },
-                                        style: textStyle(
-                                          Colors.grey[400]!,
-                                          22,
-                                          isBold: false,
-                                          isUline: false,
-                                        ),
-                                        decoration: InputDecoration(
-                                          hintText: '0.00',
-                                          hintStyle: textStyle(
-                                            Colors.grey[400]!,
-                                            22,
-                                            isBold: false,
-                                            isUline: false,
-                                          ),
-                                          contentPadding:
-                                              const EdgeInsets.all(9),
-                                          border: InputBorder.none,
-                                        ),
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                            RegExp(r'^(\d+)?\.?\d{0,6}'),
-                                          ),
-                                        ],
+                                    if (_width < 600)
+                                      MobileTextField(
+                                        tokenAmountOneController:
+                                            _tokenAmountOneController,
+                                        tokenInputChanged: onTokenInputChange,
+                                        textInputFontSize: textInputFontSize,
+                                      )
+                                    else
+                                      WebTextField(
+                                        elementWdt: elementWdt,
+                                        tokenAmountOneController:
+                                            _tokenAmountOneController,
+                                        tokenInputChanged: onTokenInputChange,
+                                        textInputFontSize: textInputFontSize,
                                       ),
-                                    ),
                                   ],
                                 ),
                               ],
@@ -564,7 +544,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                           },
                                           style: textStyle(
                                             Colors.grey[400]!,
-                                            22,
+                                            textInputFontSize,
                                             isBold: false,
                                             isUline: false,
                                           ),
@@ -572,7 +552,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                             hintText: '0.00',
                                             hintStyle: textStyle(
                                               Colors.grey[400]!,
-                                              22,
+                                              textInputFontSize,
                                               isBold: false,
                                               isUline: false,
                                             ),
@@ -661,7 +641,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ],
             );
           }
-
           return allLiquidityLayout(layoutHgt, layoutWdt);
         },
       ),
