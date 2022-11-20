@@ -49,7 +49,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) {
     _walletRepository.disconnectWallet();
-    emit(state.copyWith(walletAddress: kEmptyAddress));
+    emit(
+      state.copyWith(
+        walletAddress: kEmptyAddress,
+        walletStatus: WalletStatus.disconnected,
+      ),
+    );
   }
 
   Future<void> _onWatchWalletChangesStarted(

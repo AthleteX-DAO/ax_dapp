@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/athlete/view/athlete_page.dart';
@@ -98,9 +100,13 @@ class _MaterialApp extends StatelessWidget {
       ),
       routerConfig: GoRouter(
         // ignore: body_might_complete_normally_nullable
-        redirect: (context, state) {
-          // auto connect wallet if cached
-          context.read<WalletBloc>().add(const ConnectWalletRequested());
+        redirect: (context, state) async {
+          if (notLanding(state.location) &&
+              (await context.read<WalletRepository>().searchForWallet() ??
+                  false)) {
+            context.read<WalletBloc>().add(const ConnectWalletRequested());
+          }
+
           if (state.location.contains('/athlete') &&
               Global().athleteList.isEmpty) {
             return '/scout';
@@ -228,5 +234,13 @@ class _MaterialApp extends StatelessWidget {
       }
     }
     return null;
+  }
+
+  bool notLanding(String location) {
+    return location.contains('scout') ||
+        location.contains('athlete') ||
+        location.contains('trade') ||
+        location.contains('pool') ||
+        location.contains('farm');
   }
 }
