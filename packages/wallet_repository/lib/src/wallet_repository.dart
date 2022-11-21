@@ -4,6 +4,7 @@ import 'package:cache/cache.dart';
 import 'package:ethereum_api/wallet_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared/shared.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet_repository/src/models/models.dart';
 import 'package:wallet_repository/src/utils/utils.dart';
 
@@ -20,11 +21,16 @@ class WalletRepository {
     _walletApiClient.chainChanges.listen((chain) async {
       debugPrint('Wallet Repo: chain changed: ${chain.name}: ${chain.chainId}');
       debugPrint('Wallet Credentials: $credentialsCacheKey');
-      final cachedWalletAddress = _cache
-          .read<WalletCredentials>(key: credentialsCacheKey)
-          ?.walletAddress;
+
+      final cachedWallet =
+          _cache.read<WalletCredentials>(key: credentialsCacheKey);
+      var cachedWalletAddress = '';
+      if (cachedWallet != null) {
+        cachedWalletAddress = cachedWallet.walletAddress;
+      }
+
       final Wallet walletUpdate;
-      if (cachedWalletAddress != null) {
+      if (cachedWallet != null) {
         debugPrint(
           'Wallet Repo: wallet address found in cache: $cachedWalletAddress',
         );
@@ -61,6 +67,15 @@ class WalletRepository {
   @visibleForTesting
   static const credentialsCacheKey = '__credentials_cache_key__';
 
+  /// set true when connecting, false disconnecting
+  static const searchForWalletKey = '__search_cache_key__';
+
+  /// return if you should attempt to load wallet
+  Future<bool?> searchForWallet() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(searchForWalletKey);
+  }
+
   /// Allows listening to changes to the current [EthereumChain].
   Stream<EthereumChain> get chainChanges => _walletApiClient.chainChanges;
 
@@ -92,6 +107,8 @@ class WalletRepository {
   /// - [EthereumWalletFailure]
   /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(searchForWalletKey, true);
     _walletApiClient.addChainChangedListener();
     await _walletApiClient.syncChain(defaultChain);
     final credentials = _getWalletCredentials();
@@ -134,7 +151,11 @@ class WalletRepository {
 
   /// Simulates disconnecting user's wallet. For security reasons an actual
   /// disconnect is not possible.
-  void disconnectWallet() => _walletApiClient.removeChainChangedListener();
+  Future<void> disconnectWallet() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(searchForWalletKey, false);
+    _walletApiClient.removeChainChangedListener();
+  }
 
   /// Adds the token with the given [tokenAddress] and [tokenImageUrl] to
   /// user's wallet.
