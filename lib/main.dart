@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ax_dapp/app/app.dart';
+import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/firebase_options.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
@@ -24,6 +24,7 @@ import 'package:ethereum_api/wallet_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -46,7 +47,7 @@ void main() async {
   final httpClient = http.Client();
 
   await initHiveForFlutter();
-
+  usePathUrlStrategy();
   final configApiClient = ConfigApiClient(
     defaultChain: defaultChain,
     httpClient: httpClient,

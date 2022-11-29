@@ -36,9 +36,18 @@ class MaxButton extends StatelessWidget {
             );
           _tokenFromInputController.text = tokenFromBalance;
         },
-        child: Text(
-          'MAX',
-          style: textStyle(Colors.grey[400]!, 8, isBold: false),
+        child: FittedBox(
+          child: SizedBox(
+            child: Text(
+              'MAX',
+              style: textStyle(
+                Colors.grey[400]!,
+                8,
+                isBold: false,
+                isUline: false,
+              ),
+            ),
+          ),
         ),
       ),
     );

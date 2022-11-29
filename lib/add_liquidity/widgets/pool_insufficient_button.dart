@@ -1,5 +1,4 @@
-import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
-import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
 class PoolInsufficientButton extends StatelessWidget {
@@ -22,7 +21,7 @@ class PoolInsufficientButton extends StatelessWidget {
         onPressed: () {},
         child: Text(
           'Insufficient Balance',
-          style: textStyle(Colors.red[400]!, 16, false),
+          style: textStyle(Colors.red[400]!, 16, isBold: false, isUline: false),
         ),
       ),
     );

@@ -111,11 +111,13 @@ class ConfirmTransactionDialog extends StatelessWidget {
                                           Colors.black,
                                           16,
                                           isBold: false,
+                                          isUline: false,
                                         )
                                       : textStyle(
                                           Colors.amber[500]!,
                                           16,
                                           isBold: false,
+                                          isUline: false,
                                         ),
                                 ),
                               ),

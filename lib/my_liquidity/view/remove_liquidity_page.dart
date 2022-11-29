@@ -25,8 +25,8 @@ class RemoveLiquidityPage extends StatefulWidget {
   @override
   State<RemoveLiquidityPage> createState() => _RemoveLiquidityPageState();
 }
-class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
 
+class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
   LiquidityPositionInfo infoOfSelectedCard = LiquidityPositionInfo.empty();
   double value = 0;
 
@@ -41,9 +41,9 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     final tokenOneRemoveAmount =
-      double.parse(infoOfSelectedCard.token0LpAmount) * (value / 100);
+        double.parse(infoOfSelectedCard.token0LpAmount) * (value / 100);
     final tokenTwoRemoveAmount =
-      double.parse(infoOfSelectedCard.token1LpAmount) * (value / 100);
+        double.parse(infoOfSelectedCard.token1LpAmount) * (value / 100);
     return SizedBox(
       width: _width * 0.7,
       height: _height * 0.7,
@@ -76,6 +76,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                           Colors.white,
                           20,
                           isBold: false,
+                          isUline: false,
                         ),
                       ),
                     ],
@@ -91,6 +92,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                               Colors.white,
                               36,
                               isBold: true,
+                              isUline: false,
                             ),
                           ),
                           const Spacer(),
@@ -115,6 +117,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                   Colors.white,
                                   12,
                                   isBold: true,
+                                  isUline: false,
                                 ),
                               ),
                             ),
@@ -141,6 +144,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                   Colors.white,
                                   12,
                                   isBold: true,
+                                  isUline: false,
                                 ),
                               ),
                             ),
@@ -167,6 +171,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                   Colors.white,
                                   12,
                                   isBold: true,
+                                  isUline: false,
                                 ),
                               ),
                             ),
@@ -193,6 +198,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                   Colors.white,
                                   12,
                                   isBold: true,
+                                  isUline: false,
                                 ),
                               ),
                             ),
@@ -224,6 +230,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                         Colors.grey[600]!,
                         16,
                         isBold: false,
+                        isUline: false,
                       ),
                     ),
                   ),
@@ -243,6 +250,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 Colors.white,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                             Text(
@@ -251,6 +259,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 Colors.white,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             )
                           ],
@@ -264,6 +273,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 Colors.grey[600]!,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                             Text(
@@ -272,6 +282,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 Colors.white,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             )
                           ],
@@ -285,6 +296,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 Colors.grey[600]!,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                             Text(
@@ -293,6 +305,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 Colors.white,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             )
                           ],
@@ -306,6 +319,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 Colors.grey[600]!,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                             Text(
@@ -314,6 +328,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 Colors.white,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             )
                           ],
@@ -330,6 +345,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                         Colors.grey[600]!,
                         16,
                         isBold: false,
+                        isUline: false,
                       ),
                     ),
                   ),
@@ -373,6 +389,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                   Colors.white,
                                   16,
                                   isBold: false,
+                                  isUline: false,
                                 ),
                               ),
                               const Spacer(),
@@ -425,6 +442,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                   Colors.white,
                                   16,
                                   isBold: false,
+                                  isUline: false,
                                 ),
                               ),
                               const Spacer(),

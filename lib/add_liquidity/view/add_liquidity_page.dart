@@ -23,12 +23,10 @@ class AddLiquidityPage extends StatefulWidget {
     super.key,
     this.token0,
     this.token1,
-    required this.goToPage,
   });
 
   Token? token0;
   Token? token1;
-  final void Function(int pageNumber) goToPage;
 
   @override
   State<AddLiquidityPage> createState() => _AddLiquidityPageState();
@@ -73,11 +71,13 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final layoutHgt = _height * 0.8;
     final layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
+    var textInputFontSize = 22.0;
 
     if (_width < 900) {
       showDetailsHeader = false;
       showLiquidityDetails = false;
       showInputMessage = false;
+      textInputFontSize = 18.0;
     }
 
     return BlocListener<WalletBloc, WalletState>(
@@ -204,7 +204,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.name,
-                              style: textStyle(Colors.white, 12, isBold: true),
+                              style: textStyle(
+                                Colors.white,
+                                12,
+                                isBold: true,
+                                isUline: false,
+                              ),
                             ),
                           ),
                           Container(
@@ -216,6 +221,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                 Colors.grey[100]!,
                                 9,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                           ),
@@ -292,7 +298,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           image: _tokenImage,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -302,8 +308,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         child: SizedBox(
                           child: Text(
                             tkr,
-                            style:
-                                textStyle(Colors.white, tkrTextSize, isBold: true),
+                            style: textStyle(
+                              Colors.white,
+                              tkrTextSize,
+                              isBold: true,
+                              isUline: false,
+                            ),
                           ),
                         ),
                       ),
@@ -359,7 +369,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         valueTwo: _tokenAmountTwoController.text,
                         shareOfPool: poolInfo.shareOfPool,
                         lpTokenName: '${token0.ticker}/${token1.ticker}',
-                        goToPage: widget.goToPage,
                       )
                     else
                       PoolInsufficientButton(
@@ -449,51 +458,28 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                                 Colors.grey[400]!,
                                                 8,
                                                 isBold: false,
+                                                isUline: false,
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                    ConstrainedBox(
-                                      constraints: BoxConstraints(
-                                        maxWidth: elementWdt * 0.5,
+                                    if (_width < 600)
+                                      MobileTextField(
+                                        tokenAmountOneController:
+                                            _tokenAmountOneController,
+                                        tokenInputChanged: onTokenInputChange,
+                                        textInputFontSize: textInputFontSize,
+                                      )
+                                    else
+                                      WebTextField(
+                                        elementWdt: elementWdt,
+                                        tokenAmountOneController:
+                                            _tokenAmountOneController,
+                                        tokenInputChanged: onTokenInputChange,
+                                        textInputFontSize: textInputFontSize,
                                       ),
-                                      child: IntrinsicWidth(
-                                        child: TextFormField(
-                                          keyboardType: const TextInputType
-                                              .numberWithOptions(decimal: true),
-                                          controller: _tokenAmountOneController,
-                                          onChanged: (tokenInput) {
-                                            onTokenInputChange(
-                                              1,
-                                              tokenInput,
-                                            );
-                                          },
-                                          style: textStyle(
-                                            Colors.grey[400]!,
-                                            22,
-                                            isBold: false,
-                                          ),
-                                          decoration: InputDecoration(
-                                            hintText: '0.00',
-                                            hintStyle: textStyle(
-                                              Colors.grey[400]!,
-                                              22,
-                                              isBold: false,
-                                            ),
-                                            contentPadding:
-                                                const EdgeInsets.all(9),
-                                            border: InputBorder.none,
-                                          ),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow(
-                                              RegExp(r'^(\d+)?\.?\d{0,6}'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ],
@@ -509,7 +495,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                       ),
                       Text(
                         '+',
-                        style: textStyle(Colors.grey[600]!, 35, isBold: true),
+                        style: textStyle(
+                          Colors.grey[600]!,
+                          35,
+                          isBold: true,
+                          isUline: false,
+                        ),
                       ),
                       //Second Token container with border
                       Container(
@@ -553,15 +544,17 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                           },
                                           style: textStyle(
                                             Colors.grey[400]!,
-                                            22,
+                                            textInputFontSize,
                                             isBold: false,
+                                            isUline: false,
                                           ),
                                           decoration: InputDecoration(
                                             hintText: '0.00',
                                             hintStyle: textStyle(
                                               Colors.grey[400]!,
-                                              22,
+                                              textInputFontSize,
                                               isBold: false,
+                                              isUline: false,
                                             ),
                                             contentPadding:
                                                 const EdgeInsets.all(9),
@@ -648,7 +641,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ],
             );
           }
-
           return allLiquidityLayout(layoutHgt, layoutWdt);
         },
       ),

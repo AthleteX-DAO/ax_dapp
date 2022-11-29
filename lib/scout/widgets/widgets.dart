@@ -1,3 +1,14 @@
+export 'buy_text.dart';
+export 'desktop_athlete_contents.dart';
+export 'desktop_book_value.dart';
+export 'desktop_headers.dart';
+export 'desktop_market_value.dart';
 export 'filter_menu_error.dart';
+export 'mobile_athlete_contents.dart';
+export 'mobile_market_book_price.dart';
+export 'mobile_market_book_text.dart';
+export 'scout_buy_button.dart';
 export 'scout_loading_error.dart';
+export 'view_button.dart';
+export 'widget_factories/athlete_details_widget.dart';
 export 'widget_factories/widget_factories.dart';

@@ -1,3 +1,4 @@
+import 'package:ax_dapp/service/global.dart';
 import 'package:bloc/bloc.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:equatable/equatable.dart';

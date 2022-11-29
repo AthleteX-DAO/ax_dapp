@@ -13,6 +13,7 @@ dependencies:
     path: ../ethereum_api
   shared:
     path: ../shared
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   mocktail: ^0.3.0
