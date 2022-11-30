@@ -270,8 +270,8 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     if (poolController.amount1.value != token0Amount) {
       poolController.updateTopAmount(token0Amount);
     }
-    final lpTokenBalance = await getLPTokenBalance();
     try {
+      final lpTokenBalance = await getLPTokenBalance();
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
         tokenB: state.token1.address,
@@ -324,8 +324,8 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     if (poolController.amount2.value != token1Amount) {
       poolController.updateBottomAmount(token1Amount);
     }
-    final lpTokenBalance = await getLPTokenBalance();
     try {
+      final lpTokenBalance = await getLPTokenBalance();
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
         tokenB: state.token1.address,
@@ -391,11 +391,18 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       final liquidityPositionsList =
           response.getLeft().toNullable()!.liquidityPositionsList;
       final index = liquidityPositionsList!.indexWhere(
-        (element) =>
-            element.token0Address == state.token0.address &&
-            element.token1Address == state.token1.address,
+        (liquidityPosition) =>
+            equalsIgnoreAsciiCase(
+              liquidityPosition.token0Address,
+              state.token0.address,
+            ) &&
+            equalsIgnoreAsciiCase(
+              liquidityPosition.token1Address,
+              state.token1.address,
+            ),
       );
-      final lpTokenBalance = liquidityPositionsList[index].lpTokenPairBalance;
+      final lpTokenBalance =
+          index >= 0 ? liquidityPositionsList[index].lpTokenPairBalance : '0';
       return double.parse(lpTokenBalance);
     } else {
       return 0;

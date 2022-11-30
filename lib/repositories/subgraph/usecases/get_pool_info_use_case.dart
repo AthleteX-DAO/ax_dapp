@@ -53,7 +53,9 @@ class GetPoolInfoUseCase {
           (token1Input * totalSupply) / reserve1,
         );
         final tokenPairBalance = lpTokenBalance ?? 0;
-        final shareOfPool = ((tokenPairBalance + recieveAmount) / (totalSupply + recieveAmount)) * 100;
+        final shareOfPool = ((tokenPairBalance + recieveAmount) /
+                (totalSupply + recieveAmount)) *
+            100;
         final poolPairInfo = PoolPairInfo(
           token0Price: token0Price.toStringAsFixed(6),
           token1Price: token1Price.toStringAsFixed(6),
