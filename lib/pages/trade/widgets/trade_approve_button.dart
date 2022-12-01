@@ -1,5 +1,5 @@
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
-import 'package:ax_dapp/service/confirmation_dialogs/failed_dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
