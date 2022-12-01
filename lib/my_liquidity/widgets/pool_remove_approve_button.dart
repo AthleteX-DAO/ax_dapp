@@ -1,6 +1,6 @@
 import 'package:ax_dapp/my_liquidity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
-import 'package:ax_dapp/service/failed_dialog.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
@@ -124,10 +124,15 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                   );
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) => const RemovalConfirmedDialog(),
+                builder: (BuildContext context) =>
+                    const TransactionStatusDialog(
+                  title: 'Removal Confirmed',
+                  icons: Icons.check_circle_outline,
+                ),
               ).then((value) {
                 //show loading spinner
-                context.read<MyLiquidityBloc>()
+                context
+                    .read<MyLiquidityBloc>()
                     .add(const FetchAllLiquidityPositionsRequested());
                 setState(() {
                   widget.tabController.index = 0;

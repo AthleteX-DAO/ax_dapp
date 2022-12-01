@@ -365,7 +365,9 @@ class _BuyDialogState extends State<BuyDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SlippageTolerance(slippageTolerance: slippageTolerance),
+                          SlippageTolerance(
+                            slippageTolerance: slippageTolerance,
+                          ),
                         ],
                       ),
                     ],
@@ -404,7 +406,10 @@ class _BuyDialogState extends State<BuyDialog> {
                                   : 'Short Apt',
                               approveCallback: bloc.swapController.approve,
                               confirmCallback: bloc.swapController.swap,
-                              confirmDialog: const ConfirmTransactionDialog(),
+                              confirmDialog: const TransactionStatusDialog(
+                                title: 'Transaction Confirmed',
+                                icons: Icons.check_circle_outline,
+                              ),
                               walletAddress: formattedWalletAddress,
                             );
                           }

@@ -2,8 +2,8 @@ import 'package:ax_dapp/dialogs/redeem/bloc/redeem_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/redeem/widgets/widgets.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/failed_dialog.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/helper.dart';
@@ -448,7 +448,10 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                 await showDialog<void>(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      const ConfirmTransactionDialog(),
+                                      const TransactionStatusDialog(
+                                    title: 'Transaction Confirmed',
+                                    icons: Icons.check_circle_outline,
+                                  ),
                                 ).then((value) {
                                   final walletAddress = context
                                       .read<WalletBloc>()
