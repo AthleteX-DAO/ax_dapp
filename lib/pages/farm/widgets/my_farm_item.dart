@@ -1,7 +1,6 @@
 import 'package:ax_dapp/pages/farm/dialogs/dialogs.dart';
 import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
-import 'package:ax_dapp/service/confirmation_dialogs/failed_dialog.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
