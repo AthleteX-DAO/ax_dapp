@@ -2,15 +2,10 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
-class TransactionStatusDialog extends StatelessWidget {
-  const TransactionStatusDialog({
+class RemovalConfirmedDialog extends StatelessWidget {
+  const RemovalConfirmedDialog({
     super.key,
-    required this.title,
-    required this.icons,
   });
-
-  final String title;
-  final IconData icons;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +37,9 @@ class TransactionStatusDialog extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SizedBox(width: 5),
+                      Container(width: 5),
                       Text(
-                        title,
+                        'Removal Confirmed',
                         style: textStyle(
                           Colors.white,
                           20,
@@ -69,7 +64,7 @@ class TransactionStatusDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      icons,
+                      Icons.check_circle_outline,
                       size: 150,
                       color: Colors.amber[400],
                     ),

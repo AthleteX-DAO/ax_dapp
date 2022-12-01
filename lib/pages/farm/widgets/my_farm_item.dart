@@ -1,9 +1,8 @@
 import 'package:ax_dapp/pages/farm/dialogs/dialogs.dart';
 import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
-import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
-import 'package:ax_dapp/service/confirmation_dialogs/failed_dialog.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart';
@@ -197,10 +196,7 @@ class MyFarmItem extends StatelessWidget {
                         showDialog<void>(
                           context: context,
                           builder: (BuildContext context) =>
-                              const TransactionStatusDialog(
-                            title: 'Rewards Claimed',
-                            icons: Icons.check_circle_outline,
-                          ),
+                              const RewardsClaimedDialog(),
                         );
                         context.read<TrackingCubit>().onClaimRewardsSuccess(
                               tickerPair: farm.athlete == null

@@ -294,7 +294,9 @@ class _SellDialogState extends State<SellDialog> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: [Balance(balance: balance)],
+                        children: [
+                          Balance(balance: balance)
+                        ],
                       ),
                     ],
                   ),
@@ -319,11 +321,15 @@ class _SellDialogState extends State<SellDialog> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [TotalFees(totalFee: totalFee)],
+                        children: [
+                          TotalFees(totalFee: totalFee)
+                        ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [MarketPriceImpact(priceImpact: priceImpact)],
+                        children: [
+                          MarketPriceImpact(priceImpact: priceImpact)
+                        ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -334,9 +340,7 @@ class _SellDialogState extends State<SellDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SlippageTolerance(
-                            slippageTolerance: slippageTolerance,
-                          ),
+                          SlippageTolerance(slippageTolerance: slippageTolerance),
                         ],
                       ),
                     ],
@@ -374,10 +378,7 @@ class _SellDialogState extends State<SellDialog> {
                                   : 'Short Apt',
                               approveCallback: bloc.swapController.approve,
                               confirmCallback: bloc.swapController.swap,
-                              confirmDialog: const TransactionStatusDialog(
-                                title: 'Transaction Confirmed',
-                                icons: Icons.check_circle_outline,
-                              ),
+                              confirmDialog: const ConfirmTransactionDialog(),
                               walletAddress: formattedWalletAddress,
                             );
                           }

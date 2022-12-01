@@ -1,6 +1,6 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
-import 'package:ax_dapp/service/confirmation_dialogs/failed_dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
