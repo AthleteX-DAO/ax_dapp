@@ -13,6 +13,7 @@ class GetPoolInfoUseCase {
   Future<Either<Success, SubgraphError>> fetchPairInfo({
     double? tokenAInput,
     double? tokenBInput,
+    double? lpTokenBalance,
     required String tokenA,
     required String tokenB,
   }) async {
@@ -51,7 +52,10 @@ class GetPoolInfoUseCase {
           (token0Input * totalSupply) / reserve0,
           (token1Input * totalSupply) / reserve1,
         );
-        final shareOfPool = (recieveAmount / totalSupply) * 100;
+        final tokenPairBalance = lpTokenBalance ?? 0;
+        final shareOfPool = ((tokenPairBalance + recieveAmount) /
+                (totalSupply + recieveAmount)) *
+            100;
         final poolPairInfo = PoolPairInfo(
           token0Price: token0Price.toStringAsFixed(6),
           token1Price: token1Price.toStringAsFixed(6),

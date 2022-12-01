@@ -14,6 +14,7 @@ import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
+import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/scout/scout.dart';
 import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/athlete.dart';
@@ -233,6 +234,7 @@ class _V1AppState extends State<V1App> {
               tokensRepository: context.read<TokensRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
+              getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
               poolController: Get.find(),
             ),
             child: const DesktopPool(),

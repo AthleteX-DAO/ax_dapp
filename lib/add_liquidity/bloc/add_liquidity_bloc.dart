@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:ax_dapp/add_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
+import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 // ignore: implementation_imports
@@ -19,6 +20,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     required TokensRepository tokensRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
+    required this.getAllLiquidityInfoUseCase,
     required this.poolController,
   })  : _walletRepository = walletRepository,
         _streamAppDataChanges = streamAppDataChanges,
@@ -42,6 +44,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetPoolInfoUseCase repo;
+  final GetAllLiquidityInfoUseCase getAllLiquidityInfoUseCase;
   final PoolController poolController;
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -268,9 +271,11 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       poolController.updateTopAmount(token0Amount);
     }
     try {
+      final lpTokenBalance = await getLPTokenBalance();
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
         tokenB: state.token1.address,
+        lpTokenBalance: lpTokenBalance,
         tokenAInput: token0Amount,
         tokenBInput: state.amount1,
       );
@@ -320,11 +325,13 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       poolController.updateBottomAmount(token1Amount);
     }
     try {
+      final lpTokenBalance = await getLPTokenBalance();
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
         tokenB: state.token1.address,
         tokenAInput: state.amount0,
         tokenBInput: token1Amount,
+        lpTokenBalance: lpTokenBalance,
       );
       final isSuccess = response.isLeft();
 
@@ -372,5 +379,33 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         failure: Failure.none,
       ),
     );
+  }
+
+  Future<double> getLPTokenBalance() async {
+    final response =
+        await getAllLiquidityInfoUseCase.fetchAllLiquidityPositions(
+      walletAddress: _walletRepository.currentWallet.address,
+    );
+    final isSuccess = response.isLeft();
+    if (isSuccess) {
+      final liquidityPositionsList =
+          response.getLeft().toNullable()!.liquidityPositionsList;
+      final index = liquidityPositionsList!.indexWhere(
+        (liquidityPosition) =>
+            equalsIgnoreAsciiCase(
+              liquidityPosition.token0Address,
+              state.token0.address,
+            ) &&
+            equalsIgnoreAsciiCase(
+              liquidityPosition.token1Address,
+              state.token1.address,
+            ),
+      );
+      final lpTokenBalance =
+          index >= 0 ? liquidityPositionsList[index].lpTokenPairBalance : '0';
+      return double.parse(lpTokenBalance);
+    } else {
+      return 0;
+    }
   }
 }
