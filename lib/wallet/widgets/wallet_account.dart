@@ -19,10 +19,11 @@ class WalletAccount extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          if (showAccountIcon) const Icon(
-            Icons.account_balance_wallet,
-            color: Colors.grey,
-          ),
+          if (showAccountIcon)
+            const Icon(
+              Icons.account_balance_wallet,
+              color: Colors.grey,
+            ),
           BlocSelector<WalletBloc, WalletState, String>(
             selector: (state) => state.walletAddress,
             builder: (_, walletAddress) {
