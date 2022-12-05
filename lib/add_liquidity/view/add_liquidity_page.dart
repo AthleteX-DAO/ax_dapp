@@ -250,7 +250,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
 
           Widget createTokenButton(
             int tknNum,
-            double elementWdt,
           ) {
             final _height = MediaQuery.of(context).size.height;
             final _width = MediaQuery.of(context).size.width;
@@ -273,7 +272,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                 maxHeight: 100,
               ),
               height: 40,
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
               decoration:
                   boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!),
               child: TextButton(
@@ -304,17 +302,14 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: FittedBox(
-                        child: SizedBox(
-                          child: Text(
-                            tkr,
-                            style: textStyle(
-                              Colors.white,
-                              tkrTextSize,
-                              isBold: true,
-                              isUline: false,
-                            ),
-                          ),
+                      child: Text(
+                        tkr,
+                        overflow: TextOverflow.ellipsis,
+                        style: textStyle(
+                          Colors.white,
+                          tkrTextSize,
+                          isBold: true,
+                          isUline: false,
                         ),
                       ),
                     ),
@@ -425,7 +420,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                               children: [
                                 createTokenButton(
                                   1,
-                                  elementWdt,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -522,7 +516,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                               children: [
                                 createTokenButton(
                                   2,
-                                  elementWdt,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -641,6 +634,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ],
             );
           }
+
           return allLiquidityLayout(layoutHgt, layoutWdt);
         },
       ),
