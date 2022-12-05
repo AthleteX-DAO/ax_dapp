@@ -21,7 +21,9 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
     if (_height < 350) hgt = _height;
     final walletAddress =
         context.read<WalletBloc>().state.formattedWalletAddress;
-    final walletId = (walletAddress.isEmpty || walletAddress == kEmptyAddress) ? '' : walletAddress;
+    final walletId = (walletAddress.isEmpty || walletAddress == kEmptyAddress)
+        ? ''
+        : walletAddress;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -29,6 +31,9 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Container(
+        padding: (_width < 665)
+            ? const EdgeInsets.symmetric(horizontal: 15)
+            : EdgeInsets.zero,
         height: hgt,
         width: wid,
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),

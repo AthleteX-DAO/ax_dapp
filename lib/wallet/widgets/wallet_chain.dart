@@ -7,13 +7,21 @@ class WalletChain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    var showChainIcon = true;
+    var showIcons = false;
+    if (_width < 665) {
+      showChainIcon = false;
+      showIcons = true;
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        const Icon(
-          Icons.link,
-          color: Colors.grey,
-        ),
+        if (showChainIcon)
+          const Icon(
+            Icons.link,
+            color: Colors.grey,
+          ),
         DropdownButtonHideUnderline(
           child: ButtonTheme(
             alignedDropdown: true,
@@ -29,7 +37,13 @@ class WalletChain extends StatelessWidget {
                     for (final chain in EthereumChain.supportedValues)
                       DropdownMenuItem(
                         value: chain,
-                        child: Text(chain.localizedName),
+                        child: showIcons
+                            ? Image(
+                                width: 40,
+                                height: 40,
+                                image: AssetImage(chain.localizedImage),
+                              )
+                            : Text(chain.localizedName),
                       ),
                   ],
                   onChanged: (chain) => context
@@ -59,6 +73,24 @@ extension EthereumChainLocalizationX on EthereumChain {
         return 'SX Network';
       case EthereumChain.sxTestnet:
         return 'SX Test Network';
+    }
+  }
+}
+
+extension EthereumChainLocalizationImageX on EthereumChain {
+  String get localizedImage {
+    switch (this) {
+      case EthereumChain.none:
+      case EthereumChain.unsupported:
+        throw UnsupportedError('$this');
+      case EthereumChain.polygonMainnet:
+        return 'assets/images/Polygon_Small.png';
+      case EthereumChain.goerliTestNet:
+        return 'assets/images/geth.png';
+      case EthereumChain.sxMainnet:
+        return 'assets/images/SX_small.png';
+      case EthereumChain.sxTestnet:
+        return 'assets/images/SX_small.png';
     }
   }
 }
