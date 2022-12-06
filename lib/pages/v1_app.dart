@@ -234,7 +234,8 @@ class _V1AppState extends State<V1App> {
               tokensRepository: context.read<TokensRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-              getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
+              getAllLiquidityInfoUseCase:
+                  RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
               poolController: Get.find(),
             ),
             child: const DesktopPool(),
@@ -451,68 +452,92 @@ class _V1AppState extends State<V1App> {
       child: Center(
         child: Row(
           children: [
-            Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 72,
-                  height: 20,
-                  child: InkWell(
-                    child: const Text('athletex.io'),
-                    onTap: () =>
-                        launchUrl(Uri.parse('https://www.athletex.io/')),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () =>
-                      //Discord button
-                      launchUrl(
-                    Uri.parse(
-                      'https://discord.com/invite/WFsyAuzp9V',
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 72,
+                    height: 20,
+                    child: InkWell(
+                      child: const Text('athletex.io'),
+                      onTap: () =>
+                          launchUrl(Uri.parse('https://www.athletex.io/')),
                     ),
                   ),
-                  icon: FaIcon(
-                    FontAwesomeIcons.discord,
-                    size: 25,
-                    color: Colors.grey[400],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => launchUrl(
-                    Uri.parse('https://twitter.com/athletex_dao?s=20'),
-                  ),
-                  icon: FaIcon(
-                    FontAwesomeIcons.twitter,
-                    size: 25,
-                    color: Colors.grey[400],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => launchUrl(
-                    Uri.parse('https://github.com/SportsToken'),
-                  ),
-                  icon: FaIcon(
-                    FontAwesomeIcons.github,
-                    size: 25,
-                    color: Colors.grey[400],
-                  ),
-                ),
-                Container(width: _width - 320),
-                AppToolTip(
-                  'Invest in what you know best at AthleteX Markets.',
                   IconButton(
-                    onPressed: () => launchUrl(
+                    onPressed: () =>
+                        //Discord button
+                        launchUrl(
                       Uri.parse(
-                        'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper',
+                        'https://discord.com/invite/WFsyAuzp9V',
                       ),
                     ),
                     icon: FaIcon(
-                      FontAwesomeIcons.circleQuestion,
+                      FontAwesomeIcons.discord,
                       size: 25,
                       color: Colors.grey[400],
                     ),
                   ),
-                ),
-              ],
+                  IconButton(
+                    onPressed: () => launchUrl(
+                      Uri.parse('https://twitter.com/athletex_dao?s=20'),
+                    ),
+                    icon: FaIcon(
+                      FontAwesomeIcons.twitter,
+                      size: 25,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => launchUrl(
+                      Uri.parse('https://github.com/SportsToken'),
+                    ),
+                    icon: FaIcon(
+                      FontAwesomeIcons.github,
+                      size: 25,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => launchUrl(
+                      Uri.parse(
+                          'https://www.instagram.com/athletexmarkets/?hl=en'),
+                    ),
+                    icon: FaIcon(
+                      FontAwesomeIcons.instagram,
+                      size: 25,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => launchUrl(
+                      Uri.parse('https://www.tiktok.com/@athlete_x'),
+                    ),
+                    icon: FaIcon(
+                      FontAwesomeIcons.tiktok,
+                      size: 25,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  Container(width: _width - 320),
+                  AppToolTip(
+                    'Invest in what you know best at AthleteX Markets.',
+                    IconButton(
+                      onPressed: () => launchUrl(
+                        Uri.parse(
+                          'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper',
+                        ),
+                      ),
+                      icon: FaIcon(
+                        FontAwesomeIcons.circleQuestion,
+                        size: 25,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
