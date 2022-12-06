@@ -88,9 +88,9 @@ extension EthereumChainLocalizationImageX on EthereumChain {
       case EthereumChain.goerliTestNet:
         return 'assets/images/geth.png';
       case EthereumChain.sxMainnet:
-        return 'assets/images/SX_small.png';
+        return 'assets/images/SX_Small.png';
       case EthereumChain.sxTestnet:
-        return 'assets/images/SX_small.png';
+        return 'assets/images/SX_Small.png';
     }
   }
 }
