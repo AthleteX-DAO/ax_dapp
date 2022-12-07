@@ -28,6 +28,7 @@ class DesktopHeaders extends StatelessWidget {
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 12,
+                fontFamily: 'OpenSans',
               ),
             ),
           ),

@@ -18,7 +18,11 @@ class EmptyWallet extends StatelessWidget {
         height: height,
         child: const Text(
           '''Connected wallet does not contain any Liquidity Tokens. You can get your positions on Add Liquidity page.''',
-          style: TextStyle(color: Colors.amber, fontSize: 30),
+          style: TextStyle(
+            color: Colors.amber,
+            fontSize: 30,
+            fontFamily: 'OpenSans',
+          ),
         ),
       ),
     );

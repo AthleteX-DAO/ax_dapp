@@ -24,6 +24,7 @@ class ShareDetailsHeader extends StatelessWidget {
               color: Colors.white,
               fontSize: 21,
               fontWeight: FontWeight.w500,
+              fontFamily: 'OpenSans',
             ),
           ),
           Container(

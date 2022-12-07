@@ -19,13 +19,23 @@ class BadgeToken extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       badgeContent: Text(
         sport.name.toUpperCase(),
-        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'OpenSans',
+        ),
       ),
       position: BadgePosition.topEnd(top: -14, end: -14),
       padding: const EdgeInsets.only(top: 2, bottom: 2, left: 5, right: 5),
       child: Text(
         symbol,
-        style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w500),
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'OpenSans',
+        ),
       ),
     );
   }

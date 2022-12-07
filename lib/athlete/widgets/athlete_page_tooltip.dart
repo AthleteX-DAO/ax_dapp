@@ -19,11 +19,19 @@ class AthletePageToolTip extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: "Buy/Sell individual APT's at their Market Price\n",
-            style: TextStyle(color: Colors.grey[400], fontSize: 16),
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 16,
+              fontFamily: 'OpenSans',
+            ),
           ),
           TextSpan(
             text: 'Mint/Redeem APT Pairs for their Book Value',
-            style: TextStyle(color: Colors.grey[400], fontSize: 16),
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 16,
+              fontFamily: 'OpenSans',
+            ),
           ),
         ],
       ),

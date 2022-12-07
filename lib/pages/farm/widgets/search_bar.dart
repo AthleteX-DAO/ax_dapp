@@ -32,13 +32,18 @@ class WebSearchBar extends StatelessWidget {
             child: TextFormField(
               controller: myController,
               onChanged: (value) {
-                context.read<FarmBloc>().add(OnSearchFarms(searchedName: value));
+                context
+                    .read<FarmBloc>()
+                    .add(OnSearchFarms(searchedName: value));
               },
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 8.5),
                 hintText: 'Search a farm',
-                hintStyle: TextStyle(color: Colors.white),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'OpenSans',
+                ),
               ),
             ),
           ),
@@ -77,13 +82,18 @@ class MobileSearchBar extends StatelessWidget {
             child: TextFormField(
               controller: myController,
               onChanged: (value) {
-                context.read<FarmBloc>().add(OnSearchFarms(searchedName: value));
+                context
+                    .read<FarmBloc>()
+                    .add(OnSearchFarms(searchedName: value));
               },
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: layoutHgt * 0.022),
                 hintText: 'Search a farm',
-                hintStyle: const TextStyle(color: Colors.white),
+                hintStyle: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'OpenSans',
+                ),
               ),
             ),
           ),

@@ -95,6 +95,7 @@ class TransactionStatusDialog extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                       ),

@@ -9,7 +9,9 @@ class MyLiquiditySearchBar extends StatelessWidget {
     required double layoutHgt,
     required bool isWeb,
     required double layoutWdt,
-  }) : _layoutHgt = layoutHgt, _isWeb = isWeb, _layoutWdt = layoutWdt;
+  })  : _layoutHgt = layoutHgt,
+        _isWeb = isWeb,
+        _layoutWdt = layoutWdt;
 
   final double _layoutHgt;
   final bool _isWeb;
@@ -32,13 +34,18 @@ class MyLiquiditySearchBar extends StatelessWidget {
           Expanded(
             child: TextFormField(
               onChanged: (value) {
-                context.read<MyLiquidityBloc>().add(SearchTermChanged(searchTerm: value));
+                context
+                    .read<MyLiquidityBloc>()
+                    .add(SearchTermChanged(searchTerm: value));
               },
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 8.5),
                 hintText: 'Search a pair',
-                hintStyle: TextStyle(color: Colors.white),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'OpenSans',
+                ),
               ),
             ),
           ),

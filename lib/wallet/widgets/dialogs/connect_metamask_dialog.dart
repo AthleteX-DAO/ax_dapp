@@ -53,7 +53,10 @@ class ConnectMetaMaskDialog extends StatelessWidget {
                 children: [
                   Text(
                     "Couldn't find MetaMask extension",
-                    style: TextStyle(color: Colors.grey[400]),
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontFamily: 'OpenSans',
+                    ),
                   )
                 ],
               ),

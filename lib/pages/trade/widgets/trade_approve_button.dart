@@ -166,6 +166,7 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
               style: TextStyle(
                 fontSize: 16,
                 color: textcolor,
+                fontFamily: 'OpenSans',
               ),
             ),
           ),

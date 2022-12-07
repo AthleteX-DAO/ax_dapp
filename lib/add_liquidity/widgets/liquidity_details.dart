@@ -30,6 +30,7 @@ class LiquidityDetails extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                     Text(
@@ -37,6 +38,7 @@ class LiquidityDetails extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                   ],
@@ -49,6 +51,7 @@ class LiquidityDetails extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                     Text(
@@ -56,6 +59,7 @@ class LiquidityDetails extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                   ],
@@ -76,6 +80,7 @@ class LiquidityDetails extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 15,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                 ),
@@ -86,6 +91,7 @@ class LiquidityDetails extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                 ),
@@ -96,6 +102,7 @@ class LiquidityDetails extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 15,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                 ),
@@ -106,6 +113,7 @@ class LiquidityDetails extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                 ),

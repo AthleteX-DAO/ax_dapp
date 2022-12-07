@@ -175,6 +175,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

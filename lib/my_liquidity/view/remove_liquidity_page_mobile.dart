@@ -165,6 +165,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                             style: TextStyle(
                               color: Colors.grey[400],
                               fontSize: 22,
+                              fontFamily: 'OpenSans',
                             ),
                           ),
                         ],
@@ -351,7 +352,11 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                   child: Text(
                                     tokenOneRemoveAmount.toStringAsFixed(6),
                                     textAlign: TextAlign.end,
-                                    style: const TextStyle(fontSize: metricsTextSize, color: Colors.white,),
+                                    style: const TextStyle(
+                                      fontSize: metricsTextSize,
+                                      color: Colors.white,
+                                      fontFamily: 'OpenSans',
+                                    ),
                                   ),
                                 ),
                               ],
@@ -405,7 +410,11 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                   child: Text(
                                     tokenTwoRemoveAmount.toStringAsFixed(6),
                                     textAlign: TextAlign.end,
-                                    style: const TextStyle(fontSize: metricsTextSize, color: Colors.white,),
+                                    style: const TextStyle(
+                                      fontSize: metricsTextSize,
+                                      color: Colors.white,
+                                      fontFamily: 'OpenSans',
+                                    ),
                                   ),
                                 ),
                               ],
@@ -467,6 +476,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.amber,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                       ),

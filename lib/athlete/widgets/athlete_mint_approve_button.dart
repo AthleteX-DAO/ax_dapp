@@ -162,6 +162,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

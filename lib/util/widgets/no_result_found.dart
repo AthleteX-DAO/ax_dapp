@@ -10,7 +10,11 @@ class NoResultFound extends StatelessWidget {
       width: 400,
       child: Text(
         'No Result Found',
-        style: TextStyle(color: Colors.yellow, fontSize: 30),
+        style: TextStyle(
+          color: Colors.yellow,
+          fontSize: 30,
+          fontFamily: 'OpenSans',
+        ),
       ),
     );
   }

@@ -107,6 +107,7 @@ class _ApproveButtonState extends State<ApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

@@ -390,6 +390,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                           245,
                                           0.6,
                                         ),
+                                        fontFamily: 'OpenSans',
                                       ),
                                     ),
                                     inputFormatters: [
