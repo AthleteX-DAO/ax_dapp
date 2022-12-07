@@ -39,7 +39,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
           onTap: () => launchUrl(Uri.parse('https://www.athletex.io/')),
         ),
         PopupMenuItem(
-          value: 4,
+          value: 3,
           child: const ListTile(
             leading: FaIcon(
               FontAwesomeIcons.github,
@@ -49,7 +49,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
           onTap: () => launchUrl(Uri.parse('https://github.com/SportsToken')),
         ),
         PopupMenuItem(
-          value: 5,
+          value: 4,
           child: const ListTile(
             leading: FaIcon(
               FontAwesomeIcons.discord,
@@ -60,7 +60,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
               launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
         ),
         PopupMenuItem(
-          value: 6,
+          value: 5,
           child: const ListTile(
             leading: FaIcon(
               FontAwesomeIcons.twitter,
@@ -72,7 +72,31 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
               launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
         ),
         PopupMenuItem(
+          value: 6,
+          child: const ListTile(
+            leading: FaIcon(
+              FontAwesomeIcons.instagram,
+              // size: 25,
+            ),
+            title: Text('Instagram'),
+          ),
+          onTap: () => launchUrl(
+              Uri.parse('https://www.instagram.com/athletexmarkets/?hl=en')),
+        ),
+        PopupMenuItem(
           value: 7,
+          child: const ListTile(
+            leading: FaIcon(
+              FontAwesomeIcons.tiktok,
+              // size: 25,
+            ),
+            title: Text('TikTok'),
+          ),
+          onTap: () =>
+              launchUrl(Uri.parse('https://www.tiktok.com/@athlete_x')),
+        ),
+        PopupMenuItem(
+          value: 8,
           child: const ListTile(
             leading: Icon(Icons.share),
             title: Text('Share'),
