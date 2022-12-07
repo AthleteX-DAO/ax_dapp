@@ -349,6 +349,14 @@ class Global extends PropertyChangeNotifier<String> {
   BottomNavigationBar bottomNavBarAndroid(BuildContext context) {
     return BottomNavigationBar(
       showUnselectedLabels: true,
+      selectedLabelStyle: const TextStyle(
+        fontSize: 10,
+        fontFamily: 'OpenSans',
+      ),
+      unselectedLabelStyle: const TextStyle(
+        fontSize: 10,
+        fontFamily: 'OpenSans',
+      ),
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.transparent,
       items: <BottomNavigationBarItem>[
