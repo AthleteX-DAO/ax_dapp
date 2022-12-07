@@ -22,6 +22,7 @@ class LPFee extends StatelessWidget {
             style: TextStyle(
               fontSize: 15,
               color: Colors.grey[600],
+              fontFamily: 'OpenSans',
             ),
           ),
           Text(
@@ -29,6 +30,7 @@ class LPFee extends StatelessWidget {
             style: TextStyle(
               fontSize: 15,
               color: Colors.grey[600],
+              fontFamily: 'OpenSans',
             ),
           ),
         ],
