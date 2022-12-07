@@ -72,6 +72,30 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
               launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
         ),
         PopupMenuItem(
+          value: 6,
+          child: const ListTile(
+            leading: FaIcon(
+              FontAwesomeIcons.instagram,
+              // size: 25,
+            ),
+            title: Text('Instagram'),
+          ),
+          onTap: () => launchUrl(
+              Uri.parse('https://www.instagram.com/athletexmarkets/?hl=en')),
+        ),
+        PopupMenuItem(
+          value: 6,
+          child: const ListTile(
+            leading: FaIcon(
+              FontAwesomeIcons.instagram,
+              // size: 25,
+            ),
+            title: Text('TikTok'),
+          ),
+          onTap: () =>
+              launchUrl(Uri.parse('https://www.tiktok.com/@athlete_x')),
+        ),
+        PopupMenuItem(
           value: 7,
           child: const ListTile(
             leading: FaIcon(
