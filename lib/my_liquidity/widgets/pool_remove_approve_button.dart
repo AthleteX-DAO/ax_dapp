@@ -168,6 +168,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

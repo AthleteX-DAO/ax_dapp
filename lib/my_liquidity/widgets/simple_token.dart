@@ -11,7 +11,12 @@ class SimpleToken extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Text(
         symbol,
-        style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w500),
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'OpenSans',
+        ),
       ),
     );
   }

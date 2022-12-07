@@ -30,6 +30,7 @@ class LiquidityDetails extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                     Text(

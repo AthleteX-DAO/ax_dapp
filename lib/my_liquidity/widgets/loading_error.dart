@@ -11,7 +11,11 @@ class LoadingError extends StatelessWidget {
         width: 400,
         child: Text(
           'Failed to load list of liquidity positions',
-          style: TextStyle(color: Colors.red, fontSize: 30),
+          style: TextStyle(
+            color: Colors.red,
+            fontSize: 30,
+            fontFamily: 'OpenSans',
+          ),
         ),
       ),
     );

@@ -24,6 +24,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
               Text(
@@ -31,6 +32,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
             ],
@@ -43,6 +45,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
               Text(
@@ -50,6 +53,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
             ],
@@ -62,6 +66,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
               Text(
@@ -69,6 +74,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
             ],
@@ -81,6 +87,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
               Text(
@@ -88,6 +95,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
             ],
@@ -100,6 +108,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
               Text(
@@ -107,6 +116,7 @@ class MyLiquidityCardInformation extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
                 ),
               ),
             ],
