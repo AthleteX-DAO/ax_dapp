@@ -234,7 +234,8 @@ class _V1AppState extends State<V1App> {
               tokensRepository: context.read<TokensRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-              getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
+              getAllLiquidityInfoUseCase:
+                  RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
               poolController: Get.find(),
             ),
             child: const DesktopPool(),
@@ -492,6 +493,27 @@ class _V1AppState extends State<V1App> {
                   ),
                   icon: FaIcon(
                     FontAwesomeIcons.github,
+                    size: 25,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => launchUrl(
+                    Uri.parse(
+                        'https://www.instagram.com/athletexmarkets/?hl=en'),
+                  ),
+                  icon: FaIcon(
+                    FontAwesomeIcons.instagram,
+                    size: 25,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => launchUrl(
+                    Uri.parse('https://www.tiktok.com/@athlete_x'),
+                  ),
+                  icon: FaIcon(
+                    FontAwesomeIcons.tiktok,
                     size: 25,
                     color: Colors.grey[400],
                   ),
