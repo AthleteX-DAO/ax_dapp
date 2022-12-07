@@ -174,6 +174,7 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

@@ -124,6 +124,7 @@ class AthletePageTitle extends StatelessWidget {
                                                     1,
                                                   ),
                                             fontSize: 10,
+                                            fontFamily: 'OpenSans',
                                           ),
                                         ),
                                       ),
@@ -174,6 +175,7 @@ class AthletePageTitle extends StatelessWidget {
                                                   )
                                                 : primaryWhiteColor,
                                             fontSize: 10,
+                                            fontFamily: 'OpenSans',
                                           ),
                                         ),
                                       ),
@@ -364,6 +366,7 @@ class AthletePageTitle extends StatelessWidget {
                                                 1,
                                               ),
                                         fontSize: 10,
+                                        fontFamily: 'OpenSans',
                                       ),
                                     ),
                                   ),
@@ -410,6 +413,7 @@ class AthletePageTitle extends StatelessWidget {
                                               )
                                             : primaryWhiteColor,
                                         fontSize: 10,
+                                        fontFamily: 'OpenSans',
                                       ),
                                     ),
                                   ),

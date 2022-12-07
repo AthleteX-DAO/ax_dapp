@@ -180,6 +180,7 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

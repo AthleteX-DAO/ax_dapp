@@ -28,6 +28,7 @@ class PoolShareDetails extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                     Text(
@@ -35,6 +36,7 @@ class PoolShareDetails extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                   ],
@@ -47,6 +49,7 @@ class PoolShareDetails extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                     Text(
@@ -54,6 +57,7 @@ class PoolShareDetails extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                   ],
@@ -74,6 +78,7 @@ class PoolShareDetails extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 15,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                 ),
@@ -84,6 +89,7 @@ class PoolShareDetails extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                 ),
@@ -94,6 +100,7 @@ class PoolShareDetails extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 15,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                 ),
@@ -104,6 +111,7 @@ class PoolShareDetails extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                 ),

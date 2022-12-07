@@ -12,7 +12,11 @@ class Balance extends StatelessWidget {
       alignment: Alignment.bottomRight,
       child: Text(
         'Balance: $balance',
-        style: TextStyle(color: Colors.grey[400], fontSize: 13),
+        style: TextStyle(
+          color: Colors.grey[400],
+          fontSize: 13,
+          fontFamily: 'OpenSans',
+        ),
       ),
     );
   }

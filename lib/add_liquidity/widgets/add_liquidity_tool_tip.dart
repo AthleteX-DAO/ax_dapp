@@ -17,7 +17,7 @@ class AddLiquidityToolTip extends StatelessWidget {
       richMessage: TextSpan(
         text:
             '''*Add liquidity to earn 0.25% of all trades on this pair proportional to your share of the pool and receive LP tokens.''',
-        style: TextStyle(color: Colors.grey[400], fontSize: 18),
+        style: TextStyle(color: Colors.grey[400], fontSize: 18, fontFamily: 'OpenSans',),
       ),
       child: const Icon(
         Icons.info_outline_rounded,

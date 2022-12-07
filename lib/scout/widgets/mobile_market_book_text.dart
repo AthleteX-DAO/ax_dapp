@@ -20,6 +20,7 @@ class MobileMarketBookText extends StatelessWidget {
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 10,
+                fontFamily: 'OpenSans',
               ),
               textAlign: TextAlign.justify,
             ),
@@ -31,6 +32,7 @@ class MobileMarketBookText extends StatelessWidget {
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 10,
+                fontFamily: 'OpenSans',
               ),
               textAlign: TextAlign.justify,
             ),

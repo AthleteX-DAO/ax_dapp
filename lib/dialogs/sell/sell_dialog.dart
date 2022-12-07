@@ -155,6 +155,7 @@ class _SellDialogState extends State<SellDialog> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         TextSpan(
@@ -163,6 +164,7 @@ class _SellDialogState extends State<SellDialog> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         TextSpan(
@@ -170,6 +172,7 @@ class _SellDialogState extends State<SellDialog> {
                           style: TextStyle(
                             color: Colors.amber[400],
                             fontSize: isWeb ? 14 : 12,
+                            fontFamily: 'OpenSans',
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
@@ -190,6 +193,7 @@ class _SellDialogState extends State<SellDialog> {
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],
+                          fontFamily: 'OpenSans',
                         ),
                       ),
                     ),
@@ -430,6 +434,7 @@ class LongAptButton extends StatelessWidget {
               ? Colors.black
               : const Color.fromRGBO(154, 154, 154, 1),
           fontSize: 11,
+          fontFamily: 'OpenSans',
         ),
       ),
     );
@@ -462,6 +467,7 @@ class ShortAptButton extends StatelessWidget {
               ? const Color.fromRGBO(154, 154, 154, 1)
               : Colors.amber,
           fontSize: 11,
+          fontFamily: 'OpenSans',
         ),
       ),
     );

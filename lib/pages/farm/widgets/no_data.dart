@@ -11,7 +11,11 @@ class NoData extends StatelessWidget {
         width: 320,
         child: Text(
           'No Farms to Display.',
-          style: TextStyle(color: Colors.amber, fontSize: 30),
+          style: TextStyle(
+            color: Colors.amber,
+            fontSize: 30,
+            fontFamily: 'OpenSans',
+          ),
         ),
       ),
     );

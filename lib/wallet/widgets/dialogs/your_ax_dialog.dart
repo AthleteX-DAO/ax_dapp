@@ -105,12 +105,14 @@ class YourAXDialog extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         AxBalance(
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                       ],
@@ -136,6 +138,7 @@ class YourAXDialog extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         const AxPrice(),
@@ -149,6 +152,7 @@ class YourAXDialog extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         const AxCirculation(),
@@ -162,6 +166,7 @@ class YourAXDialog extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         const AxTotalSupply(),

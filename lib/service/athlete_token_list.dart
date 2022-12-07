@@ -213,6 +213,7 @@ class SearchBar extends StatelessWidget {
                   color: Colors.white,
                   fontSize: searchBarHintTextSize,
                   height: 1.5,
+                  fontFamily: 'OpenSans',
                 ),
               ),
             ),
@@ -263,6 +264,7 @@ class FilterMenuError extends StatelessWidget {
         style: TextStyle(
           color: Colors.red,
           fontSize: 20,
+          fontFamily: 'OpenSans',
         ),
       ),
     );

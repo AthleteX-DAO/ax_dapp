@@ -28,13 +28,18 @@ class YouReceived extends StatelessWidget {
                   children: [
                     Text(
                       'You will receive:',
-                      style: TextStyle(color: Colors.grey[600], fontSize: 18),
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 18,
+                        fontFamily: 'OpenSans',
+                      ),
                     ),
                     Text(
                       '$amountToReceive ${token0.ticker}/${token1.ticker} LP Tokens',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                   ],
@@ -53,7 +58,11 @@ class YouReceived extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'You will receive:',
-                        style: TextStyle(color: Colors.grey[600], fontSize: 18),
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 18,
+                          fontFamily: 'OpenSans',
+                        ),
                       ),
                     ),
                     Container(
@@ -75,6 +84,7 @@ class YouReceived extends StatelessWidget {
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 21,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                       ),
@@ -87,6 +97,7 @@ class YouReceived extends StatelessWidget {
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 15,
+                              fontFamily: 'OpenSans',
                             ),
                           ),
                           const Text(

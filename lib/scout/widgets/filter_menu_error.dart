@@ -21,7 +21,11 @@ class FilterMenuError extends StatelessWidget {
       width: 600,
       child: Text(
         warningText,
-        style: const TextStyle(color: Colors.amber, fontSize: 30),
+        style: const TextStyle(
+          color: Colors.amber,
+          fontSize: 30,
+          fontFamily: 'OpenSans',
+        ),
       ),
     );
   }
