@@ -64,6 +64,7 @@ class Global extends PropertyChangeNotifier<String> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
+      resizeToAvoidBottomInset: false,
       appBar: topNav(context),
       bottomNavigationBar: bottomNav(context),
       body: Container(
