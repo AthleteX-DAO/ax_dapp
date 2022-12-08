@@ -390,7 +390,14 @@ class _MobileScoutState extends State<MobileScout> {
                                         value: 1,
                                         child: const ListTile(
                                           title: Align(
-                                            child: Text('Long'),
+                                            child: Text(
+                                              'Long',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey,
+                                                fontFamily: 'OpenSans',
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         onTap: () {
@@ -407,7 +414,14 @@ class _MobileScoutState extends State<MobileScout> {
                                         value: 1,
                                         child: const ListTile(
                                           title: Align(
-                                            child: Text('Short'),
+                                            child: Text(
+                                              'Short',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey,
+                                                fontFamily: 'OpenSans',
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         onTap: () {
@@ -509,6 +523,12 @@ class _MobileScoutState extends State<MobileScout> {
                                           Expanded(
                                             child: TextFormField(
                                               controller: myController,
+                                              style: textStyle(
+                                                Colors.grey[400]!,
+                                                15,
+                                                isBold: false,
+                                                isUline: false,
+                                              ),
                                               onChanged: (value) {
                                                 setState(
                                                   () {

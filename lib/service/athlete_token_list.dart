@@ -205,6 +205,12 @@ class SearchBar extends StatelessWidget {
                 updateKeyWord(value);
                 updateFilteredApts();
               },
+              style: textStyle(
+                Colors.grey[400]!,
+                15,
+                isBold: false,
+                isUline: false,
+              ),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.only(bottom: 10),

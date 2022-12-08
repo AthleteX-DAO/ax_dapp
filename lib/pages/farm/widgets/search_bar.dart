@@ -31,6 +31,12 @@ class WebSearchBar extends StatelessWidget {
           Expanded(
             child: TextFormField(
               controller: myController,
+              style: textStyle(
+                Colors.grey[400]!,
+                22,
+                isBold: false,
+                isUline: false,
+              ),
               onChanged: (value) {
                 context
                     .read<FarmBloc>()
@@ -81,6 +87,12 @@ class MobileSearchBar extends StatelessWidget {
           Expanded(
             child: TextFormField(
               controller: myController,
+              style: textStyle(
+                Colors.grey[400]!,
+                15,
+                isBold: false,
+                isUline: false,
+              ),
               onChanged: (value) {
                 context
                     .read<FarmBloc>()
