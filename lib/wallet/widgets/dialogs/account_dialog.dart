@@ -166,7 +166,9 @@ class AccountDialog extends StatelessWidget {
 
                                   Container(
                                     margin: const EdgeInsets.only(
-                                        right: 5.0, top: 5.0),
+                                      right: 5,
+                                      top: 5,
+                                    ),
                                     width: 75,
                                     height: 25,
                                     decoration: boxDecoration(
@@ -182,13 +184,17 @@ class AccountDialog extends StatelessWidget {
                                             );
                                         Navigator.pop(context);
                                       },
-                                      child: Text(
-                                        'Disconnect',
-                                        style: textStyle(
-                                          Colors.red[900]!,
-                                          10,
-                                          isBold: true,
-                                          isUline: false,
+                                      child: FittedBox(
+                                        child: SizedBox(
+                                          child: Text(
+                                            'Disconnect',
+                                            style: textStyle(
+                                              Colors.red[900]!,
+                                              10,
+                                              isBold: true,
+                                              isUline: false,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
