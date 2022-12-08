@@ -523,6 +523,12 @@ class _MobileScoutState extends State<MobileScout> {
                                           Expanded(
                                             child: TextFormField(
                                               controller: myController,
+                                              style: textStyle(
+                                                Colors.grey[400]!,
+                                                15,
+                                                isBold: false,
+                                                isUline: false,
+                                              ),
                                               onChanged: (value) {
                                                 setState(
                                                   () {
