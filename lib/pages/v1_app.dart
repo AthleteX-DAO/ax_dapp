@@ -413,10 +413,6 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget topNavBarAndroid(BuildContext context) {
-    // include the AX logo
-    // include the wallet information once the user has connected their wallet
-    // include a dropdown menu for the ellipses and add links to them
-    // include the divider line
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -496,19 +492,45 @@ class _V1AppState extends State<V1App> {
                     color: Colors.grey[400],
                   ),
                 ),
-                Container(width: _width - 320),
-                AppToolTip(
-                  'Invest in what you know best at AthleteX Markets.',
-                  IconButton(
-                    onPressed: () => launchUrl(
-                      Uri.parse(
-                        'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper',
-                      ),
+                IconButton(
+                  onPressed: () => launchUrl(
+                    Uri.parse(
+                      'https://www.instagram.com/athletexmarkets/?hl=en',
                     ),
-                    icon: FaIcon(
-                      FontAwesomeIcons.circleQuestion,
-                      size: 25,
-                      color: Colors.grey[400],
+                  ),
+                  icon: FaIcon(
+                    FontAwesomeIcons.instagram,
+                    size: 25,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => launchUrl(
+                    Uri.parse(
+                      'https://www.tiktok.com/@athlete_x',
+                    ),
+                  ),
+                  icon: FaIcon(
+                    FontAwesomeIcons.tiktok,
+                    size: 25,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: AppToolTip(
+                    'Invest in what you know best at AthleteX Markets.',
+                    IconButton(
+                      onPressed: () => launchUrl(
+                        Uri.parse(
+                          'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper',
+                        ),
+                      ),
+                      icon: FaIcon(
+                        FontAwesomeIcons.circleQuestion,
+                        size: 25,
+                        color: Colors.grey[400],
+                      ),
                     ),
                   ),
                 ),
