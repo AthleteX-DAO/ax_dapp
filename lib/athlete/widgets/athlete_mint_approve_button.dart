@@ -1,6 +1,5 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
-import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ class AthleteMintApproveButton extends StatefulWidget {
     required this.valueInAX,
     required this.approveCallback,
     required this.confirmCallback,
-    required this.goToPage,
     super.key,
   });
 
@@ -28,10 +26,9 @@ class AthleteMintApproveButton extends StatefulWidget {
   final AthleteScoutModel athlete;
   final String aptName;
   final String inputApt;
-  final String valueInAX;
+  final double valueInAX;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final void Function(int page) goToPage;
 
   @override
   State<AthleteMintApproveButton> createState() =>
@@ -92,6 +89,8 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
 
   @override
   Widget build(BuildContext context) {
+    final usdValue = context.read<WalletBloc>().state.axData.price;
+    final price = usdValue ?? 0;
     return Container(
       width: width,
       height: height,
@@ -112,13 +111,13 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                   inputApt: widget.inputApt,
                   valueInAx: widget.valueInAX,
                   walletId: walletAddress,
+                  valueInUSD: widget.valueInAX * price,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) => TransactionConfirmed(
                   context: context,
-                  goToPage: widget.goToPage,
                   isTrade: true,
                   isPool: true,
                 ),
@@ -133,6 +132,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                     inputApt: widget.inputApt,
                     valueInAx: widget.valueInAX,
                     walletId: walletAddress,
+                    valueInUSD: widget.valueInAX * price,
                   );
             }).catchError((error) {
               showDialog<void>(
@@ -152,6 +152,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                   inputApt: widget.inputApt,
                   valueInAx: widget.valueInAX,
                   walletId: walletAddress,
+                  valueInUSD: widget.valueInAX * price,
                 );
             changeButton();
           }
@@ -161,6 +162,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

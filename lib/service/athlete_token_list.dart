@@ -123,6 +123,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                                 Colors.grey[400]!,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                             IconButton(
@@ -139,7 +140,8 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: SearchBar(
-                          searchBarHintTextSize: constraints.maxWidth < 1100 ? 15 : 20 ,
+                          searchBarHintTextSize:
+                              constraints.maxWidth < 1100 ? 15 : 20,
                           updateKeyWord: updateKeyWord,
                           updateFilteredApts: updateFilteredApts,
                         ),
@@ -203,6 +205,12 @@ class SearchBar extends StatelessWidget {
                 updateKeyWord(value);
                 updateFilteredApts();
               },
+              style: textStyle(
+                Colors.grey[400]!,
+                15,
+                isBold: false,
+                isUline: false,
+              ),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.only(bottom: 10),
@@ -211,6 +219,7 @@ class SearchBar extends StatelessWidget {
                   color: Colors.white,
                   fontSize: searchBarHintTextSize,
                   height: 1.5,
+                  fontFamily: 'OpenSans',
                 ),
               ),
             ),
@@ -261,6 +270,7 @@ class FilterMenuError extends StatelessWidget {
         style: TextStyle(
           color: Colors.red,
           fontSize: 20,
+          fontFamily: 'OpenSans',
         ),
       ),
     );
@@ -289,8 +299,18 @@ class BuildFilterMenu extends StatelessWidget {
             'ALL',
             style: textSwapState(
               condition: selectedSport == SupportedSport.all,
-              tabNotSelected: textStyle(Colors.white, 14, isBold: false),
-              tabSelected: textStyle(Colors.amber[400]!, 14, isBold: false),
+              tabNotSelected: textStyle(
+                Colors.white,
+                14,
+                isBold: false,
+                isUline: false,
+              ),
+              tabSelected: textStyle(
+                Colors.amber[400]!,
+                14,
+                isBold: false,
+                isUline: false,
+              ),
             ),
           ),
         ),
@@ -302,8 +322,18 @@ class BuildFilterMenu extends StatelessWidget {
             'MLB',
             style: textSwapState(
               condition: selectedSport == SupportedSport.MLB,
-              tabNotSelected: textStyle(Colors.white, 14, isBold: false),
-              tabSelected: textStyle(Colors.amber[400]!, 14, isBold: false),
+              tabNotSelected: textStyle(
+                Colors.white,
+                14,
+                isBold: false,
+                isUline: false,
+              ),
+              tabSelected: textStyle(
+                Colors.amber[400]!,
+                14,
+                isBold: false,
+                isUline: false,
+              ),
             ),
           ),
         ),
@@ -315,8 +345,18 @@ class BuildFilterMenu extends StatelessWidget {
             'NFL',
             style: textSwapState(
               condition: selectedSport == SupportedSport.NFL,
-              tabNotSelected: textStyle(Colors.white, 14, isBold: false),
-              tabSelected: textStyle(Colors.amber[400]!, 14, isBold: false),
+              tabNotSelected: textStyle(
+                Colors.white,
+                14,
+                isBold: false,
+                isUline: false,
+              ),
+              tabSelected: textStyle(
+                Colors.amber[400]!,
+                14,
+                isBold: false,
+                isUline: false,
+              ),
             ),
           ),
         ),

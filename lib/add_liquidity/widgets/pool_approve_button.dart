@@ -1,6 +1,5 @@
 import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
-import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ class PoolApproveButton extends StatefulWidget {
     required this.tokenAmountOneController,
     required this.tokenAmountTwoController,
     required this.width,
-    required this.height,
     required this.text,
     required this.approveCallback,
     required this.confirmCallback,
@@ -23,7 +21,6 @@ class PoolApproveButton extends StatefulWidget {
     required this.valueTwo,
     required this.shareOfPool,
     required this.lpTokenName,
-    required this.goToPage,
     super.key,
   });
 
@@ -31,7 +28,6 @@ class PoolApproveButton extends StatefulWidget {
   final TextEditingController tokenAmountTwoController;
   final String text;
   final double width;
-  final double height;
   final String currencyOne;
   final String currencyTwo;
   final String valueOne;
@@ -41,7 +37,6 @@ class PoolApproveButton extends StatefulWidget {
   final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final void Function(int pageNumber) goToPage;
 
   @override
   State<PoolApproveButton> createState() => _PoolApproveButtonState();
@@ -49,18 +44,16 @@ class PoolApproveButton extends StatefulWidget {
 
 class _PoolApproveButtonState extends State<PoolApproveButton> {
   double width = 0;
-  double height = 0;
+  double height = 40;
   String text = '';
   bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
-  Widget? dialog;
 
   @override
   void initState() {
     super.initState();
     width = widget.width;
-    height = widget.height;
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;
@@ -148,7 +141,6 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                 context: context,
                 builder: (BuildContext context) => TransactionConfirmed(
                   context: context,
-                  goToPage: widget.goToPage,
                   isFarm: true,
                 ),
               ).then((value) {
@@ -183,6 +175,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

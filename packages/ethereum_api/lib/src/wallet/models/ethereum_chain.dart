@@ -11,7 +11,6 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 
-// TODO(Pearlson): confirm info
 /// {@template ethereum_chain}
 /// Represents an `Ethereum` blockchain network.
 /// {@endtemplate}
@@ -43,13 +42,13 @@ enum EthereumChain {
     blockExplorerUrls: ['https://polygonscan.com/'],
   ),
 
-  /// Polygon test network.
-  polygonTestnet(
-    chainId: 80001,
-    chainName: 'Polygon Testnet',
-    currency: EthereumCurrency.matic,
-    rpcUrls: ['https://matic-mumbai.chainstacklabs.com/'],
-    blockExplorerUrls: ['https://polygonscan.com/'],
+  /// Goerli test network.
+  goerliTestNet(
+    chainId: 5,
+    chainName: 'Goerli Testnet',
+    currency: EthereumCurrency.geth,
+    rpcUrls: ['https://goerli.infura.io/v3/'],
+    blockExplorerUrls: ['https://goerli.etherscan.io/'],
   ),
 
   /// SX main network.
@@ -151,7 +150,7 @@ extension ChainConfigX on EthereumChain {
     );
     final supportedApts =
         ((chain.chainId == EthereumChain.polygonMainnet.chainId) ||
-                (chain.chainId == EthereumChain.polygonTestnet.chainId))
+                (chain.chainId == EthereumChain.goerliTestNet.chainId))
             ? mlbApts
             : nflApts;
     return supportedApts
@@ -176,7 +175,7 @@ extension ChainConfigX on EthereumChain {
         client: client,
       );
 
-  /// Creates a [Dex] client based on this [EthereumChain] configuration.
+  /// Creates a [APTFactory] client based on this [EthereumChain] configuration.
   APTFactory createAptFactoryClient(Web3Client client) => APTFactory(
         address: EthereumAddress.fromHex(
           const EthereumAddressConfig.dexFactoryAddress().address(this),

@@ -28,6 +28,7 @@ class WarningTextButton extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.red[400],
+                fontFamily: 'OpenSans',
               ),
             ),
           ),

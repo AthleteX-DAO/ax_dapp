@@ -1,7 +1,8 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
-import 'package:ax_dapp/service/failed_dialog.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -91,6 +92,8 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
 
   @override
   Widget build(BuildContext context) {
+    final usdValue = context.read<WalletBloc>().state.axData.price;
+    final price = usdValue ?? 0;
     return Container(
       width: width,
       height: height,
@@ -113,12 +116,13 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
                   totalFee: widget.aptBuyInfo.totalFee,
                   sport: widget.athlete.sport.toString(),
                   walletId: widget.walletAddress,
+                  valueInUSD: double.parse(widget.amountInputted) * price,
+                  feeInUSD: widget.aptBuyInfo.totalFee * price,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog,
+                builder: (BuildContext context) => widget.confirmDialog,
               ).then((value) {
                 if (mounted) {
                   Navigator.pop(context);
@@ -134,6 +138,8 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
                     totalFee: widget.aptBuyInfo.totalFee,
                     sport: widget.athlete.sport.toString(),
                     walletId: widget.walletAddress,
+                    valueInUSD: double.parse(widget.amountInputted) * price,
+                    feeInUSD: widget.aptBuyInfo.totalFee * price,
                   );
             }).catchError((error) {
               showDialog<void>(
@@ -157,6 +163,8 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
                   totalFee: widget.aptBuyInfo.totalFee,
                   sport: widget.athlete.sport.toString(),
                   walletId: widget.walletAddress,
+                  valueInUSD: double.parse(widget.amountInputted) * price,
+                  feeInUSD: widget.aptBuyInfo.totalFee * price,
                 );
             changeButton();
           }
@@ -166,6 +174,7 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

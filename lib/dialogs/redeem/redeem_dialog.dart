@@ -1,12 +1,13 @@
 import 'package:ax_dapp/dialogs/redeem/bloc/redeem_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/redeem/widgets/widgets.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class RedeemDialog extends StatefulWidget {
   const RedeemDialog(
@@ -21,8 +23,7 @@ class RedeemDialog extends StatefulWidget {
     this.aptName,
     this.inputLongApt,
     this.inputShortApt,
-    this.valueInAX,
-    this.goToTradePage, {
+    this.valueInAX, {
     super.key,
   });
 
@@ -31,7 +32,6 @@ class RedeemDialog extends StatefulWidget {
   final String inputLongApt;
   final String inputShortApt;
   final String valueInAX;
-  final void Function() goToTradePage;
 
   @override
   State<RedeemDialog> createState() => _RedeemDialogState();
@@ -44,60 +44,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
   final TextEditingController _longInputController = TextEditingController();
   final TextEditingController _shortInputController = TextEditingController();
 
-  Widget showLongBalance(double longBalance) {
-    final balance = toDecimal(longBalance, 6);
-    return Container(
-      margin: const EdgeInsets.only(right: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            'Balance: $balance',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showShortBalance(double shortBalance) {
-    final balance = toDecimal(shortBalance, 6);
-    return Container(
-      margin: const EdgeInsets.only(right: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            'Balance: $balance',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showYouReceive(double receiveAmount) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'You Receive: ',
-            style: textStyle(Colors.white, 15, isBold: false),
-          ),
-          Row(
-            children: [
-              Text(
-                '''$receiveAmount AX''',
-                style: textStyle(Colors.white, 15, isBold: false),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final isWeb =
@@ -105,6 +51,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
+    final usdValue = context.read<WalletBloc>().state.axData.price;
+    final price = usdValue ?? 0;
 
     return BlocConsumer<RedeemDialogBloc, RedeemDialogState>(
       listenWhen: (_, current) =>
@@ -145,7 +93,12 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           padding: EdgeInsets.zero,
                           child: Text(
                             'Redeem ${widget.athlete.name} APT Pair',
-                            style: textStyle(Colors.white, 20, isBold: false),
+                            style: textStyle(
+                              Colors.white,
+                              20,
+                              isBold: false,
+                              isUline: false,
+                            ),
                           ),
                         ),
                       ),
@@ -182,6 +135,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             Colors.grey[600]!,
                             isWeb ? 14 : 12,
                             isBold: false,
+                            isUline: false,
                           ),
                         ),
                         TextSpan(
@@ -191,6 +145,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             Colors.grey[600]!,
                             isWeb ? 14 : 12,
                             isBold: false,
+                            isUline: false,
                           ),
                         ),
                         TextSpan(
@@ -199,11 +154,11 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             Colors.amber[400]!,
                             isWeb ? 14 : 12,
                             isBold: false,
+                            isUline: false,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pop(context);
-                              widget.goToTradePage();
+                              context.goNamed('trade');
                             },
                         ),
                       ],
@@ -221,8 +176,12 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           isWeb
                               ? 'Input APT pair:'
                               : 'Input APT pair and amount:',
-                          style:
-                              textStyle(Colors.grey[600]!, 14, isBold: false),
+                          style: textStyle(
+                            Colors.grey[600]!,
+                            14,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(bottom: 10),
@@ -252,6 +211,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                 Colors.grey[400]!,
                                 9,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                           ),
@@ -297,6 +257,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     Colors.white,
                                     15,
                                     isBold: false,
+                                    isUline: false,
                                   ),
                                 ),
                               ),
@@ -305,12 +266,16 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     BoxConstraints(maxWidth: wid * 0.4),
                                 child: IntrinsicWidth(
                                   child: TextField(
-                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                      decimal: true,
+                                    ),
                                     controller: _longInputController,
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       22,
                                       isBold: false,
+                                      isUline: false,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: '0.00',
@@ -318,6 +283,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                         Colors.grey[400]!,
                                         22,
                                         isBold: false,
+                                        isUline: false,
                                       ),
                                       contentPadding: isWeb
                                           ? const EdgeInsets.all(9)
@@ -346,7 +312,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                               ),
                             ],
                           ),
-                          showLongBalance(longBalance)
+                          LongBalance(longBalance: longBalance),
                         ],
                       ),
                     ),
@@ -389,6 +355,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     Colors.white,
                                     15,
                                     isBold: false,
+                                    isUline: false,
                                   ),
                                 ),
                               ),
@@ -397,12 +364,16 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     BoxConstraints(maxWidth: wid * 0.4),
                                 child: IntrinsicWidth(
                                   child: TextField(
-                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                      decimal: true,
+                                    ),
                                     controller: _shortInputController,
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       22,
                                       isBold: false,
+                                      isUline: false,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: '0.00',
@@ -410,6 +381,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                         Colors.grey[400]!,
                                         22,
                                         isBold: false,
+                                        isUline: false,
                                       ),
                                       contentPadding: isWeb
                                           ? const EdgeInsets.all(9)
@@ -438,7 +410,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                               ),
                             ],
                           ),
-                          showShortBalance(shortBalance)
+                          ShortBalance(shortBalance: shortBalance),
                         ],
                       ),
                     ),
@@ -448,7 +420,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                   thickness: 0.35,
                   color: Colors.grey[400],
                 ),
-                showYouReceive(receiveAmount),
+                ReceiveAmount(receiveAmount: receiveAmount),
                 SizedBox(
                   width: wid,
                   child: Row(
@@ -475,7 +447,10 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                 await showDialog<void>(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      const ConfirmTransactionDialog(),
+                                      const TransactionStatusDialog(
+                                    title: 'Transaction Confirmed',
+                                    icons: Icons.check_circle_outline,
+                                  ),
                                 ).then((value) {
                                   final walletAddress = context
                                       .read<WalletBloc>()
@@ -494,6 +469,10 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                                     collateralPerPair)
                                                 .toStringAsFixed(6),
                                         walletId: walletAddress,
+                                        valueInUSD:
+                                            (bloc.lspController.redeemAmt *
+                                                    collateralPerPair) *
+                                                price,
                                       );
                                 });
                               } else {
@@ -512,6 +491,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                 Colors.amber[500]!,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                           ),

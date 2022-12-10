@@ -1,5 +1,5 @@
 import 'package:ax_dapp/my_liquidity/bloc/my_liquidity_bloc.dart';
-import 'package:ax_dapp/service/failed_dialog.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
@@ -10,12 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PoolRemoveApproveButton extends StatefulWidget {
   const PoolRemoveApproveButton({
     required this.tabController,
-    required this.width,
-    required this.height,
     required this.text,
     required this.approveCallback,
     required this.confirmCallback,
-    required this.confirmDialog,
     required this.currencyOne,
     required this.currencyTwo,
     required this.valueOne,
@@ -24,13 +21,10 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.shareOfPool,
     required this.percentRemoval,
     required this.lpTokenName,
-    required this.myLiquidityBloc,
     super.key,
   });
   final TabController tabController;
   final String text;
-  final double width;
-  final double height;
   final String currencyOne;
   final String currencyTwo;
   final double valueOne;
@@ -41,8 +35,6 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final Widget confirmDialog;
-  final MyLiquidityBloc myLiquidityBloc;
 
   @override
   State<PoolRemoveApproveButton> createState() =>
@@ -50,19 +42,16 @@ class PoolRemoveApproveButton extends StatefulWidget {
 }
 
 class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
-  double width = 0;
-  double height = 0;
+  double width = 175;
+  double height = 40;
   String text = '';
   bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
-  Widget? dialog;
 
   @override
   void initState() {
     super.initState();
-    width = widget.width;
-    height = widget.height;
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;
@@ -134,10 +123,15 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                   );
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) => widget.confirmDialog,
+                builder: (BuildContext context) =>
+                    const TransactionStatusDialog(
+                  title: 'Removal Confirmed',
+                  icons: Icons.check_circle_outline,
+                ),
               ).then((value) {
                 //show loading spinner
-                widget.myLiquidityBloc
+                context
+                    .read<MyLiquidityBloc>()
                     .add(const FetchAllLiquidityPositionsRequested());
                 setState(() {
                   widget.tabController.index = 0;
@@ -174,6 +168,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

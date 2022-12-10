@@ -27,17 +27,39 @@ extension LandingPageTracking on TrackingCubit {
       LandingPageEvent.onPressedStartTrading({}),
     );
   }
+
+  void onLandingPageView() {
+    trackingRepository.track(
+      LandingPageEvent.onLandingPageView({}),
+    );
+  }
 }
 
 extension ConnectWalletSuccessfulTracking on TrackingCubit {
   void onConnectWalletSuccessful({
     required String publicAddress,
     required String axUnits,
+    required String walletType,
   }) {
     trackingRepository.track(
       ScoutPageTrackingEvent.onConnectWalletSuccessful({
         'public_address': publicAddress,
         'ax_units': axUnits,
+        'wallet_type': walletType,
+      }),
+    );
+  }
+
+  void onConnectWalletPressed({
+    required String publicAddress,
+    required String axUnits,
+    required String walletType,
+  }) {
+    trackingRepository.track(
+      ScoutPageTrackingEvent.onConnectWalletPressed({
+        'public_address': publicAddress,
+        'ax_units': axUnits,
+        'wallet_type': walletType,
       }),
     );
   }
@@ -47,10 +69,11 @@ extension ScoutPageTracking on TrackingCubit {
   /// Get athlete view information for analytics
   void trackAthleteView({
     required String athleteName,
+    required String walletId,
   }) {
     trackingRepository.track(
       ScoutPageTrackingEvent.onPressedAthleteView(
-        {'apt_player_name': athleteName},
+        {'apt_player_name': athleteName, 'wallet_id': walletId},
       ),
     );
   }
@@ -82,6 +105,8 @@ extension AthleteBuyTracking on TrackingCubit {
     required double totalFee,
     required String sport,
     required String walletId,
+    required double valueInUSD,
+    required double feeInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedAthleteBuy(
@@ -94,7 +119,9 @@ extension AthleteBuyTracking on TrackingCubit {
           'currency': currency,
           'total_fee': totalFee,
           'sport': sport,
-          'wallet_id': walletId
+          'wallet_id': walletId,
+          'value_in_usd': valueInUSD,
+          'fee_in_usd': feeInUSD,
         },
       ),
     );
@@ -111,6 +138,8 @@ extension AthleteBuyTracking on TrackingCubit {
     required double totalFee,
     required String sport,
     required String walletId,
+    required double valueInUSD,
+    required double feeInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedConfirmBuy(
@@ -123,7 +152,9 @@ extension AthleteBuyTracking on TrackingCubit {
           'currency': currency,
           'total_fee': totalFee,
           'sport': sport,
-          'wallet_id': walletId
+          'wallet_id': walletId,
+          'value_in_usd': valueInUSD,
+          'fee_in_usd': feeInUSD,
         },
       ),
     );
@@ -140,6 +171,8 @@ extension AthleteBuyTracking on TrackingCubit {
     required double totalFee,
     required String sport,
     required String walletId,
+    required double valueInUSD,
+    required double feeInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteBuySuccess({
@@ -151,7 +184,9 @@ extension AthleteBuyTracking on TrackingCubit {
         'currency': currency,
         'total_fee': totalFee,
         'sport': sport,
-        'wallet_id': walletId
+        'wallet_id': walletId,
+        'value_in_usd': valueInUSD,
+        'fee_in_usd': feeInUSD,
       }),
     );
   }
@@ -169,6 +204,8 @@ extension AthleteSellTracking on TrackingCubit {
     required double totalFee,
     required String sport,
     required String walletId,
+    required double valueInUSD,
+    required double feeInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedAthleteSell(
@@ -181,7 +218,9 @@ extension AthleteSellTracking on TrackingCubit {
           'currency': currency,
           'total_fee': totalFee,
           'sport': sport,
-          'wallet_id': walletId
+          'wallet_id': walletId,
+          'value_in_usd': valueInUSD,
+          'fee_in_usd': feeInUSD,
         },
       ),
     );
@@ -198,6 +237,8 @@ extension AthleteSellTracking on TrackingCubit {
     required double totalFee,
     required String sport,
     required String walletId,
+    required double valueInUSD,
+    required double feeInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedConfirmSell(
@@ -210,7 +251,9 @@ extension AthleteSellTracking on TrackingCubit {
           'currency': currency,
           'total_fee': totalFee,
           'sport': sport,
-          'wallet_id': walletId
+          'wallet_id': walletId,
+          'value_in_usd': valueInUSD,
+          'fee_in_usd': feeInUSD,
         },
       ),
     );
@@ -227,6 +270,8 @@ extension AthleteSellTracking on TrackingCubit {
     required double totalFee,
     required String sport,
     required String walletId,
+    required double valueInUSD,
+    required double feeInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteSellSuccess({
@@ -238,7 +283,9 @@ extension AthleteSellTracking on TrackingCubit {
         'currency': currency,
         'total_fee': totalFee,
         'sport': sport,
-        'wallet_id': walletId
+        'wallet_id': walletId,
+        'value_in_usd': valueInUSD,
+        'fee_in_usd': feeInUSD,
       }),
     );
   }
@@ -250,8 +297,9 @@ extension AthleteMintTracking on TrackingCubit {
     required String aptName,
     required String sport,
     required String inputApt,
-    required String valueInAx,
+    required double valueInAx,
     required String walletId,
+    required double valueInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedAthleteMint(
@@ -260,7 +308,8 @@ extension AthleteMintTracking on TrackingCubit {
           'sport': sport,
           'input_apt': inputApt,
           'value_in_ax': valueInAx,
-          'wallet_id': walletId
+          'wallet_id': walletId,
+          'value_in_usd': valueInUSD,
         },
       ),
     );
@@ -271,8 +320,9 @@ extension AthleteMintTracking on TrackingCubit {
     required String aptName,
     required String sport,
     required String inputApt,
-    required String valueInAx,
+    required double valueInAx,
     required String walletId,
+    required double valueInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedConfirmMint(
@@ -281,7 +331,8 @@ extension AthleteMintTracking on TrackingCubit {
           'sport': sport,
           'input_apt': inputApt,
           'value_in_ax': valueInAx,
-          'wallet_id': walletId
+          'wallet_id': walletId,
+          'value_in_usd': valueInUSD,
         },
       ),
     );
@@ -292,8 +343,9 @@ extension AthleteMintTracking on TrackingCubit {
     required String aptName,
     required String sport,
     required String inputApt,
-    required String valueInAx,
+    required double valueInAx,
     required String walletId,
+    required double valueInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteMintSuccess({
@@ -301,7 +353,8 @@ extension AthleteMintTracking on TrackingCubit {
         'sport': sport,
         'input_apt': inputApt,
         'value_in_ax': valueInAx,
-        'wallet_id': walletId
+        'wallet_id': walletId,
+        'value_in_usd': valueInUSD,
       }),
     );
   }
@@ -316,6 +369,7 @@ extension AthleteRedeemTracking on TrackingCubit {
     required String inputShortApt,
     required String valueInAx,
     required String walletId,
+    required double valueInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteRedeemSuccess({
@@ -324,7 +378,8 @@ extension AthleteRedeemTracking on TrackingCubit {
         'input_long_apt': inputLongApt,
         'input_short_apt': inputShortApt,
         'value_in_ax': valueInAx,
-        'wallet_id': walletId
+        'wallet_id': walletId,
+        'value_in_usd': valueInUSD,
       }),
     );
   }
@@ -568,6 +623,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedStake({
@@ -575,6 +631,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -584,6 +641,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedStakeConfirm({
@@ -591,6 +649,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -600,6 +659,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onStakeSuccess({
@@ -607,6 +667,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -614,11 +675,13 @@ extension FarmPageTracking on TrackingCubit {
   void onPressedClaimRewards({
     required String tickerPair,
     required String tickerPairName,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedClaimRewards({
         'ticker_pair': tickerPair,
         'ticker_pair_name': tickerPairName,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -626,11 +689,13 @@ extension FarmPageTracking on TrackingCubit {
   void onClaimRewardsSuccess({
     required String tickerPair,
     required String tickerPairName,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onClaimRewardsSuccess({
         'ticker_pair': tickerPair,
         'ticker_pair_name': tickerPairName,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -640,6 +705,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedUnStake({
@@ -647,6 +713,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -656,6 +723,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedUnStakeConfirm({
@@ -663,6 +731,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -672,6 +741,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onUnStakeSuccess({
@@ -679,6 +749,19 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+}
+
+extension PromoDialogTracking on TrackingCubit {
+  void onDiscordLinkClicked({
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      WalletPromoTrackingEvent.onDiscordLinkClicked({
+        'wallet_id': walletId,
       }),
     );
   }

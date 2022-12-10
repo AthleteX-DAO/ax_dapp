@@ -14,7 +14,7 @@ class WalletProfile extends StatelessWidget {
     final _width = MediaQuery.of(context).size.width;
     var width = 500.0;
     var showMatic = true;
-    var showChain = true;
+    var showProfileBox = true;
 
     if (_width < 835) {
       showMatic = false;
@@ -24,7 +24,7 @@ class WalletProfile extends StatelessWidget {
       width = 510;
     }
     if (_width < 665) {
-      showChain = false;
+      showProfileBox = false;
       width = 210;
     }
 
@@ -42,9 +42,9 @@ class WalletProfile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          if (showChain) const WalletChain(),
+          const WalletChain(),
           if (showMatic) const WalletMatic(),
-          const WalletAx(),
+          if (showProfileBox) const WalletAx(),
           const WalletAccount(),
         ],
       ),

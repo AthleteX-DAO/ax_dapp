@@ -24,6 +24,7 @@ class Price extends StatelessWidget {
             style: TextStyle(
               fontSize: 15,
               color: Colors.white,
+              fontFamily: 'OpenSans',
             ),
           ),
           Text(
@@ -31,6 +32,7 @@ class Price extends StatelessWidget {
             style: const TextStyle(
               fontSize: 15,
               color: Colors.white,
+              fontFamily: 'OpenSans',
             ),
           ),
         ],

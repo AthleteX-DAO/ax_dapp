@@ -1,4 +1,4 @@
-import 'package:ax_dapp/service/failed_dialog.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:flutter/material.dart';
 
 // This code changes the state of the button
@@ -107,6 +107,7 @@ class _ApproveButtonState extends State<ApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

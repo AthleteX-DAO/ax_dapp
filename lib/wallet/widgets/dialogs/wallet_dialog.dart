@@ -43,6 +43,7 @@ class WalletDialog extends StatelessWidget {
               context.read<TrackingCubit>().onConnectWalletSuccessful(
                     publicAddress: walletAddress,
                     axUnits: '"${toDecimal(state.axData.balance!, 6)} AX"',
+                    walletType: 'MetaMask',
                   );
             }
           },
@@ -166,7 +167,10 @@ class WalletDialog extends StatelessWidget {
                       child: const Text(
                         'Add/Create wallet',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                        ),
                       ),
                     ),
                   ),

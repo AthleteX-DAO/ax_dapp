@@ -18,10 +18,18 @@ class ToAmountBox extends StatelessWidget {
         child: TextFormField(
           readOnly: true,
           controller: _tokenToInputController,
-          style: TextStyle(color: Colors.grey[400], fontSize: 22),
+          style: TextStyle(
+            color: Colors.grey[400],
+            fontSize: 22,
+            fontFamily: 'OpenSans',
+          ),
           decoration: InputDecoration(
             hintText: '0.00',
-            hintStyle: TextStyle(color: Colors.grey[400], fontSize: 22),
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 22,
+              fontFamily: 'OpenSans',
+            ),
             contentPadding: const EdgeInsets.all(9),
             border: InputBorder.none,
           ),

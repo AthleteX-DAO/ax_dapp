@@ -10,11 +10,18 @@ extension ToastX on BuildContext {
         backgroundType: BackgroundType.solid,
         title: Text(
           'Wallet Warning',
-          style: TextStyle(color: Colors.amber[400], fontSize: 18),
+          style: TextStyle(
+            color: Colors.amber[400],
+            fontSize: 18,
+            fontFamily: 'OpenSans',
+          ),
         ),
         description: Text(
           'You need to connect Wallet to use this feature.',
-          style: TextStyle(color: Colors.amber[400]),
+          style: TextStyle(
+            color: Colors.amber[400],
+            fontFamily: 'OpenSans',
+          ),
         ),
       ).show(this);
 
@@ -29,11 +36,18 @@ extension ToastX on BuildContext {
         backgroundType: BackgroundType.solid,
         title: Text(
           title,
-          style: TextStyle(color: Colors.amber[400], fontSize: 18),
+          style: TextStyle(
+            color: Colors.amber[400],
+            fontSize: 18,
+            fontFamily: 'OpenSans',
+          ),
         ),
         description: Text(
           description,
-          style: TextStyle(color: Colors.amber[400]),
+          style: TextStyle(
+            color: Colors.amber[400],
+            fontFamily: 'OpenSans',
+          ),
         ),
       ).show(this);
 }

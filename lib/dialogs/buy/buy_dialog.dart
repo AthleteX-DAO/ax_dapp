@@ -1,11 +1,11 @@
 import 'package:ax_dapp/athlete/athlete.dart' hide AptTypeSelectionChanged;
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/buy/widgets/widgets.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
@@ -16,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,7 +27,6 @@ class BuyDialog extends StatefulWidget {
     required this.aptPrice,
     required this.athleteId,
     required this.isLongApt,
-    required this.goToTradePage,
     super.key,
   });
   final AthleteScoutModel athlete;
@@ -34,7 +34,6 @@ class BuyDialog extends StatefulWidget {
   final double aptPrice;
   final int athleteId;
   final bool isLongApt;
-  final void Function() goToTradePage;
 
   @override
   State<StatefulWidget> createState() => _BuyDialogState();
@@ -70,90 +69,6 @@ class _BuyDialogState extends State<BuyDialog> {
           Expanded(
             child: ShortAptButton(),
           )
-        ],
-      ),
-    );
-  }
-
-  Widget showTotalFee(String totalFee) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Total Fees:',
-              style: textStyle(Colors.grey[600]!, 15, isBold: false)),
-          Text(
-            '$totalFee AX(0.3%)',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showBalance(double balance) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            'Balance: ${toDecimal(balance, 6)}',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showMarketPriceImpact(String marketPriceImpact) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Market Price Impact:',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
-          Text(
-            '$marketPriceImpact %',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showMinimumReceived(String minimumReceived) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Minimum Received:',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
-          Text(
-            '$minimumReceived APT',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showSlippage(double slipageTolerance) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Slippage Tolerance:',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
-          Text(
-            '$slipageTolerance %',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-          ),
         ],
       ),
     );
@@ -209,7 +124,12 @@ class _BuyDialogState extends State<BuyDialog> {
                     children: [
                       Text(
                         'Buy ${widget.athleteName} APT',
-                        style: textStyle(Colors.white, 20, isBold: false),
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(
@@ -233,6 +153,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         TextSpan(
@@ -240,6 +161,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         TextSpan(
@@ -247,11 +169,11 @@ class _BuyDialogState extends State<BuyDialog> {
                           style: TextStyle(
                             color: Colors.amber[400],
                             fontSize: isWeb ? 14 : 12,
+                            fontFamily: 'OpenSans',
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pop(context);
-                              widget.goToTradePage();
+                              context.goNamed('trade');
                             },
                         ),
                       ],
@@ -270,7 +192,7 @@ class _BuyDialogState extends State<BuyDialog> {
                     },
                     child: Text(
                       'Learn How to buy AX',
-                      style: TextStyle(color: Colors.amber[400], fontSize: 14),
+                      style: TextStyle(color: Colors.amber[400], fontSize: 14, fontFamily: 'OpenSans',),
                     ),
                   ),
                 ),
@@ -284,6 +206,7 @@ class _BuyDialogState extends State<BuyDialog> {
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],
+                          fontFamily: 'OpenSans',
                         ),
                       ),
                     ),
@@ -325,7 +248,12 @@ class _BuyDialogState extends State<BuyDialog> {
                           Expanded(
                             child: Text(
                               'AX',
-                              style: textStyle(Colors.white, 15, isBold: false),
+                              style: textStyle(
+                                Colors.white,
+                                15,
+                                isBold: false,
+                                isUline: false,
+                              ),
                             ),
                           ),
                           Container(
@@ -345,8 +273,12 @@ class _BuyDialogState extends State<BuyDialog> {
                               },
                               child: Text(
                                 'MAX',
-                                style: textStyle(Colors.grey[400]!, 9,
-                                    isBold: false),
+                                style: textStyle(
+                                  Colors.grey[400]!,
+                                  9,
+                                  isBold: false,
+                                  isUline: false,
+                                ),
                               ),
                             ),
                           ),
@@ -355,13 +287,24 @@ class _BuyDialogState extends State<BuyDialog> {
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _aptAmountController,
-                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                style: textStyle(Colors.grey[400]!, 22,
-                                    isBold: false),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                  decimal: true,
+                                ),
+                                style: textStyle(
+                                  Colors.grey[400]!,
+                                  22,
+                                  isBold: false,
+                                  isUline: false,
+                                ),
                                 decoration: InputDecoration(
                                   hintText: '0.00',
-                                  hintStyle: textStyle(Colors.grey[400]!, 22,
-                                      isBold: false),
+                                  hintStyle: textStyle(
+                                    Colors.grey[400]!,
+                                    22,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
                                   contentPadding:
                                       const EdgeInsets.only(left: 3),
                                   border: InputBorder.none,
@@ -387,7 +330,7 @@ class _BuyDialogState extends State<BuyDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          showBalance(balance),
+                          Balance(balance: balance),
                         ],
                       ),
                     ],
@@ -410,23 +353,25 @@ class _BuyDialogState extends State<BuyDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          showTotalFee(totalFee.toStringAsFixed(6)),
+                          TotalFees(totalFee: totalFee),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [showMarketPriceImpact(priceImpact)],
+                        children: [MarketPriceImpact(priceImpact: priceImpact)],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          showMinimumReceived(minReceived),
+                          MinimumReceived(minReceived: minReceived),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          showSlippage(slippageTolerance),
+                          SlippageTolerance(
+                            slippageTolerance: slippageTolerance,
+                          ),
                         ],
                       ),
                     ],
@@ -465,7 +410,10 @@ class _BuyDialogState extends State<BuyDialog> {
                                   : 'Short Apt',
                               approveCallback: bloc.swapController.approve,
                               confirmCallback: bloc.swapController.swap,
-                              confirmDialog: const ConfirmTransactionDialog(),
+                              confirmDialog: const TransactionStatusDialog(
+                                title: 'Transaction Confirmed',
+                                icons: Icons.check_circle_outline,
+                              ),
                               walletAddress: formattedWalletAddress,
                             );
                           }
@@ -518,6 +466,7 @@ class LongAptButton extends StatelessWidget {
               ? Colors.black
               : const Color.fromRGBO(154, 154, 154, 1),
           fontSize: 11,
+          fontFamily: 'OpenSans',
         ),
       ),
     );
@@ -550,72 +499,9 @@ class ShortAptButton extends StatelessWidget {
               ? const Color.fromRGBO(154, 154, 154, 1)
               : Colors.amber,
           fontSize: 11,
+          fontFamily: 'OpenSans',
         ),
       ),
-    );
-  }
-}
-
-class Price extends StatelessWidget {
-  const Price({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text('Price:', style: textStyle(Colors.white, 15, isBold: false)),
-        BlocBuilder<BuyDialogBloc, BuyDialogState>(
-          buildWhen: (previous, current) =>
-              previous.aptTypeSelection != current.aptTypeSelection ||
-              previous.aptBuyInfo != current.aptBuyInfo ||
-              previous.longApt != current.longApt ||
-              previous.shortApt != current.shortApt,
-          builder: (context, state) {
-            final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
-            final _textStyle = textStyle(Colors.white, 15, isBold: false);
-            return state.aptTypeSelection.isLong
-                ? Text(
-                    '$price AX per ${state.longApt.ticker} APT',
-                    style: _textStyle,
-                  )
-                : Text(
-                    '$price AX per ${state.shortApt.ticker} APT',
-                    style: _textStyle,
-                  );
-          },
-        )
-      ],
-    );
-  }
-}
-
-class AmountToReceive extends StatelessWidget {
-  const AmountToReceive({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final _textStyle = textStyle(Colors.white, 15, isBold: false);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text('You Receive:', style: _textStyle),
-        BlocBuilder<BuyDialogBloc, BuyDialogState>(
-          builder: (context, state) {
-            final amountToReceive =
-                state.aptBuyInfo.receiveAmount.toStringAsFixed(6);
-            return state.aptTypeSelection.isLong
-                ? Text(
-                    '$amountToReceive ${state.longApt.ticker} APT',
-                    style: _textStyle,
-                  )
-                : Text(
-                    '$amountToReceive ${state.shortApt.ticker} APT',
-                    style: _textStyle,
-                  );
-          },
-        )
-      ],
     );
   }
 }

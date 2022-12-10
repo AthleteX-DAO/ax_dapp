@@ -14,7 +14,9 @@ import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
+import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/scout/scout.dart';
+import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
@@ -163,10 +165,7 @@ class _V1AppState extends State<V1App> {
                   ],
                 ),
               ),
-              child: DesktopScout(
-                goToTradePage: goToTradePage,
-                goToPage: goToPage,
-              ),
+              child: const Scout(),
             )
           else if (pageNumber == Pages.trade)
             BlocProvider(
@@ -181,9 +180,7 @@ class _V1AppState extends State<V1App> {
               child: const DesktopTrade(),
             )
           else if (pageNumber == Pages.pool)
-            DesktopPool(
-              goToPage: goToPage,
-            )
+            const DesktopPool()
           else if (pageNumber == Pages.farm)
             BlocProvider(
               create: (BuildContext context) => FarmBloc(
@@ -219,10 +216,7 @@ class _V1AppState extends State<V1App> {
                 ],
               ),
             ),
-            child: DesktopScout(
-              goToTradePage: goToTradePage,
-              goToPage: goToPage,
-            ),
+            child: const Scout(),
           ),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
@@ -240,11 +234,10 @@ class _V1AppState extends State<V1App> {
               tokensRepository: context.read<TokensRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
+              getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
               poolController: Get.find(),
             ),
-            child: DesktopPool(
-              goToPage: goToPage,
-            ),
+            child: const DesktopPool(),
           ),
           BlocProvider(
             create: (BuildContext context) => FarmBloc(
@@ -606,36 +599,13 @@ class _V1AppState extends State<V1App> {
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     // ignore: curly_braces_in_flow_control_structures
-    if (isBold) if (isUline) {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-        decoration: TextDecoration.underline,
-      );
-    } else {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-      );
-    }
-    else if (isUline) {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        decoration: TextDecoration.underline,
-      );
-    } else {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
-    }
+    return TextStyle(
+      color: color,
+      fontFamily: 'OpenSans',
+      fontSize: size,
+      fontWeight: isBold ? FontWeight.w400 : null,
+      decoration: isUline ? TextDecoration.underline : null,
+    );
   }
 
   TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {

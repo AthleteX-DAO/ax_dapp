@@ -74,7 +74,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         'Fetching scout info for ${state.selectedChain.chainName}: ${state.selectedChain.chainId}',
       );
       switch (state.selectedChain) {
-        case EthereumChain.polygonTestnet:
+        case EthereumChain.goerliTestNet:
         case EthereumChain.polygonMainnet:
         case EthereumChain.unsupported:
           supportedSport = SupportedSport.MLB;

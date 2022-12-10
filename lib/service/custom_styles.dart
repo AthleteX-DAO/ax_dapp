@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 
-TextStyle textStyle(Color color, double size, {required bool isBold}) {
-  if (isBold) {
-    return TextStyle(
-      color: color,
-      fontFamily: 'OpenSans',
-      fontSize: size,
-      fontWeight: FontWeight.w500,
-    );
-  } else {
-    return TextStyle(
-      color: color,
-      fontFamily: 'OpenSans',
-      fontSize: size,
-    );
-  }
+TextStyle textStyle(
+  Color color,
+  double size, {
+  required bool isBold,
+  required bool isUline,
+}) {
+  return TextStyle(
+    color: color,
+    fontFamily: 'OpenSans',
+    fontSize: size,
+    fontWeight: isBold ? FontWeight.w400 : FontWeight.normal,
+    decoration: isUline ? TextDecoration.underline : TextDecoration.none,
+  );
 }
 
 BoxDecoration boxDecoration(
