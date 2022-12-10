@@ -354,7 +354,7 @@ class Global extends PropertyChangeNotifier<String> {
                     color: Colors.grey[400],
                   ),
                 ),
-                Container(width: _width - 320),
+                Container(width: _width - 500),
                 AppToolTip(
                   'Invest in what you know best at AthleteX Markets.',
                   IconButton(
