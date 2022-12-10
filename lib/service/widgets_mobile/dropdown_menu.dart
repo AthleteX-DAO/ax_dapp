@@ -48,7 +48,11 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
               ),
             ),
           ),
-          onTap: () => launchUrl(Uri.parse('https://www.athletex.io/')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://www.athletex.io/',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 3,
@@ -64,7 +68,11 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
               ),
             ),
           ),
-          onTap: () => launchUrl(Uri.parse('https://github.com/SportsToken')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://github.com/SportsToken',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 4,
@@ -80,8 +88,11 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
               ),
             ),
           ),
-          onTap: () =>
-              launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://discord.com/invite/WFsyAuzp9V',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 5,
@@ -97,32 +108,53 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
               ),
             ),
           ),
-          onTap: () =>
-              launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://twitter.com/athletex_dao?s=20',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 6,
           child: const ListTile(
             leading: FaIcon(
               FontAwesomeIcons.instagram,
-              // size: 25,
+              size: 25,
             ),
-            title: Text('Instagram'),
+            title: Text(
+              'Instagram',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
           onTap: () => launchUrl(
-              Uri.parse('https://www.instagram.com/athletexmarkets/?hl=en')),
+            Uri.parse(
+              'https://www.instagram.com/athletexmarkets/?hl=en',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 7,
           child: const ListTile(
             leading: FaIcon(
               FontAwesomeIcons.tiktok,
-              // size: 25,
+              size: 25,
             ),
-            title: Text('TikTok'),
+            title: Text(
+              'TikTok',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
-          onTap: () =>
-              launchUrl(Uri.parse('https://www.tiktok.com/@athlete_x')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://www.tiktok.com/@athlete_x',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 8,
