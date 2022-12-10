@@ -121,7 +121,13 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
               FontAwesomeIcons.instagram,
               size: 25,
             ),
-            title: Text('Instagram'),
+            title: Text(
+              'Instagram',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
           onTap: () => launchUrl(
             Uri.parse(
@@ -136,7 +142,13 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
               FontAwesomeIcons.tiktok,
               size: 25,
             ),
-            title: Text('TikTok'),
+            title: Text(
+              'TikTok',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
           onTap: () => launchUrl(
             Uri.parse(
