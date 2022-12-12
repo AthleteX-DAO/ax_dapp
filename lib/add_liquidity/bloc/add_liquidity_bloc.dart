@@ -100,6 +100,11 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     poolController
       ..updateTknAddress1(state.token0.address)
       ..updateTknAddress2(state.token1.address);
+    final tokenZeroDecimal = await _walletRepository.getDecimals(state.token0.address);
+    final tokenOneDecimal = await _walletRepository.getDecimals(state.token1.address);
+    poolController
+      ..updateTopDecimals(tokenZeroDecimal.toInt())
+      ..updateBottomDecimals(tokenOneDecimal.toInt());
     try {
       final balance0 =
           await _walletRepository.getTokenBalance(state.token0.address);

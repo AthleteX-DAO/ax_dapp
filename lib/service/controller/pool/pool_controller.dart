@@ -19,6 +19,8 @@ class PoolController extends GetxController {
   String lpTokenPairAddress = '';
   double removePercentage = 0;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
+  RxInt decimalA = 0.obs;
+  RxInt decimalB = 0.obs;
 
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
@@ -29,8 +31,8 @@ class PoolController extends GetxController {
     final routerMainnetAddress = EthereumAddress.fromHex(routerAddress.value);
     var txStringA = '';
     var txStringB = '';
-    final tokenAAmount = normalizeInput(amount1.value);
-    final tokenBAmount = normalizeInput(amount2.value);
+    final tokenAAmount = normalizeInput(amount1.value, decimal: decimalA.value);
+    final tokenBAmount = normalizeInput(amount2.value, decimal: decimalB.value);
 
     final tokenAAddress = EthereumAddress.fromHex(address1.value);
     final tokenBAddress = EthereumAddress.fromHex(address2.value);
@@ -61,8 +63,10 @@ class PoolController extends GetxController {
   }
 
   Future<void> addLiquidity() async {
-    final amountADesired = normalizeInput(amount1.value);
-    final amountBDesired = normalizeInput(amount2.value);
+    final amountADesired =
+        normalizeInput(amount1.value, decimal: decimalA.value);
+    final amountBDesired =
+        normalizeInput(amount2.value, decimal: decimalB.value);
 
     final amountAMin = amountADesired * BigInt.from(0.5);
     final amountBMin = amountADesired * BigInt.from(0.5);
@@ -145,7 +149,8 @@ class PoolController extends GetxController {
     final tknA = EthereumAddress.fromHex('$address1');
     final tknB = EthereumAddress.fromHex('$address2');
 
-    final txString = await aptFactory.createPair(tknA, tknB, credentials: credentials);
+    final txString =
+        await aptFactory.createPair(tknA, tknB, credentials: credentials);
     controller.updateTxString(txString);
   }
 
@@ -166,6 +171,16 @@ class PoolController extends GetxController {
 
   void updateBottomAmount(double newAmount) {
     amount2.value = newAmount;
+    update();
+  }
+
+  void updateTopDecimals(int decimal) {
+    decimalA.value = decimal;
+    update();
+  }
+
+  void updateBottomDecimals(int decimal) {
+    decimalB.value = decimal;
     update();
   }
 }
