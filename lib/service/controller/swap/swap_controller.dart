@@ -28,12 +28,14 @@ class SwapController extends GetxController {
   late APTRouter aptRouter;
   BigInt amountOutMin = BigInt.zero;
   double x = 0, y = 0, k = 0;
+  RxInt decimalA = 0.obs;
+  RxInt decimalB = 0.obs;
 
   Future<void> approve() async {
     var txString = '';
     final tokenAAddress = EthereumAddress.fromHex(address1.value);
     final routerMainnetAddress = EthereumAddress.fromHex(routerAddress.value);
-    final tokenAAmount = normalizeInput(amount1.value);
+    final tokenAAmount = normalizeInput(amount1.value, decimal: decimalA.value);
     final tokenA =
         ERC20(address: tokenAAddress, client: controller.client.value);
     try {
@@ -55,7 +57,7 @@ class SwapController extends GetxController {
   Future<void> swap() async {
     final tokenAAddress = EthereumAddress.fromHex('$address1');
     final tokenBAddress = EthereumAddress.fromHex('$address2');
-    final tokenAAmount = normalizeInput(amount1.value);
+    final tokenAAmount = normalizeInput(amount1.value, decimal: decimalA.value);
 
     final path = <EthereumAddress>[tokenAAddress, tokenBAddress];
     final to = await controller.credentials.extractAddress();
@@ -167,6 +169,16 @@ class SwapController extends GetxController {
 
   void updateToToken(Token tknTo) {
     activeTkn2.value = tknTo;
+    update();
+  }
+
+  void updateTopDecimals(int decimal) {
+    decimalA.value = decimal;
+    update();
+  }
+
+  void updateBottomDecimals(int decimal) {
+    decimalB.value = decimal;
     update();
   }
 }

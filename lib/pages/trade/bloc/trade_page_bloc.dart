@@ -107,6 +107,11 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           await _walletRepository.getTokenBalance(state.tokenFrom.address);
       final tokenToBalance =
           await _walletRepository.getTokenBalance(state.tokenTo.address);
+      final tokenFromDecimal = await _walletRepository.getDecimals(state.tokenFrom.address);
+      final tokenToDecimal = await _walletRepository.getDecimals(state.tokenTo.address);
+      swapController
+        ..updateTopDecimals(tokenFromDecimal.toInt())
+        ..updateBottomDecimals(tokenToDecimal.toInt());
       emit(
         state.copyWith(
           tokenFromBalance: tokenFromBalance ?? 0,
