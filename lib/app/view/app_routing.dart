@@ -14,6 +14,7 @@ import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
+import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
@@ -182,6 +183,7 @@ class _MaterialApp extends StatelessWidget {
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
                   repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
+                  getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
                   poolController: Get.find(),
                 ),
                 child: const DesktopPool(),

@@ -1,6 +1,5 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
-import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
@@ -163,6 +162,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
           style: TextStyle(
             fontSize: 16,
             color: textcolor,
+            fontFamily: 'OpenSans',
           ),
         ),
       ),

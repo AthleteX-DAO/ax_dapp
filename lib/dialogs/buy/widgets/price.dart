@@ -36,13 +36,27 @@ class Price extends StatelessWidget {
               isUline: false,
             );
             return state.aptTypeSelection.isLong
-                ? Text(
-                    '$price AX per ${state.longApt.ticker} APT',
-                    style: _textStyle,
+                ? SizedBox(
+                    width: 223,
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        '$price AX per ${state.longApt.ticker} APT',
+                        style: _textStyle,
+                        maxLines: 1,
+                      ),
+                    ),
                   )
-                : Text(
-                    '$price AX per ${state.shortApt.ticker} APT',
-                    style: _textStyle,
+                : SizedBox(
+                    width: 223,
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        '$price AX per ${state.shortApt.ticker} APT',
+                        style: _textStyle,
+                        maxLines: 1,
+                      ),
+                    ),
                   );
           },
         )

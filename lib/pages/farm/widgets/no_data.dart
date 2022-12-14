@@ -8,10 +8,13 @@ class NoData extends StatelessWidget {
     return const Center(
       child: SizedBox(
         height: 70,
-        width: 320,
         child: Text(
           'No Farms to Display.',
-          style: TextStyle(color: Colors.amber, fontSize: 30),
+          style: TextStyle(
+            color: Colors.amber,
+            fontSize: 30,
+            fontFamily: 'OpenSans',
+          ),
         ),
       ),
     );

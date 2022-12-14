@@ -167,7 +167,10 @@ class WalletDialog extends StatelessWidget {
                       child: const Text(
                         'Add/Create wallet',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                        ),
                       ),
                     ),
                   ),

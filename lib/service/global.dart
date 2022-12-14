@@ -64,6 +64,7 @@ class Global extends PropertyChangeNotifier<String> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
+      resizeToAvoidBottomInset: false,
       appBar: topNav(context),
       bottomNavigationBar: bottomNav(context),
       body: Container(
@@ -284,8 +285,11 @@ class Global extends PropertyChangeNotifier<String> {
                   height: 20,
                   child: InkWell(
                     child: const Text('athletex.io'),
-                    onTap: () =>
-                        launchUrl(Uri.parse('https://www.athletex.io/')),
+                    onTap: () => launchUrl(
+                      Uri.parse(
+                        'https://www.athletex.io/',
+                      ),
+                    ),
                   ),
                 ),
                 IconButton(
@@ -304,7 +308,9 @@ class Global extends PropertyChangeNotifier<String> {
                 ),
                 IconButton(
                   onPressed: () => launchUrl(
-                    Uri.parse('https://twitter.com/athletex_dao?s=20'),
+                    Uri.parse(
+                      'https://twitter.com/athletex_dao?s=20',
+                    ),
                   ),
                   icon: FaIcon(
                     FontAwesomeIcons.twitter,
@@ -314,7 +320,9 @@ class Global extends PropertyChangeNotifier<String> {
                 ),
                 IconButton(
                   onPressed: () => launchUrl(
-                    Uri.parse('https://github.com/SportsToken'),
+                    Uri.parse(
+                      'https://github.com/SportsToken',
+                    ),
                   ),
                   icon: FaIcon(
                     FontAwesomeIcons.github,
@@ -322,7 +330,31 @@ class Global extends PropertyChangeNotifier<String> {
                     color: Colors.grey[400],
                   ),
                 ),
-                Container(width: _width - 320),
+                IconButton(
+                  onPressed: () => launchUrl(
+                    Uri.parse(
+                      'https://www.instagram.com/athletexmarkets/?hl=en',
+                    ),
+                  ),
+                  icon: FaIcon(
+                    FontAwesomeIcons.instagram,
+                    size: 25,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => launchUrl(
+                    Uri.parse(
+                      'https://www.tiktok.com/@athlete_x',
+                    ),
+                  ),
+                  icon: FaIcon(
+                    FontAwesomeIcons.tiktok,
+                    size: 25,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                Container(width: _width - 500),
                 AppToolTip(
                   'Invest in what you know best at AthleteX Markets.',
                   IconButton(
@@ -349,6 +381,14 @@ class Global extends PropertyChangeNotifier<String> {
   BottomNavigationBar bottomNavBarAndroid(BuildContext context) {
     return BottomNavigationBar(
       showUnselectedLabels: true,
+      selectedLabelStyle: const TextStyle(
+        fontSize: 10,
+        fontFamily: 'OpenSans',
+      ),
+      unselectedLabelStyle: const TextStyle(
+        fontSize: 10,
+        fontFamily: 'OpenSans',
+      ),
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.transparent,
       items: <BottomNavigationBarItem>[

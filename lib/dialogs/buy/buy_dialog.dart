@@ -153,6 +153,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         TextSpan(
@@ -160,6 +161,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         TextSpan(
@@ -167,6 +169,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           style: TextStyle(
                             color: Colors.amber[400],
                             fontSize: isWeb ? 14 : 12,
+                            fontFamily: 'OpenSans',
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
@@ -189,7 +192,7 @@ class _BuyDialogState extends State<BuyDialog> {
                     },
                     child: Text(
                       'Learn How to buy AX',
-                      style: TextStyle(color: Colors.amber[400], fontSize: 14),
+                      style: TextStyle(color: Colors.amber[400], fontSize: 14, fontFamily: 'OpenSans',),
                     ),
                   ),
                 ),
@@ -203,6 +206,7 @@ class _BuyDialogState extends State<BuyDialog> {
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],
+                          fontFamily: 'OpenSans',
                         ),
                       ),
                     ),
@@ -365,7 +369,9 @@ class _BuyDialogState extends State<BuyDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SlippageTolerance(slippageTolerance: slippageTolerance),
+                          SlippageTolerance(
+                            slippageTolerance: slippageTolerance,
+                          ),
                         ],
                       ),
                     ],
@@ -404,7 +410,10 @@ class _BuyDialogState extends State<BuyDialog> {
                                   : 'Short Apt',
                               approveCallback: bloc.swapController.approve,
                               confirmCallback: bloc.swapController.swap,
-                              confirmDialog: const ConfirmTransactionDialog(),
+                              confirmDialog: const TransactionStatusDialog(
+                                title: 'Transaction Confirmed',
+                                icons: Icons.check_circle_outline,
+                              ),
                               walletAddress: formattedWalletAddress,
                             );
                           }
@@ -457,6 +466,7 @@ class LongAptButton extends StatelessWidget {
               ? Colors.black
               : const Color.fromRGBO(154, 154, 154, 1),
           fontSize: 11,
+          fontFamily: 'OpenSans',
         ),
       ),
     );
@@ -489,6 +499,7 @@ class ShortAptButton extends StatelessWidget {
               ? const Color.fromRGBO(154, 154, 154, 1)
               : Colors.amber,
           fontSize: 11,
+          fontFamily: 'OpenSans',
         ),
       ),
     );

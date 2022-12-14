@@ -1,3 +1,4 @@
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,13 +46,24 @@ class AccountDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // title
-              SizedBox(
+              Container(
+                margin: _width < 665
+                    ? const EdgeInsets.symmetric(horizontal: 10)
+                    : EdgeInsets.zero,
                 width: wid - edge,
                 height: 45,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Account', style: textStyle(Colors.white, 20, false)),
+                    Text(
+                      'Account',
+                      style: textStyle(
+                        Colors.white,
+                        20,
+                        isBold: false,
+                        isUline: false,
+                      ),
+                    ),
                     IconButton(
                       icon: const Icon(
                         Icons.close,
@@ -65,6 +77,9 @@ class AccountDialog extends StatelessWidget {
               ),
               // inner box
               Container(
+                margin: _width < 665
+                    ? const EdgeInsets.symmetric(horizontal: 10)
+                    : EdgeInsets.zero,
                 width: wid - edge,
                 height: 145,
                 decoration: boxDecoration(
@@ -96,7 +111,8 @@ class AccountDialog extends StatelessWidget {
                                     style: textStyle(
                                       Colors.grey[600]!,
                                       13,
-                                      false,
+                                      isBold: false,
+                                      isUline: false,
                                     ),
                                   ),
                                   Row(
@@ -107,8 +123,12 @@ class AccountDialog extends StatelessWidget {
                                       ),
                                       Text(
                                         formattedWalletAddress,
-                                        style:
-                                            textStyle(Colors.white, 20, false),
+                                        style: textStyle(
+                                          Colors.white,
+                                          20,
+                                          isBold: false,
+                                          isUline: false,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -145,8 +165,10 @@ class AccountDialog extends StatelessWidget {
                                   // ),
 
                                   Container(
-                                    margin:
-                                        EdgeInsets.only(right: 5.0, top: 5.0),
+                                    margin: const EdgeInsets.only(
+                                      right: 5,
+                                      top: 5,
+                                    ),
                                     width: 75,
                                     height: 25,
                                     decoration: boxDecoration(
@@ -162,12 +184,17 @@ class AccountDialog extends StatelessWidget {
                                             );
                                         Navigator.pop(context);
                                       },
-                                      child: Text(
-                                        'Disconnect',
-                                        style: textStyle(
-                                          Colors.red[900]!,
-                                          10,
-                                          true,
+                                      child: FittedBox(
+                                        child: SizedBox(
+                                          child: Text(
+                                            'Disconnect',
+                                            style: textStyle(
+                                              Colors.red[900]!,
+                                              10,
+                                              isBold: true,
+                                              isUline: false,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -198,8 +225,12 @@ class AccountDialog extends StatelessWidget {
                                 ),
                                 Text(
                                   'Copy Address',
-                                  style:
-                                      textStyle(Colors.grey[400]!, 15, false),
+                                  style: textStyle(
+                                    Colors.grey[400]!,
+                                    15,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
                                 ),
                               ],
                             ),
@@ -219,8 +250,12 @@ class AccountDialog extends StatelessWidget {
                                 ),
                                 Text(
                                   'Show on Polygonscan',
-                                  style:
-                                      textStyle(Colors.grey[400]!, 15, false),
+                                  style: textStyle(
+                                    Colors.grey[400]!,
+                                    15,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
                                 ),
                               ],
                             ),
@@ -237,34 +272,4 @@ class AccountDialog extends StatelessWidget {
       ),
     );
   }
-}
-
-TextStyle textStyle(Color color, double size, bool isBold) {
-  if (isBold) {
-    return TextStyle(
-      color: color,
-      fontFamily: 'OpenSans',
-      fontSize: size,
-      fontWeight: FontWeight.w500,
-    );
-  } else {
-    return TextStyle(
-      color: color,
-      fontFamily: 'OpenSans',
-      fontSize: size,
-    );
-  }
-}
-
-BoxDecoration boxDecoration(
-  Color col,
-  double rad,
-  double borWid,
-  Color borCol,
-) {
-  return BoxDecoration(
-    color: col,
-    borderRadius: BorderRadius.circular(rad),
-    border: Border.all(color: borCol, width: borWid),
-  );
 }

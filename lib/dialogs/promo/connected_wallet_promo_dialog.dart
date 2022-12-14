@@ -21,7 +21,9 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
     if (_height < 350) hgt = _height;
     final walletAddress =
         context.read<WalletBloc>().state.formattedWalletAddress;
-    final walletId = (walletAddress.isEmpty || walletAddress == kEmptyAddress) ? '' : walletAddress;
+    final walletId = (walletAddress.isEmpty || walletAddress == kEmptyAddress)
+        ? ''
+        : walletAddress;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -29,6 +31,9 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Container(
+        padding: (_width < 665)
+            ? const EdgeInsets.symmetric(horizontal: 15)
+            : EdgeInsets.zero,
         height: hgt,
         width: wid,
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
@@ -58,12 +63,13 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Text(
+                Text(
                   'Wallet successfully connected!',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  style: textStyle(
+                    Colors.white,
+                    20,
+                    isBold: true,
+                    isUline: false,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -87,22 +93,26 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text(
+                    Text(
                       'Did you learn about AX from an existing AX User?',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
+                      style: textStyle(
+                        Colors.white,
+                        16,
+                        isBold: false,
+                        isUline: false,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 15),
-                    const Text(
+                    Text(
                       ' Use the following link to join our discord'
                       ' and shout them out and both of you will receive'
                       ' 1000 AX!',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
+                      style: textStyle(
+                        Colors.white,
+                        16,
+                        isBold: false,
+                        isUline: false,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -122,11 +132,13 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                           launchDiscordLink();
                           Navigator.pop(context);
                         },
-                        child: const Text(
+                        child: Text(
                           'Claim Your AX!',
-                          style: TextStyle(
-                            fontSize: 19,
-                            color: Colors.yellow,
+                          style: textStyle(
+                            Colors.yellow,
+                            19,
+                            isBold: false,
+                            isUline: false,
                           ),
                         ),
                       ),

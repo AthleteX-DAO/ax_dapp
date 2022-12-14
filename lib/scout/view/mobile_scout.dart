@@ -371,6 +371,7 @@ class _MobileScoutState extends State<MobileScout> {
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Colors.grey,
+                                              fontFamily: 'OpenSans',
                                             ),
                                           ),
                                           const Icon(
@@ -389,7 +390,14 @@ class _MobileScoutState extends State<MobileScout> {
                                         value: 1,
                                         child: const ListTile(
                                           title: Align(
-                                            child: Text('Long'),
+                                            child: Text(
+                                              'Long',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey,
+                                                fontFamily: 'OpenSans',
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         onTap: () {
@@ -406,7 +414,14 @@ class _MobileScoutState extends State<MobileScout> {
                                         value: 1,
                                         child: const ListTile(
                                           title: Align(
-                                            child: Text('Short'),
+                                            child: Text(
+                                              'Short',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey,
+                                                fontFamily: 'OpenSans',
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         onTap: () {
@@ -432,6 +447,7 @@ class _MobileScoutState extends State<MobileScout> {
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,
+                                            fontFamily: 'OpenSans',
                                           ),
                                         ),
                                         const Icon(
@@ -507,6 +523,12 @@ class _MobileScoutState extends State<MobileScout> {
                                           Expanded(
                                             child: TextFormField(
                                               controller: myController,
+                                              style: textStyle(
+                                                Colors.grey[400]!,
+                                                15,
+                                                isBold: false,
+                                                isUline: false,
+                                              ),
                                               onChanged: (value) {
                                                 setState(
                                                   () {
@@ -536,6 +558,7 @@ class _MobileScoutState extends State<MobileScout> {
                                                     245,
                                                     0.6,
                                                   ),
+                                                  fontFamily: 'OpenSans',
                                                 ),
                                               ),
                                               inputFormatters: [
@@ -564,6 +587,7 @@ class _MobileScoutState extends State<MobileScout> {
                                       style: TextStyle(
                                         color: Color.fromRGBO(254, 197, 0, 1),
                                         fontSize: 17,
+                                        fontFamily: 'OpenSans',
                                       ),
                                     ),
                                   )
@@ -587,6 +611,7 @@ class _MobileScoutState extends State<MobileScout> {
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 12,
+                                fontFamily: 'OpenSans',
                               ),
                             ),
                           ),

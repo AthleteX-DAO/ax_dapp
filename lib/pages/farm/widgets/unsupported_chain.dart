@@ -14,7 +14,7 @@ class UnsupportedChain extends StatelessWidget {
         width: 400,
         child: Text(
           'Farms support for ${chain.chainName} coming soon!',
-          style: const TextStyle(color: Colors.blueAccent, fontSize: 30),
+          style: const TextStyle(color: Colors.blueAccent, fontSize: 30, fontFamily: 'OpenSans',),
         ),
       ),
     );

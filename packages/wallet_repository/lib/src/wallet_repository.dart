@@ -203,6 +203,12 @@ class WalletRepository {
     return double.parse(formattedBalance);
   }
 
+  /// Returns a [BigInt] amount of decimals from a [tokenAddress]. 
+  Future<BigInt> getDecimals(String tokenAddress) async {
+    final decimal = await _walletApiClient.getDecimals(tokenAddress);
+    return decimal;
+  }
+
   /// Returns the amount typically needed to pay for one unit of gas(in gwei).
   Future<double> getGasPrice() => _walletApiClient.getGasPrice();
 }

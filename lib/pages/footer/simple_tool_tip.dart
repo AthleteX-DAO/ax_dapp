@@ -21,7 +21,11 @@ class AppToolTip extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: message,
-            style: TextStyle(color: Colors.grey[400], fontSize: 16),
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 16,
+              fontFamily: 'OpenSans',
+            ),
           ),
         ],
       ),

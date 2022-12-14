@@ -16,9 +16,9 @@ import 'package:decimal/decimal.dart';
 
 /// Converts a double(user input) into BigInt. Does NOT round double while
 /// converting.
-BigInt normalizeInput(double input) {
+BigInt normalizeInput(double input, {int? decimal}) {
   final inDecimal =
-      Decimal.parse(input.toString()) * Decimal.fromInt(10).pow(18);
+      Decimal.parse(input.toString()) * Decimal.fromInt(10).pow(decimal ?? 18);
   return inDecimal.toBigInt();
 }
 

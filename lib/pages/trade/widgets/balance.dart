@@ -11,7 +11,11 @@ class Balance extends StatelessWidget {
       fit: BoxFit.scaleDown,
       child: Text(
         'Balance: $balance',
-        style: TextStyle(color: Colors.grey[400], fontSize: 14),
+        style: TextStyle(
+          color: Colors.grey[400],
+          fontSize: 14,
+          fontFamily: 'OpenSans',
+        ),
       ),
     );
   }

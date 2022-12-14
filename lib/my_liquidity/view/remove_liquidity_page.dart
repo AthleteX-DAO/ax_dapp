@@ -518,6 +518,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.amber,
+                              fontFamily: 'OpenSans',
                             ),
                           ),
                         ),

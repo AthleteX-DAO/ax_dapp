@@ -8,6 +8,9 @@ class WalletAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    var showAccountIcon = true;
+    if (_width < 650) showAccountIcon = false;
     return TextButton(
       onPressed: () => showDialog<void>(
         context: context,
@@ -16,10 +19,11 @@ class WalletAccount extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Icon(
-            Icons.account_balance_wallet,
-            color: Colors.grey,
-          ),
+          if (showAccountIcon)
+            const Icon(
+              Icons.account_balance_wallet,
+              color: Colors.grey,
+            ),
           BlocSelector<WalletBloc, WalletState, String>(
             selector: (state) => state.walletAddress,
             builder: (_, walletAddress) {

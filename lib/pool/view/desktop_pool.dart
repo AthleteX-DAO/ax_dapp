@@ -170,6 +170,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                             context.read<StreamAppDataChangesUseCase>(),
                         repo:
                             RepositoryProvider.of<GetPoolInfoUseCase>(context),
+                        getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
                         poolController: Get.find(),
                       ),
                       child: AddLiquidityPage(

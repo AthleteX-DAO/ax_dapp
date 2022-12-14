@@ -17,7 +17,11 @@ class YouReceiveToolTip extends StatelessWidget {
       richMessage: TextSpan(
         text:
             '''*Output is estimated. If the price changes by more than 2%, your transaction will revert.''',
-        style: TextStyle(color: Colors.grey[400], fontSize: 18),
+        style: TextStyle(
+          color: Colors.grey[400],
+          fontSize: 18,
+          fontFamily: 'OpenSans',
+        ),
       ),
       child: const Icon(
         Icons.info_outline_rounded,

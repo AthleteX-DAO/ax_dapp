@@ -5,12 +5,17 @@ class NoResultFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 70,
-      width: 400,
-      child: Text(
-        'No Result Found',
-        style: TextStyle(color: Colors.yellow, fontSize: 30),
+    return const Center(
+      child: SizedBox(
+        height: 70,
+        child: Text(
+          'No Result Found',
+          style: TextStyle(
+            color: Colors.yellow,
+            fontSize: 30,
+            fontFamily: 'OpenSans',
+          ),
+        ),
       ),
     );
   }

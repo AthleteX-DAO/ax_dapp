@@ -20,7 +20,13 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
           value: 1,
           child: const ListTile(
             leading: Icon(Icons.help_outline),
-            title: Text('Help'),
+            title: Text(
+              'Help',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
           onTap: () => launchUrl(
             Uri.parse(
@@ -34,48 +40,133 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             leading: FaIcon(
               FontAwesomeIcons.earthAmericas,
             ),
-            title: Text('Website'),
+            title: Text(
+              'Website',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
-          onTap: () => launchUrl(Uri.parse('https://www.athletex.io/')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://www.athletex.io/',
+            ),
+          ),
+        ),
+        PopupMenuItem(
+          value: 3,
+          child: const ListTile(
+            leading: FaIcon(
+              FontAwesomeIcons.github,
+            ),
+            title: Text(
+              'GitHub',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
+          ),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://github.com/SportsToken',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 4,
           child: const ListTile(
             leading: FaIcon(
-              FontAwesomeIcons.github,
+              FontAwesomeIcons.discord,
             ),
-            title: Text('GitHub'),
+            title: Text(
+              'Discord',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
-          onTap: () => launchUrl(Uri.parse('https://github.com/SportsToken')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://discord.com/invite/WFsyAuzp9V',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 5,
           child: const ListTile(
             leading: FaIcon(
-              FontAwesomeIcons.discord,
+              FontAwesomeIcons.twitter,
             ),
-            title: Text('Discord'),
+            title: Text(
+              'Twitter',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
-          onTap: () =>
-              launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://twitter.com/athletex_dao?s=20',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 6,
           child: const ListTile(
             leading: FaIcon(
-              FontAwesomeIcons.twitter,
-              // size: 25,
+              FontAwesomeIcons.instagram,
+              size: 25,
             ),
-            title: Text('Twitter'),
+            title: Text(
+              'Instagram',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
-          onTap: () =>
-              launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://www.instagram.com/athletexmarkets/?hl=en',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 7,
           child: const ListTile(
+            leading: FaIcon(
+              FontAwesomeIcons.tiktok,
+              size: 25,
+            ),
+            title: Text(
+              'TikTok',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
+          ),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://www.tiktok.com/@athlete_x',
+            ),
+          ),
+        ),
+        PopupMenuItem(
+          value: 8,
+          child: const ListTile(
             leading: Icon(Icons.share),
-            title: Text('Share'),
+            title: Text(
+              'Share',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'OpenSans',
+              ),
+            ),
           ),
           onTap: () => _shareApplication(context),
         ),
@@ -83,7 +174,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
       icon: const Icon(Icons.more_horiz),
       offset: const Offset(0, 45),
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     );
   }
