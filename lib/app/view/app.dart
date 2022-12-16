@@ -22,6 +22,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
+      // TODO(anyone): Provider the Web3AuthRepository app-wide
+      // So that each page can access the repo
       providers: [
         BlocProvider(
           create: (_) => AppBloc(
