@@ -1,3 +1,4 @@
+// TODO(Michael): finish implementing the rest of the methods for the rpc
 const rpc = (() => {
   /**
    *

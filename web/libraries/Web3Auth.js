@@ -1,3 +1,4 @@
+// TODO(Michael): finish implementing the rest of the methods for the Web3Auth class
 var Web3Auth = (function () {
   function Web3Auth(clientId) {
     this._web3auth = new window.Modal.Web3Auth({

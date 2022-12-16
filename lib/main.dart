@@ -34,6 +34,8 @@ import 'package:tracking_repository/tracking_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
+// TODO(kevin): import the library
+// import 'web3auth.dart';
 void main() async {
   const defaultChain = EthereumChain.polygonMainnet;
 
@@ -72,6 +74,9 @@ void main() async {
   final getPairInfoUseCase = GetPairInfoUseCase(subGraphRepo);
   final getSwapInfoUseCase = GetSwapInfoUseCase(getPairInfoUseCase);
 
+  // TODO(kevin): initialize the web3auth client
+  // Web3Auth web3Auth = Web3Auth("MYS-ID");
+
   unawaited(
     bootstrap(() async {
       await Firebase.initializeApp(
@@ -79,6 +84,7 @@ void main() async {
       );
       return MultiRepositoryProvider(
         providers: [
+          // TODO(anyone): create another RepositoryProvider for the Web3AuthRepository class
           RepositoryProvider(
             create: (_) => WalletRepository(
               walletApiClient,
