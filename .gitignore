@@ -57,3 +57,8 @@ node_modules
 # Local Netlify folder
 .netlify
 pubspec.lock
+
+
+# Linux & MacOS metafiles
+linux/
+macos/
