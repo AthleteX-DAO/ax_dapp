@@ -2,6 +2,7 @@ import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/debug/views/debug_app_wrapper.dart';
 import 'package:ax_dapp/pages/landing_page/landing_page.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/wallet/repository/web3_auth_repository.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:flutter/foundation.dart';
@@ -22,8 +23,6 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      // TODO(anyone): Provider the Web3AuthRepository app-wide
-      // So that each page can access the repo
       providers: [
         BlocProvider(
           create: (_) => AppBloc(
@@ -37,6 +36,7 @@ class App extends StatelessWidget {
           create: (_) => WalletBloc(
             walletRepository: context.read<WalletRepository>(),
             tokensRepository: context.read<TokensRepository>(),
+            web3authRepository: context.read<Web3AuthRepository>(),
           ),
         ),
         BlocProvider(

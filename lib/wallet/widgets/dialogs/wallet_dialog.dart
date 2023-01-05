@@ -1,11 +1,9 @@
 import 'package:ax_dapp/dialogs/promo/connected_wallet_promo_dialog.dart';
-import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/connect_metamask_dialog.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/wrong_network_dialog.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -91,6 +89,7 @@ class WalletDialog extends StatelessWidget {
                     ),
                   ],
                 ),
+                // MetaMask Button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -132,7 +131,6 @@ class WalletDialog extends StatelessWidget {
                                 fontSize: 16,
                               ),
                             ),
-                            //empty container
                             Container(
                               margin: const EdgeInsets.only(left: 20),
                             ),
@@ -142,38 +140,56 @@ class WalletDialog extends StatelessWidget {
                     ),
                   ],
                 ),
-                Visibility(
-                  visible: kIsWeb,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    width: constraints.maxWidth < 450
-                        ? constraints.maxWidth * 0.62
-                        : constraints.maxWidth * 0.22,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(color: Colors.grey[400]!, width: 2),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (context) => const MobileLoginPage(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'Sign in via Email',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
+                // Web3Auth button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 30),
+                      width: constraints.maxWidth < 450
+                          ? constraints.maxWidth * 0.62
+                          : constraints.maxWidth * 0.22,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(color: Colors.grey[400]!, width: 2),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          context
+                              .read<WalletBloc>()
+                              .add(const ConnectWalletWeb3Auth());
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              height: 30,
+                              width: 30,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('assets/images/web3auth_logo_alt.png'),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            const Text(
+                              'Web3Auth',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'OpenSans',
+                                fontSize: 16,
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 20),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
