@@ -7,6 +7,14 @@ abstract class WalletEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class ConnectWalletWeb3Auth extends WalletEvent {
+  const ConnectWalletWeb3Auth();
+}
+
+class DisconnectWalletWeb3Auth extends WalletEvent {
+  const DisconnectWalletWeb3Auth();
+}
+
 class ConnectWalletRequested extends WalletEvent {
   const ConnectWalletRequested();
 }
