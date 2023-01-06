@@ -15,6 +15,8 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
+import 'package:ax_dapp/wallet/javascript_calls/web3_auth.dart';
+import 'package:ax_dapp/wallet/repository/web3_auth_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/config_api.dart';
@@ -24,7 +26,6 @@ import 'package:ethereum_api/wallet_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -34,8 +35,6 @@ import 'package:tracking_repository/tracking_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-// TODO(kevin): import the library
-// import 'web3auth.dart';
 void main() async {
   const defaultChain = EthereumChain.polygonMainnet;
 
@@ -74,8 +73,9 @@ void main() async {
   final getPairInfoUseCase = GetPairInfoUseCase(subGraphRepo);
   final getSwapInfoUseCase = GetSwapInfoUseCase(getPairInfoUseCase);
 
-  // TODO(kevin): initialize the web3auth client
-  // Web3Auth web3Auth = Web3Auth("MYS-ID");
+  final web3Auth = Web3Auth(
+    'BGBUVGOmA5x1rP3V9HRF13b-bco3wZWdiQymUckNBWfx9yURBmvo4brGfhkypeLkAsteeSd9_gsIsJKSyD2d4FY',
+  );
 
   unawaited(
     bootstrap(() async {
@@ -85,6 +85,11 @@ void main() async {
       return MultiRepositoryProvider(
         providers: [
           // TODO(anyone): create another RepositoryProvider for the Web3AuthRepository class
+          RepositoryProvider(
+            create: (_) => Web3AuthRepository(
+              web3auth: web3Auth,
+            ),
+          ),
           RepositoryProvider(
             create: (_) => WalletRepository(
               walletApiClient,
