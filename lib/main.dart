@@ -86,7 +86,7 @@ void main() async {
         providers: [
           RepositoryProvider(
             create: (_) => Web3AuthRepository(
-              web3auth: web3Auth,
+              web3Auth: web3Auth,
             ),
           ),
           RepositoryProvider(
