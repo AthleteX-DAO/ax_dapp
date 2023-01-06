@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -24,12 +25,12 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon_ax_logo.png"/>
+  <link rel="icon" type="image/png" href="favicon_ax_logo.png" />
 
   <title>AthleteX dApp</title>
   <link rel="manifest" href="manifest.json">
   <style>
-    *{
+    * {
       background-image: url("assets/images/axBackground.jpeg");
       background-size: cover;
     }
@@ -46,7 +47,7 @@
       -ms-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%);
     }
-    
+
     .loader {
       background: transparent;
       border-radius: 50%;
@@ -59,26 +60,29 @@
       -webkit-animation: spin 2s linear infinite;
       animation: spin 2s linear infinite;
     }
-    
+
     @-webkit-keyframes spin {
       0% {
         -webkit-transform: rotate(0deg);
       }
+
       100% {
         -webkit-transform: rotate(360deg);
       }
     }
-    
+
     @keyframes spin {
       0% {
         transform: rotate(0deg);
       }
+
       100% {
         transform: rotate(360deg);
       }
     }
   </style>
 </head>
+
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
@@ -87,25 +91,38 @@
     <div class="loader"></div>
   </div>
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
-      });
-    }
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
   </script>
-    <!--Ethers-->
-    <script src="https://cdn.ethers.io/lib/ethers-5.4.umd.min.js" type="application/javascript"></script>
-    <!--Wallet Connect-->
-    <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.5.0-rc.2/dist/umd/index.min.js" type="application/javascript"></script>
+  <!--Ethers-->
+  <script src="https://cdn.ethers.io/lib/ethers-5.4.umd.min.js" type="application/javascript"></script>
+  <!--Wallet Connect-->
+  <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.5.0-rc.2/dist/umd/index.min.js"
+    type="application/javascript"></script>
   <script src="main.dart.js" type="application/javascript"></script>
-    <!--Web3Auth-->
-        <!-- This script adds the flutter initialization JS code -->
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@3.0.3/dist/modal.umd.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/web3@1.7.3/dist/web3.min.js"></script>
-        <script src="./libraries/web3RPC.js"></script>
-        <script src="./libraries/Web3Auth.js"></script>
-        <script src="flutter.js" defer></script>
+  <!--Web3Auth-->
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@3.0.3/dist/modal.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.7.3/dist/web3.min.js"></script>
+  <script src="./libraries/web3RPC.js"></script>
+  <script src="./libraries/Web3Auth.js"></script>
+  <script src="flutter.js" defer></script>
+  <script>
+    window.addEventListener('load', function (ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        }
+      }).then(function (engineInitializer) {
+        return engineInitializer.initializeEngine();
+      }).then(function (appRunner) {
+        return appRunner.runApp();
+      });
+    });
+  </script>
 </body>
+
 </html>
