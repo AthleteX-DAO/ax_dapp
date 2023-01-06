@@ -3,7 +3,7 @@ import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:flutter/foundation.dart';
 
 class Web3AuthRepository {
-  Web3AuthRepository({required Web3Auth web3auth}) : _web3Auth = web3Auth;
+  Web3AuthRepository({required Web3Auth web3Auth}) : _web3Auth = web3Auth;
   final Web3Auth _web3Auth;
 
   /// [connect] will allow the user to connect with a provider using web3Auth
@@ -12,11 +12,12 @@ class Web3AuthRepository {
   Future<dynamic> connect() async {
     try {
       await _web3Auth.connect();
-      var user = getUserInfo();
+      final user = getUserInfo();
       return user;
     } catch (e) {
       debugPrint('user cannot connect to the app');
-      return user.empty();
+      // TODO(anyone): handle error if the user fails or cancels connection request
+      // return user.empty();
     }
   }
 
