@@ -84,7 +84,6 @@ void main() async {
       );
       return MultiRepositoryProvider(
         providers: [
-          // TODO(anyone): create another RepositoryProvider for the Web3AuthRepository class
           RepositoryProvider(
             create: (_) => Web3AuthRepository(
               web3auth: web3Auth,
