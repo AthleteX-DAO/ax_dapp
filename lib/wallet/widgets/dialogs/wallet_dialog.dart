@@ -145,7 +145,6 @@ class WalletDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 30),
                       width: constraints.maxWidth < 450
                           ? constraints.maxWidth * 0.62
                           : constraints.maxWidth * 0.22,
