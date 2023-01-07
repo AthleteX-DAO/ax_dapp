@@ -1,12 +1,12 @@
 // TODO(Michael): finish implementing the rest of the methods for the Web3Auth class
 var Web3Auth = (function () {
-  function Web3Auth(clientId) {
+  function Web3Auth(clientId, chainNamespace, chainId, rpcTarget) {
     this._web3auth = new window.Modal.Web3Auth({
       clientId,
       chainConfig: {
-        chainNamespace: "eip155",
-        chainId: "0x89",
-        rpcTarget: "https://rpc-mainnet.matic.network", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+        chainNamespace: chainNamespace,
+        chainId: chainId,
+        rpcTarget: rpcTarget, // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
     });
     console.log("constructor", this._web3auth);
