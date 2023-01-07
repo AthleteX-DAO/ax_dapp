@@ -6,7 +6,12 @@ import 'package:js/js.dart';
 
 @JS()
 class Web3Auth {
-  external Web3Auth(String name);
+  external Web3Auth(
+    String clientId,
+    String chainNameSpace,
+    String chainId,
+    String rpcTarget,
+  );
   external dynamic initModal();
   external dynamic connect();
   external dynamic logout();
