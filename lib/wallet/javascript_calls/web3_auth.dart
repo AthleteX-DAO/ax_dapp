@@ -12,8 +12,8 @@ class Web3Auth {
     String chainId,
     String rpcTarget,
   );
-  external dynamic initModal();
-  external dynamic connect();
-  external dynamic logout();
-  external dynamic getUserInfo();
+  external Future<dynamic> initModal();
+  external Future<dynamic> connect();
+  external Future<dynamic> logout();
+  external Future<dynamic> getUserInfo();
 }
