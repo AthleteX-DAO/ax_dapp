@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:js_util';
 
 import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/bootstrap.dart';
@@ -88,6 +89,7 @@ void main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      await promiseToFuture(web3Auth.initModal());
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
