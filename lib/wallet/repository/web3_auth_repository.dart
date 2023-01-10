@@ -22,8 +22,8 @@ class Web3AuthRepository {
   }
 
   /// [logout] will sign the [User] out of the profile
-  void logout() {
-    _web3Auth.logout();
+  Future<void> logout() async {
+    await _web3Auth.logout();
   }
 
   /// [getUserInfo] will retrieve the user information when the user logs in 

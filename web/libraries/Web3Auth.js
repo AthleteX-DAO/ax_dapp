@@ -23,7 +23,8 @@ var Web3Auth = (function () {
   };
 
   Web3Auth.prototype.logout = async function () {
-    this._web3auth.logout();
+    console.log("logout");
+    await this._web3auth.logout();
   };
 
   Web3Auth.prototype.getUserInfo = async function () {
