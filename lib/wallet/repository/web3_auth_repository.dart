@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:ax_dapp/wallet/javascript_calls/web3_auth.dart';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +13,7 @@ class Web3AuthRepository {
   /// Otherwise, it will return an empty [User] if the connection fails
   Future<dynamic> connect() async {
     try {
-      await _web3Auth.connect();
+      await promiseToFuture(_web3Auth.connect());
       final user = getUserInfo();
       return user;
     } catch (e) {
@@ -23,12 +25,12 @@ class Web3AuthRepository {
 
   /// [logout] will sign the [User] out of the profile
   Future<void> logout() async {
-    await _web3Auth.logout();
+    await promiseToFuture(_web3Auth.logout());
   }
 
-  /// [getUserInfo] will retrieve the user information when the user logs in 
+  /// [getUserInfo] will retrieve the user information when the user logs in
   /// using web3. It will return a [User].
-  dynamic getUserInfo() {
-    return _web3Auth.getUserInfo();
+  Future<dynamic> getUserInfo() {
+    return promiseToFuture(_web3Auth.getUserInfo());
   }
 }
