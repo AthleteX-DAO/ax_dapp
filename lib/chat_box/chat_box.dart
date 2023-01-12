@@ -35,6 +35,9 @@ class _ChatBoxState extends State<ChatBox> {
               child: Stack(
                 children: [
                   Material(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                     child: Container(
                       height: 500,
                       width: 250,
@@ -107,8 +110,7 @@ class _ChatBoxState extends State<ChatBox> {
                     child: Center(
                       child: Material(
                         child: IconButton(
-                          onPressed: () =>
-                              bloc.add(const ToggleChatBox()),
+                          onPressed: () => bloc.add(const ToggleChatBox()),
                           icon: toggle
                               ? const Icon(Icons.close)
                               : const Icon(Icons.chat),
