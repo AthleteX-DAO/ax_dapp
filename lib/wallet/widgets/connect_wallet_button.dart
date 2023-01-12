@@ -1,8 +1,5 @@
-import 'package:ax_dapp/chat_box/bloc/chat_box_bloc.dart';
-import 'package:ax_dapp/chat_box/chat_box.dart';
-import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
+import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ConnectWalletButton extends StatelessWidget {
   const ConnectWalletButton({super.key});
@@ -29,11 +26,7 @@ class ConnectWalletButton extends StatelessWidget {
         onPressed: () {
           showDialog<void>(
             context: context,
-            builder: (_) => BlocProvider(
-              create: (context) => ChatBoxBloc(
-                chatGPTRepository: context.read<ChatGPTRepository>(),),
-                child: const ChatBox(),
-            ),
+            builder: (_) => const WalletDialog(),
           );
         },
         child: Text(

@@ -1,3 +1,6 @@
+import 'package:ax_dapp/chat_box/bloc/chat_box_bloc.dart';
+import 'package:ax_dapp/chat_box/chat_box.dart';
+import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -5,6 +8,7 @@ import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/view/wallet_view.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
@@ -26,7 +30,6 @@ class Global extends PropertyChangeNotifier<String> {
   List<AthleteScoutModel> _athleteList = [];
   String _page = 'landing';
   int _selectedIndex = 0;
-  late PageController _pageController;
 
   /// Gettters/Setters
 
@@ -369,6 +372,20 @@ class Global extends PropertyChangeNotifier<String> {
                       color: Colors.grey[400],
                     ),
                   ),
+                ),
+                IconButton(
+                  onPressed: () => {
+                    showDialog<void>(
+                      context: context,
+                      builder: (_) => BlocProvider(
+                        create: (context) => ChatBoxBloc(
+                          chatGPTRepository: context.read<ChatGPTRepository>(),
+                        ),
+                        child: const ChatBox(),
+                      ),
+                    ),
+                  },
+                  icon: const Icon(Icons.chat),
                 ),
               ],
             ),
