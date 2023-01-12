@@ -1,4 +1,4 @@
-import 'package:ax_dapp/wallet/widgets/dialogs/dialogs.dart';
+import 'package:ax_dapp/chat_box/chat_box.dart';
 import 'package:flutter/material.dart';
 
 class ConnectWalletButton extends StatelessWidget {
@@ -26,7 +26,7 @@ class ConnectWalletButton extends StatelessWidget {
         onPressed: () {
           showDialog<void>(
             context: context,
-            builder: (_) => const WalletDialog(),
+            builder: (_) => const ChatBox(),
           );
         },
         child: Text(
