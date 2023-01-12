@@ -29,10 +29,8 @@ class ChatGPTRepository {
       final res = jsonDecode(response.body);
       final botMessage =  res['choices'][0]['text'];
       return botMessage.toString();
-      // return ChatResponse.fromJson(jsonDecode(json) as Map<String, dynamic>);
       } catch(e) {
         debugPrint('Failed to fetch data -> $e');
-        // return ChatResponse.empty;
         return '';
       }
   }

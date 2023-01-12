@@ -27,7 +27,13 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
     final List<String> messages;
     try {
       messages = List.from(state.messages)..insert(0, input);
-      emit(state.copyWith(status: BlocStatus.loading, messageType: MessageType.user, messages: messages));
+      emit(
+        state.copyWith(
+          status: BlocStatus.loading,
+          messageType: MessageType.user,
+          messages: messages,
+        ),
+      );
       final botMessage = await _chatGPTRepository.fetchBotResponse(input);
       messages.insert(0, botMessage);
       emit(
