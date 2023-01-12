@@ -27,10 +27,10 @@ class MessageBox extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(right: 16),
               child: CircleAvatar(
-                backgroundColor: Colors.amber,
+                backgroundColor: Colors.black,
                 child: Image.asset(
                   'assets/images/x.png',
-                  color: Colors.white,
+                  color: Colors.amber,
                   scale: 1.5,
                 ),
               ),
