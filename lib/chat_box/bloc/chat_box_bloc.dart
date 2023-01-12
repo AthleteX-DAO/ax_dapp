@@ -51,7 +51,10 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
     }
   }
 
-  Future<void> _onToggleChatBox(ToggleChatBox event, Emitter<ChatBoxState> emit) async {
+  Future<void> _onToggleChatBox(
+    ToggleChatBox event,
+    Emitter<ChatBoxState> emit,
+  ) async {
     emit(state.copyWith(toggle: !state.toggle));
   }
 }

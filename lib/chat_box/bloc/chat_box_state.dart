@@ -32,5 +32,6 @@ class ChatBoxState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, chatResponse, messageType, messages, toggle];
+  List<Object> get props =>
+      [status, chatResponse, messageType, messages, toggle];
 }

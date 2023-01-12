@@ -30,8 +30,8 @@ class _ChatBoxState extends State<ChatBox> {
             return Positioned(
               right: 10,
               bottom: 10,
-              width: toggle ? 400 : _size,
-              height: toggle ? 700 : _size,
+              width: toggle ? 250 : _size,
+              height: toggle ? 600 : _size,
               child: Stack(
                 children: [
                   Material(
