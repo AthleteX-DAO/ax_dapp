@@ -225,7 +225,7 @@ class _MaterialApp extends StatelessWidget {
     );
 
     return kDebugMode
-        ? ChatBoxWrapper(
+        ? DebugAppWrapper(
             home: _appRouter,
           )
         : ChatBoxWrapper(home: _appRouter);
