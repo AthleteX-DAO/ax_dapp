@@ -17,3 +17,7 @@ class SendMessage extends ChatBoxEvent {
   @override
   List<Object> get props => [prompt];
 }
+
+class ToggleChatBox extends ChatBoxEvent {
+  const ToggleChatBox();
+}

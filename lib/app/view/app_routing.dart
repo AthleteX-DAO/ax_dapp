@@ -1,6 +1,7 @@
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/athlete/view/athlete_page.dart';
+import 'package:ax_dapp/chat_box/chat_box_wrapper.dart';
 import 'package:ax_dapp/debug/views/debug_app_wrapper.dart';
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/pages/farm/desktop_farm.dart';
@@ -183,7 +184,10 @@ class _MaterialApp extends StatelessWidget {
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
                   repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-                  getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
+                  getAllLiquidityInfoUseCase:
+                      RepositoryProvider.of<GetAllLiquidityInfoUseCase>(
+                    context,
+                  ),
                   poolController: Get.find(),
                 ),
                 child: const DesktopPool(),
@@ -221,10 +225,10 @@ class _MaterialApp extends StatelessWidget {
     );
 
     return kDebugMode
-        ? DebugAppWrapper(
+        ? ChatBoxWrapper(
             home: _appRouter,
           )
-        : _appRouter;
+        : ChatBoxWrapper(home: _appRouter);
   }
 
   AthleteScoutModel? _toAthlete(String id) {

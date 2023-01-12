@@ -373,20 +373,6 @@ class Global extends PropertyChangeNotifier<String> {
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () => {
-                    showDialog<void>(
-                      context: context,
-                      builder: (_) => BlocProvider(
-                        create: (context) => ChatBoxBloc(
-                          chatGPTRepository: context.read<ChatGPTRepository>(),
-                        ),
-                        child: const ChatBox(),
-                      ),
-                    ),
-                  },
-                  icon: const Icon(Icons.chat),
-                ),
               ],
             ),
           ],

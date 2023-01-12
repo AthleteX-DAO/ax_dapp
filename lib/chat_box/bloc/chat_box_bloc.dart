@@ -15,6 +15,7 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
   })  : _chatGPTRepository = chatGPTRepository,
         super(const ChatBoxState()) {
     on<SendMessage>(_onSendMessage);
+    on<ToggleChatBox>(_onToggleChatBox);
   }
 
   final ChatGPTRepository _chatGPTRepository;
@@ -48,5 +49,9 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
       debugPrint('$e');
       emit(state.copyWith(status: BlocStatus.noData));
     }
+  }
+
+  Future<void> _onToggleChatBox(ToggleChatBox event, Emitter<ChatBoxState> emit) async {
+    emit(state.copyWith(toggle: !state.toggle));
   }
 }
