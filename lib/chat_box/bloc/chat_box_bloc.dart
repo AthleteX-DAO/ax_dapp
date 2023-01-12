@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:ax_dapp/chat_box/enums/message_type.dart';
-import 'package:ax_dapp/chat_box/models/chat_response.dart';
 import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter/foundation.dart';

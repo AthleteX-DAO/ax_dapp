@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:ax_dapp/chat_box/models/chat_response.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
