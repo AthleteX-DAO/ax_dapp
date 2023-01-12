@@ -12,14 +12,14 @@ class ChatBoxState extends Equatable {
   final BlocStatus status;
   final String chatResponse;
   final MessageType messageType;
-  final List<String> messages;
+  final List<ChatMessage> messages;
   final bool toggle;
 
   ChatBoxState copyWith({
     BlocStatus? status,
     String? chatResponse,
     MessageType? messageType,
-    List<String>? messages,
+    List<ChatMessage>? messages,
     bool? toggle,
   }) {
     return ChatBoxState(

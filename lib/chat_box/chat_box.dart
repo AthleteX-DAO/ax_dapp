@@ -25,7 +25,6 @@ class _ChatBoxState extends State<ChatBox> {
           builder: (context, state) {
             final bloc = context.read<ChatBoxBloc>();
             final messages = state.messages;
-            final messageType = state.messageType;
             final toggle = state.toggle;
             return Positioned(
               right: 10,
@@ -55,8 +54,8 @@ class _ChatBoxState extends State<ChatBox> {
                               itemCount: messages.length,
                               itemBuilder: (context, index) {
                                 return MessageBox(
-                                  message: messages[index],
-                                  messageType: messageType,
+                                  message: messages[index].message,
+                                  messageType: messages[index].messageType,
                                 );
                               },
                             ),

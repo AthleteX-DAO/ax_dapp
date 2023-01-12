@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ax_dapp/chat_box/enums/message_type.dart';
+import 'package:ax_dapp/chat_box/models/chat_message.dart';
 import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter/foundation.dart';
@@ -25,9 +26,11 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
     Emitter<ChatBoxState> emit,
   ) async {
     final input = event.prompt.trim();
-    final List<String> messages;
+    final List<ChatMessage> messages;
     try {
-      messages = List.from(state.messages)..insert(0, input);
+      final userMessage =
+          ChatMessage(message: input, messageType: MessageType.user);
+      messages = List.from(state.messages)..insert(0, userMessage);
       emit(
         state.copyWith(
           status: BlocStatus.loading,
@@ -35,12 +38,14 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
           messages: messages,
         ),
       );
-      final botMessage = await _chatGPTRepository.fetchBotResponse(input);
+      final botResponse = await _chatGPTRepository.fetchBotResponse(input);
+      final botMessage =
+          ChatMessage(message: botResponse, messageType: MessageType.bot);
       messages.insert(0, botMessage);
       emit(
         state.copyWith(
           status: BlocStatus.success,
-          chatResponse: botMessage,
+          chatResponse: botResponse,
           messageType: MessageType.bot,
           messages: messages,
         ),
