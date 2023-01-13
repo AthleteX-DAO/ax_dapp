@@ -108,7 +108,12 @@ class _ChatBoxState extends State<ChatBox> {
                     height: _size,
                     child: Center(
                       child: Material(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        color: Colors.amber,
                         child: IconButton(
+                          color: Colors.black,
                           onPressed: () => bloc.add(const ToggleChatBox()),
                           icon: toggle
                               ? const Icon(Icons.close)
