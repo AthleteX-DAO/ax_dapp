@@ -39,6 +39,9 @@ class _ChatBoxState extends State<ChatBox> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15,
+                        ),
                         height: 500,
                         width: 250,
                         decoration: boxDecoration(
