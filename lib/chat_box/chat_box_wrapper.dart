@@ -1,4 +1,4 @@
-import 'package:ax_dapp/chat_box/chat_box.dart';
+import 'package:ax_dapp/chat_box/views/chat_box.dart';
 import 'package:flutter/material.dart';
 
 class ChatBoxWrapper extends StatelessWidget {
