@@ -22,7 +22,7 @@ class MessageBox extends StatelessWidget {
             : backgroundColor,
         borderRadius: BorderRadius.circular(15),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       padding: const EdgeInsets.all(16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,10 +61,7 @@ class MessageBox extends StatelessWidget {
                   ),
                   child: Text(
                     message,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ],
