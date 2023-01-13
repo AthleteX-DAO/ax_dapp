@@ -88,6 +88,9 @@ class _MaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isWebMobile = kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.iOS ||
+            defaultTargetPlatform == TargetPlatform.android);
     final _appRouter = MaterialApp.router(
       title: 'AthleteX',
       debugShowCheckedModeBanner: false,
@@ -225,10 +228,12 @@ class _MaterialApp extends StatelessWidget {
     );
 
     return kDebugMode
-        ? DebugAppWrapper(
-            home: _appRouter,
-          )
-        : ChatBoxWrapper(home: _appRouter);
+        ? DebugAppWrapper(home: _appRouter)
+        : (isWebMobile
+            ? _appRouter
+            : ChatBoxWrapper(
+                home: _appRouter,
+              ));
   }
 
   AthleteScoutModel? _toAthlete(String id) {
