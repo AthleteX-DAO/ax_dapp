@@ -1,16 +1,16 @@
 import 'dart:convert';
+import 'package:ax_dapp/chat_box/models/chat_response.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ChatGPTRepository {
-
   final baseUrl = 'https://api.openai.com/v1/completions';
   final apiKey = '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';
 
-  Future<String> fetchBotResponse(String prompt) async {
-      final uri = Uri.parse(baseUrl);
-      try {
-        final response = await http.post(
+  Future<ChatResponse> fetchBotResponse(String prompt) async {
+    final uri = Uri.parse(baseUrl);
+    try {
+      final response = await http.post(
         uri,
         headers: {
           'Content-Type': 'application/json',
@@ -26,12 +26,12 @@ class ChatGPTRepository {
           'presence_penalty': 0.0,
         }),
       );
-      final res = jsonDecode(response.body);
-      final botMessage =  res['choices'][0]['text'];
-      return botMessage.toString();
-      } catch(e) {
-        debugPrint('Failed to fetch data -> $e');
-        return '';
-      }
+      final data = json.decode(response.body);
+      final chatResponse = ChatResponse.fromJson(data as Map<String, dynamic>);
+      return chatResponse;
+    } catch (e) {
+      debugPrint('Failed to fetch data -> $e');
+      return ChatResponse.empty;
+    }
   }
 }

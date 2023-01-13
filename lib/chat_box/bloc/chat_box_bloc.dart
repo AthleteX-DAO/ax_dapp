@@ -39,13 +39,15 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
         ),
       );
       final botResponse = await _chatGPTRepository.fetchBotResponse(input);
-      final botMessage =
-          ChatMessage(message: botResponse, messageType: MessageType.bot);
+      final botMessage = ChatMessage(
+        message: botResponse.choices[0].text,
+        messageType: MessageType.bot,
+      );
       messages.insert(0, botMessage);
       emit(
         state.copyWith(
           status: BlocStatus.success,
-          chatResponse: botResponse,
+          chatResponse: botResponse.choices[0].text,
           messageType: MessageType.bot,
           messages: messages,
         ),
