@@ -26,7 +26,6 @@ class Global extends PropertyChangeNotifier<String> {
   List<AthleteScoutModel> _athleteList = [];
   String _page = 'landing';
   int _selectedIndex = 0;
-  late PageController _pageController;
 
   /// Gettters/Setters
 
