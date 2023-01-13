@@ -33,74 +33,83 @@ class _ChatBoxState extends State<ChatBox> {
               height: toggle ? 600 : _size,
               child: Stack(
                 children: [
-                  Material(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Container(
-                      height: 500,
-                      width: 250,
-                      decoration:
-                          boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                      child: Column(
-                        children: [
-                          Flexible(
-                            child: ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 10,
+                  if (toggle)
+                    Material(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Container(
+                        height: 500,
+                        width: 250,
+                        decoration: boxDecoration(
+                          Colors.grey[900]!,
+                          30,
+                          0,
+                          Colors.black,
+                        ),
+                        child: Column(
+                          children: [
+                            Flexible(
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  height: 10,
+                                ),
+                                reverse: true,
+                                itemCount: messages.length,
+                                itemBuilder: (context, index) {
+                                  return MessageBox(
+                                    message: messages[index].message,
+                                    messageType: messages[index].messageType,
+                                  );
+                                },
                               ),
-                              reverse: true,
-                              itemCount: messages.length,
-                              itemBuilder: (context, index) {
-                                return MessageBox(
-                                  message: messages[index].message,
-                                  messageType: messages[index].messageType,
-                                );
-                              },
                             ),
-                          ),
-                          const Divider(
-                            thickness: 2,
-                            color: Colors.white,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    style: const TextStyle(color: Colors.white),
-                                    controller: _inputController,
-                                    onSubmitted: (value) {
-                                      bloc.add(SendMessage(prompt: value));
-                                      _inputController.clear();
-                                    },
-                                    decoration: const InputDecoration.collapsed(
-                                      hintText: 'Ask AX!',
-                                      hintStyle: TextStyle(color: Colors.white),
+                            const Divider(
+                              thickness: 2,
+                              color: Colors.white,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                      controller: _inputController,
+                                      onSubmitted: (value) {
+                                        bloc.add(SendMessage(prompt: value));
+                                        _inputController.clear();
+                                      },
+                                      decoration:
+                                          const InputDecoration.collapsed(
+                                        hintText: 'Ask AX!',
+                                        hintStyle:
+                                            TextStyle(color: Colors.white),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                IconButton(
-                                  color: Colors.white,
-                                  icon: const Icon(Icons.add),
-                                  onPressed: () {
-                                    bloc.add(
-                                      SendMessage(
-                                        prompt: _inputController.text,
-                                      ),
-                                    );
-                                    _inputController.clear();
-                                  },
-                                )
-                              ],
+                                  IconButton(
+                                    color: Colors.white,
+                                    icon: const Icon(Icons.add),
+                                    onPressed: () {
+                                      bloc.add(
+                                        SendMessage(
+                                          prompt: _inputController.text,
+                                        ),
+                                      );
+                                      _inputController.clear();
+                                    },
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                   Positioned(
                     right: 0,
                     bottom: 0,
