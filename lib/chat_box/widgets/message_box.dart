@@ -16,10 +16,14 @@ class MessageBox extends StatelessWidget {
     const backgroundColor = Color(0xff343541);
     const botBackgroundColor = Color(0xff444654);
     return Container(
+      decoration: BoxDecoration(
+        color: messageType == MessageType.bot
+            ? botBackgroundColor
+            : backgroundColor,
+        borderRadius: BorderRadius.circular(15),
+      ),
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(16),
-      color:
-          messageType == MessageType.bot ? botBackgroundColor : backgroundColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -39,8 +43,10 @@ class MessageBox extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(right: 16),
               child: const CircleAvatar(
+                backgroundColor: Colors.black,
                 child: Icon(
                   Icons.person,
+                  color: Colors.amber,
                 ),
               ),
             ),
