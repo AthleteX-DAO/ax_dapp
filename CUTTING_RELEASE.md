@@ -47,7 +47,6 @@ flutter pub get
 - GitHub actions will be executed and they need to pass all checks
 - Request a review from a developer so they can approve it
 - Once the PR has been approved make sure to merge the branch to main
-  - Note: DO NOT SQUASH AND MERGE THE BRANCH AS THIS WILL CAUSE ISSUES LATER ON
   
   ![image](https://user-images.githubusercontent.com/89420193/212748367-ef456fa8-1828-4147-bda3-de730aef2a7c.png)
   
@@ -57,9 +56,10 @@ flutter pub get
 - Just like with step 6, GitHub actions will be executed and they need to pass all checks
 - Request a review from a developer so they can approve it
 - Once the PR has been approved, merge it in to develop
-  - Note: DO NOT SQUASH AND MERGE THE BRANCH
   
   ![image](https://user-images.githubusercontent.com/89420193/212748405-1cdd2d6b-746b-4e53-8cd9-cb94d41f7fc0.png)
+  
+- Important note here: Please **do not** squash and merge the PR in as this will cause issues later on when cutting the release 
   
 8. Navigate to the JIRA board and go to the release section and copy the release notes
 
