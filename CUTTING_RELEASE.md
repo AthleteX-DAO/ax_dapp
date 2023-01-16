@@ -33,7 +33,7 @@ git checkout -b release/x.x.x
 ```
 Where 'x.x.x' represents the version number (1.0.0, 1.1.1, 1.2.0, etc.)
 
-5. Once you are on the new branch navigate to the ```pubspec.yaml``` file and update the version number
+5. Once you are on the new branch navigate to the ```pubspec.yaml``` file and update the version number to the new version
 ![image](https://user-images.githubusercontent.com/89420193/212748205-d0c9c8ef-d8da-4ab0-99c5-8d4abfe4a1de.png)
 - When finished, save the file which will automatically run the command or open a new terminal and run the command manually
 ```sh
@@ -66,13 +66,14 @@ flutter pub get
 
 9. Navigate back to GitHub and go to the release section
 
-- You will want to create a new release and name is as v1.0.0 or whatever the current version is
+- You will want to create a new release and name 
 
 ![image](https://user-images.githubusercontent.com/89420193/212748804-3ee26936-4530-45a5-9c37-60233fbcea0a.png)
 
-- Name the Release Title as 'Release v1.0.0 or whatever the current version is
+- Create a new release tag with the current version number and name the title with as Release v1.9.0 or whatever the new version number is
 
 ![image](https://user-images.githubusercontent.com/89420193/212748871-6a8cca7a-8c8e-4d56-9038-9573b3103008.png)
+![image](https://user-images.githubusercontent.com/89420193/212749552-39e0d676-3910-45ad-8271-3a9b104da5bd.png)
 
 - check the box 'Set as a pre-release'
 
