@@ -2,58 +2,60 @@
 
 ## Getting Started 🚀
 
-<!-- Mnenomic -->
-<!-- web lady wheat index recipe chunk urge boost hungry critic language crossnote: this mnemonic is not secure; don't use it on a public blockchain.
- -->
 ### Overview
-Once the sprint ends, we start a process of cutting a release which will ship out new features, bug fixes, etc.
+Cutting a release is a process where new features, bug fixes, etc. are shipped to production.
+Whether they are features or general fixes, it is important to continuously ship these changes while working 
+on the codebase. This document lists the steps needed to cut a new release.
+### How to cut a release
 
-### Steps to cut a release
-
-1. Make sure to run the command: 
+1. First, make sure you are in the correct repository and run the command:
 ```sh
 git fetch
 ```
-This will make sure that all the latest changes are there
+- Running this command will download commits, files, and refs from a remote repository into your local repository
 
-2. Switch to the develop branch using this command:
+2. Switch to the ```develop``` branch using the command below:
 ```sh
 git checkout develop
 ```
 
-3. Once on the develop branch, make sure to pull the changes using this command:
+3. Once on the ```develop``` branch, make sure to pull the changes using this command:
 ```sh
 git pull
 ```
+
+- Running this command will download the content from the remote branch and update the local branch to match that conent.
 
 4. Once develop branch has the latest changes, we will need to create a branch from develop.
 - To create a new branch run the command:
 ```sh
 git checkout -b release/x.x.x
 ```
-Where 'x.x.x' represents the version number (1.0.0, 1.1.1, 1.2.0, etc.)
+Where ```x.x.x``` represents the version number (1.0.0, 1.1.1, 1.2.0, etc.) 
 
 5. Once you are on the new branch navigate to the ```pubspec.yaml``` file and update the version number to the new version
 ![image](https://user-images.githubusercontent.com/89420193/212748205-d0c9c8ef-d8da-4ab0-99c5-8d4abfe4a1de.png)
-- When finished, save the file which will automatically run the command or open a new terminal and run the command manually
+- When finished, save the file which will automatically run the ```flutter pub get``` command or open a new terminal and run the command manually
 ```sh
 flutter pub get
 ```
 
-6. Once that is completed you can now navigate to github and create a pull request (PR)
-- This PR will have the release branch point to main branch
+6. Once that is completed go to github and create a pull request (PR) 
+- This PR will have the release branch point to ```main``` branch
 
 ![image](https://user-images.githubusercontent.com/89420193/212748299-0e769892-9c97-4817-9729-e1de9e31ffff.png)
-- Actions will need to be completed and they need to pass in order to merge that branch into main
+- GitHub actions will be executed and they need to pass all checks
+- Request a review from a developer so they can approve it
 - Once the PR has been approved make sure to merge the branch to main
   - Note: DO NOT SQUASH AND MERGE THE BRANCH AS THIS WILL CAUSE ISSUES LATER ON
   
   ![image](https://user-images.githubusercontent.com/89420193/212748367-ef456fa8-1828-4147-bda3-de730aef2a7c.png)
   
-7. Once the PR has been merged in, you will create another PR that points main to develop branch
+7. Once the PR has been merged in, create another PR that points ```main``` to ```develop``` branch
 
 ![image](https://user-images.githubusercontent.com/89420193/212748591-dd42c32c-7f1d-4d73-978e-69365acc7db9.png)
-- Follow the same process as step 6
+- Just like with step 6, GitHub actions will be executed and they need to pass all checks
+- Request a review from a developer so they can approve it
 - Once the PR has been approved, merge it in to develop
   - Note: DO NOT SQUASH AND MERGE THE BRANCH
   
@@ -61,16 +63,18 @@ flutter pub get
   
 8. Navigate to the JIRA board and go to the release section and copy the release notes
 
+- Make sure to select ```Markdown``` when copying to the clipboard
+
 ![image](https://user-images.githubusercontent.com/89420193/212748773-361a1930-1280-43e4-ac00-3af94fdd1c8b.png)
 
 
-9. Navigate back to GitHub and go to the release section
+9. Go back to GitHub and go to the release section 
 
-- You will want to create a new release and name 
+- Click on ```create a new release```
 
 ![image](https://user-images.githubusercontent.com/89420193/212748804-3ee26936-4530-45a5-9c37-60233fbcea0a.png)
 
-- Create a new release tag with the current version number and name the title with as Release v1.9.0 or whatever the new version number is
+- Create a new release tag with the new version number and name the title with as Release v1.9.0 or whatever the new version number is 
 
 ![image](https://user-images.githubusercontent.com/89420193/212748871-6a8cca7a-8c8e-4d56-9038-9573b3103008.png)
 ![image](https://user-images.githubusercontent.com/89420193/212749552-39e0d676-3910-45ad-8271-3a9b104da5bd.png)
