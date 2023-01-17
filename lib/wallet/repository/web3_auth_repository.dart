@@ -14,7 +14,8 @@ class Web3AuthRepository {
   Future<dynamic> connect() async {
     try {
       await promiseToFuture(_web3Auth.connect());
-      final user = getUserInfo();
+      final user = await promiseToFuture(_web3Auth.getUserInfo());
+      debugPrint('${user.name}');
       return user;
     } catch (e) {
       debugPrint('user cannot connect to the app');
@@ -30,7 +31,7 @@ class Web3AuthRepository {
 
   /// [getUserInfo] will retrieve the user information when the user logs in
   /// using web3. It will return a [User].
-  Future<dynamic> getUserInfo() {
-    return promiseToFuture(_web3Auth.getUserInfo());
-  }
+  // Future<dynamic> getUserInfo() {
+  //   return promiseToFuture(_web3Auth.getUserInfo());
+  // }
 }
