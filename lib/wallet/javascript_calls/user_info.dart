@@ -1,11 +1,11 @@
 @JS()
 library userinfo;
 
-import 'package:ax_dapp/wallet/javascript_calls/login_provider.dart';
 import 'package:js/js.dart';
 
+@anonymous
 @JS()
-class UserInfo {
+abstract class UserInfo {
   external factory UserInfo({
     String email,
     String name,
@@ -14,9 +14,24 @@ class UserInfo {
     String verifier,
     String verifierId,
     String dappShare,
-    LoginProvider? typeOfLogin,
     String? idToken,
     String? oAuthIdToken,
     String? oAuthAccessToken,
   });
+  external String get email;
+  external set email(String value);
+  external String get name;
+  external set name(String value);
+  external String get profileImage;
+  external set profileImage(String value);
+  external String get verifier;
+  external set verifier(String value);
+  external String get dappShare;
+  external set dappShare(String value);
+  external String get idToken;
+  external set idToken(String value);
+  external String get oAuthIdToken;
+  external set oAuthIdToken(String value);
+  external String get oAuthAccessToken;
+  external set oAuthAccessToken(String value);
 }
