@@ -1,6 +1,6 @@
 # AthleteX dApp UI
 
-## Getting Started 🚀
+## Cutting a Release
 
 ### Overview
 Cutting a release is a process where new features, bug fixes, etc. are shipped to production.
@@ -8,7 +8,7 @@ Whether they are features or general fixes, it is important to continuously ship
 on the codebase. This document lists the steps needed to cut a new release.
 ### How to cut a release
 
-1. First, make sure you are in the correct repository and run the command:
+1. First, make sure you are in the correct repository (```AthleteX-DAO/ax_dapp```) and run the command:
 ```sh
 git fetch
 ```
@@ -61,14 +61,14 @@ flutter pub get
   
 - Important note here: Please **do not** squash and merge the PR in as this will cause issues later on when cutting the release 
   
-8. Navigate to the JIRA board and go to the release section and copy the release notes
+8. Navigate to the JIRA board and go to the ```Releases``` section and copy the release notes
 
 - Make sure to select ```Markdown``` when copying to the clipboard
 
 ![image](https://user-images.githubusercontent.com/89420193/212748773-361a1930-1280-43e4-ac00-3af94fdd1c8b.png)
 
 
-9. Go back to GitHub and go to the release section 
+9. Go back to GitHub and go to the ```Releases``` section 
 
 - Click on ```create a new release```
 
@@ -83,11 +83,11 @@ flutter pub get
 
 ![image](https://user-images.githubusercontent.com/89420193/212787868-6182516c-2171-4611-8ebb-49b9ef3f05e6.png)
 
-- check the box 'Set as a pre-release'
+- check the box ```Set as a pre-release```
 
 ![image](https://user-images.githubusercontent.com/89420193/212748931-0f5d625b-edeb-4baa-9b22-4bc524de7913.png)
 
-- click on the button 'Publish Release'
+- click on the button ```Publish release```
 
 ![image](https://user-images.githubusercontent.com/89420193/212748949-1dd06b51-5eba-421e-9110-6cc745fcbc72.png)
 
