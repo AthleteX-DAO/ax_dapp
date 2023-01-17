@@ -31,6 +31,7 @@ var Web3Auth = (function () {
     console.log("getUserInfo");
     const user = await this._web3auth.getUserInfo();
     console.log(user);
+    return user;
   };
 
   return Web3Auth;
