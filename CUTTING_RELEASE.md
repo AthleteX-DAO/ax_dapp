@@ -74,10 +74,14 @@ flutter pub get
 
 ![image](https://user-images.githubusercontent.com/89420193/212748804-3ee26936-4530-45a5-9c37-60233fbcea0a.png)
 
-- Create a new release tag with the new version number and name the title with as Release v1.9.0 or whatever the new version number is 
+- Create a new release tag with the new version number and name the title with as ```Release new_version_number```
 
 ![image](https://user-images.githubusercontent.com/89420193/212748871-6a8cca7a-8c8e-4d56-9038-9573b3103008.png)
 ![image](https://user-images.githubusercontent.com/89420193/212749552-39e0d676-3910-45ad-8271-3a9b104da5bd.png)
+
+- In the text box section, paste the release notes that you have copied to the clipboard from step 8
+
+![image](https://user-images.githubusercontent.com/89420193/212787868-6182516c-2171-4611-8ebb-49b9ef3f05e6.png)
 
 - check the box 'Set as a pre-release'
 
