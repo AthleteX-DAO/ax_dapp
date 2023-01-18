@@ -32,6 +32,7 @@
 .pub/
 /build/
 pubspec.lock
+openai_key.dart
 
 
 # Web related
