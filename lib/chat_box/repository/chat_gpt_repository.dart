@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:ax_dapp/chat_box/models/chat_response.dart';
-import 'package:ax_dapp/openai_key.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ChatGPTRepository {
   final baseUrl = 'https://api.openai.com/v1/completions';
+  final apiKey = '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';
 
   Future<ChatResponse> fetchBotResponse(String prompt) async {
     final uri = Uri.parse(baseUrl);
