@@ -129,7 +129,7 @@ class _ChatBoxState extends State<ChatBox> {
                           onPressed: () => bloc.add(const ToggleChatBox()),
                           icon: toggle
                               ? const Icon(Icons.close)
-                              : const Icon(Icons.chat),
+                              : const Icon(Icons.question_mark),
                         ),
                       ),
                     ),

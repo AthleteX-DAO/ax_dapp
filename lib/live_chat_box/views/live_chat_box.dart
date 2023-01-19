@@ -29,7 +29,7 @@ class _LiveChatBoxState extends State<LiveChatBox> {
             final bloc = context.read<LiveChatBoxBloc>();
             final toggle = state.toggle;
             return Positioned(
-              right: 10,
+              left: 10,
               bottom: 10,
               width: toggle ? 250 : _size,
               height: toggle ? 600 : _size,
@@ -107,8 +107,10 @@ class _LiveChatBoxState extends State<LiveChatBox> {
                                               const InputDecoration.collapsed(
                                             hintText:
                                                 'Chat with the community!',
-                                            hintStyle:
-                                                TextStyle(color: Colors.white),
+                                            hintStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -134,7 +136,7 @@ class _LiveChatBoxState extends State<LiveChatBox> {
                       ),
                     ),
                   Positioned(
-                    right: 0,
+                    left: 0,
                     bottom: 0,
                     width: _size,
                     height: _size,
