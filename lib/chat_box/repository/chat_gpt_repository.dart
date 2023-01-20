@@ -5,16 +5,16 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ChatGPTRepository {
-  final baseUrl = 'https://api.openai.com/v1/completions';
+  ChatGPTRepository({required FirebaseFirestore fireStore})
+      : _fireStore = fireStore;
 
-  final _fireStore = FirebaseFirestore.instance;
+  final baseUrl = 'https://api.openai.com/v1/completions';
+  final FirebaseFirestore _fireStore;
 
   Future<String> getApiKey() async {
     try {
-      final documentSnapshot = await _fireStore
-          .collection('key')
-          .doc('apikeys')
-          .get();
+      final documentSnapshot =
+          await _fireStore.collection('key').doc('apikeys').get();
       final data = documentSnapshot.data();
       final apiKey = data?['openai_key'] as String;
       return apiKey;

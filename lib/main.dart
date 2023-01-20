@@ -18,6 +18,7 @@ import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.da
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:cache/cache.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/config_api.dart';
 import 'package:ethereum_api/gysr_api.dart';
@@ -81,10 +82,14 @@ void main() async {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
-            create: (_) => LiveChatRepository(),
+            create: (_) => LiveChatRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
           ),
           RepositoryProvider(
-            create: (_) => ChatGPTRepository(),
+            create: (_) => ChatGPTRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
           ),
           RepositoryProvider(
             create: (_) => WalletRepository(
