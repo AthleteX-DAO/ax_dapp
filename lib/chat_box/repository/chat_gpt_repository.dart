@@ -12,8 +12,8 @@ class ChatGPTRepository {
   Future<String> getApiKey() async {
     try {
       final documentSnapshot = await _fireStore
-          .collection('apikey')
-          .doc('LCYT2oDvFD0huiqsQZu2')
+          .collection('key')
+          .doc('apikeys')
           .get();
       final data = documentSnapshot.data();
       final apiKey = data?['openai_key'] as String;
