@@ -1,13 +1,31 @@
 import 'dart:convert';
 import 'package:ax_dapp/chat_box/models/chat_response.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ChatGPTRepository {
   final baseUrl = 'https://api.openai.com/v1/completions';
-  final apiKey = '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';
+
+  final _fireStore = FirebaseFirestore.instance;
+
+  Future<String> getApiKey() async {
+    try {
+      final documentSnapshot = await _fireStore
+          .collection('apikey')
+          .doc('LCYT2oDvFD0huiqsQZu2')
+          .get();
+      final data = documentSnapshot.data();
+      final apiKey = data?['openai_key'] as String;
+      return apiKey;
+    } on FirebaseException catch (e) {
+      debugPrint('$e');
+      return '';
+    }
+  }
 
   Future<ChatResponse> fetchBotResponse(String prompt) async {
+    final apiKey = await getApiKey();
     final uri = Uri.parse(baseUrl);
     try {
       final response = await http.post(
