@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class LiveChatRepository {
-  final _fireStore = FirebaseFirestore.instance;
+  LiveChatRepository({required FirebaseFirestore fireStore})
+      : _fireStore = fireStore;
+
+  final FirebaseFirestore _fireStore;
 
   Future<void> sendMessage(String text) async {
     try {
