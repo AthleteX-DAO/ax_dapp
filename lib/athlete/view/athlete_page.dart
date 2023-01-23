@@ -1,3 +1,4 @@
+import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/athlete/bloc/athlete_page_bloc.dart';
 import 'package:ax_dapp/athlete/widgets/widgets.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -8,6 +9,7 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -44,19 +46,35 @@ class _AthletePageState extends State<AthletePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (global.page != 'athlete') {
-      context.goNamed(global.page);
+    if (global.pageName != 'athlete') {
+      context.goNamed(global.pageName);
     }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      appBar: global.topNav(context),
-      bottomNavigationBar: global.bottomNav(context),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: kIsWeb &&
+                (MediaQuery.of(context).orientation == Orientation.landscape)
+            ? TopNavigationBarWeb(page: global.pageName)
+            : const TopNavigationBarMobile(),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      bottomNavigationBar: kIsWeb &&
+              (MediaQuery.of(context).orientation == Orientation.landscape)
+          ? const BottomNavigationBarWeb()
+          : BottomNavigationBarMobile(selectedIndex: global.selectedIndex),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: global.background(context),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/blurredBackground.png'),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: BlocProvider(
           create: (context) => AthletePageBloc(
             walletRepository: context.read<WalletRepository>(),
@@ -89,7 +107,10 @@ class _AthletePageState extends State<AthletePage> {
               buildWhen: (previous, current) => previous.stats != current.stats,
               builder: (_, state) {
                 final chartStats = state.stats;
-                return AthletePageWebView(athlete: athlete, chartStats: chartStats);
+                return AthletePageWebView(
+                  athlete: athlete,
+                  chartStats: chartStats,
+                );
               },
             ),
           ),

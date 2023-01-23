@@ -1,11 +1,9 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
 import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
+import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/pages/farm/desktop_farm.dart';
 import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
-import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/desktop_trade.dart';
 import 'package:ax_dapp/pool/pool.dart';
@@ -22,16 +20,13 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
-import 'package:ax_dapp/wallet/wallet.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -45,6 +40,7 @@ class V1App extends StatefulWidget {
 }
 
 class _V1AppState extends State<V1App> {
+  Global global = Global();
   bool isWeb = true;
 
   // state change variables
@@ -118,7 +114,11 @@ class _V1AppState extends State<V1App> {
       extendBody: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: isWeb ? topNavBar(context) : topNavBarAndroid(context),
+        title: isWeb
+            ? TopNavigationBarWeb(
+                page: global.pageName,
+              )
+            : const TopNavigationBarMobile(),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -133,8 +133,11 @@ class _V1AppState extends State<V1App> {
         ),
         child: buildUI(context),
       ),
-      bottomNavigationBar:
-          isWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context),
+      bottomNavigationBar: isWeb
+          ? const BottomNavigationBarWeb()
+          : BottomNavigationBarMobile(
+              selectedIndex: global.selectedIndex,
+            ),
     );
   }
 
@@ -234,7 +237,8 @@ class _V1AppState extends State<V1App> {
               tokensRepository: context.read<TokensRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-              getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
+              getAllLiquidityInfoUseCase:
+                  RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
               poolController: Get.find(),
             ),
             child: const DesktopPool(),
@@ -254,362 +258,5 @@ class _V1AppState extends State<V1App> {
         ],
       );
     }
-  }
-
-  Widget topNavBar(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
-    var tabTxSz = _width * 0.0185;
-    if (tabTxSz < 19) tabTxSz = 19;
-    var tabBxSz = _width * 0.35;
-    if (tabBxSz < 350) tabBxSz = 350;
-
-    return SizedBox(
-      width: _width * .95,
-      height: 100,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          // Tabs
-          SizedBox(
-            width: tabBxSz,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                SizedBox(
-                  width: 72,
-                  height: 50,
-                  child: IconButton(
-                    icon: Image.asset('assets/images/x.png'),
-                    iconSize: 40,
-                    onPressed: () {
-                      final urlString = Uri.parse('https://www.athletex.io/');
-                      launchUrl(urlString);
-                    },
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (pageNumber != Pages.scout) {
-                      setPageNumber(Pages.scout);
-                    }
-                  },
-                  child: Text(
-                    'Scout',
-                    style: textSwapState(
-                      pageNumber == Pages.scout,
-                      textStyle(
-                        Colors.white,
-                        tabTxSz,
-                        true,
-                        false,
-                      ),
-                      textStyle(
-                        Colors.amber[400]!,
-                        tabTxSz,
-                        true,
-                        true,
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (pageNumber != Pages.trade) {
-                      setPageNumber(Pages.trade);
-                    }
-                  },
-                  child: Text(
-                    'Trade',
-                    style: textSwapState(
-                      pageNumber == Pages.trade,
-                      textStyle(
-                        Colors.white,
-                        tabTxSz,
-                        true,
-                        false,
-                      ),
-                      textStyle(
-                        Colors.amber[400]!,
-                        tabTxSz,
-                        true,
-                        true,
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (pageNumber != Pages.pool) {
-                      setPageNumber(Pages.pool);
-                    }
-                  },
-                  child: Text(
-                    'Pool',
-                    style: textSwapState(
-                      pageNumber == Pages.pool,
-                      textStyle(
-                        Colors.white,
-                        tabTxSz,
-                        true,
-                        false,
-                      ),
-                      textStyle(
-                        Colors.amber[400]!,
-                        tabTxSz,
-                        true,
-                        true,
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (pageNumber != Pages.farm) {
-                      setPageNumber(Pages.farm);
-                    }
-                  },
-                  child: Text(
-                    'Farm',
-                    style: textSwapState(
-                      pageNumber == Pages.farm,
-                      textStyle(
-                        Colors.white,
-                        tabTxSz,
-                        true,
-                        false,
-                      ),
-                      textStyle(
-                        Colors.amber[400]!,
-                        tabTxSz,
-                        true,
-                        true,
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    final urlString =
-                        Uri.parse('https://snapshot.org/#/athletex.eth');
-                    launchUrl(urlString);
-                  },
-                  child: Text(
-                    'Vote',
-                    style: textStyle(
-                      Colors.white,
-                      tabTxSz,
-                      true,
-                      false,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const WalletView(),
-        ],
-      ),
-    );
-  }
-
-  Widget topNavBarAndroid(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: Image.asset('assets/images/x.png'),
-            iconSize: 40,
-            onPressed: () {
-              const urlString = 'https://www.athletex.io/';
-              launchUrl(Uri.parse(urlString));
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
-              WalletView(),
-              DropdownMenuMobile(),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget bottomNavBarDesktop(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.1,
-      color: Colors.transparent,
-      padding: const EdgeInsets.only(left: 40, right: 40),
-      child: Center(
-        child: Row(
-          children: [
-            Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 72,
-                  height: 20,
-                  child: InkWell(
-                    child: const Text('athletex.io'),
-                    onTap: () =>
-                        launchUrl(Uri.parse('https://www.athletex.io/')),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () =>
-                      //Discord button
-                      launchUrl(
-                    Uri.parse(
-                      'https://discord.com/invite/WFsyAuzp9V',
-                    ),
-                  ),
-                  icon: FaIcon(
-                    FontAwesomeIcons.discord,
-                    size: 25,
-                    color: Colors.grey[400],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => launchUrl(
-                    Uri.parse('https://twitter.com/athletex_dao?s=20'),
-                  ),
-                  icon: FaIcon(
-                    FontAwesomeIcons.twitter,
-                    size: 25,
-                    color: Colors.grey[400],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => launchUrl(
-                    Uri.parse('https://github.com/SportsToken'),
-                  ),
-                  icon: FaIcon(
-                    FontAwesomeIcons.github,
-                    size: 25,
-                    color: Colors.grey[400],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => launchUrl(
-                    Uri.parse(
-                      'https://www.instagram.com/athletexmarkets/?hl=en',
-                    ),
-                  ),
-                  icon: FaIcon(
-                    FontAwesomeIcons.instagram,
-                    size: 25,
-                    color: Colors.grey[400],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => launchUrl(
-                    Uri.parse(
-                      'https://www.tiktok.com/@athlete_x',
-                    ),
-                  ),
-                  icon: FaIcon(
-                    FontAwesomeIcons.tiktok,
-                    size: 25,
-                    color: Colors.grey[400],
-                  ),
-                ),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: AppToolTip(
-                    'Invest in what you know best at AthleteX Markets.',
-                    IconButton(
-                      onPressed: () => launchUrl(
-                        Uri.parse(
-                          'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper',
-                        ),
-                      ),
-                      icon: FaIcon(
-                        FontAwesomeIcons.circleQuestion,
-                        size: 25,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  BottomNavigationBar bottomNavBarAndroid(BuildContext context) {
-    return BottomNavigationBar(
-      showUnselectedLabels: true,
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.transparent,
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/search.png',
-            height: 24,
-            width: 24,
-            color: iconColor(0),
-          ),
-          label: 'Scout',
-        ),
-        BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/swap.png',
-            height: 24,
-            width: 24,
-            color: iconColor(1),
-          ),
-          label: 'Trade',
-        ),
-        BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/coins.png',
-            height: 24,
-            width: 24,
-            color: iconColor(2),
-          ),
-          label: 'Pool',
-        ),
-        BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/barn.png',
-            height: 24,
-            width: 24,
-            color: iconColor(3),
-          ),
-          label: 'Farm',
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.grey,
-      onTap: (index) {
-        _onItemTapped(index);
-        // Need animate function because we are not using _selectedIndex to
-        // build mobile UI
-        animateToPage(index);
-      },
-    );
-  }
-
-  TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    // ignore: curly_braces_in_flow_control_structures
-    return TextStyle(
-      color: color,
-      fontFamily: 'OpenSans',
-      fontSize: size,
-      fontWeight: isBold ? FontWeight.w400 : null,
-      decoration: isUline ? TextDecoration.underline : null,
-    );
-  }
-
-  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
-    if (condition) return tru;
-    return fls;
   }
 }
