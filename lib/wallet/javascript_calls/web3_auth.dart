@@ -1,7 +1,6 @@
 @JS()
 library web3auth;
 
-// The above two lines are required
 import 'package:js/js.dart';
 
 @JS()
