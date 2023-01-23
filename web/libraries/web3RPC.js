@@ -1,8 +1,8 @@
-// TODO(Michael): finish implementing the rest of the methods for the rpc
+// Pass the rpc provided by magic into the Web3 library
 const rpc = (() => {
   /**
    *
-   * @param {*} provider - provider received from Web3Auth login.
+   * @param {*} provider - provider received from Magic login.
    */
 
   const getChainId = async (provider) => {
