@@ -15,48 +15,48 @@ var Magic = (function () {
 
     Magic.prototype.showWallet = async function () {
         console.log("show wallet")
-        await _this.magic.connect.showWallet();
+        await this._magic.connect.showWallet();
     }
 
     Magic.prototype.disconnect = async function () {
         console.log("disconnect");
-        await _this.magic.connect.disconnect();
+        await this._magic.connect.disconnect();
     }
 
     Magic.prototype.getWalletInfo = async function () {
         console.log("get wallet info");
-        const walletInfo = await _this.magic.connect.getWalletInfo();
+        const walletInfo = await this_.magic.connect.getWalletInfo();
         console.log(walletInfo);
         return walletInfo;
     }
 
     Magic.prototype.requestUserInfo = async function () {
         console.log("request user information");
-        const email = await _this.magic.connect.requestUserInfo();
+        const email = await this._magic.connect.requestUserInfo();
         return email;
     }
 
     Magic.prototype.getIdToken = async function () {
         console.log("get id token");
-        const idToken = await _this.magic.user.getIdToken();
+        const idToken = await this._magic.user.getIdToken();
         return idToken;
     }
 
     Magic.prototype.getMetadata = async function () {
         console.log("metadata -> user information");
-        const { issuer, email, phoneNumber, publicAddress } = await _this.magic.user.getMetadata();
+        const { issuer, email, phoneNumber, publicAddress } = await this._magic.user.getMetadata();
         return { issuer, email, phoneNumber, publicAddress };
     }
 
     Magic.prototype.isLoggedIn = async function () {
         console.log("is the user logged in to the app");
-        const isLoggedIn = await _this.magic.user.isLoggedIn();
+        const isLoggedIn = await this._magic.user.isLoggedIn();
         return isLoggedIn;
     }
 
     Magic.prototype.logOut = async function () {
         console.log("logging the user out");
-        await _this.magic.user.logOut();
+        await this._magic.user.logOut();
     }
 
     return Magic;
