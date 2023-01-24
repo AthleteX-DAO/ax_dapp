@@ -16,4 +16,9 @@ class Magic {
   external Future<dynamic> showWallet();
   external Future<dynamic> disconnect();
   external Future<dynamic> getWalletInfo();
+  external Future<dynamic> requestUserInfo();
+  external Future<dynamic> getIdToken();
+  external Future<dynamic> getMetadata();
+  external Future<dynamic> isLoggedIn();
+  external Future<dynamic> logOut();
 }
