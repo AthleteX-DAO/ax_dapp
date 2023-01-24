@@ -18,7 +18,11 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
+import 'package:ax_dapp/wallet/javascript_calls/connect_extension.dart';
+import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
 import 'package:ax_dapp/wallet/javascript_calls/web3_auth.dart';
+import 'package:ax_dapp/wallet/javascript_calls/web3_rpc.dart';
+import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:ax_dapp/wallet/repository/web3_auth_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,6 +88,16 @@ void main() async {
     'https://rpc-mainnet.matic.quiknode.pro',
   );
 
+  final magic = Magic(
+    'apiKey',
+    137,
+    'https://polygon-rpc.com/',
+    'en_US',
+    ConnectExtension(),
+  );
+
+  final web3rpc = Web3RPC();
+
   unawaited(
     bootstrap(() async {
       await Firebase.initializeApp(
@@ -92,6 +106,12 @@ void main() async {
       await promiseToFuture(web3Auth.initModal());
       return MultiRepositoryProvider(
         providers: [
+          RepositoryProvider(
+            create: (_) => MagicRepository(
+              magic: magic,
+              web3rpc: web3rpc,
+            ),
+          ),
           RepositoryProvider(
             create: (_) => LiveChatRepository(
               fireStore: FirebaseFirestore.instance,

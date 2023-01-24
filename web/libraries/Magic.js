@@ -1,5 +1,5 @@
 var Magic = (function () {
-    function Magic(apiKey, chainId, rpcUrl, locale) {
+    function Magic(apiKey, chainId, rpcUrl, locale, extension) {
         this._magic = new Magic({
             apiKey,
             network: {
@@ -7,6 +7,7 @@ var Magic = (function () {
                 rpcUrl: rpcUrl,
             },
             locale: locale,
+            extension: extension,
         });
 
         console.log("constructor", _this.magic);
