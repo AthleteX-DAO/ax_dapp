@@ -20,10 +20,8 @@ import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:ax_dapp/wallet/javascript_calls/connect_extension.dart';
 import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
-import 'package:ax_dapp/wallet/javascript_calls/web3_auth.dart';
 import 'package:ax_dapp/wallet/javascript_calls/web3_rpc.dart';
 import 'package:ax_dapp/wallet/repository/magic_repository.dart';
-import 'package:ax_dapp/wallet/repository/web3_auth_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
@@ -81,13 +79,6 @@ void main() async {
   final getPairInfoUseCase = GetPairInfoUseCase(subGraphRepo);
   final getSwapInfoUseCase = GetSwapInfoUseCase(getPairInfoUseCase);
 
-  final web3Auth = Web3Auth(
-    'BGBUVGOmA5x1rP3V9HRF13b-bco3wZWdiQymUckNBWfx9yURBmvo4brGfhkypeLkAsteeSd9_gsIsJKSyD2d4FY',
-    'eip155',
-    '0x89',
-    'https://rpc-mainnet.matic.quiknode.pro',
-  );
-
   final magic = Magic(
     'pk_live_46C64E93DA4A6F28',
     137,
@@ -103,7 +94,6 @@ void main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      await promiseToFuture(web3Auth.initModal());
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
@@ -120,11 +110,6 @@ void main() async {
           RepositoryProvider(
             create: (_) => ChatGPTRepository(
               fireStore: FirebaseFirestore.instance,
-            ),
-          ),
-          RepositoryProvider(
-            create: (_) => Web3AuthRepository(
-              web3Auth: web3Auth,
             ),
           ),
           RepositoryProvider(

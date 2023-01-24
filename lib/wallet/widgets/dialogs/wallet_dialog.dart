@@ -158,7 +158,7 @@ class WalletDialog extends StatelessWidget {
                         onPressed: () {
                           context
                               .read<WalletBloc>()
-                              .add(const ConnectWalletWeb3Auth());
+                              .add(const ConnectWalletMagic());
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
