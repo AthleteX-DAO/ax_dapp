@@ -5,7 +5,6 @@ import 'package:ax_dapp/wallet/javascript_calls/connect_extension.dart';
 import 'package:js/js.dart';
 
 @JS()
-
 class Magic {
   external Magic(
     String apiKey,
@@ -14,7 +13,7 @@ class Magic {
     String locale, 
     ConnectExtension connectExtension,
   );
-  
+
   external dynamic get rpcProvider;
   external Future<dynamic> showWallet();
   external Future<dynamic> disconnect();

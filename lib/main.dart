@@ -89,7 +89,7 @@ void main() async {
   );
 
   final magic = Magic(
-    'apiKey',
+    'pk_live_46C64E93DA4A6F28',
     137,
     'https://polygon-rpc.com/',
     'en_US',
