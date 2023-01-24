@@ -168,13 +168,13 @@ class WalletDialog extends StatelessWidget {
                               width: 30,
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
-                                  image: AssetImage('assets/images/web3auth_logo_alt.png'),
+                                  image: AssetImage('assets/images/magic-logo.png'),
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
                             const Text(
-                              'Web3Auth',
+                              'Magic',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'OpenSans',
