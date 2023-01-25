@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/bootstrap.dart';
+import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/firebase_options.dart';
+import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -16,6 +18,7 @@ import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.da
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:cache/cache.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/config_api.dart';
 import 'package:ethereum_api/gysr_api.dart';
@@ -24,7 +27,6 @@ import 'package:ethereum_api/wallet_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -79,6 +81,16 @@ void main() async {
       );
       return MultiRepositoryProvider(
         providers: [
+          RepositoryProvider(
+            create: (_) => LiveChatRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+          RepositoryProvider(
+            create: (_) => ChatGPTRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
           RepositoryProvider(
             create: (_) => WalletRepository(
               walletApiClient,
