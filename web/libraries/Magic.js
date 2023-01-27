@@ -1,63 +1,64 @@
-var Magic = (function () {
-    function Magic(apiKey, chainId, rpcUrl, locale, extension) {
-        this._magic = new Magic({
-            apiKey,
-            network: {
-                chainId, chainId,
-                rpcUrl: rpcUrl,
-            },
-            locale: locale,
-            extension: extension,
+var MagicSDK = (function () {
+    function MagicSDK(apiKey, chainId, rpcUrl, locale, extension) {
+        this._magicSDK = new Magic('pk_live_064D386F90F4DF26', {
+            // network: {
+            //     chainId, chainId,
+            //     rpcUrl: rpcUrl,
+            // },
+            network: "goerli",
+            locale: "en_US",
+            extensions: [new MagicConnectExtension()],
         });
-
-        console.log("constructor", _this.magic);
+        this._web3 = new Web3(this._magicSDK.rpcProvider);
     }
 
-    Magic.prototype.showWallet = async function () {
-        console.log("show wallet")
-        await this._magic.connect.showWallet();
+    MagicSDK.prototype.showWallet = async function () {
+        await this._web3.eth.getAccounts();
+        // extension.showWallet();
+        // const token = await this._magicSDK.webauthn.registerNewUser({ username: 'michael' });
+        // await this._magicSDK.connect.showWallet();
     }
 
-    Magic.prototype.disconnect = async function () {
+    MagicSDK.prototype.disconnect = async function () {
         console.log("disconnect");
-        await this._magic.connect.disconnect();
+        await this._magicSDK.connect.disconnect();
     }
 
-    Magic.prototype.getWalletInfo = async function () {
+    MagicSDK.prototype.getWalletInfo = async function () {
         console.log("get wallet info");
-        const walletInfo = await this_.magic.connect.getWalletInfo();
+        const walletInfo = await this_.MagicSDK.connect.getWalletInfo();
         console.log(walletInfo);
         return walletInfo;
     }
 
-    Magic.prototype.requestUserInfo = async function () {
+    MagicSDK.prototype.requestUserInfo = async function () {
         console.log("request user information");
-        const email = await this._magic.connect.requestUserInfo();
+        const email = await this._magicSDK.connect.requestUserInfo();
         return email;
     }
 
-    Magic.prototype.getIdToken = async function () {
+    MagicSDK.prototype.getIdToken = async function () {
         console.log("get id token");
-        const idToken = await this._magic.user.getIdToken();
+        const idToken = await this._magicSDK.user.getIdToken();
         return idToken;
     }
 
-    Magic.prototype.getMetadata = async function () {
+    MagicSDK.prototype.getMetadata = async function () {
         console.log("metadata -> user information");
-        const { issuer, email, phoneNumber, publicAddress } = await this._magic.user.getMetadata();
+        const { issuer, email, phoneNumber, publicAddress } = await this._magicSDK.user.getMetadata();
         return { issuer, email, phoneNumber, publicAddress };
     }
 
-    Magic.prototype.isLoggedIn = async function () {
+    MagicSDK.prototype.isLoggedIn = async function () {
         console.log("is the user logged in to the app");
-        const isLoggedIn = await this._magic.user.isLoggedIn();
+        const isLoggedIn = await this._magicSDK.user.isLoggedIn();
         return isLoggedIn;
     }
 
-    Magic.prototype.logOut = async function () {
+    MagicSDK.prototype.logOut = async function () {
         console.log("logging the user out");
-        await this._magic.user.logOut();
+        await this._magicSDK.user.logOut();
     }
 
-    return Magic;
+    return MagicSDK;
 })();

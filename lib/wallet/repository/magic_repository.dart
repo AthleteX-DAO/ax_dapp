@@ -2,14 +2,12 @@ import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
 import 'package:ax_dapp/wallet/javascript_calls/web3_rpc.dart';
 
 class MagicRepository {
-  MagicRepository({required Magic magic, required Web3RPC web3rpc})
-      : _magic = magic,
-        _web3rpc = web3rpc;
-  final Magic _magic;
-  final Web3RPC _web3rpc;
+  MagicRepository({required MagicSDK magic}) : _magic = magic;
+  final MagicSDK _magic;
 
   Future<dynamic> connect() async {
-    await _web3rpc.getAccounts(_magic.rpcProvider);
+    // await _web3rpc.getAccounts(_magic.rpcProvider);
+    await _magic.showWallet();
   }
 
   Future<void> showWallet() async {
