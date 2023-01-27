@@ -19,7 +19,7 @@ import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -100,7 +100,6 @@ class _V1AppState extends State<V1App> {
     _pageController = PageController(initialPage: _selectedIndex);
     Get
       ..put(LSPController())
-      ..put(SwapController())
       ..put(PoolController());
   }
 
@@ -177,7 +176,7 @@ class _V1AppState extends State<V1App> {
                 streamAppDataChanges:
                     context.read<StreamAppDataChangesUseCase>(),
                 repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                swapController: Get.find(),
+                swapRepository: context.read<SwapRepository>(),
                 isBuyAX: isBuyAX,
               ),
               child: const DesktopTrade(),
@@ -226,7 +225,7 @@ class _V1AppState extends State<V1App> {
               walletRepository: context.read<WalletRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-              swapController: Get.find(),
+              swapRepository: context.read<SwapRepository>(),
               isBuyAX: isBuyAX,
             ),
             child: const DesktopTrade(),

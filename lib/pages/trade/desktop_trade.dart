@@ -2,7 +2,6 @@ import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
-import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -13,7 +12,6 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class DesktopTrade extends StatefulWidget {
@@ -24,7 +22,6 @@ class DesktopTrade extends StatefulWidget {
 }
 
 class _DesktopTradeState extends State<DesktopTrade> {
-  SwapController swapController = Get.find();
   bool isWeb = true;
   final TextEditingController _tokenFromInputController =
       TextEditingController();
@@ -534,8 +531,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                             tokenFromInputController: _tokenFromInputController,
                             tokenToInputController: _tokenToInputController,
                             text: 'Approve',
-                            approveCallback: swapController.approve,
-                            confirmCallback: swapController.swap,
+                            approveCallback: bloc.swapRepository.approve,
+                            confirmCallback: bloc.swapRepository.swap,
                             confirmDialog: const TransactionStatusDialog(
                               title: 'Transaction Confirmed',
                               icons: Icons.check_circle_outline,

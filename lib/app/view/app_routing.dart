@@ -23,7 +23,7 @@ import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
@@ -52,7 +52,6 @@ class App extends StatelessWidget {
     Get
       ..put(Controller())
       ..put(LSPController())
-      ..put(SwapController())
       ..put(PoolController());
 
     return MultiBlocProvider(
@@ -168,7 +167,7 @@ class _MaterialApp extends StatelessWidget {
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
                   repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                  swapController: Get.find(),
+                  swapRepository: context.read<SwapRepository>(),
                   isBuyAX: false,
                 ),
                 child: const DesktopTrade(),

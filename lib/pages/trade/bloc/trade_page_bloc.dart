@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:ax_dapp/pages/trade/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
-import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 // ignore: implementation_imports
 import 'package:ethereum_api/src/tokens/models/contract.dart';
@@ -19,7 +19,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     required WalletRepository walletRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
-    required this.swapController,
+    required this.swapRepository,
     required this.isBuyAX,
   })  : _walletRepository = walletRepository,
         _streamAppDataChanges = streamAppDataChanges,
@@ -45,7 +45,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetSwapInfoUseCase repo;
-  final SwapController swapController;
+  final SwapRepository swapRepository;
   final bool isBuyAX;
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -56,14 +56,14 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       _streamAppDataChanges.appDataChanges,
       onData: (appData) {
         final appConfig = appData.appConfig;
-        swapController
+        swapRepository
           ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
-        swapController.controller.credentials =
+        swapRepository.controller.credentials =
             _walletRepository.credentials.value;
-        swapController.factoryAddress.value =
+        swapRepository.factoryAddress.value =
             Contract.exchangeFactory(appData.chain).address;
-        swapController.routerAddress.value =
+        swapRepository.routerAddress.value =
             Contract.exchangeRouter(appData.chain).address;
         final tradeTokens = appData.chain.computeTradeTokens(
           isBuyAX: isBuyAX,
@@ -109,9 +109,9 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           await _walletRepository.getTokenBalance(state.tokenTo.address);
       final tokenFromDecimal = await _walletRepository.getDecimals(state.tokenFrom.address);
       final tokenToDecimal = await _walletRepository.getDecimals(state.tokenTo.address);
-      swapController
-        ..updateTopDecimals(tokenFromDecimal.toInt())
-        ..updateBottomDecimals(tokenToDecimal.toInt());
+      swapRepository
+        ..topDecimals = (tokenFromDecimal.toInt())
+        ..bottomDecimals = (tokenToDecimal.toInt());
       emit(
         state.copyWith(
           tokenFromBalance: tokenFromBalance ?? 0,
@@ -126,9 +126,9 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       );
       final isSuccess = response.isLeft();
       if (isSuccess) {
-        swapController
-          ..updateFromAddress(state.tokenFrom.address)
-          ..updateToAddress(state.tokenTo.address);
+        swapRepository
+          ..fromAddress = (state.tokenFrom.address)
+          ..toAddress = (state.tokenTo.address);
         final swapInfo = response.getLeft().toNullable()!.swapInfo;
 
         //do some math
@@ -186,8 +186,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
             ),
           );
         } else {
-          if (swapController.amount1.value != tokenInputFromAmount) {
-            swapController.updateFromAmount(tokenInputFromAmount);
+          if (swapRepository.amount1.value != tokenInputFromAmount) {
+            swapRepository.fromAmount = tokenInputFromAmount;
           }
           final swapInfo = response.getLeft().toNullable()!.swapInfo;
           //do some math
@@ -263,7 +263,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     SetTokenFrom event,
     Emitter<TradePageState> emit,
   ) {
-    swapController.updateFromAddress(event.tokenFrom.address);
+    swapRepository.fromAddress = event.tokenFrom.address;
     emit(
       state.copyWith(
         tokenFrom: event.tokenFrom,
@@ -276,7 +276,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     SetTokenTo event,
     Emitter<TradePageState> emit,
   ) {
-    swapController.updateToAddress(event.tokenTo.address);
+    swapRepository.toAddress = event.tokenTo.address;
     emit(
       state.copyWith(
         tokenTo: event.tokenTo,

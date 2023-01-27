@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:ax_dapp/dialogs/sell/sell_dialog.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
@@ -20,7 +22,6 @@ import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class BuyButton extends StatelessWidget {
   const BuyButton({
@@ -61,7 +62,7 @@ class BuyButton extends StatelessWidget {
                     walletRepository: context.read<WalletRepository>(),
                     tokensRepository: context.read<TokensRepository>(),
                   ),
-                  swapController: Get.find(),
+                  swapRepository: context.read<SwapRepository>(),
                   athleteId: athlete.id,
                 ),
                 child: BuyDialog(
@@ -122,7 +123,7 @@ class SellButton extends StatelessWidget {
                     walletRepository: context.read<WalletRepository>(),
                     tokensRepository: context.read<TokensRepository>(),
                   ),
-                  swapController: Get.find(),
+                  swapRepository: context.read<SwapRepository>(),
                   athleteId: athlete.id,
                 ),
                 child: SellDialog(
