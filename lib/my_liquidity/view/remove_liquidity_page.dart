@@ -1,6 +1,6 @@
 import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
 import 'package:ax_dapp/my_liquidity/widgets/pool_remove_approve_button.dart';
-import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

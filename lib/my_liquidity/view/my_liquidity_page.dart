@@ -4,7 +4,7 @@ import 'package:ax_dapp/my_liquidity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/my_liquidity/models/models.dart';
 import 'package:ax_dapp/my_liquidity/view/view.dart';
 import 'package:ax_dapp/my_liquidity/widgets/widgets.dart';
-import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';

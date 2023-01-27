@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:ax_dapp/add_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
-import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 // ignore: implementation_imports
 import 'package:ethereum_api/src/tokens/models/contract.dart';
