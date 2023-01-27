@@ -17,6 +17,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -82,6 +83,9 @@ void main() async {
       );
       return MultiRepositoryProvider(
         providers: [
+          RepositoryProvider(
+            create: (_) => PoolRepository(),
+          ),
           RepositoryProvider(
             create: (_) => SwapRepository(),
           ),

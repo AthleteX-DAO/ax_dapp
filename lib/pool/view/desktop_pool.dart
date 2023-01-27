@@ -2,12 +2,12 @@ import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -171,7 +171,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                         repo:
                             RepositoryProvider.of<GetPoolInfoUseCase>(context),
                         getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
-                        poolController: Get.find(),
+                        poolRepository: context.read<PoolRepository>(),
                       ),
                       child: AddLiquidityPage(
                         token0: token0,

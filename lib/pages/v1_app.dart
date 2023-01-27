@@ -17,7 +17,7 @@ import 'package:ax_dapp/scout/scout.dart';
 import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -99,8 +99,7 @@ class _V1AppState extends State<V1App> {
     super.initState();
     _pageController = PageController(initialPage: _selectedIndex);
     Get
-      ..put(LSPController())
-      ..put(PoolController());
+      ..put(LSPController());
   }
 
   @override
@@ -238,7 +237,7 @@ class _V1AppState extends State<V1App> {
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
               getAllLiquidityInfoUseCase:
                   RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
-              poolController: Get.find(),
+              poolRepository: context.read<PoolRepository>(),
             ),
             child: const DesktopPool(),
           ),
