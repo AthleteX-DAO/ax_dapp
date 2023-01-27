@@ -1,5 +1,5 @@
 import 'package:badges/badges.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:tokens_repository/tokens_repository.dart';
 
 class BadgeToken extends StatelessWidget {
