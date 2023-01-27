@@ -2,7 +2,6 @@ import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/mint/widgets/widgets.dart';
 import 'package:ax_dapp/scout/models/models.dart';
-import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
@@ -32,7 +30,6 @@ class _MintDialogState extends State<MintDialog> {
   double hgt = 450;
   double input = 0;
   final TextEditingController _aptAmountController = TextEditingController();
-  LSPController lspController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -305,7 +302,10 @@ class _MintDialogState extends State<MintDialog> {
                     children: [
                       YouSpend(spendAmount: spendAmount),
                       Container(height: 10),
-                      YouReceive(longReceive: longReceive, shortReceive: shortReceive),
+                      YouReceive(
+                        longReceive: longReceive,
+                        shortReceive: shortReceive,
+                      ),
                     ],
                   ),
                 ),
@@ -327,10 +327,10 @@ class _MintDialogState extends State<MintDialog> {
                           approveCallback: () {
                             final currentAxt =
                                 context.read<TokensRepository>().currentAxt;
-                            return bloc.lspController
+                            return bloc.longShortPairRepository
                                 .approve(currentAxt.address);
                           },
-                          confirmCallback: bloc.lspController.mint,
+                          confirmCallback: bloc.longShortPairRepository.mint,
                         )
                       else
                         WarningTextButton(

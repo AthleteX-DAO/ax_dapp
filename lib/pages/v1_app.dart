@@ -18,7 +18,7 @@ import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
-import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ethereum_api/gysr_api.dart';
@@ -98,8 +98,6 @@ class _V1AppState extends State<V1App> {
     // Init the states of everything needed for the whole dapp
     super.initState();
     _pageController = PageController(initialPage: _selectedIndex);
-    Get
-      ..put(LSPController());
   }
 
   @override
@@ -165,6 +163,8 @@ class _V1AppState extends State<V1App> {
                     RepositoryProvider.of<NFLRepo>(context),
                   ],
                 ),
+                longShortPairRepository:
+                    context.read<LongShortPairRepository>(),
               ),
               child: const Scout(),
             )
@@ -216,6 +216,7 @@ class _V1AppState extends State<V1App> {
                   RepositoryProvider.of<NFLRepo>(context),
                 ],
               ),
+              longShortPairRepository: context.read<LongShortPairRepository>(),
             ),
             child: const Scout(),
           ),
