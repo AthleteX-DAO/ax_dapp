@@ -1,13 +1,10 @@
 var Magic = (function () {
-    function Magic(apiKey, chainId, rpcUrl, locale, extension) {
-        this._magic = new Magic({
-            apiKey,
-            network: {
+    function Magic(apiKey, chainId, rpcUrl, locale, extensions) {
+        this._magic = new Magic(apiKey, {
                 chainId, chainId,
                 rpcUrl: rpcUrl,
-            },
-            locale: locale,
-            extension: extension,
+                locale: locale,
+                extensions: [MagicConnectExtension()],                   
         });
 
         console.log("constructor", _this.magic);

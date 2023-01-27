@@ -11,7 +11,6 @@ class Magic {
     int chainId,
     String rpcUrl,
     String locale, 
-    ConnectExtension connectExtension,
   );
 
   external dynamic get rpcProvider;

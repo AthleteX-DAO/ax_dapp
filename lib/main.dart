@@ -84,7 +84,6 @@ void main() async {
     137,
     'https://polygon-rpc.com/',
     'en_US',
-    ConnectExtension(),
   );
 
   final web3rpc = Web3RPC();
