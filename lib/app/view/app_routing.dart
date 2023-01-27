@@ -51,8 +51,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     Get
       ..put(Controller())
-      ..put(LSPController())
-      ..put(PoolController());
+      ..put(LSPController());
 
     return MultiBlocProvider(
       providers: [
@@ -190,7 +189,7 @@ class _MaterialApp extends StatelessWidget {
                       RepositoryProvider.of<GetAllLiquidityInfoUseCase>(
                     context,
                   ),
-                  poolController: Get.find(),
+                  poolRepository: context.read<PoolRepository>(),
                 ),
                 child: const DesktopPool(),
               );

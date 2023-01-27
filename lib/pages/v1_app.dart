@@ -99,8 +99,7 @@ class _V1AppState extends State<V1App> {
     super.initState();
     _pageController = PageController(initialPage: _selectedIndex);
     Get
-      ..put(LSPController())
-      ..put(PoolController());
+      ..put(LSPController());
   }
 
   @override
@@ -238,7 +237,7 @@ class _V1AppState extends State<V1App> {
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
               getAllLiquidityInfoUseCase:
                   RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
-              poolController: Get.find(),
+              poolRepository: context.read<PoolRepository>(),
             ),
             child: const DesktopPool(),
           ),

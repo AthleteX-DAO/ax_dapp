@@ -4,7 +4,6 @@ import 'package:ax_dapp/my_liquidity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/my_liquidity/models/models.dart';
 import 'package:ax_dapp/my_liquidity/view/view.dart';
 import 'package:ax_dapp/my_liquidity/widgets/widgets.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -12,7 +11,6 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class MyLiquidityPage extends StatefulWidget {
@@ -29,8 +27,6 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
   late final TabController _tabController;
   bool _isWeb = true;
   double _layoutHgt = 0;
-  PoolController poolController = Get.find();
-  Controller controller = Get.find();
   LiquidityPositionInfo infoOfSelectedCard = LiquidityPositionInfo.empty();
   AssetImage? token0Icon = const AssetImage('assets/images/apt.png');
   AssetImage? token1Icon = const AssetImage('assets/images/apt.png');
@@ -49,6 +45,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
 
   @override
   Widget build(BuildContext context) {
+    final poolRepository = context.read<PoolRepository>();
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     _layoutHgt = _height * 0.8;
@@ -148,7 +145,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                             token0Icon = tokenImage(token0);
                             token1Icon = tokenImage(token1);
                             infoOfSelectedCard = liquidityPositionInfo;
-                            poolController
+                            poolRepository
                               ..lpTokenAAddress =
                                   liquidityPositionInfo.token0Address
                               ..lpTokenBAddress =
@@ -288,13 +285,13 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                     token0Icon: token0Icon,
                     token1Icon: token1Icon,
                     tabController: _tabController,
-                    poolController: poolController,
+                    poolRepository: poolRepository,
                   ) else RemoveLiquidityPageMobile(
                     infoOfSelectedCard: infoOfSelectedCard,
                     token0Icon: token0Icon,
                     token1Icon: token1Icon,
                     tabController: _tabController,
-                    poolController: poolController,
+                    poolRepository: poolRepository,
                   )
                   ,
                 ],
