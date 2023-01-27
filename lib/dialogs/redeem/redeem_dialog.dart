@@ -442,7 +442,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           ),
                           child: TextButton(
                             onPressed: () async {
-                              final result = await bloc.lspController.redeem();
+                              final result = await bloc.longShortPairRepository.redeem();
                               if (result) {
                                 await showDialog<void>(
                                   context: context,
@@ -465,12 +465,12 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                         inputShortApt:
                                             _shortInputController.text,
                                         valueInAx:
-                                            (bloc.lspController.redeemAmt *
+                                            (bloc.longShortPairRepository.redeemAmt *
                                                     collateralPerPair)
                                                 .toStringAsFixed(6),
                                         walletId: walletAddress,
                                         valueInUSD:
-                                            (bloc.lspController.redeemAmt *
+                                            (bloc.longShortPairRepository.redeemAmt *
                                                     collateralPerPair) *
                                                 price,
                                       );

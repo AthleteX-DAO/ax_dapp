@@ -6,7 +6,7 @@ import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/scout/scout.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/foundation.dart';
@@ -41,7 +41,7 @@ class _AthletePageState extends State<AthletePage> {
     super.initState();
     athlete = widget.athlete!;
     final aptPair = context.read<TokensRepository>().currentAptPair(athlete.id);
-    Get.find<LSPController>().updateAptAddress(aptPair.address);
+    context.read<LongShortPairRepository>().tokenAddress = aptPair.address;
   }
 
   @override

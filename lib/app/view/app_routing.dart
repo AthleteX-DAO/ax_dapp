@@ -22,7 +22,7 @@ import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
-import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
@@ -50,8 +50,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get
-      ..put(Controller())
-      ..put(LSPController());
+      ..put(Controller());
 
     return MultiBlocProvider(
       providers: [
@@ -140,6 +139,8 @@ class _MaterialApp extends StatelessWidget {
                       RepositoryProvider.of<NFLRepo>(context),
                     ],
                   ),
+                  longShortPairRepository:
+                      context.read<LongShortPairRepository>(),
                 ),
                 child: const Scout(),
               );
