@@ -376,8 +376,8 @@ class _SellDialogState extends State<SellDialog> {
                               longOrShort: state.aptTypeSelection.isLong
                                   ? 'Long Apt'
                                   : 'Short Apt',
-                              approveCallback: bloc.swapController.approve,
-                              confirmCallback: bloc.swapController.swap,
+                              approveCallback: bloc.swapRepository.approve,
+                              confirmCallback: bloc.swapRepository.swap,
                               confirmDialog: const TransactionStatusDialog(
                                 title: 'Transaction Confirmed',
                                 icons: Icons.check_circle_outline,

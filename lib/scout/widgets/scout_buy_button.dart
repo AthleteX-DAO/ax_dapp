@@ -3,13 +3,13 @@ import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/widgets/buy_text.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -74,7 +74,7 @@ class ScoutBuyButton extends StatelessWidget {
                   walletRepository: context.read<WalletRepository>(),
                   tokensRepository: context.read<TokensRepository>(),
                 ),
-                swapController: Get.find(),
+                swapRepository: context.read<SwapRepository>(),
                 athleteId: athlete.id,
               ),
               child: BuyDialog(

@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_sell_info.dart';
-import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ethereum_api/src/tokens/models/contract.dart';
@@ -27,7 +27,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.wallet,
-    required this.swapController,
+    required this.swapRepository,
     required int athleteId,
   })  : _streamAppDataChanges = streamAppDataChanges,
         _walletRepository = walletRepository,
@@ -54,7 +54,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   final TokensRepository _tokensRepository;
   final GetSellInfoUseCase repo;
   final GetTotalTokenBalanceUseCase wallet;
-  final SwapController swapController;
+  final SwapRepository swapRepository;
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
 
@@ -81,13 +81,13 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       _streamAppDataChanges.appDataChanges,
       onData: (appData) {
         final appConfig = appData.appConfig;
-        swapController
+        swapRepository
           ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
-        swapController.controller.credentials =
+        swapRepository.controller.credentials =
             _walletRepository.credentials.value;
-        swapController.factoryAddress.value = Contract.exchangeFactory(appData.chain).address;
-        swapController.routerAddress.value = Contract.exchangeRouter(appData.chain).address;
+        swapRepository.factoryAddress.value = Contract.exchangeFactory(appData.chain).address;
+        swapRepository.routerAddress.value = Contract.exchangeRouter(appData.chain).address;
         add(const FetchAptSellInfoRequested());
       },
     );
@@ -115,9 +115,9 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
           await wallet.getTotalBalanceForToken(selectedTokenAddress);
 
       if (isSuccess) {
-        swapController
-          ..updateFromAddress(selectedTokenAddress)
-          ..updateToAddress(_tokensRepository.currentTokens.axt.address);
+        swapRepository
+          ..fromAddress = selectedTokenAddress
+          ..toAddress = _tokensRepository.currentTokens.axt.address;
         final swapInfo = response.getLeft().toNullable()!.sellInfo;
         //do some math
         emit(
@@ -206,8 +206,8 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
               failure: InSufficientFailure(),
               errorMessage: 'Insufficient balance'));
         } else {
-          if (swapController.amount1.value != aptInputAmount) {
-            swapController.updateFromAmount(aptInputAmount);
+          if (swapRepository.amount1.value != aptInputAmount) {
+            swapRepository.fromAmount = aptInputAmount;
           }
           emit(
             state.copyWith(

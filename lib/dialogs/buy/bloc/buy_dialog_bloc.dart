@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
-import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ethereum_api/src/tokens/models/contract.dart';
@@ -27,7 +27,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.wallet,
-    required this.swapController,
+    required this.swapRepository,
     required int athleteId,
   })  : _streamAppDataChanges = streamAppDataChanges,
         _walletRepository = walletRepository,
@@ -55,7 +55,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetBuyInfoUseCase repo;
   final GetTotalTokenBalanceUseCase wallet;
-  final SwapController swapController;
+  final SwapRepository swapRepository;
 
   Future<void> _onWatchAptPairStarted(
     WatchAptPairStarted event,
@@ -72,7 +72,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     );
   }
 
-  Future<void> _mapUpdateSwapControllerEventToState (
+  Future<void> _mapUpdateSwapControllerEventToState(
     UpdateSwapController event,
     Emitter<BuyDialogState> emit,
   ) async {
@@ -80,13 +80,15 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       _streamAppDataChanges.appDataChanges,
       onData: (appData) {
         final appConfig = appData.appConfig;
-        swapController
+        swapRepository
           ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
-        swapController.controller.credentials =
+        swapRepository.controller.credentials =
             _walletRepository.credentials.value;
-        swapController.factoryAddress.value = Contract.exchangeFactory(appData.chain).address;
-        swapController.routerAddress.value = Contract.exchangeRouter(appData.chain).address;
+        swapRepository.factoryAddress.value =
+            Contract.exchangeFactory(appData.chain).address;
+        swapRepository.routerAddress.value =
+            Contract.exchangeRouter(appData.chain).address;
         add(const FetchAptBuyInfoRequested());
       },
     );
@@ -113,9 +115,9 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       final balance = await wallet.getTotalAxBalance();
 
       if (isSuccess) {
-        swapController
-          ..updateFromAddress(_tokensRepository.currentTokens.axt.address)
-          ..updateToAddress(selectedAptAddress);
+        swapRepository
+          ..fromAddress = _tokensRepository.currentTokens.axt.address
+          ..toAddress = selectedAptAddress;
         final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
 
         emit(
@@ -194,13 +196,16 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       if (isSuccess) {
         final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
         if (axInputAmount > balance) {
-          emit(state.copyWith(
+          emit(
+            state.copyWith(
               status: BlocStatus.error,
               failure: InSufficientFailure(),
-              errorMessage: 'Insufficient balance'));
+              errorMessage: 'Insufficient balance',
+            ),
+          );
         } else {
-          if (swapController.amount1.value != axInputAmount) {
-            swapController.updateFromAmount(axInputAmount);
+          if (swapRepository.amount1.value != axInputAmount) {
+            swapRepository.fromAmount = axInputAmount;
           }
           emit(
             state.copyWith(
