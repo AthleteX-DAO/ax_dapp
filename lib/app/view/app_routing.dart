@@ -101,12 +101,6 @@ class _MaterialApp extends StatelessWidget {
       routerConfig: GoRouter(
         // ignore: body_might_complete_normally_nullable
         redirect: (context, state) async {
-          if (notLanding(state.location) &&
-              (await context.read<WalletRepository>().searchForWallet() ??
-                  false)) {
-            context.read<WalletBloc>().add(const ConnectWalletRequested());
-          }
-
           if (state.location.contains('/athlete') &&
               Global().athleteList.isEmpty) {
             return '/scout';

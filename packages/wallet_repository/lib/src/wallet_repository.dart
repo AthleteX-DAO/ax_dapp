@@ -21,6 +21,7 @@ class WalletRepository {
     _walletApiClient.chainChanges.listen((chain) async {
       debugPrint('Wallet Repo: chain changed: ${chain.name}: ${chain.chainId}');
       debugPrint('Wallet Credentials: $credentialsCacheKey');
+      debugPrint('LISTENING TO THE API CLIENT CHAIN CHANGES');
       final cachedWalletAddress = _cache
           .read<WalletCredentials>(key: credentialsCacheKey)
           ?.walletAddress;
@@ -29,24 +30,14 @@ class WalletRepository {
         debugPrint(
           'Wallet Repo: wallet address found in cache: $cachedWalletAddress',
         );
+        debugPrint('WALLET IS FOUND IN CACHE');
         walletUpdate = Wallet(
           address: (chain.isSupported) ? cachedWalletAddress : kEmptyAddress,
           chain: chain,
           status: WalletStatus.fromChain(chain),
         );
-      } else {
-        debugPrint(
-          'Wallet Repo: no cached wallet address so lets get the real thing',
-        );
-        final newAddress = await _getWalletCredentials();
-        debugPrint('Retrieved the new address: $newAddress');
-        walletUpdate = Wallet(
-          address: (chain.isSupported) ? newAddress : kEmptyAddress,
-          chain: chain,
-          status: WalletStatus.fromChain(chain),
-        );
+        _walletChangeController.add(walletUpdate);
       }
-      _walletChangeController.add(walletUpdate);
     });
   }
 
@@ -64,12 +55,6 @@ class WalletRepository {
 
   /// set true when connecting, false disconnecting
   static const searchForWalletKey = '__search_cache_key__';
-
-  /// return if you should attempt to load wallet
-  Future<bool?> searchForWallet() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(searchForWalletKey);
-  }
 
   /// Allows listening to changes to the current [EthereumChain].
   Stream<EthereumChain> get chainChanges => _walletApiClient.chainChanges;
@@ -102,27 +87,39 @@ class WalletRepository {
   /// - [EthereumWalletFailure]
   /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(searchForWalletKey, true);
+    debugPrint('CONNECT WALLET METHOD CALLED');
     _walletApiClient.addChainChangedListener();
     await _walletApiClient.syncChain(defaultChain);
-    final credentials = _getWalletCredentials();
-    return credentials;
-  }
-
-  Future<String> _getWalletCredentials() async {
+    debugPrint('GET WALLET CREDENTIALS WILL BE CALLED IN THE CONNECT WALLET');
     final credentials = await _walletApiClient.getWalletCredentials();
     _cacheWalletCredentials(credentials);
     final walletAddress = credentials.value.address.hex;
     _walletChangeController.add(
       Wallet(
-        status: currentWallet.status,
+        status: WalletStatus.fromChain(currentChain),
         address: walletAddress,
-        chain: currentWallet.chain,
+        chain: currentChain,
       ),
     );
     return walletAddress;
   }
+
+  // Future<String> _getWalletCredentials() async {
+  //   debugPrint('GET WALLET CREDENTIALS CALLED');
+  //   debugPrint('PROMPTING THE USER TO CONNECT VIA METAMASK');
+  //   final credentials = await _walletApiClient.getWalletCredentials();
+  //   debugPrint('CACHING THE WALLET CREDENTIALS');
+  //   _cacheWalletCredentials(credentials);
+  //   final walletAddress = credentials.value.address.hex;
+  //   _walletChangeController.add(
+  //     Wallet(
+  //       status: currentWallet.status,
+  //       address: walletAddress,
+  //       chain: currentWallet.chain,
+  //     ),
+  //   );
+  //   return walletAddress;
+  // }
 
   void _cacheWalletCredentials(WalletCredentials credentials) => _cache.write(
         key: credentialsCacheKey,
@@ -175,12 +172,10 @@ class WalletRepository {
   ///
   /// Defaults to [BigInt.zero] on error.
   Future<BigInt> getRawTokenBalance(String tokenAddress) async {
-    final walletAddress = (currentWallet.address.isNotEmpty)
-        ? currentWallet.address
-        : await _getWalletCredentials();
+    debugPrint('GET RAW TOKEN BALANCE IS BEING CALLED');
     return _walletApiClient.getRawTokenBalance(
       tokenAddress: tokenAddress,
-      walletAddress: walletAddress,
+      walletAddress: currentWallet.address,
     );
   }
 
@@ -192,9 +187,9 @@ class WalletRepository {
   /// used to display the amount of ether in a human-readable format, it should
   /// not be used for anything else.
   Future<double?> getTokenBalance(String tokenAddress) async {
+    debugPrint('GET TOKEN BALANCE IS BEING CALLED');
     final rawBalance = await getRawTokenBalance(tokenAddress);
     final decimal = await _walletApiClient.getDecimals(tokenAddress);
-    debugPrint('Buy Dialog Raw AX Balance: $rawBalance');
     if (rawBalance == BigInt.zero) {
       return null;
     }
@@ -203,7 +198,7 @@ class WalletRepository {
     return double.parse(formattedBalance);
   }
 
-  /// Returns a [BigInt] amount of decimals from a [tokenAddress]. 
+  /// Returns a [BigInt] amount of decimals from a [tokenAddress].
   Future<BigInt> getDecimals(String tokenAddress) async {
     final decimal = await _walletApiClient.getDecimals(tokenAddress);
     return decimal;
