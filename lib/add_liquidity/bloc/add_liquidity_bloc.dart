@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:ax_dapp/add_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
-import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 // ignore: implementation_imports
 import 'package:ethereum_api/src/tokens/models/contract.dart';
@@ -21,7 +21,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.getAllLiquidityInfoUseCase,
-    required this.poolController,
+    required this.poolRepository,
   })  : _walletRepository = walletRepository,
         _streamAppDataChanges = streamAppDataChanges,
         super(
@@ -45,7 +45,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetPoolInfoUseCase repo;
   final GetAllLiquidityInfoUseCase getAllLiquidityInfoUseCase;
-  final PoolController poolController;
+  final PoolRepository poolRepository;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -62,17 +62,17 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
           ),
         );
         final appConfig = appData.appConfig;
-        poolController.controller.client.value =
+        poolRepository.controller.client.value =
             appConfig.reactiveWeb3Client.value;
-        poolController.controller.credentials =
+        poolRepository.controller.credentials =
             _walletRepository.credentials.value;
-        poolController
+        poolRepository
           ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
 
-        poolController.factoryAddress.value =
+        poolRepository.factoryAddress.value =
             Contract.exchangeFactory(appData.chain).address;
-        poolController.routerAddress.value =
+        poolRepository.routerAddress.value =
             Contract.exchangeRouter(appData.chain).address;
 
         add(const FetchPairInfoRequested());
@@ -97,14 +97,14 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       return;
     }
     emit(state.copyWith(status: BlocStatus.loading, failure: Failure.none));
-    poolController
-      ..updateTknAddress1(state.token0.address)
-      ..updateTknAddress2(state.token1.address);
+    poolRepository
+      ..tknAddress1 = (state.token0.address)
+      ..tknAddress2 = (state.token1.address);
     final tokenZeroDecimal = await _walletRepository.getDecimals(state.token0.address);
     final tokenOneDecimal = await _walletRepository.getDecimals(state.token1.address);
-    poolController
-      ..updateTopDecimals(tokenZeroDecimal.toInt())
-      ..updateBottomDecimals(tokenOneDecimal.toInt());
+    poolRepository
+      ..topDecimals = (tokenZeroDecimal.toInt())
+      ..bottomDecimals = (tokenOneDecimal.toInt());
     try {
       final balance0 =
           await _walletRepository.getTokenBalance(state.token0.address);
@@ -171,7 +171,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     final token0 = event.token0;
     emit(state.copyWith(token0: token0));
     final balance0 = await _walletRepository.getTokenBalance(token0.address);
-    poolController.updateTknAddress1(token0.address);
+    poolRepository.tknAddress1 = token0.address;
     emit(state.copyWith(token0: token0, balance0: balance0 ?? 0));
     try {
       final response = await repo.fetchPairInfo(
@@ -223,7 +223,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     final token1 = event.token1;
     emit(state.copyWith(token1: token1));
     final balance1 = await _walletRepository.getTokenBalance(token1.address);
-    poolController.updateTknAddress2(token1.address);
+    poolRepository.tknAddress2 = token1.address;
     emit(state.copyWith(token1: token1, balance1: balance1 ?? 0));
     try {
       final response = await repo.fetchPairInfo(
@@ -272,8 +272,8 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       return;
     }
     final token0Amount = double.parse(event.amount);
-    if (poolController.amount1.value != token0Amount) {
-      poolController.updateTopAmount(token0Amount);
+    if (poolRepository.amount1.value != token0Amount) {
+      poolRepository.topAmount = token0Amount;
     }
     try {
       final lpTokenBalance = await getLPTokenBalance();
@@ -326,8 +326,8 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       return;
     }
     final token1Amount = double.parse(event.amount);
-    if (poolController.amount2.value != token1Amount) {
-      poolController.updateBottomAmount(token1Amount);
+    if (poolRepository.amount2.value != token1Amount) {
+      poolRepository.bottomAmount = token1Amount;
     }
     try {
       final lpTokenBalance = await getLPTokenBalance();

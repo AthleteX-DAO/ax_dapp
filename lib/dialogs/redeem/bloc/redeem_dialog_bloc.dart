@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:shared/shared.dart';
@@ -14,7 +14,7 @@ class RedeemDialogBloc extends Bloc<RedeemDialogEvent, RedeemDialogState> {
   RedeemDialogBloc({
     required TokensRepository tokensRepository,
     required this.getTotalTokenBalanceUseCase,
-    required this.lspController,
+    required this.longShortPairRepository,
     required int athleteId,
     required this.supportedSport,
   })  : _tokensRepository = tokensRepository,
@@ -34,7 +34,7 @@ class RedeemDialogBloc extends Bloc<RedeemDialogEvent, RedeemDialogState> {
 
   final TokensRepository _tokensRepository;
   final GetTotalTokenBalanceUseCase getTotalTokenBalanceUseCase;
-  final LSPController lspController;
+  final LongShortPairRepository longShortPairRepository;
   final SupportedSport supportedSport;
 
   Future<void> _onWatchAptPairStarted(
@@ -59,7 +59,7 @@ class RedeemDialogBloc extends Bloc<RedeemDialogEvent, RedeemDialogState> {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final aptPair = _tokensRepository.currentAptPair(event.athleteId);
-      lspController.updateAptAddress(aptPair.address);
+      longShortPairRepository.tokenAddress = aptPair.address;
       final longBalance = await getTotalTokenBalanceUseCase
           .getTotalBalanceForToken(aptPair.longApt.address);
       final shortBalance = await getTotalTokenBalanceUseCase
@@ -87,8 +87,8 @@ class RedeemDialogBloc extends Bloc<RedeemDialogEvent, RedeemDialogState> {
     final shortInput = event.redeemShortInputAmount;
     final collateralPerPair = getCollateralPerPair(supportedSport);
     try {
-      if (lspController.createAmt.value != shortInput) {
-        lspController.updateRedeemAmt(shortInput);
+      if (longShortPairRepository.createAmt.value != shortInput) {
+        longShortPairRepository.redeemAmount = shortInput;
       }
       emit(
         state.copyWith(
@@ -109,8 +109,8 @@ class RedeemDialogBloc extends Bloc<RedeemDialogEvent, RedeemDialogState> {
     final longInput = event.redeemLongInputAmount;
     final collateralPerPair = getCollateralPerPair(supportedSport);
     try {
-      if (lspController.createAmt.value != longInput) {
-        lspController.updateRedeemAmt(longInput);
+      if (longShortPairRepository.createAmt.value != longInput) {
+        longShortPairRepository.redeemAmount = longInput;
       }
       emit(
         state.copyWith(
@@ -129,13 +129,13 @@ class RedeemDialogBloc extends Bloc<RedeemDialogEvent, RedeemDialogState> {
     Emitter<RedeemDialogState> emit,
   ) async {
     final aptPair = _tokensRepository.currentAptPair(event.athleteId);
-    lspController.updateAptAddress(aptPair.address);
+    longShortPairRepository.tokenAddress = aptPair.address;
     final longBalance = await getTotalTokenBalanceUseCase
         .getTotalBalanceForToken(aptPair.longApt.address);
     final shortBalance = await getTotalTokenBalanceUseCase
         .getTotalBalanceForToken(aptPair.shortApt.address);
     final maxRedeemInput = min(longBalance, shortBalance);
-    lspController.updateRedeemAmt(maxRedeemInput);
+    longShortPairRepository.redeemAmount = maxRedeemInput;
     final collateralPerPair = getCollateralPerPair(supportedSport);
     try {
       emit(

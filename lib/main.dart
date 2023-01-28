@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:js_util';
 
 import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/bootstrap.dart';
@@ -18,8 +17,10 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
+import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
-import 'package:ax_dapp/wallet/javascript_calls/web3_rpc.dart';
 import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -98,7 +99,16 @@ void main() async {
             create: (_) => MagicRepository(
               magic: magic,
               // web3rpc: web3rpc,
-            ),
+            ),           
+          ),
+          RepositoryProvider(
+            create: (_) => LongShortPairRepository(),
+          ),
+          RepositoryProvider(
+            create: (_) => PoolRepository(),
+          ),
+          RepositoryProvider(
+            create: (_) => SwapRepository(),
           ),
           RepositoryProvider(
             create: (_) => LiveChatRepository(
