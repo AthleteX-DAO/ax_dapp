@@ -80,7 +80,7 @@ void main() async {
   final getSwapInfoUseCase = GetSwapInfoUseCase(getPairInfoUseCase);
 
   final magic = MagicSDK(
-    'pk_live_46C64E93DA4A6F28',
+    'pk_live_A0EFC48FF2C1D624',
     137,
     'https://polygon-rpc.com/',
     'en_US',

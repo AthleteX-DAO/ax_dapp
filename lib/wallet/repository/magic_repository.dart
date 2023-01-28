@@ -7,7 +7,7 @@ class MagicRepository {
 
   Future<dynamic> connect() async {
     // await _web3rpc.getAccounts(_magic.rpcProvider);
-    await _magic.showWallet();
+    await _magic.connect();
   }
 
   Future<void> showWallet() async {

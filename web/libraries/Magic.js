@@ -1,6 +1,6 @@
 var MagicSDK = (function () {
     function MagicSDK(apiKey, chainId, rpcUrl, locale, extension) {
-        this._magicSDK = new Magic('pk_live_064D386F90F4DF26', {
+        this._magicSDK = new Magic('pk_live_A0EFC48FF2C1D624', {
             // network: {
             //     chainId, chainId,
             //     rpcUrl: rpcUrl,
@@ -12,8 +12,12 @@ var MagicSDK = (function () {
         this._web3 = new Web3(this._magicSDK.rpcProvider);
     }
 
-    MagicSDK.prototype.showWallet = async function () {
+    MagicSDK.prototype.connect = async function () {
         await this._web3.eth.getAccounts();
+    }
+
+    MagicSDK.prototype.showWallet = async function () {
+        await this._magicSDK.connect.showWallet();
         // extension.showWallet();
         // const token = await this._magicSDK.webauthn.registerNewUser({ username: 'michael' });
         // await this._magicSDK.connect.showWallet();
