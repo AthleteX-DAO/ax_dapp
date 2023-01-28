@@ -1,5 +1,5 @@
 @JS()
-library MagicSDKsdk;
+library magic_sdk;
 
 import 'package:js/js.dart';
 
@@ -18,8 +18,4 @@ class MagicSDK {
   external Future<dynamic> disconnect();
   external Future<dynamic> getWalletInfo();
   external Future<dynamic> requestUserInfo();
-  external Future<dynamic> getIdToken();
-  external Future<dynamic> getMetadata();
-  external Future<dynamic> isLoggedIn();
-  external Future<dynamic> logOut();
 }

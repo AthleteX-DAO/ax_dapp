@@ -30,7 +30,7 @@ var MagicSDK = (function () {
 
     MagicSDK.prototype.getWalletInfo = async function () {
         console.log("get wallet info");
-        const walletInfo = await this_.MagicSDK.connect.getWalletInfo();
+        const walletInfo = await this._magicSDK.connect.getWalletInfo();
         console.log(walletInfo);
         return walletInfo;
     }
@@ -39,29 +39,6 @@ var MagicSDK = (function () {
         console.log("request user information");
         const email = await this._magicSDK.connect.requestUserInfo();
         return email;
-    }
-
-    MagicSDK.prototype.getIdToken = async function () {
-        console.log("get id token");
-        const idToken = await this._magicSDK.user.getIdToken();
-        return idToken;
-    }
-
-    MagicSDK.prototype.getMetadata = async function () {
-        console.log("metadata -> user information");
-        const { issuer, email, phoneNumber, publicAddress } = await this._magicSDK.user.getMetadata();
-        return { issuer, email, phoneNumber, publicAddress };
-    }
-
-    MagicSDK.prototype.isLoggedIn = async function () {
-        console.log("is the user logged in to the app");
-        const isLoggedIn = await this._magicSDK.user.isLoggedIn();
-        return isLoggedIn;
-    }
-
-    MagicSDK.prototype.logOut = async function () {
-        console.log("logging the user out");
-        await this._magicSDK.user.logOut();
     }
 
     return MagicSDK;

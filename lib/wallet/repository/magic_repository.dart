@@ -27,23 +27,4 @@ class MagicRepository {
     final email = await _magic.requestUserInfo();
     return email;
   }
-
-  Future<dynamic> getIdToken() async {
-    final idToken = await _magic.getIdToken();
-    return idToken;
-  }
-
-  //TODO(anyone): return a class(?) that has the issuer, email, phoneNumber, publicAddress
-  Future<dynamic> getMetadata() async {
-    await _magic.getMetadata();
-  }
-
-  Future<dynamic> isLoggedIn() async {
-    final isLoggedIn = await _magic.isLoggedIn();
-    return isLoggedIn;
-  }
-
-  Future<void> logOut() async {
-    await _magic.logOut();
-  }
 }
