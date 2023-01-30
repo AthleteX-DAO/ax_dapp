@@ -92,20 +92,25 @@ class WalletRepository {
   /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(searchForWalletKey, true);
-    _walletApiClient.addChainChangedListener();
-    await _walletApiClient.syncChain(defaultChain);
-    final credentials = await _walletApiClient.getWalletCredentials();
-    _cacheWalletCredentials(credentials);
-    final walletAddress = credentials.value.address.hex;
-    _walletChangeController.add(
-      Wallet(
-        status: WalletStatus.fromChain(currentChain),
-        address: walletAddress,
-        chain: currentChain,
-      ),
-    );
-    return walletAddress;
+    try {
+      await prefs.setBool(searchForWalletKey, true);
+      _walletApiClient.addChainChangedListener();
+      await _walletApiClient.syncChain(defaultChain);
+      final credentials = await _walletApiClient.getWalletCredentials();
+      _cacheWalletCredentials(credentials);
+      final walletAddress = credentials.value.address.hex;
+      _walletChangeController.add(
+        Wallet(
+          status: WalletStatus.fromChain(currentChain),
+          address: walletAddress,
+          chain: currentChain,
+        ),
+      );
+      return walletAddress;
+    } catch (_) {
+      await prefs.setBool(searchForWalletKey, false);
+      return kNullAddress;
+    }
   }
 
   void _cacheWalletCredentials(WalletCredentials credentials) => _cache.write(
@@ -159,11 +164,8 @@ class WalletRepository {
   ///
   /// Defaults to [BigInt.zero] on error.
   Future<BigInt> getRawTokenBalance(String tokenAddress) async {
-    debugPrint('TOKEN ADDRESS -> $tokenAddress');
-    debugPrint('CURRENT WALLET ADDRESS -> ${currentWallet.address}');
-    final walletAddress = (currentWallet.address.isEmpty)
-        ? kNullAddress
-        : currentWallet.address;
+    final walletAddress =
+        (currentWallet.address.isEmpty) ? kNullAddress : currentWallet.address;
     return _walletApiClient.getRawTokenBalance(
       tokenAddress: tokenAddress,
       walletAddress: walletAddress,
