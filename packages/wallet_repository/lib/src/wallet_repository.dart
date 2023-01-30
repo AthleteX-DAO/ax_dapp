@@ -21,7 +21,6 @@ class WalletRepository {
     _walletApiClient.chainChanges.listen((chain) async {
       debugPrint('Wallet Repo: chain changed: ${chain.name}: ${chain.chainId}');
       debugPrint('Wallet Credentials: $credentialsCacheKey');
-      debugPrint('LISTENING TO THE API CLIENT CHAIN CHANGES');
       final cachedWalletAddress = _cache
           .read<WalletCredentials>(key: credentialsCacheKey)
           ?.walletAddress;
@@ -30,7 +29,6 @@ class WalletRepository {
         debugPrint(
           'Wallet Repo: wallet address found in cache: $cachedWalletAddress',
         );
-        debugPrint('WALLET IS FOUND IN CACHE');
         walletUpdate = Wallet(
           address: (chain.isSupported) ? cachedWalletAddress : kEmptyAddress,
           chain: chain,
@@ -87,10 +85,8 @@ class WalletRepository {
   /// - [EthereumWalletFailure]
   /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
-    debugPrint('CONNECT WALLET METHOD CALLED');
     _walletApiClient.addChainChangedListener();
     await _walletApiClient.syncChain(defaultChain);
-    debugPrint('GET WALLET CREDENTIALS WILL BE CALLED IN THE CONNECT WALLET');
     final credentials = await _walletApiClient.getWalletCredentials();
     _cacheWalletCredentials(credentials);
     final walletAddress = credentials.value.address.hex;
@@ -172,7 +168,6 @@ class WalletRepository {
   ///
   /// Defaults to [BigInt.zero] on error.
   Future<BigInt> getRawTokenBalance(String tokenAddress) async {
-    debugPrint('GET RAW TOKEN BALANCE IS BEING CALLED');
     return _walletApiClient.getRawTokenBalance(
       tokenAddress: tokenAddress,
       walletAddress: currentWallet.address,
@@ -187,7 +182,6 @@ class WalletRepository {
   /// used to display the amount of ether in a human-readable format, it should
   /// not be used for anything else.
   Future<double?> getTokenBalance(String tokenAddress) async {
-    debugPrint('GET TOKEN BALANCE IS BEING CALLED');
     final rawBalance = await getRawTokenBalance(tokenAddress);
     final decimal = await _walletApiClient.getDecimals(tokenAddress);
     if (rawBalance == BigInt.zero) {
