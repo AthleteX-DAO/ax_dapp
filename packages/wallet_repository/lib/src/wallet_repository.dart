@@ -54,6 +54,12 @@ class WalletRepository {
   /// set true when connecting, false disconnecting
   static const searchForWalletKey = '__search_cache_key__';
 
+  /// Return true if the wallet key exists after a page refresh
+  Future<bool?> searchForWallet() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(searchForWalletKey);
+  }
+
   /// Allows listening to changes to the current [EthereumChain].
   Stream<EthereumChain> get chainChanges => _walletApiClient.chainChanges;
 
@@ -85,6 +91,8 @@ class WalletRepository {
   /// - [EthereumWalletFailure]
   /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(searchForWalletKey, true);
     _walletApiClient.addChainChangedListener();
     await _walletApiClient.syncChain(defaultChain);
     final credentials = await _walletApiClient.getWalletCredentials();
@@ -99,23 +107,6 @@ class WalletRepository {
     );
     return walletAddress;
   }
-
-  // Future<String> _getWalletCredentials() async {
-  //   debugPrint('GET WALLET CREDENTIALS CALLED');
-  //   debugPrint('PROMPTING THE USER TO CONNECT VIA METAMASK');
-  //   final credentials = await _walletApiClient.getWalletCredentials();
-  //   debugPrint('CACHING THE WALLET CREDENTIALS');
-  //   _cacheWalletCredentials(credentials);
-  //   final walletAddress = credentials.value.address.hex;
-  //   _walletChangeController.add(
-  //     Wallet(
-  //       status: currentWallet.status,
-  //       address: walletAddress,
-  //       chain: currentWallet.chain,
-  //     ),
-  //   );
-  //   return walletAddress;
-  // }
 
   void _cacheWalletCredentials(WalletCredentials credentials) => _cache.write(
         key: credentialsCacheKey,
