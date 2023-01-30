@@ -159,9 +159,14 @@ class WalletRepository {
   ///
   /// Defaults to [BigInt.zero] on error.
   Future<BigInt> getRawTokenBalance(String tokenAddress) async {
+    debugPrint('TOKEN ADDRESS -> $tokenAddress');
+    debugPrint('CURRENT WALLET ADDRESS -> ${currentWallet.address}');
+    final walletAddress = (currentWallet.address.isEmpty)
+        ? kNullAddress
+        : currentWallet.address;
     return _walletApiClient.getRawTokenBalance(
       tokenAddress: tokenAddress,
-      walletAddress: currentWallet.address,
+      walletAddress: walletAddress,
     );
   }
 
