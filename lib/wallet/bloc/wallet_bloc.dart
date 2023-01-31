@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/repository/magic_repository.dart';
-import 'package:ax_dapp/wallet/repository/web3_auth_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
