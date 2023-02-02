@@ -1,30 +1,29 @@
-import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
-import 'package:ax_dapp/wallet/javascript_calls/web3_rpc.dart';
+import 'package:ax_dapp/wallet/magic_api_client/web.dart';
 
 class MagicRepository {
-  MagicRepository({required MagicSDK magic}) : _magic = magic;
-  final MagicSDK _magic;
+  MagicRepository({required MagicApiClient magicWalletApiClient})
+      : _magicWalletApiClient = magicWalletApiClient;
+  final MagicApiClient _magicWalletApiClient;
 
   Future<dynamic> connect() async {
-    // await _web3rpc.getAccounts(_magic.rpcProvider);
-    await _magic.connect();
+    await _magicWalletApiClient.connect();
   }
 
   Future<void> showWallet() async {
-    await _magic.showWallet();
+    await _magicWalletApiClient.showWallet();
   }
 
   Future<void> disconnect() async {
-    await _magic.disconnect();
+    await _magicWalletApiClient.disconnect();
   }
 
   Future<dynamic> getWalletInfo() async {
-    final walletInfo = await _magic.getWalletInfo();
+    final walletInfo = await _magicWalletApiClient.getWalletInfo();
     return walletInfo;
   }
 
   Future<dynamic> requestUserInfo() async {
-    final email = await _magic.requestUserInfo();
+    final email = await _magicWalletApiClient.requestUserInfo();
     return email;
   }
 }

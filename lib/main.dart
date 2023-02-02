@@ -21,6 +21,7 @@ import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
+import 'package:ax_dapp/wallet/magic_api_client/web.dart';
 import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -53,6 +54,13 @@ void main() async {
 
   final httpClient = http.Client();
 
+  final magic = MagicSDK(
+    'pk_live_A0EFC48FF2C1D624',
+    137,
+    'https://polygon-rpc.com/',
+    'en_US',
+  );
+
   await initHiveForFlutter();
   // usePathUrlStrategy();
   final configApiClient = ConfigApiClient(
@@ -65,6 +73,7 @@ void main() async {
   final reactiveWeb3Client = appConfig.reactiveWeb3Client;
   final walletApiClient =
       EthereumWalletApiClient(reactiveWeb3Client: reactiveWeb3Client);
+  final magicWalletApiClient = MagicApiClient(magicSDK: magic);
   final tokensApiClient = TokensApiClient(
     defaultChain: defaultChain,
     reactiveWeb3Client: reactiveWeb3Client,
@@ -79,15 +88,6 @@ void main() async {
   final getPairInfoUseCase = GetPairInfoUseCase(subGraphRepo);
   final getSwapInfoUseCase = GetSwapInfoUseCase(getPairInfoUseCase);
 
-  final magic = MagicSDK(
-    'pk_live_A0EFC48FF2C1D624',
-    137,
-    'https://polygon-rpc.com/',
-    'en_US',
-  );
-
-  // final web3rpc = Web3RPC();
-
   unawaited(
     bootstrap(() async {
       await Firebase.initializeApp(
@@ -97,8 +97,7 @@ void main() async {
         providers: [
           RepositoryProvider(
             create: (_) => MagicRepository(
-              magic: magic,
-              // web3rpc: web3rpc,
+              magicWalletApiClient: magicWalletApiClient,
             ),           
           ),
           RepositoryProvider(
