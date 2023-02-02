@@ -30,6 +30,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<WalletFailed>(_onWalletFailed);
     on<ConnectWalletMagic>(_onConnectWalletMagic);
     on<DisconnectWalletMagic>(_onDisconnectWalletMagic);
+    on<ShowMagicWallet>(_onShowMagicWallet);
 
     add(const WatchWalletChangesStarted());
     add(const WatchAxtChangesStarted());
@@ -145,6 +146,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     await _magicRepository.disconnect();
+    emit(state.copyWith());
+  }
+
+  Future<void> _onShowMagicWallet(
+    ShowMagicWallet event,
+    Emitter<WalletState> emit,
+  ) async {
+    await _magicRepository.showWallet();
     emit(state.copyWith());
   }
 }

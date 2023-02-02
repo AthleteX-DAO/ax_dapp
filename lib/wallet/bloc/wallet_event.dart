@@ -15,6 +15,10 @@ class DisconnectWalletMagic extends WalletEvent {
   const DisconnectWalletMagic();
 }
 
+class ShowMagicWallet extends WalletEvent {
+  const ShowMagicWallet();
+}
+
 class ConnectWalletRequested extends WalletEvent {
   const ConnectWalletRequested();
 }
