@@ -135,10 +135,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     try {
       await _magicRepository.connect();
       emit(state.copyWith());
-    } catch (e) {
-      emit(state.copyWith());
-      // TODO(anyone): handle error if the connect wallet request has been rejected
-      debugPrint('$e');
+    } on WalletFailure catch (failure) {
+      add(WalletFailed(failure));
     }
   }
 
@@ -146,13 +144,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     DisconnectWalletMagic event,
     Emitter<WalletState> emit,
   ) async {
-    try {
-      await _magicRepository.disconnect();
-      emit(state.copyWith());
-    } catch (e) {
-      emit(state.copyWith());
-      // TODO(anyone): handle error if the connect wallet request has been rejected
-      debugPrint('$e');
-    }
+    await _magicRepository.disconnect();
+    emit(state.copyWith());
   }
 }
