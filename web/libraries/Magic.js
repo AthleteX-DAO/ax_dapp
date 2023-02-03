@@ -10,10 +10,18 @@ var MagicSDK = (function () {
             extensions: [new MagicConnectExtension()],
         });
         this._web3 = new Web3(this._magicSDK.rpcProvider);
+        console.log(Web3);
+        console.log(this._magicSDK);
+        console.log(this._magicSDK.rpcProvider);
     }
 
     MagicSDK.prototype.connect = async function () {
-        await this._web3.eth.getAccounts();
+        console.log("Connecting to Magic");      
+        console.log(this._web3);
+        const address = (await this._web3.eth.getAccounts())[0];
+        console.log("This is the address " + address);
+        console.log(typeof address);
+        return address;
     }
 
     MagicSDK.prototype.showWallet = async function () {

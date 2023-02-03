@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/repository/magic_repository.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -132,13 +131,10 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   Future<void> _onConnectWalletMagic(
     ConnectWalletMagic event,
     Emitter<WalletState> emit,
-  ) async {
-    try {
-      await _magicRepository.connect();
-      emit(state.copyWith());
-    } on WalletFailure catch (failure) {
-      add(WalletFailed(failure));
-    }
+  ) async {   
+    final address = await _magicRepository.connect();
+    final walletAddress = address.toString();
+    emit(state.copyWith(walletAddress: walletAddress));   
   }
 
   Future<void> _onDisconnectWalletMagic(

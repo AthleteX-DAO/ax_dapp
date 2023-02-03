@@ -10,8 +10,9 @@ class MagicApiClient implements MagicWalletApiClient {
 
   final MagicSDK _magicSDK;
   @override
-  Future<void> connect() async {
-    await _magicSDK.connect();
+  Future<dynamic> connect() async {
+    final address = await _magicSDK.connect();
+    return address;
   }
 
   @override

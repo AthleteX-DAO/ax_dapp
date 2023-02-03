@@ -6,7 +6,7 @@ abstract class MagicWalletApiClient {
   /// {@macro magic_api_client}
 
   /// Asks the user to connect with Ethers library
-  Future<void> connect();
+  Future<dynamic> connect();
 
   /// Returns information about a user's wallet such as the [walletType].
   Future<void> getWalletInfo();

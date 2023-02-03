@@ -6,7 +6,8 @@ class MagicRepository {
   final MagicApiClient _magicWalletApiClient;
 
   Future<dynamic> connect() async {
-    await _magicWalletApiClient.connect();
+    final address = await _magicWalletApiClient.connect();
+    return address;
   }
 
   Future<void> showWallet() async {

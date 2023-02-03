@@ -6,7 +6,7 @@ import 'package:ax_dapp/wallet/magic_api_client/magic_wallet_api_client.dart';
 class MagicApiClient implements MagicWalletApiClient {
   /// {@macro unsupported_magic_wallet_api_client}
   @override
-  Future<void> connect() {
+  Future<dynamic> connect() {
     throw UnsupportedError(
       'magic connect not supported on the current platform',
     );
