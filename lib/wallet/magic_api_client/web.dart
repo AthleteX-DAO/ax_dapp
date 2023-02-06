@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
 import 'package:ax_dapp/wallet/magic_api_client/magic_wallet_api_client.dart';
 
@@ -11,7 +13,7 @@ class MagicApiClient implements MagicWalletApiClient {
   final MagicSDK _magicSDK;
   @override
   Future<dynamic> connect() async {
-    final address = await _magicSDK.connect();
+    final address = promiseToFuture<String>(_magicSDK.connect());
     return address;
   }
 
