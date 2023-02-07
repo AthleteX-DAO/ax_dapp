@@ -3,7 +3,6 @@ import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/widgets/widgets.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -14,8 +13,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,7 +44,6 @@ class _BuyDialogState extends State<BuyDialog> {
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
-  Controller controller = Get.find();
 
   @override
   void dispose() {
@@ -408,8 +404,8 @@ class _BuyDialogState extends State<BuyDialog> {
                               longOrShort: state.aptTypeSelection.isLong
                                   ? 'Long Apt'
                                   : 'Short Apt',
-                              approveCallback: bloc.swapController.approve,
-                              confirmCallback: bloc.swapController.swap,
+                              approveCallback: bloc.swapRepository.approve,
+                              confirmCallback: bloc.swapRepository.swap,
                               confirmDialog: const TransactionStatusDialog(
                                 title: 'Transaction Confirmed',
                                 icons: Icons.check_circle_outline,

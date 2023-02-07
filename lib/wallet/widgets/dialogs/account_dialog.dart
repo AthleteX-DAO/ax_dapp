@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:ax_dapp/wallet/usecases/explorer_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ class AccountDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final walletAddress =
         context.select((WalletBloc bloc) => bloc.state.walletAddress);
+    final chain = context.select((WalletBloc bloc) => bloc.state.chain);
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     var wid = 400.0;
@@ -30,6 +32,12 @@ class AccountDialog extends StatelessWidget {
       );
       formattedWalletAddress = '$walletAddressPrefix...$walletAddressSuffix';
     }
+
+    final explorerUseCase =
+        ExplorerUseCase(walletAddress: walletAddress, chain: chain);
+
+    final buttonMessage = explorerUseCase.buttonMessage(chain);
+    final explorerUrl = explorerUseCase.explorerUrl(chain);
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -141,29 +149,6 @@ class AccountDialog extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // TODO(anyone): https://athletex.atlassian.net/browse/AX-734
-                                  // There's only MetaMask currently supported,
-                                  // so there's no point in having a change
-                                  // wallet button yet.
-
-                                  // Container(
-                                  //   width: 75,
-                                  //   height: 25,
-                                  //   decoration: boxDecoration(
-                                  //      Colors.transparent,
-                                  //       100, 0, Colors.blue[800]!),
-                                  //   child: TextButton(
-                                  //     onPressed: () {
-                                  //       controller.changeAddress();
-                                  //     },
-                                  //     child: Text(
-                                  //       "Change",
-                                  //       style: textStyle(
-                                  //           Colors.blue[300]!, 10, true),
-                                  //     ),
-                                  //   ),
-                                  // ),
-
                                   Container(
                                     margin: const EdgeInsets.only(
                                       right: 5,
@@ -237,9 +222,7 @@ class AccountDialog extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              final urlString =
-                                  'https://polygonscan.com/address/$walletAddress';
-                              launchUrl(Uri.parse(urlString));
+                              launchUrl(Uri.parse(explorerUrl));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -249,7 +232,7 @@ class AccountDialog extends StatelessWidget {
                                   color: Colors.grey,
                                 ),
                                 Text(
-                                  'Show on Polygonscan',
+                                  buttonMessage,
                                   style: textStyle(
                                     Colors.grey[400]!,
                                     15,

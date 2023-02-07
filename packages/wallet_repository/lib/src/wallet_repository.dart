@@ -34,19 +34,8 @@ class WalletRepository {
           chain: chain,
           status: WalletStatus.fromChain(chain),
         );
-      } else {
-        debugPrint(
-          'Wallet Repo: no cached wallet address so lets get the real thing',
-        );
-        final newAddress = await _getWalletCredentials();
-        debugPrint('Retrieved the new address: $newAddress');
-        walletUpdate = Wallet(
-          address: (chain.isSupported) ? newAddress : kEmptyAddress,
-          chain: chain,
-          status: WalletStatus.fromChain(chain),
-        );
+        _walletChangeController.add(walletUpdate);
       }
-      _walletChangeController.add(walletUpdate);
     });
   }
 
@@ -65,7 +54,7 @@ class WalletRepository {
   /// set true when connecting, false disconnecting
   static const searchForWalletKey = '__search_cache_key__';
 
-  /// return if you should attempt to load wallet
+  /// Return true if the wallet key exists after a page refresh
   Future<bool?> searchForWallet() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(searchForWalletKey);
@@ -103,25 +92,25 @@ class WalletRepository {
   /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(searchForWalletKey, true);
-    _walletApiClient.addChainChangedListener();
-    await _walletApiClient.syncChain(defaultChain);
-    final credentials = _getWalletCredentials();
-    return credentials;
-  }
-
-  Future<String> _getWalletCredentials() async {
-    final credentials = await _walletApiClient.getWalletCredentials();
-    _cacheWalletCredentials(credentials);
-    final walletAddress = credentials.value.address.hex;
-    _walletChangeController.add(
-      Wallet(
-        status: currentWallet.status,
-        address: walletAddress,
-        chain: currentWallet.chain,
-      ),
-    );
-    return walletAddress;
+    try {
+      await prefs.setBool(searchForWalletKey, true);
+      _walletApiClient.addChainChangedListener();
+      await _walletApiClient.syncChain(defaultChain);
+      final credentials = await _walletApiClient.getWalletCredentials();
+      _cacheWalletCredentials(credentials);
+      final walletAddress = credentials.value.address.hex;
+      _walletChangeController.add(
+        Wallet(
+          status: WalletStatus.fromChain(currentChain),
+          address: walletAddress,
+          chain: currentChain,
+        ),
+      );
+      return walletAddress;
+    } catch (_) {
+      await prefs.setBool(searchForWalletKey, false);
+      return kNullAddress;
+    }
   }
 
   void _cacheWalletCredentials(WalletCredentials credentials) => _cache.write(
@@ -175,9 +164,8 @@ class WalletRepository {
   ///
   /// Defaults to [BigInt.zero] on error.
   Future<BigInt> getRawTokenBalance(String tokenAddress) async {
-    final walletAddress = (currentWallet.address.isNotEmpty)
-        ? currentWallet.address
-        : await _getWalletCredentials();
+    final walletAddress =
+        (currentWallet.address.isEmpty) ? kNullAddress : currentWallet.address;
     return _walletApiClient.getRawTokenBalance(
       tokenAddress: tokenAddress,
       walletAddress: walletAddress,
@@ -194,7 +182,6 @@ class WalletRepository {
   Future<double?> getTokenBalance(String tokenAddress) async {
     final rawBalance = await getRawTokenBalance(tokenAddress);
     final decimal = await _walletApiClient.getDecimals(tokenAddress);
-    debugPrint('Buy Dialog Raw AX Balance: $rawBalance');
     if (rawBalance == BigInt.zero) {
       return null;
     }
@@ -203,7 +190,7 @@ class WalletRepository {
     return double.parse(formattedBalance);
   }
 
-  /// Returns a [BigInt] amount of decimals from a [tokenAddress]. 
+  /// Returns a [BigInt] amount of decimals from a [tokenAddress].
   Future<BigInt> getDecimals(String tokenAddress) async {
     final decimal = await _walletApiClient.getDecimals(tokenAddress);
     return decimal;

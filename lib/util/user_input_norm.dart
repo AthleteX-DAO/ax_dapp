@@ -1,4 +1,4 @@
-import 'package:decimal/decimal.dart';
+import 'package:shared/shared.dart';
 
 // Use this function to convert user input(double) into BigInt.
 
