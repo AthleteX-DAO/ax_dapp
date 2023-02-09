@@ -5,14 +5,12 @@ import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/scout/scout.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -34,7 +32,6 @@ class _AthletePageState extends State<AthletePage> {
   late AthleteScoutModel athlete;
 
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
-  Controller controller = Get.find();
 
   @override
   void initState() {

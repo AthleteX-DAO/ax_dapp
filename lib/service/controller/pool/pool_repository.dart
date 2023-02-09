@@ -66,13 +66,13 @@ class PoolRepository {
         transferAmountA,
         credentials: controller.credentials,
       );
-      controller.updateTxString(txStringA);
+      controller.transactionHash = txStringA;
       txStringB = await tokenB.approve(
         routerMainnetAddress,
         transferAmountB,
         credentials: controller.credentials,
       );
-      controller.updateTxString(txStringB);
+      controller.transactionHash = txStringB;
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -105,7 +105,7 @@ class PoolRepository {
       credentials: credentials,
     );
 
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   Future<void> approveRemove(
@@ -126,7 +126,7 @@ class PoolRepository {
         approveAmount,
         credentials: controller.credentials,
       );
-      controller.updateTxString(txStringA);
+      controller.transactionHash = txStringA;
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -157,7 +157,7 @@ class PoolRepository {
       twoMinuteDeadline,
       credentials: credentials,
     );
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   Future<void> createPair() async {
@@ -167,6 +167,6 @@ class PoolRepository {
 
     final txString =
         await aptFactory.createPair(tknA, tknB, credentials: credentials);
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 }
