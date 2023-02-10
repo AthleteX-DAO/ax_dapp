@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomNavigationBarMobile extends StatelessWidget {
@@ -69,10 +70,9 @@ class BottomNavigationBarMobile extends StatelessWidget {
           label: 'Farm',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/trophy.png',
-            height: 24,
-            width: 24,
+          icon: FaIcon(
+            FontAwesomeIcons.trophy,
+            size: 24,
             color: iconColor(4),
           ),
           label: 'League',
