@@ -76,7 +76,8 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
       filteredTokens = tokens.where((token) {
         final flagKeyword =
             token.ticker.toUpperCase().contains(keyword.toUpperCase()) ||
-                token.name.toUpperCase().contains(keyword.toUpperCase());
+                token.name.toUpperCase().contains(keyword.toUpperCase()) ||
+                token.address.toUpperCase().contains(keyword.toUpperCase());
         final flagSport =
             selectedSport == SupportedSport.all || token.sport == selectedSport;
         return flagKeyword && flagSport;

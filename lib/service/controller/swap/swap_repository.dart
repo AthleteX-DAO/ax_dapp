@@ -67,11 +67,11 @@ class SwapRepository {
       );
     } catch (e) {
       txString = '';
-      controller.updateTxString(txString);
+      controller.transactionHash = txString;
       return Future.error(e);
     }
 
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   // Actionables
@@ -93,10 +93,10 @@ class SwapRepository {
         deadline.value,
         credentials: controller.credentials,
       );
-      controller.updateTxString(txString);
+      controller.transactionHash = txString;
     } catch (e) {
       txString = '';
-      controller.updateTxString(txString);
+      controller.transactionHash = txString;
       return Future.error(e);
     }
   }
@@ -119,7 +119,7 @@ class SwapRepository {
       );
     }
 
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   Future<void> swapforAX(String chainTokenAddress) async {
@@ -138,7 +138,7 @@ class SwapRepository {
       deadline.value,
       credentials: controller.credentials,
     );
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   Future<void> swapFromAX(String chainTokenAddress) async {
@@ -156,6 +156,6 @@ class SwapRepository {
       deadline.value,
       credentials: controller.credentials,
     );
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 }

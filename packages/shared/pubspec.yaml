@@ -11,7 +11,7 @@ dependencies:
   bip39: ^1.0.6
   bloc: ^8.0.3
   collection: ^1.16.0
-  decimal: ^2.2.0
+  decimal: ^2.3.2
   # TODO(Rolly): https://github.com/flutterchina/dio/issues/1480
   dio: ^4.0.6
   equatable: ^2.0.3

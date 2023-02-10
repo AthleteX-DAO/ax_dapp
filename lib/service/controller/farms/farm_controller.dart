@@ -108,7 +108,7 @@ class FarmController {
   late Pool contract;
   late PoolInfo contractInfo;
 
-  Controller controller = Get.find();
+  Controller controller = Controller();
   String? athlete;
   String strName = '';
   SupportedSport sport = SupportedSport.all;
@@ -166,7 +166,7 @@ class FarmController {
       rewardData,
       credentials: controller.credentials,
     );
-    controller.updateTxString(txHash);
+    controller.transactionHash = txHash;
   }
 
   /// This function is used to unstake tokens on a specific farm
@@ -189,7 +189,7 @@ class FarmController {
       rewardData,
       credentials: controller.credentials,
     );
-    controller.updateTxString(txHash);
+    controller.transactionHash = txHash;
   }
 
   /// This function is used to stake tokens on a specific farm
@@ -206,7 +206,7 @@ class FarmController {
       rewardData,
       credentials: controller.credentials,
     );
-    controller.updateTxString(txHash);
+    controller.transactionHash = txHash;
   }
 
   /// This function is used to get balance of staked farm
@@ -247,7 +247,7 @@ class FarmController {
       amount,
       credentials: controller.credentials,
     );
-    controller.updateTxString(txHash);
+    controller.transactionHash = txHash;
   }
 
   BigInt getMaximumAmount(UserInputInfo raw, UserInputInfo input) {

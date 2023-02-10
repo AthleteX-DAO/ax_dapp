@@ -20,7 +20,6 @@ import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/scout/view/scout_base.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
@@ -33,7 +32,6 @@ import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:tracking_repository/tracking_repository.dart';
@@ -50,9 +48,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get
-      ..put(Controller());
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(

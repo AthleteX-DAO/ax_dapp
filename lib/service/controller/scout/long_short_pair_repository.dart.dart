@@ -31,7 +31,7 @@ class LongShortPairRepository {
     final tokensToCreate = normalizeInput(createAmt.value);
     final txString =
         await genericLSP.create(tokensToCreate, credentials: theCredentials);
-    controller.updateTxString(txString); //Sends tx to controller
+    controller.transactionHash = txString; //Sends tx to controller
   }
 
   Future<void> approve(String axtAddress) async {
