@@ -1,6 +1,9 @@
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/chain_localized_name.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TransactionStatusDialog extends StatelessWidget {
   const TransactionStatusDialog({
@@ -16,6 +19,7 @@ class TransactionStatusDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
+    final chain = context.select((WalletBloc bloc) => bloc.state.chain);
     var wid = 500.0;
     const edge = 40.0;
     if (_width < 505) wid = _width;
@@ -87,12 +91,12 @@ class TransactionStatusDialog extends StatelessWidget {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Controller.viewTx();
+                          Controller.viewTx(chain);
                           Navigator.pop(context);
                         },
-                        child: const Text(
-                          'View on Polygonscan',
-                          style: TextStyle(
+                        child: Text(
+                          'View on ${chain.localizedName}',
+                          style: const TextStyle(
                             fontSize: 16,
                             color: Colors.black,
                             fontFamily: 'OpenSans',
