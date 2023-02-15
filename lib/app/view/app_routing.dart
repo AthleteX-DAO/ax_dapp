@@ -211,6 +211,14 @@ class _MaterialApp extends StatelessWidget {
               );
             },
           ),
+          GoRoute(
+            name: 'league',
+            path: '/league',
+            builder: (BuildContext context, GoRouterState state) {
+              Global().pageName = 'league';
+              return const DesktopLeague();
+            },
+          ),
         ],
         errorPageBuilder: (context, state) => MaterialPage(
           key: UniqueKey(),
@@ -244,6 +252,7 @@ class _MaterialApp extends StatelessWidget {
         location.contains('athlete') ||
         location.contains('trade') ||
         location.contains('pool') ||
-        location.contains('farm');
+        location.contains('farm') ||
+        location.contains('league');
   }
 }
