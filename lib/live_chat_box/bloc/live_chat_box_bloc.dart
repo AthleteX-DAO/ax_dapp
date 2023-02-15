@@ -25,7 +25,10 @@ class LiveChatBoxBloc extends Bloc<LiveChatBoxEvent, LiveChatBoxState> {
     SendMessage event,
     Emitter<LiveChatBoxState> emit,
   ) async {
-    final input = event.message;
+    final input = event.message.trim();
+    if (input.isEmpty) {
+      emit(state.copyWith(status: BlocStatus.invalidText));
+    }
     try {
       await _liveChatRepository.sendMessage(input);
       emit(state.copyWith(status: BlocStatus.success));
