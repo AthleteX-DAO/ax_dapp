@@ -2,6 +2,8 @@ import 'package:ax_dapp/chat_box/bloc/chat_box_bloc.dart';
 import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/chat_box/widgets/message_box.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +23,19 @@ class _ChatBoxState extends State<ChatBox> {
   Widget build(BuildContext context) => BlocProvider(
         create: (context) =>
             ChatBoxBloc(chatGPTRepository: context.read<ChatGPTRepository>()),
-        child: BlocBuilder<ChatBoxBloc, ChatBoxState>(
+        child: BlocConsumer<ChatBoxBloc, ChatBoxState>(
+          listenWhen: (_, current) =>
+              current.status == BlocStatus.error ||
+              current.status == BlocStatus.noData ||
+              current.status == BlocStatus.invalidText,
+          listener: (context, state) {
+            if (state.status == BlocStatus.invalidText) {
+              context.showWarningToast(
+                title: 'Empty text detected',
+                description: 'Please type something',
+              );
+            }
+          },
           builder: (context, state) {
             final bloc = context.read<ChatBoxBloc>();
             final messages = state.messages;
@@ -83,6 +97,9 @@ class _ChatBoxState extends State<ChatBox> {
                                           const TextStyle(color: Colors.white),
                                       controller: _inputController,
                                       onSubmitted: (value) {
+                                        if (value.trim().isEmpty) {
+                                          return;
+                                        }
                                         bloc.add(SendMessage(prompt: value));
                                         _inputController.clear();
                                       },
