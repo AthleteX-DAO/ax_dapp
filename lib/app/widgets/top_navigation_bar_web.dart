@@ -12,10 +12,10 @@ class TopNavigationBarWeb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
-    var tabTxSz = _width * 0.0185;
-    if (tabTxSz < 19) tabTxSz = 19;
-    var tabBxSz = _width * 0.3;
-    if (tabBxSz < 350) tabBxSz = 350;
+    var tabTextSize = _width * 0.0185;
+    if (tabTextSize < 19) tabTextSize = 19;
+    var tabBoxSize = _width * 0.35;
+    if (tabBoxSize < 350) tabBoxSize = 350;
     return SizedBox(
       width: _width * .95,
       height: 100,
@@ -24,7 +24,7 @@ class TopNavigationBarWeb extends StatelessWidget {
         children: <Widget>[
           // Tabs
           SizedBox(
-            width: tabBxSz,
+            width: tabBoxSize,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -52,13 +52,13 @@ class TopNavigationBarWeb extends StatelessWidget {
                       condition: page == 'scout',
                       tabNotSelected: textStyle(
                         Colors.white,
-                        tabTxSz,
+                        tabTextSize,
                         isBold: true,
                         isUline: false,
                       ),
                       tabSelected: textStyle(
                         Colors.amber[400]!,
-                        tabTxSz,
+                        tabTextSize,
                         isBold: true,
                         isUline: true,
                       ),
@@ -77,13 +77,13 @@ class TopNavigationBarWeb extends StatelessWidget {
                       condition: page == 'trade',
                       tabNotSelected: textStyle(
                         Colors.white,
-                        tabTxSz,
+                        tabTextSize,
                         isBold: true,
                         isUline: false,
                       ),
                       tabSelected: textStyle(
                         Colors.amber[400]!,
-                        tabTxSz,
+                        tabTextSize,
                         isBold: true,
                         isUline: true,
                       ),
@@ -102,13 +102,13 @@ class TopNavigationBarWeb extends StatelessWidget {
                       condition: page == 'pool',
                       tabNotSelected: textStyle(
                         Colors.white,
-                        tabTxSz,
+                        tabTextSize,
                         isBold: true,
                         isUline: false,
                       ),
                       tabSelected: textStyle(
                         Colors.amber[400]!,
-                        tabTxSz,
+                        tabTextSize,
                         isBold: true,
                         isUline: true,
                       ),
@@ -127,16 +127,30 @@ class TopNavigationBarWeb extends StatelessWidget {
                       condition: page == 'farm',
                       tabNotSelected: textStyle(
                         Colors.white,
-                        tabTxSz,
+                        tabTextSize,
                         isBold: true,
                         isUline: false,
                       ),
                       tabSelected: textStyle(
                         Colors.amber[400]!,
-                        tabTxSz,
+                        tabTextSize,
                         isBold: true,
                         isUline: true,
                       ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    launchUrl(Uri.parse('https://snapshot.org/#/athletex.eth'));
+                  },
+                  child: Text(
+                    'Vote',
+                    style: textStyle(
+                      Colors.white,
+                      tabTextSize,
+                      isBold: true,
+                      isUline: false,
                     ),
                   ),
                 ),
