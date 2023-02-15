@@ -14,7 +14,7 @@ class TopNavigationBarWeb extends StatelessWidget {
     final _width = MediaQuery.of(context).size.width;
     var tabTextSize = _width * 0.0185;
     if (tabTextSize < 19) tabTextSize = 19;
-    var tabBoxSize = _width * 0.35;
+    var tabBoxSize = _width * 0.45;
     if (tabBoxSize < 350) tabBoxSize = 350;
     return SizedBox(
       width: _width * .95,
@@ -125,6 +125,31 @@ class TopNavigationBarWeb extends StatelessWidget {
                     'Farm',
                     style: textSwapState(
                       condition: page == 'farm',
+                      tabNotSelected: textStyle(
+                        Colors.white,
+                        tabTextSize,
+                        isBold: true,
+                        isUline: false,
+                      ),
+                      tabSelected: textStyle(
+                        Colors.amber[400]!,
+                        tabTextSize,
+                        isBold: true,
+                        isUline: true,
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (page != 'league') {
+                      context.goNamed('league');
+                    }
+                  },
+                  child: Text(
+                    'League',
+                    style: textSwapState(
+                      condition: page == 'league',
                       tabNotSelected: textStyle(
                         Colors.white,
                         tabTextSize,
