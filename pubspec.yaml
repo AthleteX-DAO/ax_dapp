@@ -110,9 +110,6 @@ flutter:
         - asset: assets/fonts/OpenSans-ExtraBold.ttf
           weight: 600
         - asset: assets/fonts/BebasNeuePro.ttf
-    - family: PublicSans
-      fonts:
-        - asset: assets/fonts/PublicSans-Thin.ttf
 
   assets:
     - assets/images/apt.png
