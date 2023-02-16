@@ -37,7 +37,8 @@ class GetScoutAthletesDataUseCase {
     List<SportAthlete> players,
   ) async {
     final ids = players.map((player) => player.id).toList();
-    final startDate = DateTime(2022, 06, 02);
+    final now = DateTime.now();
+    final startDate = DateTime(now.year, now.month, now.day - 2);
     final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
     try {
       final histories = await repo.getPlayersPriceHistory(
