@@ -116,11 +116,8 @@ flutter:
 
   assets:
     - assets/images/apt.png
-    - assets/images/asu-hero.jpg
     - assets/images/axBackground.jpeg
-    - assets/images/axBackground.png
     - assets/images/AXMarkets.png
-    - assets/images/background.jpeg
     - assets/images/blurredBackground.png
     - assets/images/fox.png
     - assets/images/AthleteX_Logo_Vector.png
@@ -130,7 +127,6 @@ flutter:
     - assets/images/X_white.png
     - assets/images/x.png
     - assets/images/x.jpg
-    - assets/data.json
     - assets/images/barn.png
     - assets/images/coins.png
     - assets/images/swap.png
