@@ -1,11 +1,7 @@
-// ignore_for_file: avoid_dynamic_calls
-
 import 'package:ax_dapp/athlete/models/market_price_record.dart';
-import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/scout/models/models.dart';
-import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
@@ -41,8 +37,7 @@ class GetScoutAthletesDataUseCase {
     List<SportAthlete> players,
   ) async {
     final ids = players.map((player) => player.id).toList();
-    final now = DateTime.now();
-    final startDate = DateTime(now.year, now.month, now.day - 2);
+    final startDate = DateTime(2022, 06, 02);
     final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
     try {
       final histories = await repo.getPlayersPriceHistory(
