@@ -26,9 +26,18 @@ class StakeBloc extends Bloc<StakeEvent, StakeState> {
     Emitter<StakeState> emit,
   ) async {
     final input = event.input;
+    final selectedFarm = event.selectedFarm;
+    if (input.isEmpty) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+        ),
+      );
+    }
+    final parsedInput = double.parse(input);
     final totalStakedBalance =
-        double.parse(_farmController.stakedInfo.value.viewAmount) + input;
-    if (input > double.parse(_farmController.stakingInfo.value.viewAmount)) {
+        double.parse(selectedFarm.stakedInfo.value.viewAmount) + parsedInput;
+    if (parsedInput > double.parse(selectedFarm.stakingInfo.value.viewAmount)) {
       emit(
         state.copyWith(
           status: BlocStatus.noData,
@@ -39,7 +48,7 @@ class StakeBloc extends Bloc<StakeEvent, StakeState> {
         state.copyWith(
           status: BlocStatus.success,
           newBalance: totalStakedBalance,
-          fundsAdded: input,
+          fundsAdded: parsedInput,
         ),
       );
     }
@@ -51,8 +60,9 @@ class StakeBloc extends Bloc<StakeEvent, StakeState> {
   ) async {
     final selectedFarm = event.selectedFarm;
     final input = event.input;
+    final parsedInput = double.parse(input);
     final totalStakedBalance =
-        double.parse(selectedFarm.stakedInfo.value.viewAmount) + input;
+        double.parse(selectedFarm.stakedInfo.value.viewAmount) + parsedInput;
     emit(
       state.copyWith(
         status: BlocStatus.success,

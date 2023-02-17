@@ -153,7 +153,7 @@ class _StakeDialogState extends State<StakeDialog> {
                                 stakeAxInputController.text =
                                     selectedFarm.stakingInfo.value.viewAmount;
                                 final inputAmount =
-                                    double.parse(stakeAxInputController.text);
+                                    stakeAxInputController.text;
                                 bloc.add(
                                   MaxButtonPressed(
                                     selectedFarm: selectedFarm,
@@ -183,7 +183,8 @@ class _StakeDialogState extends State<StakeDialog> {
                               onChanged: (value) {
                                 bloc.add(
                                   StakeInput(
-                                    input: double.parse(value),
+                                    selectedFarm: selectedFarm,
+                                    input: value,
                                   ),
                                 );
                               },
