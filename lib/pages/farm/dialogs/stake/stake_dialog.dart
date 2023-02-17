@@ -2,13 +2,13 @@ import 'package:ax_dapp/pages/farm/dialogs/stake/bloc/stake_bloc.dart';
 import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class StakeDialog extends StatefulWidget {
@@ -27,7 +27,6 @@ class StakeDialog extends StatefulWidget {
 
 class _StakeDialogState extends State<StakeDialog> {
   final stakeAxInputController = TextEditingController();
-  RxBool isValid = true.obs;
   @override
   void dispose() {
     stakeAxInputController.dispose();
@@ -49,10 +48,11 @@ class _StakeDialogState extends State<StakeDialog> {
     return BlocBuilder<StakeBloc, StakeState>(
       builder: (context, state) {
         final bloc = context.read<StakeBloc>();
-        final balance = state.balance;
+        final currentBalance = state.currentBalance;
         final fundsAdded = state.fundsAdded;
         final newBalance = state.newBalance;
         final currentStaked = state.currentStaked;
+        final status = state.status;
         return Dialog(
           insetPadding: EdgeInsets.zero,
           backgroundColor: Colors.transparent,
@@ -229,7 +229,7 @@ class _StakeDialogState extends State<StakeDialog> {
                       ),
                     ),
                     Text(
-                      '''$balance ${selectedFarm.strStakedSymbol}''',
+                      '''$currentBalance ${selectedFarm.strStakedSymbol}''',
                       style: textStyle(
                         Colors.grey[400]!,
                         14,
@@ -317,11 +317,10 @@ class _StakeDialogState extends State<StakeDialog> {
                     ),
                   ],
                 ),
-                Obx(
-                  () => Row(
+                Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (isValid.value) ...[
+                      if (status == BlocStatus.success) ...[
                         StakeApproveButton(
                           width: 175,
                           height: 45,
@@ -338,8 +337,7 @@ class _StakeDialogState extends State<StakeDialog> {
                         )
                       ]
                     ],
-                  ),
-                ),
+                  ),              
               ],
             ),
           ),
@@ -347,37 +345,4 @@ class _StakeDialogState extends State<StakeDialog> {
       },
     );
   }
-
-  void stakeInput(
-    String value,
-    RxDouble totalStakedBalance,
-    FarmController selectedFarm,
-  ) {
-    if (value.isEmpty) {
-      totalStakedBalance.value = 0.0;
-      isValid.value = true;
-    }
-    selectedFarm.strStakeInput.value = value;
-    totalStakedBalance.value = double.parse(
-          selectedFarm.stakedInfo.value.viewAmount,
-        ) +
-        double.parse(selectedFarm.strStakeInput.value);
-    selectedFarm.strStakeInput.value = double.parse(value).toString();
-  }
-
-  void getMaxBalanceInput(
-    FarmController selectedFarm,
-    RxDouble totalStakedBalance,
-  ) {
-    stakeAxInputController.text = selectedFarm.stakingInfo.value.viewAmount;
-    selectedFarm.strStakeInput.value = stakeAxInputController.text;
-    totalStakedBalance.value = double.parse(
-          selectedFarm.stakedInfo.value.viewAmount,
-        ) +
-        double.parse(selectedFarm.strStakeInput.value);
-  }
-
-  bool checkValidInput(FarmController selectedFarm) =>
-      !(double.parse(selectedFarm.strStakeInput.value) >
-          double.parse(selectedFarm.stakingInfo.value.viewAmount));
 }

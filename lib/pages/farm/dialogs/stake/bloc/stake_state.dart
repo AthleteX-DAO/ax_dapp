@@ -6,13 +6,13 @@ class StakeState extends Equatable {
     this.currentStaked = 0,
     this.fundsAdded = 0,
     this.newBalance = 0,
-    this.balance = 0,
+    this.currentBalance = 0,
     this.stakeInput = 0,
     this.errorMessage = '',
     this.failure = Failure.none,
   });
 
-  final double balance;
+  final double currentBalance;
   final double currentStaked;
   final double fundsAdded;
   final double newBalance;
@@ -23,7 +23,7 @@ class StakeState extends Equatable {
 
   @override
   List<Object> get props => [
-        balance,
+        currentBalance,
         currentStaked,
         fundsAdded,
         newBalance,
@@ -34,7 +34,7 @@ class StakeState extends Equatable {
       ];
 
   StakeState copyWith({
-    double? balance,
+    double? currentBalance,
     double? currentStaked,
     double? fundsAdded,
     double? newBalance,
@@ -44,7 +44,7 @@ class StakeState extends Equatable {
     Failure? failure,
   }) {
     return StakeState(
-      balance: balance ?? this.balance,
+      currentBalance: currentBalance ?? this.currentBalance,
       currentStaked: currentStaked ?? this.currentStaked,
       fundsAdded: fundsAdded ?? this.fundsAdded,
       newBalance: newBalance ?? this.newBalance,

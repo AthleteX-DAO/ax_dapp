@@ -28,7 +28,21 @@ class StakeBloc extends Bloc<StakeEvent, StakeState> {
     final input = event.input;
     final totalStakedBalance =
         double.parse(_farmController.stakedInfo.value.viewAmount) + input;
-    emit(state.copyWith(newBalance: totalStakedBalance, fundsAdded: input));
+    if (input > double.parse(_farmController.stakingInfo.value.viewAmount)) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.noData,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          newBalance: totalStakedBalance,
+          fundsAdded: input,
+        ),
+      );
+    }
   }
 
   Future<void> _onMaxButtonPressed(
@@ -41,6 +55,7 @@ class StakeBloc extends Bloc<StakeEvent, StakeState> {
         double.parse(selectedFarm.stakedInfo.value.viewAmount) + input;
     emit(
       state.copyWith(
+        status: BlocStatus.success,
         newBalance: totalStakedBalance,
         fundsAdded: totalStakedBalance,
       ),
@@ -51,9 +66,16 @@ class StakeBloc extends Bloc<StakeEvent, StakeState> {
     FetchSelectedFarmInformation event,
     Emitter<StakeState> emit,
   ) async {
-    final balance = double.parse(_farmController.stakingInfo.value.viewAmount);
+    final currentBalance =
+        double.parse(_farmController.stakingInfo.value.viewAmount);
     final currentStaked =
         double.parse(_farmController.stakedInfo.value.viewAmount);
-    emit(state.copyWith(balance: balance, currentStaked: currentStaked));
+    emit(
+      state.copyWith(
+        status: BlocStatus.success,
+        currentBalance: currentBalance,
+        currentStaked: currentStaked,
+      ),
+    );
   }
 }
