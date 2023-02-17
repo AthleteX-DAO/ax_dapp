@@ -52,6 +52,8 @@ class _StakeDialogState extends State<StakeDialog> {
         final fundsAdded = state.fundsAdded;
         final newBalance = state.newBalance;
         final currentStaked = state.currentStaked;
+        final stakedSymbol = state.stakedSymbol;
+        final stakedAlias = state.stakedAlias;
         final status = state.status;
         return Dialog(
           insetPadding: EdgeInsets.zero,
@@ -129,7 +131,9 @@ class _StakeDialogState extends State<StakeDialog> {
                           const SizedBox(width: 15),
                           Expanded(
                             child: Text(
-                              '''${selectedFarm.strStakedAlias.value.isNotEmpty ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}''',
+                              selectedFarm.strStakedAlias.value.isNotEmpty
+                                  ? stakedAlias
+                                  : stakedSymbol,
                               style: textStyle(
                                 Colors.white,
                                 15,
@@ -152,8 +156,7 @@ class _StakeDialogState extends State<StakeDialog> {
                               onPressed: () {
                                 stakeAxInputController.text =
                                     selectedFarm.stakingInfo.value.viewAmount;
-                                final inputAmount =
-                                    stakeAxInputController.text;
+                                final inputAmount = stakeAxInputController.text;
                                 bloc.add(
                                   MaxButtonPressed(
                                     selectedFarm: selectedFarm,
@@ -221,7 +224,7 @@ class _StakeDialogState extends State<StakeDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Current ${selectedFarm.strStakedSymbol} Balance',
+                      'Current $stakedSymbol Balance',
                       style: textStyle(
                         Colors.grey[400]!,
                         14,
@@ -230,7 +233,7 @@ class _StakeDialogState extends State<StakeDialog> {
                       ),
                     ),
                     Text(
-                      '''$currentBalance ${selectedFarm.strStakedSymbol}''',
+                      '''$currentBalance $stakedSymbol''',
                       style: textStyle(
                         Colors.grey[400]!,
                         14,
@@ -244,7 +247,7 @@ class _StakeDialogState extends State<StakeDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Current ${selectedFarm.strStakedSymbol} Staked',
+                      'Current $stakedSymbol Staked',
                       style: textStyle(
                         Colors.grey[400]!,
                         14,
@@ -253,7 +256,7 @@ class _StakeDialogState extends State<StakeDialog> {
                       ),
                     ),
                     Text(
-                      '''$currentStaked ${selectedFarm.strStakedSymbol}''',
+                      '''$currentStaked $stakedSymbol''',
                       style: textStyle(
                         Colors.grey[400]!,
                         14,
@@ -292,7 +295,7 @@ class _StakeDialogState extends State<StakeDialog> {
                       ),
                     ),
                     Text(
-                      '''$fundsAdded ${selectedFarm.strStakedSymbol}''',
+                      '''$fundsAdded $stakedSymbol''',
                       style: textStyle(
                         Colors.grey[400]!,
                         14,
@@ -314,31 +317,31 @@ class _StakeDialogState extends State<StakeDialog> {
                   children: [
                     const Text('New Staked Balance'),
                     Text(
-                      '''$newBalance ${selectedFarm.strStakedSymbol}''',
+                      '''$newBalance $stakedSymbol''',
                     ),
                   ],
                 ),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (status == BlocStatus.success) ...[
-                        StakeApproveButton(
-                          width: 175,
-                          height: 45,
-                          text: 'Approve',
-                          selectedFarm: selectedFarm,
-                          walletAddress: context
-                              .read<WalletBloc>()
-                              .state
-                              .formattedWalletAddress,
-                        )
-                      ] else ...[
-                        const WarningTextButton(
-                          warningTitle: 'Insufficient Balance',
-                        )
-                      ]
-                    ],
-                  ),              
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (status == BlocStatus.success) ...[
+                      StakeApproveButton(
+                        width: 175,
+                        height: 45,
+                        text: 'Approve',
+                        selectedFarm: selectedFarm,
+                        walletAddress: context
+                            .read<WalletBloc>()
+                            .state
+                            .formattedWalletAddress,
+                      )
+                    ] else ...[
+                      const WarningTextButton(
+                        warningTitle: 'Insufficient Balance',
+                      )
+                    ]
+                  ],
+                ),
               ],
             ),
           ),

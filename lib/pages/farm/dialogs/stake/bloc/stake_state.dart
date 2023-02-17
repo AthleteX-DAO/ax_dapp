@@ -8,6 +8,8 @@ class StakeState extends Equatable {
     this.newBalance = 0,
     this.currentBalance = 0,
     this.stakeInput = 0,
+    this.stakedSymbol = '',
+    this.stakedAlias = '',
     this.errorMessage = '',
     this.failure = Failure.none,
   });
@@ -17,6 +19,8 @@ class StakeState extends Equatable {
   final double fundsAdded;
   final double newBalance;
   final double stakeInput;
+  final String stakedSymbol;
+  final String stakedAlias;
   final BlocStatus status;
   final String errorMessage;
   final Failure failure;
@@ -28,6 +32,8 @@ class StakeState extends Equatable {
         fundsAdded,
         newBalance,
         stakeInput,
+        stakedSymbol,
+        stakedAlias,
         status,
         errorMessage,
         failure,
@@ -39,6 +45,8 @@ class StakeState extends Equatable {
     double? fundsAdded,
     double? newBalance,
     double? stakeInput,
+    String? stakedSymbol,
+    String? stakedAlias,
     BlocStatus? status,
     String? errorMessage,
     Failure? failure,
@@ -49,6 +57,8 @@ class StakeState extends Equatable {
       fundsAdded: fundsAdded ?? this.fundsAdded,
       newBalance: newBalance ?? this.newBalance,
       stakeInput: stakeInput ?? this.stakeInput,
+      stakedSymbol: stakedSymbol ?? this.stakedSymbol,
+      stakedAlias: stakedAlias ?? this.stakedAlias,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       failure: failure ?? this.failure,

@@ -80,11 +80,15 @@ class StakeBloc extends Bloc<StakeEvent, StakeState> {
         double.parse(_farmController.stakingInfo.value.viewAmount);
     final currentStaked =
         double.parse(_farmController.stakedInfo.value.viewAmount);
+    final stakedSymbol = _farmController.strStakedSymbol.value;
+    final stakedAlias = _farmController.strStakedAlias.value;
     emit(
       state.copyWith(
         status: BlocStatus.success,
         currentBalance: currentBalance,
         currentStaked: currentStaked,
+        stakedSymbol: stakedSymbol,
+        stakedAlias: stakedAlias,
       ),
     );
   }
