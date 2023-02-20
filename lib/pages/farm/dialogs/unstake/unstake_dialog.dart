@@ -11,8 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-class UnstakeDialog extends StatefulWidget {
-  const UnstakeDialog({
+class UnStakeDialog extends StatefulWidget {
+  const UnStakeDialog({
     required this.farm,
     required this.layoutWdt,
     super.key,
@@ -22,10 +22,10 @@ class UnstakeDialog extends StatefulWidget {
   final double layoutWdt;
 
   @override
-  State<StatefulWidget> createState() => _UnstakeDialogState();
+  State<StatefulWidget> createState() => _UnStakeDialogState();
 }
 
-class _UnstakeDialogState extends State<UnstakeDialog> {
+class _UnStakeDialogState extends State<UnStakeDialog> {
   final unStakeAxInputController = TextEditingController();
   @override
   void dispose() {

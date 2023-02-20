@@ -247,7 +247,7 @@ class MyFarmItem extends StatelessWidget {
                         create: (context) => UnStakeBloc(
                           farmController: farm,
                         ),
-                        child: UnstakeDialog(
+                        child: UnStakeDialog(
                           farm: farm,
                           layoutWdt: cardWidth,
                         ),
