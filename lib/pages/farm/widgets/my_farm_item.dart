@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/farm/dialogs/dialogs.dart';
+import 'package:ax_dapp/pages/farm/dialogs/unstake/bloc/unstake_bloc.dart';
 import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
@@ -242,9 +243,14 @@ class MyFarmItem extends StatelessWidget {
                   child: TextButton(
                     onPressed: () => showDialog<void>(
                       context: context,
-                      builder: (BuildContext builderContext) => UnstakeDialog(
-                        farm: farm,
-                        layoutWdt: cardWidth,
+                      builder: (BuildContext builderContext) => BlocProvider(
+                        create: (context) => UnStakeBloc(
+                          farmController: farm,
+                        ),
+                        child: UnstakeDialog(
+                          farm: farm,
+                          layoutWdt: cardWidth,
+                        ),
                       ),
                     ),
                     child: Text(

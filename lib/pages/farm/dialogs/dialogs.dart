@@ -1,3 +1,3 @@
-export 'dual_stake_dialog.dart';
+export 'dual_stake_dialog/dual_stake_dialog.dart';
 export 'stake/stake_dialog.dart';
-export 'unstake_dialog.dart';
+export 'unstake/unstake_dialog.dart';
