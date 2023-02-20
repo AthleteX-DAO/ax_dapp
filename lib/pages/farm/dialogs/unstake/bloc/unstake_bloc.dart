@@ -36,7 +36,7 @@ class UnStakeBloc extends Bloc<UnStakeEvent, UnStakeState> {
     }
     final parsedInput = double.parse(input);
     final totalStakedBalance =
-        double.parse(selectedFarm.stakedInfo.value.viewAmount) + parsedInput;
+        double.parse(selectedFarm.stakedInfo.value.viewAmount) - parsedInput;
     if (parsedInput > double.parse(selectedFarm.stakingInfo.value.viewAmount)) {
       emit(
         state.copyWith(
@@ -62,7 +62,7 @@ class UnStakeBloc extends Bloc<UnStakeEvent, UnStakeState> {
     final input = event.input;
     final parsedInput = double.parse(input);
     final totalStakedBalance =
-        double.parse(selectedFarm.stakedInfo.value.viewAmount) + parsedInput;
+        double.parse(selectedFarm.stakedInfo.value.viewAmount) - parsedInput;
     emit(
       state.copyWith(
         status: BlocStatus.success,

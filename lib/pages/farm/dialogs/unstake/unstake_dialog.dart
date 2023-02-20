@@ -2,13 +2,13 @@ import 'package:ax_dapp/pages/farm/dialogs/unstake/bloc/unstake_bloc.dart';
 import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class UnstakeDialog extends StatefulWidget {
@@ -27,7 +27,6 @@ class UnstakeDialog extends StatefulWidget {
 
 class _UnstakeDialogState extends State<UnstakeDialog> {
   final unStakeAxInputController = TextEditingController();
-  RxBool isValid = true.obs;
   @override
   void dispose() {
     unStakeAxInputController.dispose();
@@ -46,7 +45,6 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
       farm: widget.farm,
       walletRepository: context.read<WalletRepository>(),
     );
-    final totalStakedBalance = 0.0.obs;
     return BlocBuilder<UnStakeBloc, UnStakeState>(
       builder: (context, state) {
         final bloc = context.read<UnStakeBloc>();
@@ -163,10 +161,6 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                                     input: inputAmount,
                                   ),
                                 );
-                                // getMaxBalanceInput(
-                                //   selectedFarm,
-                                //   totalStakedBalance,
-                                // );
                               },
                               child: Text(
                                 'Max',
@@ -188,10 +182,11 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                               ),
                               controller: unStakeAxInputController,
                               onChanged: (value) {
-                                unstakeInput(
-                                  value,
-                                  totalStakedBalance,
-                                  selectedFarm,
+                                bloc.add(
+                                  UnStakeInput(
+                                    selectedFarm: selectedFarm,
+                                    input: value,
+                                  ),
                                 );
                               },
                               style: textStyle(
@@ -235,15 +230,13 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                         isUline: false,
                       ),
                     ),
-                    Obx(
-                      () => Text(
-                        '''$currentStaked $stakedSymbol''',
-                        style: textStyle(
-                          Colors.grey[400]!,
-                          14,
-                          isBold: false,
-                          isUline: false,
-                        ),
+                    Text(
+                      '''$currentStaked $stakedSymbol''',
+                      style: textStyle(
+                        Colors.grey[400]!,
+                        14,
+                        isBold: false,
+                        isUline: false,
                       ),
                     ),
                   ],
@@ -276,15 +269,13 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                         isUline: false,
                       ),
                     ),
-                    Obx(
-                      () => Text(
-                        '''$fundsRemoved $stakedSymbol''',
-                        style: textStyle(
-                          Colors.grey[400]!,
-                          14,
-                          isBold: false,
-                          isUline: false,
-                        ),
+                    Text(
+                      '''$fundsRemoved $stakedSymbol''',
+                      style: textStyle(
+                        Colors.grey[400]!,
+                        14,
+                        isBold: false,
+                        isUline: false,
                       ),
                     ),
                   ],
@@ -300,75 +291,37 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('New Staked Balance'),
-                    Obx(
-                      () => Text(
-                        '''$newBalance $stakedSymbol''',
-                      ),
-                    )
+                    Text(
+                      '''$newBalance $stakedSymbol''',
+                    ),
                   ],
                 ),
-                Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (isValid.value) ...[
-                        UnStakeApproveButton(
-                          width: 175,
-                          height: 45,
-                          text: 'Confirm',
-                          selectedFarm: selectedFarm,
-                          walletAddress: context
-                              .read<WalletBloc>()
-                              .state
-                              .formattedWalletAddress,
-                        ),
-                      ] else ...[
-                        const WarningTextButton(
-                          warningTitle: 'Insufficient Balance',
-                        ),
-                      ]
-                    ],
-                  ),
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (status == BlocStatus.success) ...[
+                      UnStakeApproveButton(
+                        width: 175,
+                        height: 45,
+                        text: 'Confirm',
+                        selectedFarm: selectedFarm,
+                        walletAddress: context
+                            .read<WalletBloc>()
+                            .state
+                            .formattedWalletAddress,
+                      ),
+                    ] else ...[
+                      const WarningTextButton(
+                        warningTitle: 'Insufficient Balance',
+                      ),
+                    ]
+                  ],
+                ),
               ],
             ),
           ),
         );
       },
     );
-  }
-
-  void unstakeInput(
-    String value,
-    RxDouble totalStakedBalance,
-    FarmController selectedFarm,
-  ) {
-    if (value.isEmpty) {
-      totalStakedBalance.value = 0.0;
-      isValid.value = true;
-    }
-    selectedFarm.strUnStakeInput.value = value;
-    totalStakedBalance.value = double.parse(
-          selectedFarm.stakedInfo.value.viewAmount,
-        ) -
-        double.parse(
-          selectedFarm.strUnStakeInput.value,
-        );
-    isValid.value = !totalStakedBalance.isNegative;
-  }
-
-  void getMaxBalanceInput(
-    FarmController selectedFarm,
-    RxDouble totalStakedBalance,
-  ) {
-    unStakeAxInputController.text = selectedFarm.stakedInfo.value.viewAmount;
-    selectedFarm.strUnStakeInput.value = unStakeAxInputController.text;
-    totalStakedBalance.value = double.parse(
-          selectedFarm.stakedInfo.value.viewAmount,
-        ) -
-        double.parse(
-          selectedFarm.strUnStakeInput.value,
-        );
-    isValid.value = !totalStakedBalance.isNegative;
   }
 }
