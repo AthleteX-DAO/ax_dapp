@@ -1,9 +1,6 @@
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:ax_dapp/wallet/widgets/ax_information_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:go_router/go_router.dart';
 
 class UnownedAPTs extends StatelessWidget {
   const UnownedAPTs({
@@ -15,7 +12,6 @@ class UnownedAPTs extends StatelessWidget {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     var wid = 400.0;
-    const edge = 40.0;
     if (_width < 405) wid = _width;
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
@@ -85,9 +81,7 @@ class UnownedAPTs extends StatelessWidget {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          launchUrl(
-                            Uri.parse('https://stage.athletex.io/#/scout/'),
-                          );
+                          context.goNamed('scout');
                           Navigator.pop(context);
                         },
                         child: Text(
