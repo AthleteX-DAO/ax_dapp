@@ -10,11 +10,13 @@ class TermsAndConditions extends StatelessWidget {
   Widget build(BuildContext context) {
     final isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    var buttonText = '';
+    isWeb ? buttonText = 'Start Trading' : buttonText = 'Start';
     return RichText(
       text: TextSpan(
         children: <TextSpan>[
           TextSpan(
-            text: '''By entering this site you agree to the''',
+            text: 'By clicking $buttonText, you agree to the ',
             style: TextStyle(
               color: Colors.white,
               fontSize: isWeb ? 14 : 12,
@@ -22,7 +24,7 @@ class TermsAndConditions extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: 'Terms and Conditions',
+            text: ' Terms and Conditions',
             style: TextStyle(
               color: Colors.amber[400],
               fontSize: isWeb ? 14 : 12,
