@@ -1,3 +1,4 @@
+import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -86,6 +87,21 @@ class BottomNavigationBarWeb extends StatelessWidget {
               FontAwesomeIcons.tiktok,
               size: 25,
               color: Colors.grey[400],
+            ),
+          ),
+          AppToolTip(
+            'Invest in what you know best at AthleteX Markets.',
+            IconButton(
+              onPressed: () => launchUrl(
+                Uri.parse(
+                  'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper',
+                ),
+              ),
+              icon: FaIcon(
+                FontAwesomeIcons.circleExclamation,
+                size: 25,
+                color: Colors.grey[400],
+              ),
             ),
           ),
         ],
