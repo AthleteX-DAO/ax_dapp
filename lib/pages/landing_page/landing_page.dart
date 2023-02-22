@@ -72,6 +72,9 @@ class _LandingPageState extends State<LandingPage> {
                     tradingTextSize: tradingTextSize,
                   ),
                 ),
+                SizedBox(
+                  height: _height * 0.05,
+                ),
                 const TermsAndConditions(),
               ],
             ),
