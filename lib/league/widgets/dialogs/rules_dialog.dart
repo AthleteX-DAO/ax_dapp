@@ -5,8 +5,6 @@ import 'package:toggle_switch/toggle_switch.dart';
 
 const List<String> list = <String>['MLB', 'NFL', 'NBA'];
 
-//class LeagueDialog extends StatelessWidget {
-//const LeagueDialog({super.key});
 class LeagueDialog extends StatefulWidget {
   const LeagueDialog({super.key});
 
@@ -103,7 +101,14 @@ class _LeagueDialog extends State<LeagueDialog> {
     final _height = MediaQuery.of(context).size.height;
 
     var wid = 450.0;
-    if (_width < 565) wid = _width;
+    if (_width < 500) wid = _width;
+
+    var dWid = 250.0;
+    var pWid = 250.0;
+    if (_width < 500) dWid = _width * 0.5;
+    if (_width < 500) pWid = _width * 0.475;
+    if (_width < 385) dWid = _width * 0.45;
+    if (_width < 385) pWid = _width * 0.425;
 
     var hgt = 550.0;
     if (_height < 505) hgt = _height;
@@ -158,7 +163,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Name: '),
                   SizedBox(
-                    width: 250,
+                    width: dWid,
                     child: TextFormField(
                       controller: leagueNameController,
                       decoration: const InputDecoration(
@@ -174,7 +179,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Start-Date: '),
                   SizedBox(
-                    width: 250,
+                    width: dWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -195,7 +200,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('End-Date: '),
                   SizedBox(
-                    width: 250,
+                    width: dWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -216,7 +221,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Team Size: '),
                   SizedBox(
-                    width: 250,
+                    width: dWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -235,9 +240,9 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Number of Participants: '),
+                  const Text('Participants: '),
                   SizedBox(
-                    width: 250,
+                    width: pWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -258,7 +263,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Entry Fee: '),
                   SizedBox(
-                    width: 250,
+                    width: dWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -300,6 +305,8 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Private: '),
                   SizedBox(
+                    width: 145,
+                    height: 25,
                     child: ToggleSwitch(
                       totalSwitches: 2,
                       labels: const ['No', 'Yes'],
@@ -313,6 +320,8 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Lock: '),
                   SizedBox(
+                    width: 145,
+                    height: 25,
                     child: ToggleSwitch(
                       totalSwitches: 2,
                       labels: const ['No', 'Yes'],
