@@ -21,12 +21,6 @@ class _LeagueDialog extends State<LeagueDialog> {
   bool vertical = false;
 
   @override
-  void initState() {
-    super.initState();
-    leagueNameController.addListener(() {});
-  }
-
-  @override
   void dispose() {
     leagueNameController.dispose();
     startDateController.dispose();
