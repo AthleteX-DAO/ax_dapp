@@ -1,9 +1,6 @@
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-
-const List<String> list = <String>['MLB', 'NFL', 'NBA'];
 
 class LeagueDialog extends StatefulWidget {
   const LeagueDialog({super.key});
@@ -19,6 +16,9 @@ class _LeagueDialog extends State<LeagueDialog> {
   final TextEditingController teamSizeController = TextEditingController();
   final TextEditingController participantsController = TextEditingController();
   final TextEditingController entryFeeController = TextEditingController();
+  final List<bool> _private = <bool>[true, false];
+  final List<bool> _lock = <bool>[true, false];
+  bool vertical = false;
 
   @override
   void initState() {
@@ -31,50 +31,30 @@ class _LeagueDialog extends State<LeagueDialog> {
             TextSelection(baseOffset: text.length, extentOffset: text.length),
         composing: TextRange.empty,
       );
-    });
-    super.initState();
-    startDateController.addListener(() {
-      final text = startDateController.text.toLowerCase();
       startDateController.value = startDateController.value.copyWith(
         text: text,
         selection:
             TextSelection(baseOffset: text.length, extentOffset: text.length),
         composing: TextRange.empty,
       );
-    });
-    super.initState();
-    endDateController.addListener(() {
-      final text = endDateController.text.toLowerCase();
       endDateController.value = endDateController.value.copyWith(
         text: text,
         selection:
             TextSelection(baseOffset: text.length, extentOffset: text.length),
         composing: TextRange.empty,
       );
-    });
-    super.initState();
-    teamSizeController.addListener(() {
-      final text = teamSizeController.text.toLowerCase();
       teamSizeController.value = teamSizeController.value.copyWith(
         text: text,
         selection:
             TextSelection(baseOffset: text.length, extentOffset: text.length),
         composing: TextRange.empty,
       );
-    });
-    super.initState();
-    participantsController.addListener(() {
-      final text = participantsController.text.toLowerCase();
       participantsController.value = participantsController.value.copyWith(
         text: text,
         selection:
             TextSelection(baseOffset: text.length, extentOffset: text.length),
         composing: TextRange.empty,
       );
-    });
-    super.initState();
-    entryFeeController.addListener(() {
-      final text = entryFeeController.text.toLowerCase();
       entryFeeController.value = entryFeeController.value.copyWith(
         text: text,
         selection:
@@ -103,12 +83,12 @@ class _LeagueDialog extends State<LeagueDialog> {
     var wid = 450.0;
     if (_width < 500) wid = _width;
 
-    var dWid = 250.0;
-    var pWid = 250.0;
-    if (_width < 500) dWid = _width * 0.5;
-    if (_width < 500) pWid = _width * 0.475;
-    if (_width < 385) dWid = _width * 0.45;
-    if (_width < 385) pWid = _width * 0.425;
+    var textBoxWid = 250.0;
+    var participantsWid = 250.0;
+    if (_width < 500) textBoxWid = _width * 0.5;
+    if (_width < 500) participantsWid = _width * 0.475;
+    if (_width < 385) textBoxWid = _width * 0.45;
+    if (_width < 385) participantsWid = _width * 0.425;
 
     var hgt = 550.0;
     if (_height < 505) hgt = _height;
@@ -117,7 +97,15 @@ class _LeagueDialog extends State<LeagueDialog> {
     final items = [
       'MLB',
       'NFL',
-      'MBA',
+      'NBA',
+    ];
+    const privateToggle = <Widget>[
+      Text('No'),
+      Text('Yes'),
+    ];
+    const lockToggle = <Widget>[
+      Text('No'),
+      Text('Yes'),
     ];
 
     return Dialog(
@@ -132,7 +120,6 @@ class _LeagueDialog extends State<LeagueDialog> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              //edit this to add to popup
               SizedBox(
                 width: wid,
                 child: Row(
@@ -163,7 +150,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Name: '),
                   SizedBox(
-                    width: dWid,
+                    width: textBoxWid,
                     child: TextFormField(
                       controller: leagueNameController,
                       decoration: const InputDecoration(
@@ -179,7 +166,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Start-Date: '),
                   SizedBox(
-                    width: dWid,
+                    width: textBoxWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -200,7 +187,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('End-Date: '),
                   SizedBox(
-                    width: dWid,
+                    width: textBoxWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -221,7 +208,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Team Size: '),
                   SizedBox(
-                    width: dWid,
+                    width: textBoxWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -242,7 +229,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Participants: '),
                   SizedBox(
-                    width: pWid,
+                    width: participantsWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -263,7 +250,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                 children: [
                   const Text('Entry Fee: '),
                   SizedBox(
-                    width: dWid,
+                    width: textBoxWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -307,10 +294,26 @@ class _LeagueDialog extends State<LeagueDialog> {
                   SizedBox(
                     width: 145,
                     height: 25,
-                    child: ToggleSwitch(
-                      totalSwitches: 2,
-                      labels: const ['No', 'Yes'],
-                      onToggle: (index) {},
+                    child: ToggleButtons(
+                      direction: vertical ? Axis.vertical : Axis.horizontal,
+                      onPressed: (int index) {
+                        setState(() {
+                          for (var i = 0; i < _private.length; i++) {
+                            _private[i] = i == index;
+                          }
+                        });
+                      },
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      selectedBorderColor: Colors.amber[700],
+                      selectedColor: Colors.black,
+                      fillColor: Colors.amber[400],
+                      color: Colors.amber[400],
+                      constraints: const BoxConstraints(
+                        minHeight: 40,
+                        minWidth: 71,
+                      ),
+                      isSelected: _private,
+                      children: privateToggle,
                     ),
                   ),
                 ],
@@ -322,10 +325,26 @@ class _LeagueDialog extends State<LeagueDialog> {
                   SizedBox(
                     width: 145,
                     height: 25,
-                    child: ToggleSwitch(
-                      totalSwitches: 2,
-                      labels: const ['No', 'Yes'],
-                      onToggle: (index) {},
+                    child: ToggleButtons(
+                      direction: vertical ? Axis.vertical : Axis.horizontal,
+                      onPressed: (int index) {
+                        setState(() {
+                          for (var i = 0; i < _lock.length; i++) {
+                            _lock[i] = i == index;
+                          }
+                        });
+                      },
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      selectedBorderColor: Colors.amber[700],
+                      selectedColor: Colors.black,
+                      fillColor: Colors.amber[400],
+                      color: Colors.amber[400],
+                      constraints: const BoxConstraints(
+                        minHeight: 40,
+                        minWidth: 71,
+                      ),
+                      isSelected: _lock,
+                      children: lockToggle,
                     ),
                   ),
                 ],

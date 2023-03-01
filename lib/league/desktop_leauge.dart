@@ -25,7 +25,7 @@ class DesktopLeague extends StatelessWidget {
               ),
             },
             child: const Text(
-              'League PopUp',
+              'Create a League',
               style: TextStyle(
                 color: Colors.amber,
                 fontFamily: 'OpenSans',
