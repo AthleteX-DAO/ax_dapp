@@ -23,45 +23,7 @@ class _LeagueDialog extends State<LeagueDialog> {
   @override
   void initState() {
     super.initState();
-    leagueNameController.addListener(() {
-      final text = leagueNameController.text.toLowerCase();
-      leagueNameController.value = leagueNameController.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-      startDateController.value = startDateController.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-      endDateController.value = endDateController.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-      teamSizeController.value = teamSizeController.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-      participantsController.value = participantsController.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-      entryFeeController.value = entryFeeController.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-    });
+    leagueNameController.addListener(() {});
   }
 
   @override
