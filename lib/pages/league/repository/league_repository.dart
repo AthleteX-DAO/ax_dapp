@@ -2,17 +2,6 @@ import 'package:ax_dapp/pages/league/models/league.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-//Need to implement
-/*
-Create league X
-Fetch leagues X
-Delete league X
-Update league X
-Update roster X
-Join League (new user in league) -> Same as creating a roster. X
-Delete user and roster from league X
-*/
-
 class LeagueRepository {
   LeagueRepository({required FirebaseFirestore fireStore})
       : _fireStore = fireStore;
