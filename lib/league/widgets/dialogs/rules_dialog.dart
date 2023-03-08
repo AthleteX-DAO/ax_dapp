@@ -19,6 +19,12 @@ class _LeagueDialog extends State<LeagueDialog> {
   final List<bool> _private = <bool>[true, false];
   final List<bool> _lock = <bool>[true, false];
   bool vertical = false;
+  final items = [
+    'MLB',
+    'NFL',
+    'NBA',
+  ];
+  String dropDownValue = 'MLB';
 
   @override
   void dispose() {
@@ -49,12 +55,6 @@ class _LeagueDialog extends State<LeagueDialog> {
     var hgt = 550.0;
     if (_height < 505) hgt = _height;
 
-    var dropdownvalue = 'MLB';
-    final items = [
-      'MLB',
-      'NFL',
-      'NBA',
-    ];
     const privateToggle = <Widget>[
       Text('No'),
       Text('Yes'),
@@ -226,18 +226,18 @@ class _LeagueDialog extends State<LeagueDialog> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Sport(s): '),
-                  DropdownButton(
-                    value: dropdownvalue,
+                  DropdownButton<String>(
+                    value: dropDownValue,
                     icon: const Icon(Icons.keyboard_arrow_down),
-                    items: items.map((String items) {
+                    items: items.map<DropdownMenuItem<String>>((String item) {
                       return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
+                        value: item,
+                        child: Text(item),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
-                        dropdownvalue = newValue!;
+                        dropDownValue = newValue!;
                       });
                     },
                   )
