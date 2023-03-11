@@ -9,72 +9,72 @@ class LeagueRepository {
   final FirebaseFirestore _fireStore;
 
   Future<void> createLeague({
-    required LeagueData leagueData,
+    required League league,
   }) async {
     try {
-      await _fireStore.collection('Leagues').add(leagueData.toJson());
+      await _fireStore.collection('Leagues').add(league.toJson());
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
   }
 
-  Future<List<LeagueData>> fetchLeagues() async {
+  Future<List<League>> fetchLeagues() async {
     try {
       final leagues = await _fireStore.collection('Leagues').get();
-      return leagues.docs.map((e) => LeagueData.fromJson(e.data())).toList();
+      return leagues.docs.map((e) => League.fromJson(e.data())).toList();
     } on FirebaseException catch (e) {
       debugPrint('$e');
       return [];
     }
   }
 
-  Future<void> deleteLeague({required String leagueId}) async {
+  Future<void> deleteLeague({required String leagueID}) async {
     try {
       await _fireStore
           .collection('Leagues')
-          .doc(leagueId)
+          .doc(leagueID)
           .collection('Rosters')
           .get()
           .then((snapshot) async {
         for (final doc in snapshot.docs) {
           await _fireStore
               .collection('Leagues')
-              .doc(leagueId)
+              .doc(leagueID)
               .collection('Rosters')
               .doc(doc.id)
               .delete();
         }
       });
 
-      await _fireStore.collection('Leagues').doc(leagueId).delete();
+      await _fireStore.collection('Leagues').doc(leagueID).delete();
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
   }
 
   Future<void> updateLeague({
-    required String leagueId,
-    required LeagueData leagueData,
+    required String leagueID,
+    required League league,
   }) async {
     try {
       await _fireStore
           .collection('Leagues')
-          .doc(leagueId)
-          .update(leagueData.toJson());
+          .doc(leagueID)
+          .update(league.toJson());
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
   }
 
   Future<void> updateRoster({
-    required String leagueId,
+    required String leagueID,
     required String userWallet,
     required List<String> roster,
   }) async {
     try {
       await _fireStore
           .collection('Leagues')
-          .doc(leagueId)
+          .doc(leagueID)
           .collection('Rosters')
           .doc(userWallet)
           .update({'APT_list': roster});
@@ -84,14 +84,14 @@ class LeagueRepository {
   }
 
   Future<void> enrollUser({
-    required String leagueId,
+    required String leagueID,
     required String userWallet,
     required List<String> roster,
   }) async {
     try {
       await _fireStore
           .collection('Leagues')
-          .doc(leagueId)
+          .doc(leagueID)
           .collection('Rosters')
           .doc(userWallet)
           .set({'APT_list': roster});
@@ -101,13 +101,13 @@ class LeagueRepository {
   }
 
   Future<void> removeUser({
-    required String leagueId,
+    required String leagueID,
     required String userWallet,
   }) async {
     try {
       await _fireStore
           .collection('Leagues')
-          .doc(leagueId)
+          .doc(leagueID)
           .collection('Rosters')
           .doc(userWallet)
           .delete();
