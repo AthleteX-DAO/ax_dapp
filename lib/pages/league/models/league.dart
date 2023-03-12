@@ -1,3 +1,4 @@
+import 'package:ethereum_api/src/ethereum/models/supported_sports.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'league.g.dart';
@@ -15,6 +16,7 @@ class League {
     required this.isPrivate,
     required this.isLocked,
     required this.rosters,
+    required this.sports,
   });
 
   factory League.fromJson(Map<String, dynamic> json) => _$LeagueFromJson(json);
@@ -29,7 +31,8 @@ class League {
     entryFee: 0,
     isPrivate: false,
     isLocked: false,
-    rosters: [],
+    rosters: <String, List<String>>{},
+    sports: [],
   );
 
   final String name;
@@ -41,7 +44,8 @@ class League {
   final int entryFee;
   final bool isPrivate;
   final bool isLocked;
-  final List<Map<String, List<String>>> rosters;
+  final Map<String, List<String>> rosters;
+  final List<SupportedSport> sports;
 
   Map<String, dynamic> toJson() => _$LeagueToJson(this);
 }
