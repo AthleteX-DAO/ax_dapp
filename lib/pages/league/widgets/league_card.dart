@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/league/models/league.dart';
+import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:flutter/material.dart';
 
 class LeagueCard extends StatelessWidget {
@@ -15,9 +16,83 @@ class LeagueCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(league.name),
-            Text(league.dateStart),
-            Text(league.dateEnd),
+            Row(
+              children: league.sports
+                  .map(
+                    (sport) => Icon(
+                      getSportIcon(sport),
+                      color: Colors.grey[400],
+                    ),
+                  )
+                  .toList(),
+            ),
+            Text(
+              league.name,
+              style: const TextStyle(
+                color: Colors.amber,
+                fontFamily: 'OpenSans',
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Text(
+              '${league.dateStart} - ${league.dateEnd}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Row(
+              children: [
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/x.jpg'),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                Text(
+                  '${league.entryFee} AX',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/x.jpg'),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                //TODO(anyone): get the prize pool for each league
+                const Text(
+                  '1000 AX',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),
