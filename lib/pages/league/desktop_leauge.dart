@@ -275,6 +275,47 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                         ],
                       ),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'League Name',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontFamily: 'OpenSans',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          'Start/End Date',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontFamily: 'OpenSans',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          'Entry Fee',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontFamily: 'OpenSans',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          'Prize Pool',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontFamily: 'OpenSans',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
                     SizedBox(
                       height: constraints.maxHeight * 0.8 - 120,
                       child: ListView.builder(

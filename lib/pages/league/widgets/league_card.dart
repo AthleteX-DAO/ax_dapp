@@ -17,23 +17,27 @@ class LeagueCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Row(
-              children: league.sports
-                  .map(
-                    (sport) => Icon(
-                      getSportIcon(sport),
-                      color: Colors.grey[400],
-                    ),
-                  )
-                  .toList(),
-            ),
-            Text(
-              league.name,
-              style: const TextStyle(
-                color: Colors.amber,
-                fontFamily: 'OpenSans',
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
+              children: [
+                Row(
+                  children: league.sports
+                      .map(
+                        (sport) => Icon(
+                          getSportIcon(sport),
+                          color: Colors.grey[400],
+                        ),
+                      )
+                      .toList(),
+                ),
+                Text(
+                  league.name,
+                  style: const TextStyle(
+                    color: Colors.amber,
+                    fontFamily: 'OpenSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
             Text(
               '${league.dateStart} - ${league.dateEnd}',
