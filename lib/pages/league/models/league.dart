@@ -1,5 +1,5 @@
-import 'package:ethereum_api/src/ethereum/models/supported_sports.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 part 'league.g.dart';
 

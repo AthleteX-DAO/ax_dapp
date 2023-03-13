@@ -5,7 +5,7 @@ import 'package:ax_dapp/pages/league/repository/league_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 part 'league_event.dart';
 part 'league_state.dart';
@@ -31,27 +31,42 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     CreateLeague event,
     Emitter<LeagueState> emit,
   ) async {
-    final name = event.name;
-    final adminWallet = event.adminWallet;
-    final dateStart = event.dateStart;
-    final dateEnd = event.dateEnd;
-    final teamSize = event.teamSize;
-    final maxTeams = event.maxTeams;
-    final entryFee = event.entryFee;
-    final isPrivate = event.isPrivate;
-    final isLocked = event.isLocked;
-    final league = League(
-      name: name,
-      adminWallet: adminWallet,
-      dateStart: dateStart,
-      dateEnd: dateEnd,
-      teamSize: teamSize,
-      maxTeams: maxTeams,
-      entryFee: entryFee,
-      isPrivate: isPrivate,
-      isLocked: isLocked,
-      rosters: [],
-    );
-    await _leagueRepository.createLeague(league: league);
+    try {
+      final league = event.league;
+      await _leagueRepository.createLeague(league: league);
+      emit(state.copyWith(status: BlocStatus.success));
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
   }
+
+  Future<void> _onFetchLeagues(
+    FetchLeagues event,
+    Emitter<LeagueState> emit,
+  ) async {}
+
+  Future<void> _onDeleteLeague(
+    DeleteLeague event,
+    Emitter<LeagueState> emit,
+  ) async {}
+
+  Future<void> _onUpdateLeague(
+    UpdateLeague event,
+    Emitter<LeagueState> emit,
+  ) async {}
+
+  Future<void> _onUpdateRoster(
+    UpdateRoster event,
+    Emitter<LeagueState> emit,
+  ) async {}
+
+  Future<void> _onEnrollUser(
+    EnrollUser event,
+    Emitter<LeagueState> emit,
+  ) async {}
+
+  Future<void> _onRemoveUser(
+    RemoveUser event,
+    Emitter<LeagueState> emit,
+  ) async {}
 }
