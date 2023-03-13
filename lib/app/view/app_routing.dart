@@ -70,7 +70,12 @@ class App extends StatelessWidget {
           create: (context) => TrackingCubit(
             context.read<TrackingRepository>(),
           )..setup(),
-        )
+        ),
+        BlocProvider(
+          create: (context) => LeagueBloc(
+            leagueRepository: context.read<LeagueRepository>(),
+          ),
+        ),
       ],
       child: const _MaterialApp(),
     );
@@ -219,12 +224,7 @@ class _MaterialApp extends StatelessWidget {
             path: '/league',
             builder: (BuildContext context, GoRouterState state) {
               Global().pageName = 'league';
-              return BlocProvider(
-                create: (context) => LeagueBloc(
-                  leagueRepository: context.read<LeagueRepository>(),
-                ),
-                child: const DesktopLeague(),
-              );
+              return const DesktopLeague();
             },
           ),
         ],
