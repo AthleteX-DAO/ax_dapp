@@ -23,6 +23,8 @@ class _LeagueDialog extends State<LeagueDialog> {
   final TextEditingController entryFeeController = TextEditingController();
   final List<bool> _private = <bool>[true, false];
   final List<bool> _lock = <bool>[true, false];
+  var _privateToggle = false;
+  var _lockToggle = false;
   bool vertical = false;
   final items = [
     'MLB',
@@ -65,15 +67,6 @@ class _LeagueDialog extends State<LeagueDialog> {
 
     var hgt = 550.0;
     if (_height < 505) hgt = _height;
-
-    const privateToggle = <Widget>[
-      Text('No'),
-      Text('Yes'),
-    ];
-    const lockToggle = <Widget>[
-      Text('No'),
-      Text('Yes'),
-    ];
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -267,6 +260,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                         setState(() {
                           for (var i = 0; i < _private.length; i++) {
                             _private[i] = i == index;
+                            _privateToggle = _private[i];
                           }
                         });
                       },
@@ -280,7 +274,10 @@ class _LeagueDialog extends State<LeagueDialog> {
                         minWidth: 71,
                       ),
                       isSelected: _private,
-                      children: privateToggle,
+                      children: const <Widget>[
+                        Text('No'),
+                        Text('Yes'),
+                      ],
                     ),
                   ),
                 ],
@@ -298,6 +295,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                         setState(() {
                           for (var i = 0; i < _lock.length; i++) {
                             _lock[i] = i == index;
+                            _lockToggle = _lock[i];
                           }
                         });
                       },
@@ -311,7 +309,10 @@ class _LeagueDialog extends State<LeagueDialog> {
                         minWidth: 71,
                       ),
                       isSelected: _lock,
-                      children: lockToggle,
+                      children: const <Widget>[
+                        Text('No'),
+                        Text('Yes'),
+                      ],
                     ),
                   ),
                 ],
@@ -339,8 +340,8 @@ class _LeagueDialog extends State<LeagueDialog> {
                                 maxTeams:
                                     int.parse(participantsController.text),
                                 entryFee: int.parse(entryFeeController.text),
-                                isPrivate: false,
-                                isLocked: false,
+                                isPrivate: _privateToggle,
+                                isLocked: _lockToggle,
                                 rosters: {},
                                 sports: [SupportedSport.MLB],
                               ),
