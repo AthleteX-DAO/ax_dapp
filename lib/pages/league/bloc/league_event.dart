@@ -35,35 +35,17 @@ class DeleteLeague extends LeagueEvent {
 
 class UpdateLeague extends LeagueEvent {
   const UpdateLeague({
-    required this.name,
-    required this.dateStart,
-    required this.dateEnd,
-    required this.teamSize,
-    required this.maxTeams,
-    required this.entryFee,
-    required this.isPrivate,
-    required this.isLocked,
+    required this.leagueID,
+    required this.league,
   });
 
-  final String name;
-  final String dateStart;
-  final String dateEnd;
-  final int teamSize;
-  final int maxTeams;
-  final int entryFee;
-  final bool isPrivate;
-  final bool isLocked;
+  final String leagueID;
+  final League league;
 
   @override
   List<Object?> get props => [
-        name,
-        dateStart,
-        dateEnd,
-        teamSize,
-        maxTeams,
-        entryFee,
-        isPrivate,
-        isLocked
+        leagueID,
+        league,
       ];
 }
 

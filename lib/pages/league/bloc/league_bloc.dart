@@ -21,6 +21,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     on<UpdateRoster>(_onUpdateRoster);
     on<EnrollUser>(_onEnrollUser);
     on<RemoveUser>(_onRemoveUser);
+    on<SearchLeague>(_onSearchLeague);
 
     add(FetchLeagues());
   }
@@ -34,6 +35,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     try {
       final league = event.league;
       await _leagueRepository.createLeague(league: league);
+      add(FetchLeagues());
       emit(state.copyWith(status: BlocStatus.success));
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
@@ -43,30 +45,126 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
   Future<void> _onFetchLeagues(
     FetchLeagues event,
     Emitter<LeagueState> emit,
-  ) async {}
+  ) async {
+    try {
+      emit(state.copyWith(status: BlocStatus.loading));
+      final leagues = await _leagueRepository.fetchLeagues();
+      emit(
+        state.copyWith(
+          allLeagues: leagues,
+          filteredLeagues: leagues,
+          status: BlocStatus.success,
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(
+          allLeagues: [],
+          filteredLeagues: [],
+          status: BlocStatus.error,
+        ),
+      );
+    }
+  }
 
   Future<void> _onDeleteLeague(
     DeleteLeague event,
     Emitter<LeagueState> emit,
-  ) async {}
+  ) async {
+    final leagueId = event.leagueID;
+    await _leagueRepository.deleteLeague(
+      leagueID: leagueId,
+    );
+    emit(
+      state.copyWith(
+        status: BlocStatus.success,
+      ),
+    );
+  }
 
   Future<void> _onUpdateLeague(
     UpdateLeague event,
     Emitter<LeagueState> emit,
-  ) async {}
+  ) async {
+    try {
+      final leagueId = event.leagueID;
+      final league = event.league;
+      await _leagueRepository.updateLeague(
+        leagueID: leagueId,
+        league: league,
+      );
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
 
   Future<void> _onUpdateRoster(
     UpdateRoster event,
     Emitter<LeagueState> emit,
-  ) async {}
+  ) async {
+    try {
+      final leagueId = event.leagueID;
+      final userWallet = event.userWallet;
+      final roster = event.roster;
+      await _leagueRepository.updateRoster(
+        leagueID: leagueId,
+        userWallet: userWallet,
+        roster: roster,
+      );
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
 
   Future<void> _onEnrollUser(
     EnrollUser event,
     Emitter<LeagueState> emit,
-  ) async {}
+  ) async {
+    try {
+      final leagueId = event.leagueID;
+      final userWallet = event.userWallet;
+      final roster = event.roster;
+      await _leagueRepository.enrollUser(
+        leagueID: leagueId,
+        userWallet: userWallet,
+        roster: roster,
+      );
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
 
   Future<void> _onRemoveUser(
     RemoveUser event,
     Emitter<LeagueState> emit,
-  ) async {}
+  ) async {
+    try {
+      final leagueId = event.leagueID;
+      final userWallet = event.userWallet;
+      await _leagueRepository.removeUser(
+        leagueID: leagueId,
+        userWallet: userWallet,
+      );
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
+
+  Future<void> _onSearchLeague(
+    SearchLeague event,
+    Emitter<LeagueState> emit,
+  ) async {
+    final input = event.input;
+    emit(
+      state.copyWith(
+        filteredLeagues: state.allLeagues
+            .where(
+              (league) => league.name.toUpperCase().contains(
+                    input.toUpperCase(),
+                  ),
+            )
+            .toList(),
+      ),
+    );
+  }
 }
