@@ -1,6 +1,8 @@
+import 'package:ax_dapp/pages/league/bloc/league_bloc.dart';
 import 'package:ax_dapp/pages/league/widgets/dialogs/rules_dialog.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DesktopLeague extends StatelessWidget {
   const DesktopLeague({super.key});
@@ -10,31 +12,37 @@ class DesktopLeague extends StatelessWidget {
     final global = Global();
     return global.buildPage(
       context,
-      Center(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: Colors.amber[400]!),
-          ),
-          child: TextButton(
-            onPressed: () => {
-              showDialog<void>(
-                context: context,
-                builder: (context) => const LeagueDialog(),
+      BlocBuilder<LeagueBloc, LeagueState>(
+        builder: (context, state) {
+          final bloc = context.read<LeagueBloc>();
+          final filteredLeagues = state.filteredLeagues;
+          return Center(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(color: Colors.amber[400]!),
               ),
-            },
-            child: const Text(
-              'Create a League',
-              style: TextStyle(
-                color: Colors.amber,
-                fontFamily: 'OpenSans',
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
+              child: TextButton(
+                onPressed: () => {
+                  showDialog<void>(
+                    context: context,
+                    builder: (context) => const LeagueDialog(),
+                  ),
+                },
+                child: const Text(
+                  'Create a League',
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontFamily: 'OpenSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
