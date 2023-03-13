@@ -42,12 +42,6 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: const Divider(
-                        color: Colors.grey,
-                      ),
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -131,6 +125,12 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                           ),
                         ),
                       ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      child: const Divider(
+                        color: Colors.grey,
+                      ),
                     ),
                     SizedBox(
                       height: constraints.maxHeight * 0.8 - 120,
