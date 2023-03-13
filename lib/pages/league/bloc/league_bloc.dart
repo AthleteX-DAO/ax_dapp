@@ -22,6 +22,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     on<EnrollUser>(_onEnrollUser);
     on<RemoveUser>(_onRemoveUser);
     on<SearchLeague>(_onSearchLeague);
+    on<SelectedSportChanged>(_onSelectedSportChanged);
 
     add(FetchLeagues());
   }
@@ -154,17 +155,69 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     SearchLeague event,
     Emitter<LeagueState> emit,
   ) async {
-    final input = event.input;
-    emit(
-      state.copyWith(
-        filteredLeagues: state.allLeagues
-            .where(
-              (league) => league.name.toUpperCase().contains(
-                    input.toUpperCase(),
-                  ),
-            )
-            .toList(),
-      ),
-    );
+    final input = event.input.trim().toUpperCase();
+    if (event.selectedSport != SupportedSport.all) {
+      emit(
+        state.copyWith(
+          filteredLeagues: state.allLeagues
+              .where(
+                (league) =>
+                    league.name.toUpperCase().contains(input) &&
+                    event.selectedSport.name == league.sports.first.name,
+              )
+              .toList(),
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          filteredLeagues: state.allLeagues
+              .where(
+                (league) => league.name.toUpperCase().contains(
+                      input.toUpperCase(),
+                    ),
+              )
+              .toList(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _onSelectedSportChanged(
+    SelectedSportChanged event,
+    Emitter<LeagueState> emit,
+  ) async {
+    if (event.selectedSport != SupportedSport.all) {
+      final filteredList = state.allLeagues
+          .where(
+            (league) => event.selectedSport.name == league.sports.first.name,
+          )
+          .toList();
+      if (filteredList.isNotEmpty) {
+        emit(
+          state.copyWith(
+            status: BlocStatus.success,
+            filteredLeagues: filteredList,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: BlocStatus.noData,
+            filteredLeagues: const [],
+          ),
+        );
+      }
+    } else {
+      final filteredList = state.allLeagues
+          .where((athlete) => event.selectedSport == SupportedSport.all)
+          .toList();
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          filteredLeagues: filteredList,
+        ),
+      );
+    }
   }
 }

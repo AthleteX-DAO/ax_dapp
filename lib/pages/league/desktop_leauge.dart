@@ -55,8 +55,8 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                           child: TextFormField(
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(
-                                RegExp('[0-9.]'),
-                              ),
+                                RegExp('[a-zA-z. ]'),
+                              )
                             ],
                             controller: leagueSearchController,
                             decoration: InputDecoration(
@@ -71,6 +71,14 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                               ),
                               hintText: 'Search a League',
                             ),
+                            onChanged: (value) {
+                              bloc.add(
+                                SearchLeague(
+                                  input: value,
+                                  selectedSport: _selectedSport,
+                                ),
+                              );
+                            },
                           ),
                         ),
                         DecoratedBox(
@@ -140,6 +148,11 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                   _selectedSport = SupportedSport.all;
                                 },
                               );
+                              bloc.add(
+                                const SelectedSportChanged(
+                                  selectedSport: SupportedSport.all,
+                                ),
+                              );
                             },
                             child: Text(
                               'ALL',
@@ -167,6 +180,11 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                 () {
                                   _selectedSport = SupportedSport.MLB;
                                 },
+                              );
+                              bloc.add(
+                                const SelectedSportChanged(
+                                  selectedSport: SupportedSport.MLB,
+                                ),
                               );
                             },
                             child: Text(
@@ -196,6 +214,11 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                   _selectedSport = SupportedSport.NFL;
                                 },
                               );
+                              bloc.add(
+                                const SelectedSportChanged(
+                                  selectedSport: SupportedSport.NFL,
+                                ),
+                              );
                             },
                             child: Text(
                               'NFL',
@@ -223,6 +246,11 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                 () {
                                   _selectedSport = SupportedSport.NBA;
                                 },
+                              );
+                              bloc.add(
+                                const SelectedSportChanged(
+                                  selectedSport: SupportedSport.NBA,
+                                ),
                               );
                             },
                             child: Text(

@@ -15,9 +15,7 @@ class CreateLeague extends LeagueEvent {
   final League league;
 
   @override
-  List<Object?> get props => [
-        league
-      ];
+  List<Object?> get props => [league];
 }
 
 class FetchLeagues extends LeagueEvent {}
@@ -95,10 +93,23 @@ class RemoveUser extends LeagueEvent {
 class SearchLeague extends LeagueEvent {
   const SearchLeague({
     required this.input,
+    required this.selectedSport,
   });
 
   final String input;
+  final SupportedSport selectedSport;
 
   @override
-  List<Object?> get props => [input];
+  List<Object?> get props => [input, selectedSport];
+}
+
+class SelectedSportChanged extends LeagueEvent {
+  const SelectedSportChanged({
+    required this.selectedSport,
+  });
+
+  final SupportedSport selectedSport;
+
+  @override
+  List<Object?> get props => [selectedSport];
 }
