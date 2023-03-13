@@ -1,6 +1,11 @@
+import 'package:ax_dapp/pages/league/bloc/league_bloc.dart';
+import 'package:ax_dapp/pages/league/models/league.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class LeagueDialog extends StatefulWidget {
   const LeagueDialog({super.key});
@@ -39,6 +44,12 @@ class _LeagueDialog extends State<LeagueDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<LeagueBloc>();
+    final walletAddress =
+        context.read<WalletBloc>().state.formattedWalletAddress;
+    final walletId = (walletAddress.isEmpty || walletAddress == kEmptyAddress)
+        ? ''
+        : walletAddress;
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
 
@@ -316,7 +327,27 @@ class _LeagueDialog extends State<LeagueDialog> {
                         border: Border.all(color: Colors.amber[400]!),
                       ),
                       child: TextButton(
-                        onPressed: () => {},
+                        onPressed: () => {
+                          bloc.add(
+                            CreateLeague(
+                              league: League(
+                                name: leagueNameController.text,
+                                adminWallet: walletId,
+                                dateStart: startDateController.text,
+                                dateEnd: endDateController.text,
+                                teamSize: int.parse(teamSizeController.text),
+                                maxTeams:
+                                    int.parse(participantsController.text),
+                                entryFee: int.parse(entryFeeController.text),
+                                isPrivate: false,
+                                isLocked: false,
+                                rosters: {},
+                                sports: [SupportedSport.MLB],
+                              ),
+                            ),
+                          ),
+                          Navigator.pop(context),
+                        },
                         child: const Text(
                           'Confirm',
                           style: TextStyle(
