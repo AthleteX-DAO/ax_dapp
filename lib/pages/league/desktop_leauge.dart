@@ -48,59 +48,29 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Container(
+                        SizedBox(
                           width: (constraints.maxWidth > 800)
                               ? constraints.maxWidth * 0.5
                               : constraints.maxWidth - 610,
-                          height: 50,
-                          decoration: boxDecoration(
-                            const Color.fromRGBO(118, 118, 128, 0.24),
-                            20,
-                            1,
-                            const Color.fromRGBO(118, 118, 128, 0.24),
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              Container(width: 6),
-                              const Icon(
-                                Icons.search,
-                                color: Color.fromRGBO(235, 235, 245, 0.6),
-                                size: 20,
-                              ),
-                              const SizedBox(width: 35),
-                              Expanded(
-                                child: TextFormField(
-                                  controller: leagueSearchController,
-                                  onChanged: (value) {
-                                    bloc.add(
-                                      SearchLeague(
-                                        input: value,
-                                      ),
-                                    );
-                                  },
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    contentPadding:
-                                        EdgeInsets.only(bottom: 8.5),
-                                    hintText: 'Search a League',
-                                    hintStyle: TextStyle(
-                                      color: Color.fromRGBO(
-                                        235,
-                                        235,
-                                        245,
-                                        0.6,
-                                      ),
-                                      fontFamily: 'OpenSans',
-                                    ),
-                                  ),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                      RegExp('[a-zA-z. ]'),
-                                    )
-                                  ],
-                                ),
+                          child: TextFormField(
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                RegExp('[0-9.]'),
                               ),
                             ],
+                            controller: leagueSearchController,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 20,
+                                  color: Colors.grey[400]!,
+                                ),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
+                              ),
+                              hintText: 'Search a League',
+                            ),
                           ),
                         ),
                         DecoratedBox(
