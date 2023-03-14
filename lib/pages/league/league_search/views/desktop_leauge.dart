@@ -147,166 +147,168 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                         color: Colors.grey,
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        left: 20,
-                        right: 20,
-                        bottom: 10,
-                      ),
-                      height: 40,
-                      child: Row(
-                        children: [
-                          Text(
-                            'League List',
-                            style: textStyle(
-                              Colors.white,
-                              textSize,
-                              isBold: false,
-                              isUline: false,
+                    FittedBox(
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          bottom: 10,
+                        ),
+                        height: 40,
+                        child: Row(
+                          children: [
+                            Text(
+                              'League List',
+                              style: textStyle(
+                                Colors.white,
+                                textSize,
+                                isBold: false,
+                                isUline: false,
+                              ),
                             ),
-                          ),
-                          Text(
-                            '|',
-                            style: textStyle(
-                              Colors.white,
-                              textSize,
-                              isBold: false,
-                              isUline: false,
+                            Text(
+                              '|',
+                              style: textStyle(
+                                Colors.white,
+                                textSize,
+                                isBold: false,
+                                isUline: false,
+                              ),
                             ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              leagueSearchController.clear();
-                              setState(
-                                () {
-                                  _selectedSport = SupportedSport.all;
-                                },
-                              );
-                              bloc.add(
-                                const SelectedSportChanged(
-                                  selectedSport: SupportedSport.all,
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'ALL',
-                              style: textSwapState(
-                                condition: _selectedSport == SupportedSport.all,
-                                tabNotSelected: textStyle(
-                                  Colors.white,
-                                  textSize,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
-                                tabSelected: textStyle(
-                                  Colors.amber[400]!,
-                                  textSize,
-                                  isBold: false,
-                                  isUline: true,
+                            TextButton(
+                              onPressed: () {
+                                leagueSearchController.clear();
+                                setState(
+                                  () {
+                                    _selectedSport = SupportedSport.all;
+                                  },
+                                );
+                                bloc.add(
+                                  const SelectedSportChanged(
+                                    selectedSport: SupportedSport.all,
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'ALL',
+                                style: textSwapState(
+                                  condition: _selectedSport == SupportedSport.all,
+                                  tabNotSelected: textStyle(
+                                    Colors.white,
+                                    textSize,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                  tabSelected: textStyle(
+                                    Colors.amber[400]!,
+                                    textSize,
+                                    isBold: false,
+                                    isUline: true,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              leagueSearchController.clear();
-                              setState(
-                                () {
-                                  _selectedSport = SupportedSport.MLB;
-                                },
-                              );
-                              bloc.add(
-                                const SelectedSportChanged(
-                                  selectedSport: SupportedSport.MLB,
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'MLB',
-                              style: textSwapState(
-                                condition: _selectedSport == SupportedSport.MLB,
-                                tabNotSelected: textStyle(
-                                  Colors.white,
-                                  textSize,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
-                                tabSelected: textStyle(
-                                  Colors.amber[400]!,
-                                  textSize,
-                                  isBold: false,
-                                  isUline: true,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              leagueSearchController.clear();
-                              setState(
-                                () {
-                                  _selectedSport = SupportedSport.NFL;
-                                },
-                              );
-                              bloc.add(
-                                const SelectedSportChanged(
-                                  selectedSport: SupportedSport.NFL,
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'NFL',
-                              style: textSwapState(
-                                condition: _selectedSport == SupportedSport.NFL,
-                                tabNotSelected: textStyle(
-                                  Colors.white,
-                                  textSize,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
-                                tabSelected: textStyle(
-                                  Colors.amber[400]!,
-                                  textSize,
-                                  isBold: false,
-                                  isUline: true,
+                            TextButton(
+                              onPressed: () {
+                                leagueSearchController.clear();
+                                setState(
+                                  () {
+                                    _selectedSport = SupportedSport.MLB;
+                                  },
+                                );
+                                bloc.add(
+                                  const SelectedSportChanged(
+                                    selectedSport: SupportedSport.MLB,
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'MLB',
+                                style: textSwapState(
+                                  condition: _selectedSport == SupportedSport.MLB,
+                                  tabNotSelected: textStyle(
+                                    Colors.white,
+                                    textSize,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                  tabSelected: textStyle(
+                                    Colors.amber[400]!,
+                                    textSize,
+                                    isBold: false,
+                                    isUline: true,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              leagueSearchController.clear();
-                              setState(
-                                () {
-                                  _selectedSport = SupportedSport.NBA;
-                                },
-                              );
-                              bloc.add(
-                                const SelectedSportChanged(
-                                  selectedSport: SupportedSport.NBA,
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'NBA',
-                              style: textSwapState(
-                                condition: _selectedSport == SupportedSport.NBA,
-                                tabNotSelected: textStyle(
-                                  Colors.white,
-                                  textSize,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
-                                tabSelected: textStyle(
-                                  Colors.amber[400]!,
-                                  textSize,
-                                  isBold: false,
-                                  isUline: true,
+                            TextButton(
+                              onPressed: () {
+                                leagueSearchController.clear();
+                                setState(
+                                  () {
+                                    _selectedSport = SupportedSport.NFL;
+                                  },
+                                );
+                                bloc.add(
+                                  const SelectedSportChanged(
+                                    selectedSport: SupportedSport.NFL,
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'NFL',
+                                style: textSwapState(
+                                  condition: _selectedSport == SupportedSport.NFL,
+                                  tabNotSelected: textStyle(
+                                    Colors.white,
+                                    textSize,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                  tabSelected: textStyle(
+                                    Colors.amber[400]!,
+                                    textSize,
+                                    isBold: false,
+                                    isUline: true,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                            TextButton(
+                              onPressed: () {
+                                leagueSearchController.clear();
+                                setState(
+                                  () {
+                                    _selectedSport = SupportedSport.NBA;
+                                  },
+                                );
+                                bloc.add(
+                                  const SelectedSportChanged(
+                                    selectedSport: SupportedSport.NBA,
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'NBA',
+                                style: textSwapState(
+                                  condition: _selectedSport == SupportedSport.NBA,
+                                  tabNotSelected: textStyle(
+                                    Colors.white,
+                                    textSize,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                  tabSelected: textStyle(
+                                    Colors.amber[400]!,
+                                    textSize,
+                                    isBold: false,
+                                    isUline: true,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Row(
