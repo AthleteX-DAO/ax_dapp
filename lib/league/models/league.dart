@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 part 'league.g.dart';
 
 @JsonSerializable()
-class LeagueData {
-  const LeagueData({
-    required this.id,
+class League {
+  const League({
     required this.name,
     required this.adminWallet,
     required this.dateStart,
@@ -15,13 +15,26 @@ class LeagueData {
     required this.entryFee,
     required this.isPrivate,
     required this.isLocked,
-    required this.roster,
+    required this.rosters,
+    required this.sports,
   });
 
-  factory LeagueData.fromJson(Map<String, dynamic> json) =>
-      _$LeagueDataFromJson(json);
+  factory League.fromJson(Map<String, dynamic> json) => _$LeagueFromJson(json);
 
-  final int id;
+  static const empty = League(
+    name: '',
+    adminWallet: '',
+    dateStart: '',
+    dateEnd: '',
+    teamSize: 0,
+    maxTeams: 0,
+    entryFee: 0,
+    isPrivate: false,
+    isLocked: false,
+    rosters: <String, List<String>>{},
+    sports: [],
+  );
+
   final String name;
   final String adminWallet;
   final String dateStart;
@@ -31,7 +44,8 @@ class LeagueData {
   final int entryFee;
   final bool isPrivate;
   final bool isLocked;
-  final List<Map<String, List<String>>> roster;
+  final Map<String, List<String>> rosters;
+  final List<SupportedSport> sports;
 
-  Map<String, dynamic> toJson() => _$LeagueDataToJson(this);
+  Map<String, dynamic> toJson() => _$LeagueToJson(this);
 }
