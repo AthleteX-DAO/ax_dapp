@@ -23,6 +23,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
   final sportFilterTxSz = 14.0;
   double textSize = 16;
   bool showToolTipHeader = true;
+  bool showDateRange = true;
 
   @override
   void dispose() {
@@ -43,6 +44,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
             builder: (BuildContext context, BoxConstraints constraints) {
               if (constraints.maxWidth < 800) {
                 showToolTipHeader = false;
+                showDateRange = false;
                 textSize = 12.0;
               }
               return Container(
@@ -320,15 +322,16 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        Text(
-                          'Start/End Date',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontFamily: 'OpenSans',
-                            fontSize: textSize,
-                            fontWeight: FontWeight.w400,
+                        if (showDateRange)
+                          Text(
+                            'Start/End Date',
+                            style: TextStyle(
+                              color: Colors.grey[400],
+                              fontFamily: 'OpenSans',
+                              fontSize: textSize,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
                         Text(
                           'Entry Fee',
                           style: TextStyle(
