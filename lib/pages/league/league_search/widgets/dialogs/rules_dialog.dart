@@ -27,11 +27,11 @@ class _LeagueDialog extends State<LeagueDialog> {
   var _lockToggle = false;
   bool vertical = false;
   final items = [
-    'MLB',
-    'NFL',
-    'NBA',
+    SupportedSport.MLB,
+    SupportedSport.NFL,
+    SupportedSport.NBA,
   ];
-  String dropDownValue = 'MLB';
+  SupportedSport dropDownValue = SupportedSport.MLB;
 
   @override
   void dispose() {
@@ -371,16 +371,16 @@ class _LeagueDialog extends State<LeagueDialog> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  DropdownButton<String>(
+                  DropdownButton<SupportedSport>(
                     value: dropDownValue,
                     icon: const Icon(Icons.keyboard_arrow_down),
-                    items: items.map<DropdownMenuItem<String>>((String item) {
+                    items: items.map<DropdownMenuItem<SupportedSport>>((SupportedSport item) {
                       return DropdownMenuItem(
                         value: item,
-                        child: Text(item),
+                        child: Text(item.name),
                       );
                     }).toList(),
-                    onChanged: (String? newValue) {
+                    onChanged: (SupportedSport? newValue) {
                       setState(() {
                         dropDownValue = newValue!;
                       });
@@ -532,7 +532,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                                 isPrivate: _privateToggle,
                                 isLocked: _lockToggle,
                                 rosters: {},
-                                sports: [SupportedSport.MLB],
+                                sports: [dropDownValue],
                               ),
                             ),
                           ),
