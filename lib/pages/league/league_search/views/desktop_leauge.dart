@@ -21,8 +21,6 @@ class _DesktopLeagueState extends State<DesktopLeague> {
   final leagueSearchController = TextEditingController();
   var _selectedSport = SupportedSport.all;
   double textSize = 16;
-  bool showToolTipHeader = true;
-  bool showDateRange = true;
 
   @override
   void dispose() {
@@ -32,6 +30,8 @@ class _DesktopLeagueState extends State<DesktopLeague> {
 
   @override
   Widget build(BuildContext context) {
+    var showToolTipHeader = true;
+    var showDateRange = true;
     final global = Global();
     return global.buildPage(
       context,
@@ -192,7 +192,8 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                               child: Text(
                                 'ALL',
                                 style: textSwapState(
-                                  condition: _selectedSport == SupportedSport.all,
+                                  condition:
+                                      _selectedSport == SupportedSport.all,
                                   tabNotSelected: textStyle(
                                     Colors.white,
                                     textSize,
@@ -225,7 +226,8 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                               child: Text(
                                 'MLB',
                                 style: textSwapState(
-                                  condition: _selectedSport == SupportedSport.MLB,
+                                  condition:
+                                      _selectedSport == SupportedSport.MLB,
                                   tabNotSelected: textStyle(
                                     Colors.white,
                                     textSize,
@@ -258,7 +260,8 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                               child: Text(
                                 'NFL',
                                 style: textSwapState(
-                                  condition: _selectedSport == SupportedSport.NFL,
+                                  condition:
+                                      _selectedSport == SupportedSport.NFL,
                                   tabNotSelected: textStyle(
                                     Colors.white,
                                     textSize,
@@ -291,7 +294,8 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                               child: Text(
                                 'NBA',
                                 style: textSwapState(
-                                  condition: _selectedSport == SupportedSport.NBA,
+                                  condition:
+                                      _selectedSport == SupportedSport.NBA,
                                   tabNotSelected: textStyle(
                                     Colors.white,
                                     textSize,
