@@ -3,6 +3,8 @@ import 'package:ax_dapp/pages/league/widgets/dialogs/rules_dialog.dart';
 import 'package:ax_dapp/pages/league/widgets/league_card.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/util/toast_extensions.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,11 +90,19 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                             border: Border.all(color: Colors.amber[400]!),
                           ),
                           child: TextButton(
-                            onPressed: () => {
+                            onPressed: () {
+                              final isWalletDisconnected = context
+                                  .read<WalletBloc>()
+                                  .state
+                                  .isWalletDisconnected;
+                              if (isWalletDisconnected) {
+                                context.showWalletWarningToast();
+                                return;
+                              }
                               showDialog<void>(
                                 context: context,
                                 builder: (context) => const LeagueDialog(),
-                              ),
+                              );
                             },
                             child: const Text(
                               'Create a League',
