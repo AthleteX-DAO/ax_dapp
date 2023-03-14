@@ -48,7 +48,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         SizedBox(
                           width: (constraints.maxWidth > 800)
@@ -62,7 +62,18 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                             ],
                             controller: leagueSearchController,
                             decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.search),
+                              focusColor: Colors.grey[400],
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey[400]!,
+                                ),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
+                              ),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.grey[400],
+                              ),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   width: 20,
