@@ -21,6 +21,8 @@ class _DesktopLeagueState extends State<DesktopLeague> {
   final leagueSearchController = TextEditingController();
   var _selectedSport = SupportedSport.all;
   final sportFilterTxSz = 14.0;
+  double textSize = 16;
+  bool showToolTipHeader = true;
 
   @override
   void dispose() {
@@ -39,6 +41,10 @@ class _DesktopLeagueState extends State<DesktopLeague> {
           final filteredLeagues = state.filteredLeagues;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
+              if (constraints.maxWidth < 800) {
+                showToolTipHeader = false;
+                textSize = 12.0;
+              }
               return Container(
                 margin: const EdgeInsets.only(top: 20),
                 height: constraints.maxHeight * 0.85 + 41,
@@ -53,7 +59,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                         SizedBox(
                           width: (constraints.maxWidth > 800)
                               ? constraints.maxWidth * 0.5
-                              : constraints.maxWidth - 610,
+                              : constraints.maxWidth * 0.4,
                           child: TextFormField(
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(
@@ -83,6 +89,12 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                     const BorderRadius.all(Radius.circular(20)),
                               ),
                               hintText: 'Search a League',
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'OpenSans',
+                                fontSize: textSize,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                             onChanged: (value) {
                               bloc.add(
@@ -304,7 +316,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                           style: TextStyle(
                             color: Colors.grey[400],
                             fontFamily: 'OpenSans',
-                            fontSize: 16,
+                            fontSize: textSize,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -313,7 +325,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                           style: TextStyle(
                             color: Colors.grey[400],
                             fontFamily: 'OpenSans',
-                            fontSize: 16,
+                            fontSize: textSize,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -322,7 +334,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                           style: TextStyle(
                             color: Colors.grey[400],
                             fontFamily: 'OpenSans',
-                            fontSize: 16,
+                            fontSize: textSize,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -331,19 +343,20 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                           style: TextStyle(
                             color: Colors.grey[400],
                             fontFamily: 'OpenSans',
-                            fontSize: 16,
+                            fontSize: textSize,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        Text(
-                          'Info',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontFamily: 'OpenSans',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
+                        if (showToolTipHeader)
+                          Text(
+                            'Info',
+                            style: TextStyle(
+                              color: Colors.grey[400],
+                              fontFamily: 'OpenSans',
+                              fontSize: textSize,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     SizedBox(
