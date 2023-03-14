@@ -50,13 +50,15 @@ class LeagueCard extends StatelessWidget {
                     const SizedBox(
                       width: 5,
                     ),
-                    Text(
-                      league.name,
-                      style: TextStyle(
-                        color: Colors.amber,
-                        fontFamily: 'OpenSans',
-                        fontSize: textSize,
-                        fontWeight: FontWeight.w400,
+                    FittedBox(
+                      child: Text(
+                        league.name,
+                        style: TextStyle(
+                          color: Colors.amber,
+                          fontFamily: 'OpenSans',
+                          fontSize: textSize,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ],
