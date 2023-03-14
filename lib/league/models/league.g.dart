@@ -6,8 +6,7 @@ part of 'league.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-LeagueData _$LeagueDataFromJson(Map<String, dynamic> json) => LeagueData(
-      id: json['id'] as int,
+League _$LeagueFromJson(Map<String, dynamic> json) => League(
       name: json['name'] as String,
       adminWallet: json['adminWallet'] as String,
       dateStart: json['dateStart'] as String,
@@ -17,17 +16,16 @@ LeagueData _$LeagueDataFromJson(Map<String, dynamic> json) => LeagueData(
       entryFee: json['entryFee'] as int,
       isPrivate: json['isPrivate'] as bool,
       isLocked: json['isLocked'] as bool,
-      roster: (json['roster'] as List<dynamic>)
-          .map((e) => (e as Map<String, dynamic>).map(
-                (k, e) => MapEntry(
-                    k, (e as List<dynamic>).map((e) => e as String).toList()),
-              ))
+      rosters: (json['rosters'] as Map<String, dynamic>).map(
+        (k, e) =>
+            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+      ),
+      sports: (json['sports'] as List<dynamic>)
+          .map((e) => $enumDecode(_$SupportedSportEnumMap, e))
           .toList(),
     );
 
-Map<String, dynamic> _$LeagueDataToJson(LeagueData instance) =>
-    <String, dynamic>{
-      'id': instance.id,
+Map<String, dynamic> _$LeagueToJson(League instance) => <String, dynamic>{
       'name': instance.name,
       'adminWallet': instance.adminWallet,
       'dateStart': instance.dateStart,
@@ -37,5 +35,14 @@ Map<String, dynamic> _$LeagueDataToJson(LeagueData instance) =>
       'entryFee': instance.entryFee,
       'isPrivate': instance.isPrivate,
       'isLocked': instance.isLocked,
-      'roster': instance.roster,
+      'rosters': instance.rosters,
+      'sports':
+          instance.sports.map((e) => _$SupportedSportEnumMap[e]!).toList(),
     };
+
+const _$SupportedSportEnumMap = {
+  SupportedSport.all: 'all',
+  SupportedSport.NFL: 'NFL',
+  SupportedSport.MLB: 'MLB',
+  SupportedSport.NBA: 'NBA',
+};
