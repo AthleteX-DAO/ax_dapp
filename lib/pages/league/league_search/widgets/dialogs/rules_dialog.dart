@@ -214,6 +214,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                   SizedBox(
                     width: textBoxWid,
                     child: TextFormField(
+                      enabled: startDateController.text.isNotEmpty,
                       controller: endDateController,
                       readOnly: true,
                       onTap: () async {
