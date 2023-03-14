@@ -5,6 +5,7 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class LeagueDialog extends StatefulWidget {
@@ -159,12 +160,23 @@ class _LeagueDialog extends State<LeagueDialog> {
                   SizedBox(
                     width: textBoxWid,
                     child: TextFormField(
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(
-                          RegExp('[0-9/]'),
-                        ),
-                      ],
                       controller: startDateController,
+                      readOnly: true,
+                      onTap: () async {
+                        final startDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2101),
+                        );
+                        if (startDate != null) {
+                          final formattedDate =
+                              DateFormat('yyyy-MM-dd').format(startDate);
+                          setState(() {
+                            startDateController.text = formattedDate;
+                          });
+                        }
+                      },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -202,12 +214,24 @@ class _LeagueDialog extends State<LeagueDialog> {
                   SizedBox(
                     width: textBoxWid,
                     child: TextFormField(
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(
-                          RegExp('[0-9/]'),
-                        ),
-                      ],
+                      enabled: startDateController.text.isNotEmpty,
                       controller: endDateController,
+                      readOnly: true,
+                      onTap: () async {
+                        final endDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.parse(startDateController.text),
+                          firstDate: DateTime.parse(startDateController.text),
+                          lastDate: DateTime(2101),
+                        );
+                        if (endDate != null) {
+                          final formattedDate =
+                              DateFormat('yyyy-MM-dd').format(endDate);
+                          setState(() {
+                            endDateController.text = formattedDate;
+                          });
+                        }
+                      },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -374,7 +398,8 @@ class _LeagueDialog extends State<LeagueDialog> {
                   DropdownButton<SupportedSport>(
                     value: dropDownValue,
                     icon: const Icon(Icons.keyboard_arrow_down),
-                    items: items.map<DropdownMenuItem<SupportedSport>>((SupportedSport item) {
+                    items: items.map<DropdownMenuItem<SupportedSport>>(
+                        (SupportedSport item) {
                       return DropdownMenuItem(
                         value: item,
                         child: Text(item.name),
