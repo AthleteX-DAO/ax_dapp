@@ -113,8 +113,22 @@ class _LeagueDialog extends State<LeagueDialog> {
                     width: textBoxWid,
                     child: TextFormField(
                       controller: leagueNameController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 20,
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
                         hintText: 'Enter League Name',
                       ),
                     ),
@@ -134,8 +148,22 @@ class _LeagueDialog extends State<LeagueDialog> {
                         ),
                       ],
                       controller: startDateController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 20,
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
                         hintText: 'Enter Start-Date',
                       ),
                     ),
@@ -155,8 +183,22 @@ class _LeagueDialog extends State<LeagueDialog> {
                         ),
                       ],
                       controller: endDateController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 20,
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
                         hintText: 'Enter End-Date',
                       ),
                     ),
@@ -176,8 +218,22 @@ class _LeagueDialog extends State<LeagueDialog> {
                         ),
                       ],
                       controller: teamSizeController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 20,
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
                         hintText: 'Enter Team Size',
                       ),
                     ),
@@ -197,8 +253,22 @@ class _LeagueDialog extends State<LeagueDialog> {
                         ),
                       ],
                       controller: participantsController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 20,
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
                         hintText: 'Enter Number',
                       ),
                     ),
@@ -218,8 +288,22 @@ class _LeagueDialog extends State<LeagueDialog> {
                         ),
                       ],
                       controller: entryFeeController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 20,
+                            color: Colors.grey[400]!,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
                         hintText: 'Enter Fee',
                       ),
                     ),
