@@ -30,22 +30,6 @@ class LeagueRepository {
 
   Future<void> deleteLeague({required String leagueID}) async {
     try {
-      await _fireStore
-          .collection('Leagues')
-          .doc(leagueID)
-          .collection('Rosters')
-          .get()
-          .then((snapshot) async {
-        for (final doc in snapshot.docs) {
-          await _fireStore
-              .collection('Leagues')
-              .doc(leagueID)
-              .collection('Rosters')
-              .doc(doc.id)
-              .delete();
-        }
-      });
-
       await _fireStore.collection('Leagues').doc(leagueID).delete();
     } on FirebaseException catch (e) {
       debugPrint('$e');
@@ -75,9 +59,7 @@ class LeagueRepository {
       await _fireStore
           .collection('Leagues')
           .doc(leagueID)
-          .collection('Rosters')
-          .doc(userWallet)
-          .update({'APT_list': roster});
+          .update({'rosters.$userWallet': roster});
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
@@ -92,9 +74,7 @@ class LeagueRepository {
       await _fireStore
           .collection('Leagues')
           .doc(leagueID)
-          .collection('Rosters')
-          .doc(userWallet)
-          .set({'APT_list': roster});
+          .set({'rosters.$userWallet': roster});
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
@@ -108,9 +88,7 @@ class LeagueRepository {
       await _fireStore
           .collection('Leagues')
           .doc(leagueID)
-          .collection('Rosters')
-          .doc(userWallet)
-          .delete();
+          .update({'rosters.$userWallet': FieldValue.delete()});
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
