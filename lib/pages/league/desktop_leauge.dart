@@ -314,6 +314,15 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
+                        Text(
+                          'Info',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontFamily: 'OpenSans',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
