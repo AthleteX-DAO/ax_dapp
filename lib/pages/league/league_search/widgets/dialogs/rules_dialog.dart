@@ -55,15 +55,16 @@ class _LeagueDialog extends State<LeagueDialog> {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
 
-    var wid = 450.0;
-    if (_width < 500) wid = _width;
+    var textSize = 16.0;
+    if (_width < 800) textSize = 12.0;
 
+    var wid = 450.0;
     var textBoxWid = 250.0;
-    var participantsWid = 250.0;
-    if (_width < 500) textBoxWid = _width * 0.5;
-    if (_width < 500) participantsWid = _width * 0.475;
+    if (_width < 500) {
+      wid = _width;
+      textBoxWid = _width * 0.5;
+    }
     if (_width < 385) textBoxWid = _width * 0.45;
-    if (_width < 385) participantsWid = _width * 0.425;
 
     var hgt = 550.0;
     if (_height < 505) hgt = _height;
@@ -108,7 +109,15 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Name: '),
+                  Text(
+                    'Name: ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   SizedBox(
                     width: textBoxWid,
                     child: TextFormField(
@@ -138,7 +147,15 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Start-Date: '),
+                  Text(
+                    'Start-Date: ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   SizedBox(
                     width: textBoxWid,
                     child: TextFormField(
@@ -173,7 +190,15 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('End-Date: '),
+                  Text(
+                    'End-Date: ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   SizedBox(
                     width: textBoxWid,
                     child: TextFormField(
@@ -208,7 +233,15 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Team Size: '),
+                  Text(
+                    'Team Size: ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   SizedBox(
                     width: textBoxWid,
                     child: TextFormField(
@@ -243,9 +276,17 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Participants: '),
+                  Text(
+                    'Participants: ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   SizedBox(
-                    width: participantsWid,
+                    width: textBoxWid,
                     child: TextFormField(
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
@@ -278,7 +319,15 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Entry Fee: '),
+                  Text(
+                    'Entry Fee: ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   SizedBox(
                     width: textBoxWid,
                     child: TextFormField(
@@ -313,7 +362,15 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Sport(s): '),
+                  Text(
+                    'Sport(s): ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   DropdownButton<String>(
                     value: dropDownValue,
                     icon: const Icon(Icons.keyboard_arrow_down),
@@ -334,7 +391,15 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Private: '),
+                  Text(
+                    'Private: ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   SizedBox(
                     width: 145,
                     height: 25,
@@ -358,9 +423,25 @@ class _LeagueDialog extends State<LeagueDialog> {
                         minWidth: 71,
                       ),
                       isSelected: _private,
-                      children: const <Widget>[
-                        Text('No'),
-                        Text('Yes'),
+                      children: <Widget>[
+                        Text(
+                          'No',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                            fontSize: textSize,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                            fontSize: textSize,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -369,7 +450,15 @@ class _LeagueDialog extends State<LeagueDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Lock: '),
+                  Text(
+                    'Lock: ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   SizedBox(
                     width: 145,
                     height: 25,
@@ -393,9 +482,25 @@ class _LeagueDialog extends State<LeagueDialog> {
                         minWidth: 71,
                       ),
                       isSelected: _lock,
-                      children: const <Widget>[
-                        Text('No'),
-                        Text('Yes'),
+                      children: <Widget>[
+                        Text(
+                          'No',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                            fontSize: textSize,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                            fontSize: textSize,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ],
                     ),
                   ),
