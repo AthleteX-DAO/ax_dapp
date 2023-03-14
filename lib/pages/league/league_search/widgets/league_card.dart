@@ -51,13 +51,16 @@ class LeagueCard extends StatelessWidget {
                       width: 5,
                     ),
                     FittedBox(
-                      child: Text(
-                        league.name,
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontFamily: 'OpenSans',
-                          fontSize: textSize,
-                          fontWeight: FontWeight.w400,
+                      child: SizedBox(
+                        width: _width * 0.15,
+                        child: Text(
+                          league.name,
+                          style: TextStyle(
+                            color: Colors.amber,
+                            fontFamily: 'OpenSans',
+                            fontSize: textSize,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                     ),
