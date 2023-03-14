@@ -1,6 +1,6 @@
-import 'package:ax_dapp/pages/league/bloc/league_bloc.dart';
-import 'package:ax_dapp/pages/league/widgets/dialogs/rules_dialog.dart';
-import 'package:ax_dapp/pages/league/widgets/league_card.dart';
+import 'package:ax_dapp/pages/league/league_search/bloc/league_bloc.dart';
+import 'package:ax_dapp/pages/league/league_search/widgets/dialogs/rules_dialog.dart';
+import 'package:ax_dapp/pages/league/league_search/widgets/league_card.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
