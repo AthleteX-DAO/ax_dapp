@@ -20,7 +20,6 @@ class DesktopLeague extends StatefulWidget {
 class _DesktopLeagueState extends State<DesktopLeague> {
   final leagueSearchController = TextEditingController();
   var _selectedSport = SupportedSport.all;
-  final sportFilterTxSz = 14.0;
   double textSize = 16;
   bool showToolTipHeader = true;
   bool showDateRange = true;
@@ -161,7 +160,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                             'League List',
                             style: textStyle(
                               Colors.white,
-                              18,
+                              textSize,
                               isBold: false,
                               isUline: false,
                             ),
@@ -170,7 +169,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                             '|',
                             style: textStyle(
                               Colors.white,
-                              18,
+                              textSize,
                               isBold: false,
                               isUline: false,
                             ),
@@ -195,13 +194,13 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                 condition: _selectedSport == SupportedSport.all,
                                 tabNotSelected: textStyle(
                                   Colors.white,
-                                  sportFilterTxSz,
+                                  textSize,
                                   isBold: false,
                                   isUline: false,
                                 ),
                                 tabSelected: textStyle(
                                   Colors.amber[400]!,
-                                  sportFilterTxSz,
+                                  textSize,
                                   isBold: false,
                                   isUline: true,
                                 ),
@@ -228,13 +227,13 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                 condition: _selectedSport == SupportedSport.MLB,
                                 tabNotSelected: textStyle(
                                   Colors.white,
-                                  sportFilterTxSz,
+                                  textSize,
                                   isBold: false,
                                   isUline: false,
                                 ),
                                 tabSelected: textStyle(
                                   Colors.amber[400]!,
-                                  sportFilterTxSz,
+                                  textSize,
                                   isBold: false,
                                   isUline: true,
                                 ),
@@ -261,13 +260,13 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                 condition: _selectedSport == SupportedSport.NFL,
                                 tabNotSelected: textStyle(
                                   Colors.white,
-                                  sportFilterTxSz,
+                                  textSize,
                                   isBold: false,
                                   isUline: false,
                                 ),
                                 tabSelected: textStyle(
                                   Colors.amber[400]!,
-                                  sportFilterTxSz,
+                                  textSize,
                                   isBold: false,
                                   isUline: true,
                                 ),
@@ -294,13 +293,13 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                 condition: _selectedSport == SupportedSport.NBA,
                                 tabNotSelected: textStyle(
                                   Colors.white,
-                                  sportFilterTxSz,
+                                  textSize,
                                   isBold: false,
                                   isUline: false,
                                 ),
                                 tabSelected: textStyle(
                                   Colors.amber[400]!,
-                                  sportFilterTxSz,
+                                  textSize,
                                   isBold: false,
                                   isUline: true,
                                 ),
