@@ -59,6 +59,6 @@ node_modules
 pubspec.lock
 
 
-# Linux & MacOS metafiles
-linux/
-macos/
+# Linux & MacOS related
+linux/*
+macos/*

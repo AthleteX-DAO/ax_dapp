@@ -3,6 +3,8 @@ import 'package:ax_dapp/chat_box/widgets/message_box.dart';
 import 'package:ax_dapp/live_chat_box/bloc/live_chat_box_bloc.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +26,19 @@ class _LiveChatBoxState extends State<LiveChatBox> {
         create: (context) => LiveChatBoxBloc(
           liveChatRepository: context.read<LiveChatRepository>(),
         ),
-        child: BlocBuilder<LiveChatBoxBloc, LiveChatBoxState>(
+        child: BlocConsumer<LiveChatBoxBloc, LiveChatBoxState>(
+          listenWhen: (_, current) =>
+              current.status == BlocStatus.error ||
+              current.status == BlocStatus.noData ||
+              current.status == BlocStatus.invalidText,
+          listener: (context, state) {
+            if (state.status == BlocStatus.invalidText) {
+              context.showWarningToast(
+                title: 'Empty text detected',
+                description: 'Please type something',
+              );
+            }
+          },
           builder: (context, state) {
             final bloc = context.read<LiveChatBoxBloc>();
             final toggle = state.toggle;
@@ -96,6 +110,9 @@ class _LiveChatBoxState extends State<LiveChatBox> {
                                           ),
                                           controller: _inputController,
                                           onSubmitted: (value) {
+                                            if (value.trim().isEmpty) {
+                                              return;
+                                            }
                                             bloc.add(
                                               SendMessage(
                                                 message: _inputController.text,
