@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:ax_dapp/pages/farm/models/farm_model.dart';
+import 'package:ax_dapp/farm/models/farm_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
 import 'package:config_repository/config_repository.dart';
