@@ -1,5 +1,5 @@
+import 'package:ax_dapp/connect_wallet/mobile_login_page.dart';
 import 'package:ax_dapp/dialogs/promo/connected_wallet_promo_dialog.dart';
-import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/connect_metamask_dialog.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/wrong_network_dialog.dart';
