@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/league/models/league.dart';
+import 'package:ax_dapp/league/models/league.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 

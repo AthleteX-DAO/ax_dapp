@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/league/models/league.dart';
+import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:flutter/material.dart';
 

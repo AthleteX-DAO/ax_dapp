@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ax_dapp/pages/league/models/league.dart';
-import 'package:ax_dapp/pages/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';

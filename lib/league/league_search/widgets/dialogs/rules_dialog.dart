@@ -1,5 +1,5 @@
-import 'package:ax_dapp/pages/league/league_search/bloc/league_bloc.dart';
-import 'package:ax_dapp/pages/league/models/league.dart';
+import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
+import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
