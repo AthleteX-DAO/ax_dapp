@@ -6,4 +6,5 @@ enum BlocStatus {
   noData,
   noWallet,
   unsupportedChain,
+  invalidText,
 }

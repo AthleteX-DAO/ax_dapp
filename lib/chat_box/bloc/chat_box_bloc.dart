@@ -26,6 +26,9 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
     Emitter<ChatBoxState> emit,
   ) async {
     final input = event.prompt.trim();
+    if (input.isEmpty) {
+      emit(state.copyWith(status: BlocStatus.invalidText));
+    }
     final List<ChatMessage> messages;
     try {
       final userMessage =
