@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
+import 'package:ax_dapp/footer/simple_tool_tip.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
