@@ -3,22 +3,13 @@ import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/athlete/view/athlete_page.dart';
 import 'package:ax_dapp/chat_wrapper/chat_wrapper.dart';
 import 'package:ax_dapp/debug/views/debug_app_wrapper.dart';
-<<<<<<< HEAD
 import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
-=======
-import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
-import 'package:ax_dapp/pages/farm/desktop_farm.dart';
-import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
-import 'package:ax_dapp/pages/landing_page/landing_page.dart';
-import 'package:ax_dapp/pages/league/league_search/bloc/league_bloc.dart';
-import 'package:ax_dapp/pages/league/league_search/views/desktop_leauge.dart';
-import 'package:ax_dapp/pages/league/repository/league_repository.dart';
-import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
-import 'package:ax_dapp/pages/trade/desktop_trade.dart';
->>>>>>> 0cabff65 (Ax 1177 create the bloc for league list view (#822))
+import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
+import 'package:ax_dapp/league/league_search/views/desktop_leauge.dart';
+import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
