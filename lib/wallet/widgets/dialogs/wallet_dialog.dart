@@ -1,6 +1,4 @@
 import 'package:ax_dapp/dialogs/promo/connected_wallet_promo_dialog.dart';
-import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
-import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/connect_metamask_dialog.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/wrong_network_dialog.dart';
@@ -36,13 +34,6 @@ class WalletDialog extends StatelessWidget {
                 context: context,
                 builder: (context) => const ConnectedWalletPromoDialog(),
               );
-              final walletAddress =
-                  context.read<WalletBloc>().state.formattedWalletAddress;
-              context.read<TrackingCubit>().onConnectWalletSuccessful(
-                    publicAddress: walletAddress,
-                    axUnits: '"${toDecimal(state.axData.balance!, 6)} AX"',
-                    walletType: 'MetaMask',
-                  );
             }
           },
         ),
@@ -158,7 +149,7 @@ class WalletDialog extends StatelessWidget {
                         onPressed: () {
                           context
                               .read<WalletBloc>()
-                              .add(const ConnectWalletWeb3Auth());
+                              .add(const ConnectWalletMagic());
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -168,13 +159,14 @@ class WalletDialog extends StatelessWidget {
                               width: 30,
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
-                                  image: AssetImage('assets/images/web3auth_logo_alt.png'),
+                                  image: AssetImage(
+                                      'assets/images/magic-logo.png'),
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
                             const Text(
-                              'Web3Auth',
+                              'Magic',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'OpenSans',

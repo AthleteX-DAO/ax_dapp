@@ -1,6 +1,7 @@
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/athlete/view/athlete_page.dart';
+import 'package:ax_dapp/chat_wrapper/chat_wrapper.dart';
 import 'package:ax_dapp/debug/views/debug_app_wrapper.dart';
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/pages/farm/desktop_farm.dart';
@@ -19,20 +20,18 @@ import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/scout/view/scout_base.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
-import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
+import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
-import 'package:ax_dapp/wallet/repository/web3_auth_repository.dart';
+import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:tracking_repository/tracking_repository.dart';
@@ -49,12 +48,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get
-      ..put(Controller())
-      ..put(LSPController())
-      ..put(SwapController())
-      ..put(PoolController());
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -69,7 +62,7 @@ class App extends StatelessWidget {
           create: (_) => WalletBloc(
             walletRepository: context.read<WalletRepository>(),
             tokensRepository: context.read<TokensRepository>(),
-            web3authRepository: context.read<Web3AuthRepository>(),
+            magicRepository: context.read<MagicRepository>(),
           ),
         ),
         BlocProvider(
@@ -89,6 +82,9 @@ class _MaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isWebMobile = kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.iOS ||
+            defaultTargetPlatform == TargetPlatform.android);
     final _appRouter = MaterialApp.router(
       title: 'AthleteX',
       debugShowCheckedModeBanner: false,
@@ -125,7 +121,7 @@ class _MaterialApp extends StatelessWidget {
             name: 'scout',
             path: '/scout',
             builder: (BuildContext context, GoRouterState state) {
-              Global().page = 'scout';
+              Global().pageName = 'scout';
               return BlocProvider(
                 create: (BuildContext context) => ScoutPageBloc(
                   tokenRepository: context.read<TokensRepository>(),
@@ -140,6 +136,8 @@ class _MaterialApp extends StatelessWidget {
                       RepositoryProvider.of<NFLRepo>(context),
                     ],
                   ),
+                  longShortPairRepository:
+                      context.read<LongShortPairRepository>(),
                 ),
                 child: const Scout(),
               );
@@ -149,7 +147,7 @@ class _MaterialApp extends StatelessWidget {
                 name: 'athlete',
                 path: 'athlete/:id',
                 builder: (BuildContext context, GoRouterState state) {
-                  Global().page = 'athlete';
+                  Global().pageName = 'athlete';
                   return AthletePage(athlete: _toAthlete(state.params['id']!));
                 },
               ),
@@ -159,14 +157,14 @@ class _MaterialApp extends StatelessWidget {
             name: 'trade',
             path: '/trade',
             builder: (BuildContext context, GoRouterState state) {
-              Global().page = 'trade';
+              Global().pageName = 'trade';
               return BlocProvider(
                 create: (BuildContext context) => TradePageBloc(
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
                   repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                  swapController: Get.find(),
+                  swapRepository: context.read<SwapRepository>(),
                   isBuyAX: false,
                 ),
                 child: const DesktopTrade(),
@@ -177,7 +175,7 @@ class _MaterialApp extends StatelessWidget {
             name: 'pool',
             path: '/pool',
             builder: (BuildContext context, GoRouterState state) {
-              Global().page = 'pool';
+              Global().pageName = 'pool';
               return BlocProvider(
                 create: (BuildContext context) => AddLiquidityBloc(
                   walletRepository: context.read<WalletRepository>(),
@@ -185,8 +183,11 @@ class _MaterialApp extends StatelessWidget {
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
                   repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-                  getAllLiquidityInfoUseCase: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
-                  poolController: Get.find(),
+                  getAllLiquidityInfoUseCase:
+                      RepositoryProvider.of<GetAllLiquidityInfoUseCase>(
+                    context,
+                  ),
+                  poolRepository: context.read<PoolRepository>(),
                 ),
                 child: const DesktopPool(),
               );
@@ -196,7 +197,7 @@ class _MaterialApp extends StatelessWidget {
             name: 'farm',
             path: '/farm',
             builder: (BuildContext context, GoRouterState state) {
-              Global().page = 'farm';
+              Global().pageName = 'farm';
               return BlocProvider(
                 create: (BuildContext context) => FarmBloc(
                   walletRepository: context.read<WalletRepository>(),
@@ -223,10 +224,12 @@ class _MaterialApp extends StatelessWidget {
     );
 
     return kDebugMode
-        ? DebugAppWrapper(
-            home: _appRouter,
-          )
-        : _appRouter;
+        ? DebugAppWrapper(home: _appRouter)
+        : (isWebMobile
+            ? _appRouter
+            : ChatWrapper(
+                home: _appRouter,
+              ));
   }
 
   AthleteScoutModel? _toAthlete(String id) {

@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class AthleteTokenList extends StatefulWidget {
@@ -23,7 +21,6 @@ class AthleteTokenList extends StatefulWidget {
 }
 
 class _AthleteTokenListState extends State<AthleteTokenList> {
-  SwapController swapController = Get.find();
   int tokenNumber = 0;
   double fromAmount = 0;
   double toAmount = 0;
@@ -79,7 +76,8 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
       filteredTokens = tokens.where((token) {
         final flagKeyword =
             token.ticker.toUpperCase().contains(keyword.toUpperCase()) ||
-                token.name.toUpperCase().contains(keyword.toUpperCase());
+                token.name.toUpperCase().contains(keyword.toUpperCase()) ||
+                token.address.toUpperCase().contains(keyword.toUpperCase());
         final flagSport =
             selectedSport == SupportedSport.all || token.sport == selectedSport;
         return flagKeyword && flagSport;

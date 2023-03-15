@@ -2,7 +2,6 @@ import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/add_liquidity/widgets/pool_insufficient_button.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/debouncer.dart';
@@ -13,8 +12,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/get_instance.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 // ignore: must_be_immutable
@@ -38,7 +35,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
   final TextEditingController _tokenAmountTwoController =
       TextEditingController();
   final Debouncer _debouncer = Debouncer(milliseconds: 200);
-  Controller controller = Get.find();
 
   bool isSufficient(double balance0, double balance1) {
     var tokenOneAmount = double.tryParse(_tokenAmountOneController.text);
@@ -355,8 +351,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         tokenAmountOneController: _tokenAmountOneController,
                         tokenAmountTwoController: _tokenAmountTwoController,
                         text: 'Approve',
-                        approveCallback: bloc.poolController.approve,
-                        confirmCallback: bloc.poolController.addLiquidity,
+                        approveCallback: bloc.poolRepository.approve,
+                        confirmCallback: bloc.poolRepository.addLiquidity,
                         currencyOne: token0.name,
                         currencyTwo: token1.name,
                         lpTokens: poolInfo.recieveAmount,

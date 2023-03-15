@@ -6,21 +6,37 @@ import 'package:ethereum_api/erc20_api.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';
 
-class PoolController extends GetxController {
-  PoolController();
-  Controller controller = Get.find();
+class PoolRepository {
+  PoolRepository();
+  Controller controller = Controller();
   late APTFactory aptFactory;
   late APTRouter aptRouter;
   RxString routerAddress = ''.obs;
   RxString factoryAddress = ''.obs;
-  RxString address1 = ''.obs, address2 = ''.obs;
+  RxString address1 = ''.obs;
+  RxString address2 = ''.obs;
   String lpTokenAAddress = '';
   String lpTokenBAddress = '';
   String lpTokenPairAddress = '';
   double removePercentage = 0;
-  RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
+  RxDouble amount1 = 0.0.obs;
+  RxDouble amount2 = 0.0.obs;
   RxInt decimalA = 0.obs;
   RxInt decimalB = 0.obs;
+
+  String get tknAddress1 => address1.value;
+  String get tknAddress2 => address2.value;
+  double get topAmount => amount1.value;
+  double get bottomAmount => amount2.value;
+  int get topDecimals => decimalA.value;
+  int get bottomDecimals => decimalB.value;
+
+  set tknAddress1(String newAddress) => address1.value = newAddress;
+  set tknAddress2(String newAddress) => address2.value = newAddress;
+  set topAmount(double newAmount) => amount1.value = newAmount;
+  set bottomAmount(double newAmount) => amount2.value = newAmount;
+  set topDecimals(int decimal) => decimalA.value = decimal;
+  set bottomDecimals(int decimal) => decimalB.value = decimal;
 
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
@@ -50,13 +66,13 @@ class PoolController extends GetxController {
         transferAmountA,
         credentials: controller.credentials,
       );
-      controller.updateTxString(txStringA);
+      controller.transactionHash = txStringA;
       txStringB = await tokenB.approve(
         routerMainnetAddress,
         transferAmountB,
         credentials: controller.credentials,
       );
-      controller.updateTxString(txStringB);
+      controller.transactionHash = txStringB;
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -89,7 +105,7 @@ class PoolController extends GetxController {
       credentials: credentials,
     );
 
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   Future<void> approveRemove(
@@ -110,7 +126,7 @@ class PoolController extends GetxController {
         approveAmount,
         credentials: controller.credentials,
       );
-      controller.updateTxString(txStringA);
+      controller.transactionHash = txStringA;
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -141,7 +157,7 @@ class PoolController extends GetxController {
       twoMinuteDeadline,
       credentials: credentials,
     );
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   Future<void> createPair() async {
@@ -151,36 +167,6 @@ class PoolController extends GetxController {
 
     final txString =
         await aptFactory.createPair(tknA, tknB, credentials: credentials);
-    controller.updateTxString(txString);
-  }
-
-  void updateTknAddress1(String newAddress) {
-    address1.value = newAddress;
-    update();
-  }
-
-  void updateTknAddress2(String newAddress) {
-    address2.value = newAddress;
-    update();
-  }
-
-  void updateTopAmount(double newAmount) {
-    amount1.value = newAmount;
-    update();
-  }
-
-  void updateBottomAmount(double newAmount) {
-    amount2.value = newAmount;
-    update();
-  }
-
-  void updateTopDecimals(int decimal) {
-    decimalA.value = decimal;
-    update();
-  }
-
-  void updateBottomDecimals(int decimal) {
-    decimalB.value = decimal;
-    update();
+    controller.transactionHash = txString;
   }
 }

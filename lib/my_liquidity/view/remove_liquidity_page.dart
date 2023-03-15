@@ -1,6 +1,6 @@
 import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
 import 'package:ax_dapp/my_liquidity/widgets/pool_remove_approve_button.dart';
-import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,14 +13,14 @@ class RemoveLiquidityPage extends StatefulWidget {
     required this.token0Icon,
     required this.token1Icon,
     required TabController tabController,
-    required this.poolController,
+    required this.poolRepository,
   }) : _tabController = tabController;
 
   final LiquidityPositionInfo infoOfSelectedCard;
   final AssetImage? token0Icon;
   final AssetImage? token1Icon;
   final TabController _tabController;
-  final PoolController poolController;
+  final PoolRepository poolRepository;
 
   @override
   State<RemoveLiquidityPage> createState() => _RemoveLiquidityPageState();
@@ -107,7 +107,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                               onPressed: () {
                                 setState(() {
                                   value = 25;
-                                  widget.poolController.removePercentage =
+                                  widget.poolRepository.removePercentage =
                                       value;
                                 });
                               },
@@ -134,7 +134,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                               onPressed: () {
                                 setState(() {
                                   value = 50;
-                                  widget.poolController.removePercentage =
+                                  widget.poolRepository.removePercentage =
                                       value;
                                 });
                               },
@@ -161,7 +161,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                               onPressed: () {
                                 setState(() {
                                   value = 75;
-                                  widget.poolController.removePercentage =
+                                  widget.poolRepository.removePercentage =
                                       value;
                                 });
                               },
@@ -188,7 +188,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                               onPressed: () {
                                 setState(() {
                                   value = 100;
-                                  widget.poolController.removePercentage =
+                                  widget.poolRepository.removePercentage =
                                       value;
                                 });
                               },
@@ -213,7 +213,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                         onChanged: (double newValue) {
                           setState(() {
                             value = newValue.roundToDouble();
-                            widget.poolController.removePercentage = value;
+                            widget.poolRepository.removePercentage = value;
                           });
                         },
                         max: 100,
@@ -479,12 +479,12 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                         approveCallback: () {
                           final handler =
                               context.read<WalletRepository>().getTokenBalance;
-                          return widget.poolController.approveRemove(handler);
+                          return widget.poolRepository.approveRemove(handler);
                         },
                         confirmCallback: () {
                           final handler =
                               context.read<WalletRepository>().getTokenBalance;
-                          return widget.poolController.removeLiquidity(handler);
+                          return widget.poolRepository.removeLiquidity(handler);
                         },
                         currencyOne: widget.infoOfSelectedCard.token0Symbol,
                         currencyTwo: widget.infoOfSelectedCard.token1Symbol,
@@ -510,7 +510,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                             setState(() {
                               widget._tabController.index = 0;
                               value = 0;
-                              widget.poolController.removePercentage = value;
+                              widget.poolRepository.removePercentage = value;
                             });
                           },
                           child: const Text(

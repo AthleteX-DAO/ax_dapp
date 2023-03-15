@@ -1,4 +1,4 @@
-import 'package:decimal/decimal.dart';
+import 'package:shared/shared.dart';
 
 // Use this function to convert user input(double) into BigInt.
 
@@ -17,28 +17,29 @@ import 'package:decimal/decimal.dart';
 /// Converts a double(user input) into BigInt. Does NOT round double while
 /// converting.
 BigInt normalizeInput(double input, {int? decimal}) {
-  final inDecimal =
-      Decimal.parse(input.toString()) * Decimal.fromInt(10).pow(decimal ?? 18);
+  final inDecimal = Decimal.parse(input.toString()) *
+      Decimal.fromInt(10).pow(decimal ?? 18).toDecimal();
   return inDecimal.toBigInt();
 }
 
 BigInt getRawAmount(String input, int decimals) {
-  final inDecimal = Decimal.parse(input) * Decimal.fromInt(10).pow(decimals);
+  final inDecimal =
+      Decimal.parse(input) * Decimal.fromInt(10).pow(decimals).toDecimal();
   return inDecimal.toBigInt();
 }
 
 /// Converts a BigInt to String. round double while converting
 String getViewAmount(BigInt input, int decimals) {
-  final inDecimal =
-      (Decimal.fromBigInt(input) / Decimal.fromInt(10).pow(decimals))
-          .toDecimal();
+  final inDecimal = (Decimal.fromBigInt(input) /
+          Decimal.fromInt(10).pow(decimals).toDecimal())
+      .toDecimal();
   return inDecimal.toStringAsFixed(6);
 }
 
 /// Converts a BigInt rawAmount to double amount
 double getAmountWithDecimal(BigInt amount, BigInt decimals) {
-  final inDecimal =
-      (Decimal.fromBigInt(amount) / Decimal.fromInt(10).pow(decimals.toInt()))
-          .toDouble();
+  final inDecimal = (Decimal.fromBigInt(amount) /
+          Decimal.fromInt(10).pow(decimals.toInt()).toDecimal())
+      .toDouble();
   return inDecimal;
 }

@@ -1,11 +1,10 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/usecases/usecases.dart';
-import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -19,6 +18,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     required TokensRepository tokenRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
+    required this.longShortPairRepository,
   })  : _walletRepository = walletRepository,
         _tokenRepository = tokenRepository,
         _streamAppDataChanges = streamAppDataChanges,
@@ -36,6 +36,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   final TokensRepository _tokenRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetScoutAthletesDataUseCase repo;
+  final LongShortPairRepository longShortPairRepository;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -45,9 +46,9 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
       _streamAppDataChanges.appDataChanges,
       onData: (appData) {
         final appConfig = appData.appConfig;
-        final lspController = Get.find<LSPController>()
-          ..tokenClient = appConfig.reactiveWeb3Client.value;
-        lspController.controller.credentials =
+        longShortPairRepository.tokenClient =
+            appConfig.reactiveWeb3Client.value;
+        longShortPairRepository.controller.credentials =
             _walletRepository.credentials.value;
         if (appData.chain.chainId != state.selectedChain.chainId) {
           emit(

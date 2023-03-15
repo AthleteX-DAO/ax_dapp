@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/bootstrap.dart';
+import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/firebase_options.dart';
+import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -15,9 +17,14 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
-import 'package:ax_dapp/wallet/javascript_calls/web3_auth.dart';
-import 'package:ax_dapp/wallet/repository/web3_auth_repository.dart';
+import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
+import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
+import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
+import 'package:ax_dapp/wallet/magic_api_client/web.dart';
+import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:cache/cache.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/config_api.dart';
 import 'package:ethereum_api/gysr_api.dart';
@@ -47,6 +54,13 @@ void main() async {
 
   final httpClient = http.Client();
 
+  final magic = MagicSDK(
+    'pk_live_A0EFC48FF2C1D624',
+    137,
+    'https://polygon-rpc.com/',
+    'en_US',
+  );
+
   await initHiveForFlutter();
   // usePathUrlStrategy();
   final configApiClient = ConfigApiClient(
@@ -59,6 +73,7 @@ void main() async {
   final reactiveWeb3Client = appConfig.reactiveWeb3Client;
   final walletApiClient =
       EthereumWalletApiClient(reactiveWeb3Client: reactiveWeb3Client);
+  final magicWalletApiClient = MagicApiClient(magicSDK: magic);
   final tokensApiClient = TokensApiClient(
     defaultChain: defaultChain,
     reactiveWeb3Client: reactiveWeb3Client,
@@ -88,8 +103,27 @@ void main() async {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
-            create: (_) => Web3AuthRepository(
-              web3Auth: web3Auth,
+            create: (_) => MagicRepository(
+              magicWalletApiClient: magicWalletApiClient,
+            ),
+          ),
+          RepositoryProvider(
+            create: (_) => LongShortPairRepository(),
+          ),
+          RepositoryProvider(
+            create: (_) => PoolRepository(),
+          ),
+          RepositoryProvider(
+            create: (_) => SwapRepository(),
+          ),
+          RepositoryProvider(
+            create: (_) => LiveChatRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+          RepositoryProvider(
+            create: (_) => ChatGPTRepository(
+              fireStore: FirebaseFirestore.instance,
             ),
           ),
           RepositoryProvider(

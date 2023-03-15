@@ -7,15 +7,36 @@ import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:web3dart/web3dart.dart';
 
-class SwapController extends GetxController {
-  SwapController();
-  Controller controller = Get.find();
-  Rx<Token> activeTkn1 = Token.empty.obs, activeTkn2 = Token.empty.obs;
-  RxString address1 = ''.obs, address2 = ''.obs;
-  RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
+class SwapRepository {
+  SwapRepository();
+  Controller controller = Controller();
+  Rx<Token> activeTkn1 = Token.empty.obs;
+  Rx<Token> activeTkn2 = Token.empty.obs;
+  RxString address1 = ''.obs;
+  RxString address2 = ''.obs;
+  RxDouble amount1 = 0.0.obs;
+  RxDouble amount2 = 0.0.obs;
   RxDouble price = 0.0.obs;
   RxString routerAddress = ''.obs;
   RxString factoryAddress = ''.obs;
+
+  set fromAmount(double newAmount) => amount1.value = newAmount;
+  set toAmount(double newAmount) => amount2.value = newAmount;
+  set fromAddress(String newAddress) => address1.value = newAddress;
+  set toAddress(String newAddress) => address2.value = newAddress;
+  set fromToken(Token tknFrom) => activeTkn1.value = tknFrom;
+  set toToken(Token tknTo) => activeTkn2.value = tknTo;
+  set topDecimals(int decimal) => decimalA.value = decimal;
+  set bottomDecimals(int decimal) => decimalB.value = decimal;
+
+  double get fromAmount => amount1.value;
+  String get fromAddress => address1.value;
+  double get toAmount => amount2.value;
+  String get toAddress => address2.value;
+  Token get fromToken => activeTkn1.value;
+  Token get toToken => activeTkn2.value;
+  int get topDecimals => decimalA.value;
+  int get bottomDecimals => decimalB.value;
 
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
@@ -46,11 +67,11 @@ class SwapController extends GetxController {
       );
     } catch (e) {
       txString = '';
-      controller.updateTxString(txString);
+      controller.transactionHash = txString;
       return Future.error(e);
     }
 
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   // Actionables
@@ -72,10 +93,10 @@ class SwapController extends GetxController {
         deadline.value,
         credentials: controller.credentials,
       );
-      controller.updateTxString(txString);
+      controller.transactionHash = txString;
     } catch (e) {
       txString = '';
-      controller.updateTxString(txString);
+      controller.transactionHash = txString;
       return Future.error(e);
     }
   }
@@ -98,7 +119,7 @@ class SwapController extends GetxController {
       );
     }
 
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   Future<void> swapforAX(String chainTokenAddress) async {
@@ -117,7 +138,7 @@ class SwapController extends GetxController {
       deadline.value,
       credentials: controller.credentials,
     );
-    controller.updateTxString(txString);
+    controller.transactionHash = txString;
   }
 
   Future<void> swapFromAX(String chainTokenAddress) async {
@@ -135,50 +156,6 @@ class SwapController extends GetxController {
       deadline.value,
       credentials: controller.credentials,
     );
-    controller.updateTxString(txString);
-  }
-
-  void updateFromAmount(double newAmount) {
-    amount1.value = newAmount;
-    update();
-  }
-
-  void updateToAmount(double newAmount) {
-    amount2.value = newAmount;
-    update();
-  }
-
-  void updateFromAddress(String newAddress) {
-    address1.value = newAddress;
-    update();
-  }
-
-  void updateToAddress(String newAddress) {
-    address2.value = newAddress;
-    update();
-  }
-
-  void updatePrice() {
-    update();
-  }
-
-  void updateFromToken(Token tknFrom) {
-    activeTkn1.value = tknFrom;
-    update();
-  }
-
-  void updateToToken(Token tknTo) {
-    activeTkn2.value = tknTo;
-    update();
-  }
-
-  void updateTopDecimals(int decimal) {
-    decimalA.value = decimal;
-    update();
-  }
-
-  void updateBottomDecimals(int decimal) {
-    decimalB.value = decimal;
-    update();
+    controller.transactionHash = txString;
   }
 }

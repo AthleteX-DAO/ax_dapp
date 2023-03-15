@@ -7,21 +7,22 @@ import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
-// --> Joe burrow
-// --> Jamaar chase
-// --> Matthew Stafford
-// --> Cooper Kupp
-
-class LSPController extends GetxController {
-  // Hard address listing of all Athletes
-
-  LSPController();
-  Controller controller = Get.find();
+class LongShortPairRepository {
+  LongShortPairRepository();
+  Controller controller = Controller();
   late LongShortPair genericLSP;
   RxDouble createAmt = 0.0.obs;
   RxDouble redeemAmt = 0.0.obs;
   RxString aptAddress = ''.obs;
   Web3Client tokenClient = Web3Client('https://polygon-rpc.com', Client());
+
+  String get tokenAddress => aptAddress.value;
+  double get createAmount => createAmt.value;
+  double get redeemAmount => redeemAmt.value;
+
+  set tokenAddress(String pairAddress) => aptAddress.value = pairAddress;
+  set createAmount(double newAmount) => createAmt.value = newAmount;
+  set redeemAmount(double newAmount) => redeemAmt.value = newAmount;
 
   Future<void> mint() async {
     final address = EthereumAddress.fromHex(aptAddress.value);
@@ -30,7 +31,7 @@ class LSPController extends GetxController {
     final tokensToCreate = normalizeInput(createAmt.value);
     final txString =
         await genericLSP.create(tokensToCreate, credentials: theCredentials);
-    controller.updateTxString(txString); //Sends tx to controller
+    controller.transactionHash = txString; //Sends tx to controller
   }
 
   Future<void> approve(String axtAddress) async {
@@ -57,21 +58,4 @@ class LSPController extends GetxController {
       return false;
     }
   }
-
-  void updateAptAddress(String pairAddress) {
-    aptAddress.value = pairAddress;
-    update();
-  }
-
-  void updateCreateAmt(double newAmount) {
-    createAmt.value = newAmount;
-    update();
-  }
-
-  void updateRedeemAmt(double newAmount) {
-    redeemAmt.value = newAmount;
-    update();
-  }
-
-  Future<void> updateCollateralAmount() async {}
 }

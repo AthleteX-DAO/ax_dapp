@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:shared/shared.dart';
@@ -13,7 +13,7 @@ class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
   MintDialogBloc({
     required TokensRepository tokensRepository,
     required this.getTotalTokenBalanceUseCase,
-    required this.lspController,
+    required this.longShortPairRepository,
     required int athleteId,
     required this.supportedSport,
   })  : _tokensRepository = tokensRepository,
@@ -32,7 +32,7 @@ class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
 
   final TokensRepository _tokensRepository;
   final GetTotalTokenBalanceUseCase getTotalTokenBalanceUseCase;
-  final LSPController lspController;
+  final LongShortPairRepository longShortPairRepository;
   final SupportedSport supportedSport;
 
   Future<void> _onWatchAptPairStarted(
@@ -57,10 +57,16 @@ class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final aptPair = _tokensRepository.currentAptPair(event.athleteId);
-      lspController.updateAptAddress(aptPair.address);
+      longShortPairRepository.tokenAddress = aptPair.address;
       final balance = await getTotalTokenBalanceUseCase.getTotalAxBalance();
       final collateralPerPair = getCollateralPerPair(supportedSport);
-      emit(state.copyWith(status: BlocStatus.success, balance: balance, collateralPerPair: collateralPerPair));
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          balance: balance,
+          collateralPerPair: collateralPerPair,
+        ),
+      );
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
     }
@@ -74,8 +80,8 @@ class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
     final balance = await getTotalTokenBalanceUseCase.getTotalAxBalance();
     final collateralPerPair = getCollateralPerPair(supportedSport);
     try {
-      if (lspController.createAmt.value != input) {
-        lspController.updateCreateAmt(input);
+      if (longShortPairRepository.createAmt.value != input) {
+        longShortPairRepository.createAmount = input;
       }
       if (input > (balance / collateralPerPair)) {
         emit(

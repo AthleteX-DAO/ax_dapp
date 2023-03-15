@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:ax_dapp/wallet/models/models.dart';
-import 'package:ax_dapp/wallet/repository/web3_auth_repository.dart';
-import 'package:flutter/foundation.dart';
+import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -15,10 +14,10 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   WalletBloc({
     required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
-    required Web3AuthRepository web3authRepository,
+    required MagicRepository magicRepository,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
-        _web3authRepository = web3authRepository,
+        _magicRepository = magicRepository,
         super(WalletState.fromWallet(walletRepository.currentWallet)) {
     on<ConnectWalletRequested>(_onConnectWalletRequested);
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
@@ -28,8 +27,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
     on<GetGasPriceRequested>(_onGetGasPriceRequested);
     on<WalletFailed>(_onWalletFailed);
-    on<ConnectWalletWeb3Auth>(_onConnectWalletWeb3Auth);
-    on<DisconnectWalletWeb3Auth>(_onDisconnectWalletWeb3Auth);
+    on<ConnectWalletMagic>(_onConnectWalletMagic);
+    on<DisconnectWalletMagic>(_onDisconnectWalletMagic);
+    on<ShowMagicWallet>(_onShowMagicWallet);
 
     add(const WatchWalletChangesStarted());
     add(const WatchAxtChangesStarted());
@@ -37,7 +37,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
-  final Web3AuthRepository _web3authRepository;
+  final MagicRepository _magicRepository;
 
   Future<void> _onConnectWalletRequested(
     ConnectWalletRequested _,
@@ -128,31 +128,28 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
-  Future<void> _onConnectWalletWeb3Auth(
-    ConnectWalletWeb3Auth event,
+  Future<void> _onConnectWalletMagic(
+    ConnectWalletMagic event,
     Emitter<WalletState> emit,
   ) async {
-    try {
-      await _web3authRepository.connect();
-      emit(state.copyWith());
-    } catch (e) {
-      emit(state.copyWith());
-      // TODO(anyone): handle error if the connect wallet request has been rejected
-      debugPrint('$e');
-    }
+    final address = await _magicRepository.connect();
+    final walletAddress = address.toString();
+    emit(state.copyWith(walletAddress: walletAddress));
   }
 
-  Future<void> _onDisconnectWalletWeb3Auth(
-    DisconnectWalletWeb3Auth event,
+  Future<void> _onDisconnectWalletMagic(
+    DisconnectWalletMagic event,
     Emitter<WalletState> emit,
   ) async {
-    try {
-      _web3authRepository.logout();
-      emit(state.copyWith());
-    } catch (e) {
-      emit(state.copyWith());
-      // TODO(anyone): handle error if the connect wallet request has been rejected
-      debugPrint('$e');
-    }
+    await _magicRepository.disconnect();
+    emit(state.copyWith());
+  }
+
+  Future<void> _onShowMagicWallet(
+    ShowMagicWallet event,
+    Emitter<WalletState> emit,
+  ) async {
+    await _magicRepository.showWallet();
+    emit(state.copyWith());
   }
 }
