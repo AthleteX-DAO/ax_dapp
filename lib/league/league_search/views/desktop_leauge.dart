@@ -1,6 +1,7 @@
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/widgets/dialogs/rules_dialog.dart';
 import 'package:ax_dapp/league/league_search/widgets/league_card.dart';
+import 'package:ax_dapp/league/league_search/widgets/league_header_title.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
@@ -20,7 +21,6 @@ class DesktopLeague extends StatefulWidget {
 class _DesktopLeagueState extends State<DesktopLeague> {
   final leagueSearchController = TextEditingController();
   var _selectedSport = SupportedSport.all;
-  double textSize = 16;
 
   @override
   void dispose() {
@@ -30,6 +30,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
 
   @override
   Widget build(BuildContext context) {
+    var textSize = 16.0;
     var showToolTipHeader = true;
     var showDateRange = true;
     final global = Global();
@@ -315,57 +316,10 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                         ),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'League Name',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontFamily: 'OpenSans',
-                            fontSize: textSize,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        if (showDateRange)
-                          Text(
-                            'Start/End Date',
-                            style: TextStyle(
-                              color: Colors.grey[400],
-                              fontFamily: 'OpenSans',
-                              fontSize: textSize,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        Text(
-                          'Entry Fee',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontFamily: 'OpenSans',
-                            fontSize: textSize,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          'Prize Pool',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontFamily: 'OpenSans',
-                            fontSize: textSize,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        if (showToolTipHeader)
-                          Text(
-                            'Info',
-                            style: TextStyle(
-                              color: Colors.grey[400],
-                              fontFamily: 'OpenSans',
-                              fontSize: textSize,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                      ],
+                    LeagueHeaderTitle(
+                      textSize: textSize,
+                      showDateRange: showDateRange,
+                      showToolTipHeader: showToolTipHeader,
                     ),
                     SizedBox(
                       height: constraints.maxHeight * 0.8 - 120,
