@@ -21,7 +21,6 @@ import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
-import 'package:ax_dapp/wallet/javascript_calls/web3_auth.dart';
 import 'package:ax_dapp/wallet/magic_api_client/web.dart';
 import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:cache/cache.dart';
