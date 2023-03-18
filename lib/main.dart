@@ -89,13 +89,6 @@ void main() async {
   final getPairInfoUseCase = GetPairInfoUseCase(subGraphRepo);
   final getSwapInfoUseCase = GetSwapInfoUseCase(getPairInfoUseCase);
 
-  final web3Auth = Web3Auth(
-    'BGBUVGOmA5x1rP3V9HRF13b-bco3wZWdiQymUckNBWfx9yURBmvo4brGfhkypeLkAsteeSd9_gsIsJKSyD2d4FY',
-    'eip155',
-    '0x89',
-    'https://rpc-mainnet.matic.network',
-  );
-
   unawaited(
     bootstrap(() async {
       await Firebase.initializeApp(
