@@ -131,7 +131,7 @@ class WalletDialog extends StatelessWidget {
                     ),
                   ],
                 ),
-                // Web3Auth button
+                // Magic button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -160,7 +160,8 @@ class WalletDialog extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
                                   image: AssetImage(
-                                      'assets/images/magic-logo.png'),
+                                    'assets/images/magic-logo.png',
+                                  ),
                                   fit: BoxFit.cover,
                                 ),
                               ),

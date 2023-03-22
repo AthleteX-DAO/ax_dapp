@@ -133,8 +133,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     final address = await _magicRepository.connect();
+    print("ConnectWalletMagic: $address");
     final walletAddress = address.toString();
-    emit(state.copyWith(walletAddress: walletAddress));
+    emit(
+      state.copyWith(
+        walletAddress: walletAddress,
+        walletStatus: WalletStatus.connected,
+      ),
+    );
   }
 
   Future<void> _onDisconnectWalletMagic(
