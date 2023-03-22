@@ -9,6 +9,7 @@ import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/views/desktop_leauge.dart';
+import 'package:ax_dapp/league/league_search/views/my_league.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -226,6 +227,16 @@ class _MaterialApp extends StatelessWidget {
               Global().pageName = 'league';
               return const DesktopLeague();
             },
+            routes: [
+              GoRoute(
+                name: 'myLeague',
+                path: 'myLeague',
+                builder: (BuildContext context, GoRouterState state) {
+                  Global().pageName = 'myLeague'; //Might change
+                  return myLeague();
+                },
+              ),
+            ],
           ),
         ],
         errorPageBuilder: (context, state) => MaterialPage(
