@@ -1,6 +1,7 @@
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LeagueCard extends StatelessWidget {
   const LeagueCard({super.key, required this.league});
@@ -27,7 +28,10 @@ class LeagueCard extends StatelessWidget {
     return SizedBox(
       height: 70,
       child: OutlinedButton(
-        onPressed: () => {},
+        onPressed: () {
+          debugPrint('PressedALeague');
+          context.goNamed('myLeague');
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
