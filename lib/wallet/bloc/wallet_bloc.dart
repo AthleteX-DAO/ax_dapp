@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/repository/magic_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -133,12 +134,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     final address = await _magicRepository.connect();
-    print("ConnectWalletMagic: $address");
+    debugPrint('ConnectWalletMagic: $address');
     final walletAddress = address.toString();
     emit(
       state.copyWith(
         walletAddress: walletAddress,
         walletStatus: WalletStatus.connected,
+        chain: EthereumChain.polygonMainnet,
       ),
     );
   }
