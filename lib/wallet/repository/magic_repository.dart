@@ -47,6 +47,13 @@ class MagicRepository {
   ///
   /// Throws:
   Future<void> disconnect() async {
+    _magicWalletChangeController.add(
+        Wallet(
+          status: WalletStatus.fromChain(EthereumChain.none),
+          address: kEmptyAddress,
+          chain: EthereumChain.none,
+        ),
+      );
     await _magicWalletApiClient.disconnect();
   }
 

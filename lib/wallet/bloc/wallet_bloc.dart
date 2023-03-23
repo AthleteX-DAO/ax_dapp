@@ -150,7 +150,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     await _magicRepository.disconnect();
-    emit(state.copyWith());
+    emit(
+      state.copyWith(
+        walletAddress: kEmptyAddress,
+        walletStatus: WalletStatus.disconnected,
+        chain: EthereumChain.none,
+      ),
+    );
   }
 
   Future<void> _onShowMagicWallet(

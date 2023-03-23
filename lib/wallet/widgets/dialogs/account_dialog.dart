@@ -165,7 +165,7 @@ class AccountDialog extends StatelessWidget {
                                     child: TextButton(
                                       onPressed: () {
                                         context.read<WalletBloc>().add(
-                                              const DisconnectWalletRequested(),
+                                              const DisconnectWalletMagic(),
                                             );
                                         Navigator.pop(context);
                                       },
