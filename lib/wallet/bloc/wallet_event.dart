@@ -31,6 +31,10 @@ class WatchWalletChangesStarted extends WalletEvent {
   const WatchWalletChangesStarted();
 }
 
+class WatchMagicWalletChangesStarted extends WalletEvent {
+  const WatchMagicWalletChangesStarted();
+}
+
 class SwitchChainRequested extends WalletEvent {
   const SwitchChainRequested(this.chain);
 

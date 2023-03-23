@@ -25,6 +25,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<WatchWalletChangesStarted>(_onWatchWalletChangesStarted);
     on<SwitchChainRequested>(_onSwitchChainRequested);
     on<WatchAxtChangesStarted>(_onWatchAxtChangesStarted);
+    on<WatchMagicWalletChangesStarted>(_onWatchMagicWalletChangesStarted);
     on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
     on<GetGasPriceRequested>(_onGetGasPriceRequested);
     on<WalletFailed>(_onWalletFailed);
@@ -33,6 +34,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ShowMagicWallet>(_onShowMagicWallet);
 
     add(const WatchWalletChangesStarted());
+    add(const WatchMagicWalletChangesStarted());
     add(const WatchAxtChangesStarted());
   }
 
@@ -129,6 +131,18 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
+  Future<void> _onWatchMagicWalletChangesStarted(
+    WatchMagicWalletChangesStarted event,
+    Emitter<WalletState> emit,
+  ) async {
+    await emit.forEach<Wallet>(
+      _magicRepository.walletChanges,
+      onData: (wallet) => state.copyWithWallet(
+        wallet,
+      ),
+    );
+  }
+
   Future<void> _onConnectWalletMagic(
     ConnectWalletMagic event,
     Emitter<WalletState> emit,
@@ -139,8 +153,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(
       state.copyWith(
         walletAddress: walletAddress,
-        walletStatus: WalletStatus.connected,
-        chain: EthereumChain.polygonMainnet,
       ),
     );
   }
@@ -150,13 +162,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     await _magicRepository.disconnect();
-    emit(
-      state.copyWith(
-        walletAddress: kEmptyAddress,
-        walletStatus: WalletStatus.disconnected,
-        chain: EthereumChain.none,
-      ),
-    );
   }
 
   Future<void> _onShowMagicWallet(

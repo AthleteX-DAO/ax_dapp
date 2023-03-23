@@ -50,7 +50,7 @@ class MagicRepository {
     _magicWalletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(EthereumChain.none),
-          address: kEmptyAddress,
+          address: kNullAddress,
           chain: EthereumChain.none,
         ),
       );
