@@ -560,22 +560,18 @@ class _LeagueDialog extends State<LeagueDialog> {
                             {
                               bloc.add(
                                 CreateLeague(
-                                  league: League(
-                                    name: leagueNameController.text,
-                                    adminWallet: walletId,
-                                    dateStart: startDateController.text,
-                                    dateEnd: endDateController.text,
-                                    teamSize:
-                                        int.parse(teamSizeController.text),
-                                    maxTeams:
-                                        int.parse(participantsController.text),
-                                    entryFee:
-                                        int.parse(entryFeeController.text),
-                                    isPrivate: _privateToggle,
-                                    isLocked: _lockToggle,
-                                    rosters: {},
-                                    sports: [dropDownValue],
-                                  ),
+                                  name: leagueNameController.text,
+                                  adminWallet: walletId,
+                                  dateStart: startDateController.text,
+                                  dateEnd: endDateController.text,
+                                  teamSize: int.parse(teamSizeController.text),
+                                  maxTeams:
+                                      int.parse(participantsController.text),
+                                  entryFee: int.parse(entryFeeController.text),
+                                  isPrivate: _privateToggle,
+                                  isLocked: _lockToggle,
+                                  rosters: const {},
+                                  sports: [dropDownValue],
                                 ),
                               ),
                               Navigator.pop(context),

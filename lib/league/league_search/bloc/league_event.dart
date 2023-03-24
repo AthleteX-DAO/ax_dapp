@@ -9,13 +9,45 @@ abstract class LeagueEvent extends Equatable {
 
 class CreateLeague extends LeagueEvent {
   const CreateLeague({
-    required this.league,
+    required this.name,
+    required this.adminWallet,
+    required this.dateStart,
+    required this.dateEnd,
+    required this.teamSize,
+    required this.maxTeams,
+    required this.entryFee,
+    required this.isPrivate,
+    required this.isLocked,
+    required this.rosters,
+    required this.sports,
   });
 
-  final League league;
+  final String name;
+  final String adminWallet;
+  final String dateStart;
+  final String dateEnd;
+  final int teamSize;
+  final int maxTeams;
+  final int entryFee;
+  final bool isPrivate;
+  final bool isLocked;
+  final Map<String, Map<String, double>> rosters;
+  final List<SupportedSport> sports;
 
   @override
-  List<Object?> get props => [league];
+  List<Object?> get props => [
+        name,
+        adminWallet,
+        dateStart,
+        dateEnd,
+        teamSize,
+        maxTeams,
+        entryFee,
+        isPrivate,
+        isLocked,
+        rosters,
+        sports,
+      ];
 }
 
 class FetchLeagues extends LeagueEvent {}
