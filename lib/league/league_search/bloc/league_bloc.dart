@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
@@ -34,8 +35,25 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     Emitter<LeagueState> emit,
   ) async {
     try {
-      final league = event.league;
+      final leagueID = generateLeagueID(15);
+
+      final league = League(
+        leagueID: leagueID,
+        name: event.name,
+        adminWallet: event.adminWallet,
+        dateStart: event.dateStart,
+        dateEnd: event.dateEnd,
+        teamSize: event.teamSize,
+        maxTeams: event.maxTeams,
+        entryFee: event.entryFee,
+        isPrivate: event.isPrivate,
+        isLocked: event.isLocked,
+        rosters: event.rosters,
+        sports: event.sports,
+      );
+
       await _leagueRepository.createLeague(league: league);
+
       add(FetchLeagues());
       emit(state.copyWith(status: BlocStatus.success));
     } catch (_) {
@@ -106,7 +124,9 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     try {
       final leagueId = event.leagueID;
       final userWallet = event.userWallet;
-      final roster = event.roster;
+
+      final roster = {for (var e in event.roster) e: 0.0};
+
       await _leagueRepository.updateRoster(
         leagueID: leagueId,
         userWallet: userWallet,
@@ -124,7 +144,9 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     try {
       final leagueId = event.leagueID;
       final userWallet = event.userWallet;
-      final roster = event.roster;
+
+      final roster = {for (var e in event.roster) e: 0.0};
+
       await _leagueRepository.enrollUser(
         leagueID: leagueId,
         userWallet: userWallet,
@@ -219,5 +241,22 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         ),
       );
     }
+  }
+
+  String generateLeagueID(int length) {
+    const predefinedCharacters =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    final random = Random();
+    final generatedLeagueID = String.fromCharCodes(
+      Iterable.generate(
+        length,
+        (_) => predefinedCharacters.codeUnitAt(
+          random.nextInt(
+            predefinedCharacters.length,
+          ),
+        ),
+      ),
+    );
+    return generatedLeagueID;
   }
 }
