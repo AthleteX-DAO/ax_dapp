@@ -30,7 +30,11 @@ class LeagueRepository {
 
   Future<void> deleteLeague({required String leagueID}) async {
     try {
-      await _fireStore.collection('Leagues').doc(leagueID).delete();
+      await _fireStore
+          .collection('Leagues')
+          .where('leagueID', isEqualTo: leagueID)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs[0].reference.delete());
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
@@ -43,8 +47,12 @@ class LeagueRepository {
     try {
       await _fireStore
           .collection('Leagues')
-          .doc(leagueID)
-          .update(league.toJson());
+          .where('leagueID', isEqualTo: leagueID)
+          .get()
+          .then(
+            (querySnapshot) =>
+                querySnapshot.docs[0].reference.update(league.toJson()),
+          );
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
@@ -53,13 +61,17 @@ class LeagueRepository {
   Future<void> updateRoster({
     required String leagueID,
     required String userWallet,
-    required List<String> roster,
+    required Map<String, double> roster,
   }) async {
     try {
       await _fireStore
           .collection('Leagues')
-          .doc(leagueID)
-          .update({'rosters.$userWallet': roster});
+          .where('leagueID', isEqualTo: leagueID)
+          .get()
+          .then(
+            (querySnapshot) => querySnapshot.docs[0].reference
+                .update({'rosters.$userWallet': roster}),
+          );
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
@@ -68,13 +80,17 @@ class LeagueRepository {
   Future<void> enrollUser({
     required String leagueID,
     required String userWallet,
-    required List<String> roster,
+    required Map<String, double> roster,
   }) async {
     try {
       await _fireStore
           .collection('Leagues')
-          .doc(leagueID)
-          .set({'rosters.$userWallet': roster});
+          .where('leagueID', isEqualTo: leagueID)
+          .get()
+          .then(
+            (querySnapshot) => querySnapshot.docs[0].reference
+                .set({'rosters.$userWallet': roster}),
+          );
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }
@@ -87,8 +103,12 @@ class LeagueRepository {
     try {
       await _fireStore
           .collection('Leagues')
-          .doc(leagueID)
-          .update({'rosters.$userWallet': FieldValue.delete()});
+          .where('leagueID', isEqualTo: leagueID)
+          .get()
+          .then(
+            (querySnapshot) => querySnapshot.docs[0].reference
+                .update({'rosters.$userWallet': FieldValue.delete()}),
+          );
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }

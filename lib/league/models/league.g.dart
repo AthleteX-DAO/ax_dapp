@@ -7,6 +7,7 @@ part of 'league.dart';
 // **************************************************************************
 
 League _$LeagueFromJson(Map<String, dynamic> json) => League(
+      leagueID: json['leagueID'] as String,
       name: json['name'] as String,
       adminWallet: json['adminWallet'] as String,
       dateStart: json['dateStart'] as String,
@@ -17,8 +18,11 @@ League _$LeagueFromJson(Map<String, dynamic> json) => League(
       isPrivate: json['isPrivate'] as bool,
       isLocked: json['isLocked'] as bool,
       rosters: (json['rosters'] as Map<String, dynamic>).map(
-        (k, e) =>
-            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+        (k, e) => MapEntry(
+            k,
+            (e as Map<String, dynamic>).map(
+              (k, e) => MapEntry(k, (e as num).toDouble()),
+            )),
       ),
       sports: (json['sports'] as List<dynamic>)
           .map((e) => $enumDecode(_$SupportedSportEnumMap, e))
@@ -26,6 +30,7 @@ League _$LeagueFromJson(Map<String, dynamic> json) => League(
     );
 
 Map<String, dynamic> _$LeagueToJson(League instance) => <String, dynamic>{
+      'leagueID': instance.leagueID,
       'name': instance.name,
       'adminWallet': instance.adminWallet,
       'dateStart': instance.dateStart,
@@ -42,7 +47,7 @@ Map<String, dynamic> _$LeagueToJson(League instance) => <String, dynamic>{
 
 const _$SupportedSportEnumMap = {
   SupportedSport.all: 'all',
-  SupportedSport.NFL: 'NFL',
   SupportedSport.MLB: 'MLB',
+  SupportedSport.NFL: 'NFL',
   SupportedSport.NBA: 'NBA',
 };
