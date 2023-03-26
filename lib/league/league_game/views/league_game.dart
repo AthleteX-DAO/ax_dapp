@@ -1,6 +1,5 @@
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/widgets/dialogs/rules_dialog.dart';
-
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
@@ -8,15 +7,21 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class myLeague extends StatefulWidget {
-  const myLeague({super.key});
+class LeagueGame extends StatefulWidget {
+  const LeagueGame({
+    super.key,
+  });
 
   @override
-  State<myLeague> createState() => _myLeagueState();
+  State<LeagueGame> createState() => _LeagueGameState();
 }
 
-class _myLeagueState extends State<myLeague> {
+class _LeagueGameState extends State<LeagueGame> {
   final leagueSearchController = TextEditingController();
+  final List<String> entries = <String>['A', 'B', 'C'];
+  final List<int> appreciation = <int>[12, 4, -3];
+  //final leagueIndex = state.allLeagues;
+  //final WalletiD = state.allLeagues;
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +85,11 @@ class _myLeagueState extends State<myLeague> {
                             border: Border.all(color: Colors.amber[400]!),
                           ),
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              // context.goNamed('Name of class');
+                            }, //Steven
                             child: const Text(
-                              'Join a League',
+                              'Join League',
                               style: TextStyle(
                                 color: Colors.amber,
                                 fontFamily: 'OpenSans',
@@ -101,7 +108,44 @@ class _myLeagueState extends State<myLeague> {
                       ),
                     ),
                     SizedBox(
-                      height: constraints.maxHeight * 0.15 - 41,
+                      height: constraints.maxHeight * 0.5,
+                      child: ListView.separated(
+                        padding: const EdgeInsets.all(8),
+                        itemCount: entries.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: 50,
+                            alignment: Alignment.center,
+                            child: OutlinedButton(
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 25),
+                                  Text(
+                                    'User ${entries[index]}',
+                                    style: TextStyle(
+                                      color: Colors.amber,
+                                      fontFamily: 'OpenSans',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  SizedBox(width: 800),
+                                  Text(
+                                    '\n Appereciation ${appreciation[index]}%\n',
+                                    style: TextStyle(
+                                      color: Colors.amber,
+                                      fontFamily: 'OpenSans',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
+                      ),
                     ),
                     Center(
                       child: DecoratedBox(
