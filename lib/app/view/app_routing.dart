@@ -267,6 +267,14 @@ class _MaterialApp extends StatelessWidget {
                   );
                 },
               ),
+              GoRoute(
+                name: 'LeagueDraft',
+                path: 'LeagueDraft',
+                builder: (BuildContext context, GoRouterState state) {
+                  Global().pageName = 'LeagueDraft'; //Need to change
+                  return const DesktopLeagueDraft();
+                },
+              ),
             ],
           ),
         ],
