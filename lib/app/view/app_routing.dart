@@ -7,6 +7,7 @@ import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
+import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/league_game/views/league_game.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/views/desktop_leauge.dart';
@@ -238,7 +239,13 @@ class _MaterialApp extends StatelessWidget {
                   final league = allLeagues
                       .firstWhere((league) => league.leagueID == leagueID);
                   Global().pageName = 'league-game';
-                  return LeagueGame(league: league, leagueID: leagueID);
+                  return BlocProvider(
+                    create: (context) => LeagueGameBloc(
+                      leagueRepository: context.read<LeagueRepository>(),
+                      athleteList: Global().athleteList,
+                    ),
+                    child: LeagueGame(league: league, leagueID: leagueID),
+                  );
                 },
                 redirect: (context, state) {
                   final allLeagues =

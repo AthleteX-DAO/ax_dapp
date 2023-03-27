@@ -23,8 +23,6 @@ class _LeagueGameState extends State<LeagueGame> {
   final leagueSearchController = TextEditingController();
   final List<String> entries = <String>['A', 'B', 'C'];
   final List<int> appreciation = <int>[12, 4, -3];
-  //final leagueIndex = state.allLeagues;
-  //final WalletiD = state.allLeagues;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +121,7 @@ class _LeagueGameState extends State<LeagueGame> {
                               onPressed: () {},
                               child: Row(
                                 children: [
-                                  SizedBox(width: 25),
+                                  const SizedBox(width: 25),
                                   Text(
                                     'User ${entries[index]}',
                                     style: TextStyle(
@@ -132,7 +130,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                  SizedBox(width: 800),
+                                  const SizedBox(width: 800),
                                   Text(
                                     '\n Appereciation ${appreciation[index]}%\n',
                                     style: TextStyle(
