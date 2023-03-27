@@ -7,9 +7,9 @@ import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
+import 'package:ax_dapp/league/league_game/views/league_game.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/views/desktop_leauge.dart';
-import 'package:ax_dapp/league/league_search/views/my_league.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -229,11 +229,25 @@ class _MaterialApp extends StatelessWidget {
             },
             routes: [
               GoRoute(
-                name: 'myLeague',
-                path: 'myLeague',
+                name: 'league-game',
+                path: 'league-game/:leagueID',
                 builder: (BuildContext context, GoRouterState state) {
-                  Global().pageName = 'myLeague'; //Might change
-                  return myLeague();
+                  final leagueID = state.params['leagueID']!;
+                  final allLeagues =
+                      context.read<LeagueBloc>().state.allLeagues;
+                  final league = allLeagues
+                      .firstWhere((league) => league.leagueID == leagueID);
+                  Global().pageName = 'league-game';
+                  return LeagueGame(league: league, leagueID: leagueID);
+                },
+                redirect: (context, state) {
+                  final allLeagues =
+                      context.read<LeagueBloc>().state.allLeagues;
+                  if (state.location.contains('/league-game') &&
+                      allLeagues.isEmpty) {
+                    return '/league';
+                  }
+                  return null;
                 },
               ),
             ],
