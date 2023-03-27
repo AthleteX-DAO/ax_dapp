@@ -29,8 +29,10 @@ class LeagueCard extends StatelessWidget {
       height: 70,
       child: OutlinedButton(
         onPressed: () {
-          debugPrint('PressedALeague');
-          context.goNamed('myLeague');
+          context.goNamed(
+            'league-game',
+            params: {'leagueID': league.leagueID},
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
