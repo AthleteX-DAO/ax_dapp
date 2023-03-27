@@ -229,11 +229,25 @@ class _MaterialApp extends StatelessWidget {
             },
             routes: [
               GoRoute(
-                name: 'LeagueGame',
-                path: 'LeagueGame',
+                name: 'league-game',
+                path: 'league-game/:leagueID',
                 builder: (BuildContext context, GoRouterState state) {
-                  Global().pageName = 'LeagueGame'; //Might change
-                  return LeagueGame();
+                  final leagueID = state.params['leagueID']!;
+                  final allLeagues =
+                      context.read<LeagueBloc>().state.allLeagues;
+                  final league = allLeagues
+                      .firstWhere((league) => league.leagueID == leagueID);
+                  Global().pageName = 'league-game';
+                  return LeagueGame(league: league, leagueID: leagueID);
+                },
+                redirect: (context, state) {
+                  final allLeagues =
+                      context.read<LeagueBloc>().state.allLeagues;
+                  if (state.location.contains('/league-game') &&
+                      allLeagues.isEmpty) {
+                    return '/league';
+                  }
+                  return null;
                 },
               ),
             ],

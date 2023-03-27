@@ -1,16 +1,19 @@
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
-import 'package:ax_dapp/league/league_search/widgets/dialogs/rules_dialog.dart';
+import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
-import 'package:ax_dapp/util/toast_extensions.dart';
-import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LeagueGame extends StatefulWidget {
   const LeagueGame({
     super.key,
+    required this.league,
+    required this.leagueID,
   });
+
+  final League league;
+  final String leagueID;
 
   @override
   State<LeagueGame> createState() => _LeagueGameState();
