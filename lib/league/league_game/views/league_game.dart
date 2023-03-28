@@ -69,7 +69,7 @@ class _LeagueGameState extends State<LeagueGame> {
                               : constraints.maxWidth * 0.4,
                           child: Center(
                             child: Text(
-                              'MY FIRST LEAGUE',
+                              widget.league.name,
                               style: textStyle(
                                 Colors.amber[400]!,
                                 18,
@@ -118,7 +118,32 @@ class _LeagueGameState extends State<LeagueGame> {
                             height: 50,
                             alignment: Alignment.center,
                             child: OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(40)),
+                                      elevation: 16,
+                                      child: Container(
+                                        child: ListView(
+                                          shrinkWrap: true,
+                                          children: const <Widget>[
+                                            SizedBox(height: 20),
+                                            Center(child: Text('League Team')),
+                                            SizedBox(height: 30),
+                                            Center(
+                                              child: Text('Name of Athlete'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                               child: Row(
                                 children: [
                                   const SizedBox(width: 25),
