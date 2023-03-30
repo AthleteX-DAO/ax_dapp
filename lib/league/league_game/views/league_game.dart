@@ -1,11 +1,13 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LeagueGame extends StatefulWidget {
+class LeagueGame extends StatelessWidget {
   const LeagueGame({
     super.key,
     required this.league,
@@ -16,19 +18,22 @@ class LeagueGame extends StatefulWidget {
   final String leagueID;
 
   @override
-  State<LeagueGame> createState() => _LeagueGameState();
-}
-
-class _LeagueGameState extends State<LeagueGame> {
-  final leagueSearchController = TextEditingController();
-
-  @override
   Widget build(BuildContext context) {
+    final athleteList = context.watch<ScoutPageBloc>().state.athletes;
     final global = Global();
     return global.buildPage(
       context,
       BlocBuilder<LeagueGameBloc, LeagueGameState>(
         builder: (context, state) {
+          final bloc = context.read<LeagueGameBloc>();
+          if (state.status == BlocStatus.initial) {
+            bloc.add(
+              CalculateAppreciationEvent(
+                rosters: league.rosters,
+                athletes: athleteList,
+              ),
+            );
+          }
           final userTeams = state.userTeams;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
@@ -68,7 +73,7 @@ class _LeagueGameState extends State<LeagueGame> {
                               : constraints.maxWidth * 0.4,
                           child: Center(
                             child: Text(
-                              widget.league.name,
+                              league.name,
                               style: textStyle(
                                 Colors.amber[400]!,
                                 18,
@@ -85,9 +90,7 @@ class _LeagueGameState extends State<LeagueGame> {
                             border: Border.all(color: Colors.amber[400]!),
                           ),
                           child: TextButton(
-                            onPressed: () {
-                              // context.goNamed('Name of class');
-                            }, //Steven
+                            onPressed: () {},
                             child: const Text(
                               'Join League',
                               style: TextStyle(

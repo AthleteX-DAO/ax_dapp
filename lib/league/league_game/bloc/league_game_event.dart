@@ -53,8 +53,12 @@ class TimerEvent extends LeagueGameEvent {
 class CalculateAppreciationEvent extends LeagueGameEvent {
   const CalculateAppreciationEvent({
     required this.rosters,
+    required this.athletes,
   });
-  final Map <String, Map<String,double>> rosters;
+
+  final Map<String, Map<String, double>> rosters;
+  final List<AthleteScoutModel> athletes;
+
   @override
   List<Object?> get props => [rosters];
 }

@@ -78,6 +78,22 @@ class App extends StatelessWidget {
             leagueRepository: context.read<LeagueRepository>(),
           ),
         ),
+        BlocProvider(
+          create: (BuildContext context) => ScoutPageBloc(
+            tokenRepository: context.read<TokensRepository>(),
+            walletRepository: context.read<WalletRepository>(),
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+            repo: GetScoutAthletesDataUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+              sportsRepos: [
+                RepositoryProvider.of<MLBRepo>(context),
+                RepositoryProvider.of<NFLRepo>(context),
+              ],
+            ),
+            longShortPairRepository: context.read<LongShortPairRepository>(),
+          ),
+        )
       ],
       child: const _MaterialApp(),
     );
@@ -130,25 +146,7 @@ class _MaterialApp extends StatelessWidget {
             path: '/scout',
             builder: (BuildContext context, GoRouterState state) {
               Global().pageName = 'scout';
-              return BlocProvider(
-                create: (BuildContext context) => ScoutPageBloc(
-                  tokenRepository: context.read<TokensRepository>(),
-                  walletRepository: context.read<WalletRepository>(),
-                  streamAppDataChanges:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  repo: GetScoutAthletesDataUseCase(
-                    tokensRepository: context.read<TokensRepository>(),
-                    graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                    sportsRepos: [
-                      RepositoryProvider.of<MLBRepo>(context),
-                      RepositoryProvider.of<NFLRepo>(context),
-                    ],
-                  ),
-                  longShortPairRepository:
-                      context.read<LongShortPairRepository>(),
-                ),
-                child: const Scout(),
-              );
+              return const Scout();
             },
             routes: [
               GoRoute(
@@ -242,7 +240,6 @@ class _MaterialApp extends StatelessWidget {
                   return BlocProvider(
                     create: (context) => LeagueGameBloc(
                       leagueRepository: context.read<LeagueRepository>(),
-                      athleteList: Global().athleteList,
                       rosters: league.rosters,
                     ),
                     child: LeagueGame(league: league, leagueID: leagueID),

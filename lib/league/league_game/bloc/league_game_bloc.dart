@@ -6,7 +6,6 @@ import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 part 'league_game_event.dart';
 part 'league_game_state.dart';
@@ -14,12 +13,10 @@ part 'league_game_state.dart';
 class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   LeagueGameBloc({
     required LeagueRepository leagueRepository,
-    required this.athleteList,
     required this.rosters,
   })  : _leagueRepository = leagueRepository,
         super(
           LeagueGameState(
-            athletes: athleteList,
             rosters: rosters,
           ),
         ) {
@@ -30,12 +27,9 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<CalculateAppreciationEvent>(_onCalculateAppreciationEvent);
     on<JoinLeagueEvent>(_onJoinLeagueEvent);
     on<LeaveLeagueEvent>(_onLeaveTeamEvent);
-
-    add(CalculateAppreciationEvent(rosters: rosters));
   }
 
   final LeagueRepository _leagueRepository;
-  final List<AthleteScoutModel> athleteList;
   final Map<String, Map<String, double>> rosters;
 
   Future<void> _onInviteEvent(
@@ -63,10 +57,10 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     Emitter<LeagueGameState> emit,
   ) async {
     final rosters = event.rosters;
-    debugPrint('$rosters');
+    final athletes = event.athletes;
     final userTeams = <UserTeam>[];
     rosters.forEach((address, roster) {
-      final individualPerformance = checkPrice(roster);
+      final individualPerformance = checkPrice(roster, athletes);
       final teamPerformance = individualPerformance.reduce((a, b) => a + b);
       userTeams.add(
         UserTeam(
@@ -76,7 +70,11 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         ),
       );
     });
-    emit(state.copyWith(userTeams: userTeams));
+    emit(
+      state.copyWith(
+        userTeams: userTeams,
+      ),
+    );
   }
 
   Future<void> _onJoinLeagueEvent(
@@ -89,10 +87,12 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     Emitter<LeagueGameState> emit,
   ) async {}
 
-  List<double> checkPrice(Map<String, double> roster) {
+  List<double> checkPrice(
+    Map<String, double> roster,
+    List<AthleteScoutModel> athletes,
+  ) {
     var percentChange = 0.0;
     final percentChangeList = <double>[];
-    final athletes = state.athletes;
     roster.forEach((athlete, price) {
       final name =
           roster.keys.firstWhere((element) => roster[element] == price);
