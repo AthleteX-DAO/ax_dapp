@@ -1,4 +1,4 @@
-import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
+import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -29,7 +29,7 @@ class _LeagueGameState extends State<LeagueGame> {
     final global = Global();
     return global.buildPage(
       context,
-      BlocBuilder<LeagueBloc, LeagueState>(
+      BlocBuilder<LeagueGameBloc, LeagueGameState>(
         builder: (context, state) {
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
