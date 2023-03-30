@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
@@ -7,7 +6,7 @@ import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 part 'league_game_event.dart';
 part 'league_game_state.dart';
@@ -16,8 +15,14 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   LeagueGameBloc({
     required LeagueRepository leagueRepository,
     required this.athleteList,
+    required this.rosters,
   })  : _leagueRepository = leagueRepository,
-        super(LeagueGameState(athletes: athleteList)) {
+        super(
+          LeagueGameState(
+            athletes: athleteList,
+            rosters: rosters,
+          ),
+        ) {
     on<InviteEvent>(_onInviteEvent);
     on<EditTeamsEvent>(_onEditTeams);
     on<ClaimPrizeEvent>(_onClaimPrize);
@@ -25,10 +30,13 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<CalculateAppreciationEvent>(_onCalculateAppreciationEvent);
     on<JoinLeagueEvent>(_onJoinLeagueEvent);
     on<LeaveLeagueEvent>(_onLeaveTeamEvent);
+
+    add(CalculateAppreciationEvent(rosters: rosters));
   }
 
   final LeagueRepository _leagueRepository;
   final List<AthleteScoutModel> athleteList;
+  final Map<String, Map<String, double>> rosters;
 
   Future<void> _onInviteEvent(
     InviteEvent event,
@@ -55,15 +63,18 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     Emitter<LeagueGameState> emit,
   ) async {
     final rosters = event.rosters;
-    var userTeams = <UserTeam>[];
+    debugPrint('$rosters');
+    final userTeams = <UserTeam>[];
     rosters.forEach((address, roster) {
-      final individualPerformance = checkPrice(address, roster);
+      final individualPerformance = checkPrice(roster);
       final teamPerformance = individualPerformance.reduce((a, b) => a + b);
-      userTeams = List.from(state.userTeams)
-        ..add(UserTeam(
-            address: address,
-            roster: roster,
-            teamPerformance: teamPerformance));
+      userTeams.add(
+        UserTeam(
+          address: address,
+          roster: roster,
+          teamPerformance: teamPerformance,
+        ),
+      );
     });
     emit(state.copyWith(userTeams: userTeams));
   }
@@ -78,18 +89,19 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     Emitter<LeagueGameState> emit,
   ) async {}
 
-  List<double> checkPrice(String address, Map<String, double> roster) {
+  List<double> checkPrice(Map<String, double> roster) {
     var percentChange = 0.0;
     final percentChangeList = <double>[];
-    roster.forEach((key, value) {
+    final athletes = state.athletes;
+    roster.forEach((athlete, price) {
       final name =
-          roster.keys.firstWhere((element) => roster[element] == value);
+          roster.keys.firstWhere((element) => roster[element] == price);
       final initialPrice = roster[name];
-      final athlete = athleteList.firstWhere(
-        (athlete) => athlete.name == name,
+      final athlete = athletes.firstWhere(
+        (athlete) =>
+            athlete.name.trim().toLowerCase() == name.trim().toLowerCase(),
         orElse: () => AthleteScoutModel.empty,
       );
-
       if (athlete.longTokenBookPrice != roster[name]) {
         percentChange =
             ((athlete.longTokenBookPrice! - initialPrice!) / initialPrice) *

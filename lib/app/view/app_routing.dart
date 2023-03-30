@@ -243,6 +243,7 @@ class _MaterialApp extends StatelessWidget {
                     create: (context) => LeagueGameBloc(
                       leagueRepository: context.read<LeagueRepository>(),
                       athleteList: Global().athleteList,
+                      rosters: league.rosters,
                     ),
                     child: LeagueGame(league: league, leagueID: leagueID),
                   );

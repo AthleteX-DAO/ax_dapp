@@ -1,4 +1,4 @@
-import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
+import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -21,16 +21,15 @@ class LeagueGame extends StatefulWidget {
 
 class _LeagueGameState extends State<LeagueGame> {
   final leagueSearchController = TextEditingController();
-  final List<String> entries = <String>['A', 'B', 'C'];
-  final List<int> appreciation = <int>[12, 4, -3];
 
   @override
   Widget build(BuildContext context) {
     final global = Global();
     return global.buildPage(
       context,
-      BlocBuilder<LeagueBloc, LeagueState>(
+      BlocBuilder<LeagueGameBloc, LeagueGameState>(
         builder: (context, state) {
+          final userTeams = state.userTeams;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -112,60 +111,18 @@ class _LeagueGameState extends State<LeagueGame> {
                       height: constraints.maxHeight * 0.5,
                       child: ListView.separated(
                         padding: const EdgeInsets.all(8),
-                        itemCount: entries.length,
+                        itemCount: userTeams.length,
                         itemBuilder: (BuildContext context, int index) {
+                          final userTeam = userTeams[index];
                           return Container(
                             height: 50,
                             alignment: Alignment.center,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(40)),
-                                      elevation: 16,
-                                      child: Container(
-                                        child: ListView(
-                                          shrinkWrap: true,
-                                          children: const <Widget>[
-                                            SizedBox(height: 20),
-                                            Center(child: Text('League Team')),
-                                            SizedBox(height: 30),
-                                            Center(
-                                              child: Text('Name of Athlete'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 25),
-                                  Text(
-                                    'User ${entries[index]}',
-                                    style: TextStyle(
-                                      color: Colors.amber,
-                                      fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 800),
-                                  Text(
-                                    '\n Appereciation ${appreciation[index]}%\n',
-                                    style: TextStyle(
-                                      color: Colors.amber,
-                                      fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(userTeam.address),
+                                Text('${userTeam.teamPerformance}'),
+                              ],
                             ),
                           );
                         },
