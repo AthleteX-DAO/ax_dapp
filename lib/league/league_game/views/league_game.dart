@@ -4,6 +4,7 @@ import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -124,7 +125,7 @@ class LeagueGame extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(userTeam.address),
-                                Text('${userTeam.teamPerformance}'),
+                                Text('${userTeam.teamPerformance} %'),
                               ],
                             ),
                           );

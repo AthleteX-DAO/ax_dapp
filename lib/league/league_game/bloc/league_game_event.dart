@@ -60,7 +60,7 @@ class CalculateAppreciationEvent extends LeagueGameEvent {
   final List<AthleteScoutModel> athletes;
 
   @override
-  List<Object?> get props => [rosters];
+  List<Object?> get props => [rosters, athletes];
 }
 
 class JoinLeagueEvent extends LeagueGameEvent {

@@ -60,8 +60,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     final athletes = event.athletes;
     final userTeams = <UserTeam>[];
     rosters.forEach((address, roster) {
-      final individualPerformance = checkPrice(roster, athletes);
-      final teamPerformance = individualPerformance.reduce((a, b) => a + b);
+      final teamPerformance = checkPrice(roster, athletes);
       userTeams.add(
         UserTeam(
           address: address,
@@ -76,39 +75,39 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
       ),
     );
   }
+}
 
-  Future<void> _onJoinLeagueEvent(
-    JoinLeagueEvent event,
-    Emitter<LeagueGameState> emit,
-  ) async {}
+Future<void> _onJoinLeagueEvent(
+  JoinLeagueEvent event,
+  Emitter<LeagueGameState> emit,
+) async {}
 
-  Future<void> _onLeaveTeamEvent(
-    LeaveLeagueEvent event,
-    Emitter<LeagueGameState> emit,
-  ) async {}
+Future<void> _onLeaveTeamEvent(
+  LeaveLeagueEvent event,
+  Emitter<LeagueGameState> emit,
+) async {}
 
-  List<double> checkPrice(
-    Map<String, double> roster,
-    List<AthleteScoutModel> athletes,
-  ) {
-    var percentChange = 0.0;
-    final percentChangeList = <double>[];
-    roster.forEach((athlete, price) {
-      final name =
-          roster.keys.firstWhere((element) => roster[element] == price);
-      final initialPrice = roster[name];
-      final athlete = athletes.firstWhere(
-        (athlete) =>
-            athlete.name.trim().toLowerCase() == name.trim().toLowerCase(),
-        orElse: () => AthleteScoutModel.empty,
-      );
-      if (athlete.longTokenBookPrice != roster[name]) {
-        percentChange =
-            ((athlete.longTokenBookPrice! - initialPrice!) / initialPrice) *
-                100;
-        percentChangeList.add(percentChange);
-      }
-    });
-    return percentChangeList;
-  }
+double checkPrice(
+  Map<String, double> roster,
+  List<AthleteScoutModel> athletes,
+) {
+  var percentChange = 0.0;
+  var teamPerformance = 0.0;
+  final percentChangeList = <double>[];
+  roster.forEach((athlete, price) {
+    final name = roster.keys.firstWhere((element) => roster[element] == price);
+    final initialPrice = roster[name];
+    final athlete = athletes.firstWhere(
+      (athlete) =>
+          athlete.name.trim().toLowerCase() == name.trim().toLowerCase(),
+      orElse: () => AthleteScoutModel.empty,
+    );
+    if (athlete.longTokenBookPrice != roster[name]) {
+      percentChange =
+          ((athlete.longTokenBookPrice! - initialPrice!) / initialPrice) * 100;
+      percentChangeList.add(percentChange);
+      teamPerformance = percentChangeList.reduce((a, b) => a + b);
+    }
+  });
+  return double.parse(teamPerformance.toStringAsFixed(2));
 }
