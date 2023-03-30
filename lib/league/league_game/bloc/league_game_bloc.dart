@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:html';
 
+import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
 part 'league_game_event.dart';
 part 'league_game_state.dart';
@@ -50,7 +53,20 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   Future<void> _onCalculateAppreciationEvent(
     CalculateAppreciationEvent event,
     Emitter<LeagueGameState> emit,
-  ) async {}
+  ) async {
+    final rosters = event.rosters;
+    var userTeams = <UserTeam>[];
+    rosters.forEach((address, roster) {
+      final individualPerformance = checkPrice(address, roster);
+      final teamPerformance = individualPerformance.reduce((a, b) => a + b);
+      userTeams = List.from(state.userTeams)
+        ..add(UserTeam(
+            address: address,
+            roster: roster,
+            teamPerformance: teamPerformance));
+    });
+    emit(state.copyWith(userTeams: userTeams));
+  }
 
   Future<void> _onJoinLeagueEvent(
     JoinLeagueEvent event,
@@ -61,4 +77,26 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     LeaveLeagueEvent event,
     Emitter<LeagueGameState> emit,
   ) async {}
+
+  List<double> checkPrice(String address, Map<String, double> roster) {
+    var percentChange = 0.0;
+    final percentChangeList = <double>[];
+    roster.forEach((key, value) {
+      final name =
+          roster.keys.firstWhere((element) => roster[element] == value);
+      final initialPrice = roster[name];
+      final athlete = athleteList.firstWhere(
+        (athlete) => athlete.name == name,
+        orElse: () => AthleteScoutModel.empty,
+      );
+
+      if (athlete.longTokenBookPrice != roster[name]) {
+        percentChange =
+            ((athlete.longTokenBookPrice! - initialPrice!) / initialPrice) *
+                100;
+        percentChangeList.add(percentChange);
+      }
+    });
+    return percentChangeList;
+  }
 }

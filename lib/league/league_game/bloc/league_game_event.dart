@@ -50,7 +50,14 @@ class TimerEvent extends LeagueGameEvent {
   List<Object?> get props => [startDate, endDate];
 }
 
-class CalculateAppreciationEvent extends LeagueGameEvent {}
+class CalculateAppreciationEvent extends LeagueGameEvent {
+  const CalculateAppreciationEvent({
+    required this.rosters,
+  });
+  final Map <String, Map<String,double>> rosters;
+  @override
+  List<Object?> get props => [rosters];
+}
 
 class JoinLeagueEvent extends LeagueGameEvent {
   const JoinLeagueEvent({
