@@ -81,6 +81,11 @@ class App extends StatelessWidget {
             leagueRepository: context.read<LeagueRepository>(),
           ),
         ),
+        BlocProvider(
+          create: (context) => LeagueDraftBloc(
+            leagueRepository: context.read<LeagueRepository>(),
+          ),
+        ),
       ],
       child: const _MaterialApp(),
     );
@@ -268,11 +273,19 @@ class _MaterialApp extends StatelessWidget {
                 },
               ),
               GoRoute(
-                name: 'LeagueDraft',
-                path: 'LeagueDraft',
+                name: 'league-draft',
+                path: 'league-draft/:leagueID',
                 builder: (BuildContext context, GoRouterState state) {
-                  Global().pageName = 'LeagueDraft'; //Need to change
-                  return const DesktopLeagueDraft();
+                  final leagueID = state.params['leagueID']!;
+                  final allLeagues =
+                      context.watch<LeagueBloc>().state.allLeagues;
+                  if (allLeagues.isEmpty) {
+                    return const Loader();
+                  }
+                  final league = allLeagues
+                      .firstWhere((league) => league.leagueID == leagueID);
+                  Global().pageName = 'league-draft';
+                  return DesktopLeagueDraft(league: league, leagueID: leagueID);
                 },
               ),
             ],
