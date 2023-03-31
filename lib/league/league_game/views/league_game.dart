@@ -1,14 +1,14 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LeagueGame extends StatelessWidget {
+class LeagueGame extends StatefulWidget {
   const LeagueGame({
     super.key,
     required this.league,
@@ -19,20 +19,24 @@ class LeagueGame extends StatelessWidget {
   final String leagueID;
 
   @override
+  State<LeagueGame> createState() => _LeagueGameState();
+}
+
+class _LeagueGameState extends State<LeagueGame> {
+  EthereumChain? _selectedChain;
+
+  @override
   Widget build(BuildContext context) {
-    final athleteList = context.watch<ScoutPageBloc>().state.athletes;
     final global = Global();
     return global.buildPage(
       context,
       BlocBuilder<LeagueGameBloc, LeagueGameState>(
         builder: (context, state) {
           final bloc = context.read<LeagueGameBloc>();
-          if (state.status == BlocStatus.initial) {
+          if (_selectedChain != state.selectedChain) {
+            _selectedChain = state.selectedChain;
             bloc.add(
-              CalculateAppreciationEvent(
-                rosters: league.rosters,
-                athletes: athleteList,
-              ),
+              FetchScoutInfoRequested(),
             );
           }
           final userTeams = state.userTeams;
@@ -74,7 +78,7 @@ class LeagueGame extends StatelessWidget {
                               : constraints.maxWidth * 0.4,
                           child: Center(
                             child: Text(
-                              league.name,
+                              widget.league.name,
                               style: textStyle(
                                 Colors.amber[400]!,
                                 18,
@@ -111,29 +115,32 @@ class LeagueGame extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
-                    SizedBox(
-                      height: constraints.maxHeight * 0.5,
-                      child: ListView.separated(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: userTeams.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final userTeam = userTeams[index];
-                          return Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(userTeam.address),
-                                Text('${userTeam.teamPerformance} %'),
-                              ],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
+                    if (state.status == BlocStatus.loading)
+                      const Loader(),              
+                      SizedBox(
+                        height: constraints.maxHeight * 0.5,
+                        child: ListView.separated(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: userTeams.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final userTeam = userTeams[index];
+                            return Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(userTeam.address),
+                                  Text('${userTeam.teamPerformance} %'),
+                                ],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const Divider(),
+                        ),
                       ),
-                    ),
                     Center(
                       child: DecoratedBox(
                         decoration: BoxDecoration(
