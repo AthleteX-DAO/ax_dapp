@@ -5,6 +5,7 @@ import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/firebase_options.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -160,6 +161,9 @@ void main() async {
           ),
           RepositoryProvider(
             create: (context) => TrackingRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => CalculateTeamPerformanceUseCase(),
           ),
         ],
         child: App(configRepository: configRepository),

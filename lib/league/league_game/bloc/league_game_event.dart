@@ -7,6 +7,12 @@ abstract class LeagueGameEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class WatchAppDataChangesStarted extends LeagueGameEvent {
+  const WatchAppDataChangesStarted();
+}
+
+class FetchScoutInfoRequested extends LeagueGameEvent {}
+
 class InviteEvent extends LeagueGameEvent {
   const InviteEvent({
     required this.leagueID,
@@ -50,7 +56,18 @@ class TimerEvent extends LeagueGameEvent {
   List<Object?> get props => [startDate, endDate];
 }
 
-class CalculateAppreciationEvent extends LeagueGameEvent {}
+class CalculateAppreciationEvent extends LeagueGameEvent {
+  const CalculateAppreciationEvent({
+    required this.rosters,
+    required this.athletes,
+  });
+
+  final Map<String, Map<String, double>> rosters;
+  final List<AthleteScoutModel> athletes;
+
+  @override
+  List<Object?> get props => [rosters, athletes];
+}
 
 class JoinLeagueEvent extends LeagueGameEvent {
   const JoinLeagueEvent({

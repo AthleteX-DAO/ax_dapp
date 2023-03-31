@@ -42,6 +42,27 @@ class AthleteScoutModel extends Equatable {
   final double? shortTokenPercentage;
   final double? shortTokenPriceUsd;
 
+  static const empty = AthleteScoutModel(
+    id: 0,
+    name: '',
+    position: '',
+    team: '',
+    longTokenBookPrice: 0,
+    longTokenBookPriceUsd: 0,
+    longTokenBookPricePercent: 0,
+    shortTokenBookPrice: 0,
+    shortTokenBookPriceUsd: 0,
+    shortTokenBookPricePercent: 0,
+    sport: SupportedSport.all,
+    time: '',
+    longTokenPrice: 0,
+    shortTokenPrice: 0,
+    longTokenPercentage: 0,
+    shortTokenPercentage: 0,
+    longTokenPriceUsd: 0,
+    shortTokenPriceUsd: 0,
+  );
+
   @override
   List<Object?> get props => [
         id,

@@ -2,6 +2,9 @@ import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,9 +23,7 @@ class LeagueGame extends StatefulWidget {
 }
 
 class _LeagueGameState extends State<LeagueGame> {
-  final leagueSearchController = TextEditingController();
-  final List<String> entries = <String>['A', 'B', 'C'];
-  final List<int> appreciation = <int>[12, 4, -3];
+  EthereumChain? _selectedChain;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,14 @@ class _LeagueGameState extends State<LeagueGame> {
       context,
       BlocBuilder<LeagueGameBloc, LeagueGameState>(
         builder: (context, state) {
+          final bloc = context.read<LeagueGameBloc>();
+          if (_selectedChain != state.selectedChain) {
+            _selectedChain = state.selectedChain;
+            bloc.add(
+              FetchScoutInfoRequested(),
+            );
+          }
+          final userTeams = state.userTeams;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -86,9 +95,7 @@ class _LeagueGameState extends State<LeagueGame> {
                             border: Border.all(color: Colors.amber[400]!),
                           ),
                           child: TextButton(
-                            onPressed: () {
-                              // context.goNamed('Name of class');
-                            }, //Steven
+                            onPressed: () {},
                             child: const Text(
                               'Join League',
                               style: TextStyle(
@@ -108,71 +115,32 @@ class _LeagueGameState extends State<LeagueGame> {
                         color: Colors.grey,
                       ),
                     ),
-                    SizedBox(
-                      height: constraints.maxHeight * 0.5,
-                      child: ListView.separated(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: entries.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(40)),
-                                      elevation: 16,
-                                      child: Container(
-                                        child: ListView(
-                                          shrinkWrap: true,
-                                          children: const <Widget>[
-                                            SizedBox(height: 20),
-                                            Center(child: Text('League Team')),
-                                            SizedBox(height: 30),
-                                            Center(
-                                              child: Text('Name of Athlete'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
+                    if (state.status == BlocStatus.loading)
+                      const Loader(),              
+                      SizedBox(
+                        height: constraints.maxHeight * 0.5,
+                        child: ListView.separated(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: userTeams.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final userTeam = userTeams[index];
+                            return Container(
+                              height: 50,
+                              alignment: Alignment.center,
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const SizedBox(width: 25),
-                                  Text(
-                                    'User ${entries[index]}',
-                                    style: TextStyle(
-                                      color: Colors.amber,
-                                      fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 800),
-                                  Text(
-                                    '\n Appereciation ${appreciation[index]}%\n',
-                                    style: TextStyle(
-                                      color: Colors.amber,
-                                      fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
+                                  Text(userTeam.address),
+                                  Text('${userTeam.teamPerformance} %'),
                                 ],
                               ),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const Divider(),
+                        ),
                       ),
-                    ),
                     Center(
                       child: DecoratedBox(
                         decoration: BoxDecoration(

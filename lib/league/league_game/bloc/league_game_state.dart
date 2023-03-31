@@ -3,25 +3,35 @@ part of 'league_game_bloc.dart';
 class LeagueGameState extends Equatable {
   const LeagueGameState({
     this.status = BlocStatus.initial,
-    this.athletes = const [],
+    this.userTeams = const [],
+    this.rosters = const {},
+    this.selectedChain = EthereumChain.polygonMainnet,
   });
 
   final BlocStatus status;
-  final List<AthleteScoutModel> athletes;
-  
+  final List<UserTeam> userTeams;
+  final Map<String, Map<String, double>> rosters;
+  final EthereumChain selectedChain;
+
   LeagueGameState copyWith({
     BlocStatus? status,
-    List<AthleteScoutModel>? athletes,
+    List<UserTeam>? userTeams,
+    Map<String, Map<String, double>>? rosters,
+    EthereumChain? selectedChain,
   }) {
     return LeagueGameState(
       status: status ?? this.status,
-      athletes: athletes ?? this.athletes,
+      userTeams: userTeams ?? this.userTeams,
+      rosters: rosters ?? this.rosters,
+      selectedChain: selectedChain ?? this.selectedChain,
     );
   }
 
   @override
   List<Object> get props => [
         status,
-        athletes,
+        userTeams,
+        rosters,
+        selectedChain,
       ];
 }
