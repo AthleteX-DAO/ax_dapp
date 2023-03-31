@@ -154,7 +154,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
           teamPerformance = percentChangeList.reduce((a, b) => a + b);
         }
       } else {
-        if (athleteScoutModel.longTokenBookPrice != roster[name]) {
+        if (athleteScoutModel.shortTokenBookPrice != roster[name]) {
           percentChange =
               ((initialPrice! - athleteScoutModel.shortTokenBookPrice!) /
                       initialPrice) *
