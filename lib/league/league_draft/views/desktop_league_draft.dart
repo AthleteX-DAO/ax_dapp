@@ -27,7 +27,7 @@ class _DesktopLeagueDraftState extends State<DesktopLeagueDraft> {
       context,
       BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
         builder: (context, state) {
-          final bloc = context.read<LeagueGameBloc>();
+          final bloc = context.read<LeagueDraftBloc>();
           final ownedApts = state.ownedApts;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
