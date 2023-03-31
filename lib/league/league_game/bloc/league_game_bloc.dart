@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -19,8 +20,10 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     required this.rosters,
     required this.repo,
     required StreamAppDataChangesUseCase streamAppDataChanges,
+    required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
   })  : _leagueRepository = leagueRepository,
         _streamAppDataChanges = streamAppDataChanges,
+        _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
         super(
           LeagueGameState(
             rosters: rosters,
@@ -44,6 +47,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   final Map<String, Map<String, double>> rosters;
   final GetScoutAthletesDataUseCase repo;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
+  final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -93,7 +97,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     final athletes = event.athletes;
     final userTeams = <UserTeam>[];
     rosters.forEach((address, roster) {
-      final teamPerformance = calculateTeamPerformance(roster, athletes);
+      final teamPerformance = _calculateTeamPerformanceUseCase
+          .calculateTeamPerformance(roster, athletes);
       userTeams.add(
         UserTeam(
           address: address,
@@ -119,53 +124,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     LeaveLeagueEvent event,
     Emitter<LeagueGameState> emit,
   ) async {}
-
-  double calculateTeamPerformance(
-    Map<String, double> roster,
-    List<AthleteScoutModel> athletes,
-  ) {
-    var percentChange = 0.0;
-    var teamPerformance = 0.0;
-    final percentChangeList = <double>[];
-    roster.forEach((athlete, price) {
-      final name =
-          roster.keys.firstWhere((element) => roster[element] == price);
-      final athleteStringList = name.split(' ');
-      final aptType = athleteStringList[athleteStringList.length - 2];
-      final athleteName = athleteStringList
-          .getRange(0, athleteStringList.length - 2)
-          .toList()
-          .join(' ')
-          .trim();
-      final initialPrice = roster[name];
-      final athleteScoutModel = athletes.firstWhere(
-        (athlete) =>
-            athlete.name.trim().toLowerCase() ==
-            athleteName.trim().toLowerCase(),
-        orElse: () => AthleteScoutModel.empty,
-      );
-      if (aptType == 'Long') {
-        if (athleteScoutModel.longTokenBookPrice != roster[name]) {
-          percentChange =
-              ((athleteScoutModel.longTokenBookPrice! - initialPrice!) /
-                      initialPrice) *
-                  100;
-          percentChangeList.add(percentChange);
-          teamPerformance = percentChangeList.reduce((a, b) => a + b);
-        }
-      } else {
-        if (athleteScoutModel.shortTokenBookPrice != roster[name]) {
-          percentChange =
-              ((initialPrice! - athleteScoutModel.shortTokenBookPrice!) /
-                      initialPrice) *
-                  100;
-          percentChangeList.add(percentChange);
-          teamPerformance = percentChangeList.reduce((a, b) => a + b);
-        }
-      }
-    });
-    return double.parse(teamPerformance.toStringAsFixed(2));
-  }
 
   Future<void> _onFetchScoutInfoRequested(
     FetchScoutInfoRequested event,
