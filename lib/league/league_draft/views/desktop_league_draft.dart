@@ -1,4 +1,5 @@
 import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
+import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,8 @@ class _DesktopLeagueDraftState extends State<DesktopLeagueDraft> {
       context,
       BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
         builder: (context, state) {
+          final bloc = context.read<LeagueGameBloc>();
+          final ownedApts = state.ownedApts;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               final width = constraints.maxWidth;

@@ -28,6 +28,7 @@ import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
+import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
@@ -84,6 +85,10 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => LeagueDraftBloc(
             leagueRepository: context.read<LeagueRepository>(),
+            getTotalTokenBalanceUseCase: GetTotalTokenBalanceUseCase(
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
+            ),
           ),
         ),
       ],
