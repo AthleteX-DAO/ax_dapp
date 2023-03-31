@@ -24,6 +24,12 @@ class _LeagueGameState extends State<LeagueGame> {
   final List<String> entries = <String>['A', 'B', 'C'];
   final List<int> appreciation = <int>[12, 4, -3];
 
+  int getRemainingDays() {
+    final now = DateTime.now();
+    final end = DateTime.parse(widget.league.dateEnd);
+    return end.difference(now).inDays;
+  }
+
   @override
   Widget build(BuildContext context) {
     final global = Global();
@@ -68,37 +74,88 @@ class _LeagueGameState extends State<LeagueGame> {
                               ? constraints.maxWidth * 0.5
                               : constraints.maxWidth * 0.4,
                           child: Center(
-                            child: Text(
-                              widget.league.name,
-                              style: textStyle(
-                                Colors.amber[400]!,
-                                18,
-                                isBold: false,
-                                isUline: false,
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.league.name,
+                                  style: textStyle(
+                                    Colors.amber[400]!,
+                                    18,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                ),
+                                SizedBox(
+                                    height:
+                                        10), // Add some space between the two Text widgets
+                                Text(
+                                  '${widget.league.dateStart} - ${widget.league.dateEnd}',
+                                  style: textStyle(
+                                    Colors.grey[400]!,
+                                    14,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                ),
+                                SizedBox(
+                                    height:
+                                        10), // Add some space between the two Text widgets
+                                Text(
+                                  '${getRemainingDays()} Days remaining',
+                                  style: textStyle(
+                                    Colors.grey[400]!,
+                                    14,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(color: Colors.amber[400]!),
-                          ),
-                          child: TextButton(
-                            onPressed: () {
-                              // context.goNamed('Name of class');
-                            }, //Steven
-                            child: const Text(
-                              'Join League',
-                              style: TextStyle(
-                                color: Colors.amber,
-                                fontFamily: 'OpenSans',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
+                        Column(
+                          children: [
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(color: Colors.amber[400]!),
+                              ),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Join League',
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            SizedBox(height: 10),
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(color: Colors.amber[400]!),
+                              ),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Edit Team',
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
