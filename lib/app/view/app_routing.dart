@@ -29,6 +29,7 @@ import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/gysr_api.dart';
@@ -234,20 +235,14 @@ class _MaterialApp extends StatelessWidget {
                 builder: (BuildContext context, GoRouterState state) {
                   final leagueID = state.params['leagueID']!;
                   final allLeagues =
-                      context.read<LeagueBloc>().state.allLeagues;
+                      context.watch<LeagueBloc>().state.allLeagues;
+                  if (allLeagues.isEmpty) {
+                    return const Loader();
+                  }
                   final league = allLeagues
                       .firstWhere((league) => league.leagueID == leagueID);
                   Global().pageName = 'league-game';
                   return LeagueGame(league: league, leagueID: leagueID);
-                },
-                redirect: (context, state) {
-                  final allLeagues =
-                      context.read<LeagueBloc>().state.allLeagues;
-                  if (state.location.contains('/league-game') &&
-                      allLeagues.isEmpty) {
-                    return '/league';
-                  }
-                  return null;
                 },
               ),
             ],
