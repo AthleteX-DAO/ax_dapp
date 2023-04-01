@@ -9,11 +9,11 @@ class DesktopLeagueDraft extends StatefulWidget {
   const DesktopLeagueDraft({
     super.key,
     required this.league,
-    required this.leagueID,
+    // required this.leagueID,
   });
 
   final League league;
-  final String leagueID;
+  // final String leagueID;
 
   @override
   State<DesktopLeagueDraft> createState() => _DesktopLeagueDraftState();

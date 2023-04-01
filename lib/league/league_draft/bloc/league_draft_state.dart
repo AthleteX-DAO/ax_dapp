@@ -17,7 +17,7 @@ class LeagueDraftState extends Equatable {
     BlocStatus? status,
     List<Apt>? ownedApts,
     List<Apt>? myAptTeam,
-    int? athleteCount
+    int? athleteCount,
   }) {
     return LeagueDraftState(
       status: status ?? this.status,

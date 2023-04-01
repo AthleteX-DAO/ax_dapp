@@ -7,6 +7,7 @@ import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
+import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/league_game/views/league_game.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
@@ -277,22 +278,22 @@ class _MaterialApp extends StatelessWidget {
                   );
                 },
               ),
-              GoRoute(
-                name: 'league-draft',
-                path: 'league-draft/:leagueID',
-                builder: (BuildContext context, GoRouterState state) {
-                  final leagueID = state.params['leagueID']!;
-                  final allLeagues =
-                      context.watch<LeagueBloc>().state.allLeagues;
-                  if (allLeagues.isEmpty) {
-                    return const Loader();
-                  }
-                  final league = allLeagues
-                      .firstWhere((league) => league.leagueID == leagueID);
-                  Global().pageName = 'league-draft';
-                  return DesktopLeagueDraft(league: league, leagueID: leagueID);
-                },
-              ),
+              // GoRoute(
+              //   name: 'league-draft',
+              //   path: 'league-draft/:leagueID',
+              //   builder: (BuildContext context, GoRouterState state) {
+              //     final leagueID = state.params['leagueID']!;
+              //     final allLeagues =
+              //         context.watch<LeagueBloc>().state.allLeagues;
+              //     if (allLeagues.isEmpty) {
+              //       return const Loader();
+              //     }
+              //     final league = allLeagues
+              //         .firstWhere((league) => league.leagueID == leagueID);
+              //     Global().pageName = 'league-draft';
+              //     return DesktopLeagueDraft(league: league, leagueID: leagueID);
+              //   },
+              // ),
             ],
           ),
         ],

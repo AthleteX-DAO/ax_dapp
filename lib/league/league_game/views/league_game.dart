@@ -1,4 +1,5 @@
 import 'package:ax_dapp/app/config/app_config.dart';
+import 'package:ax_dapp/league/league_draft/views/desktop_league_draft.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
@@ -201,7 +202,21 @@ class _LeagueGameState extends State<LeagueGame> {
                             border: Border.all(color: Colors.amber[400]!),
                           ),
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DesktopLeagueDraft(
+                                    league: widget.league,
+                                  ),
+                                ),
+                              );
+
+                              // context.goNamed(
+                              //   'league-draft',
+                              //   params: {'leagueID': widget.leagueID},
+                              // );
+                            },
                             child: const Text(
                               'Join League',
                               style: TextStyle(
