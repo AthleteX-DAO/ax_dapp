@@ -91,7 +91,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                     isUline: false,
                                   ),
                                 ),
-                                SizedBox(height: 10),
+                                 const SizedBox(height: 10),
                                 Text(
                                   '${widget.league.dateStart} - ${widget.league.dateEnd}',
                                   style: textStyle(
@@ -101,7 +101,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                     isUline: false,
                                   ),
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Text(
                                   '$difference Days remaining',
                                   style: textStyle(

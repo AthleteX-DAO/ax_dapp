@@ -162,17 +162,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     add(CalculateAppreciationEvent(rosters: rosters, athletes: response));
   }
 
-  void filterOutUnsupportedSportsByChain(List<AthleteScoutModel> filteredList) {
-    if (state.selectedChain == EthereumChain.sxMainnet ||
-        state.selectedChain == EthereumChain.sxTestnet) {
-      filteredList
-          .removeWhere((element) => element.sport == SupportedSport.MLB);
-    } else {
-      filteredList
-          .removeWhere((element) => element.sport == SupportedSport.NFL);
-    }
-  }
-
   void _onCalculateRemainingDays(
     CalculateRemainingDays event,
     Emitter<LeagueGameState> emit,
@@ -184,13 +173,25 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   }
 
   int calculateRemainingDays(String dateStart, String dateEnd) {
+    final todaysDate = DateTime.now();
     final startDate = DateTime.parse(dateStart);
     final endDate = DateTime.parse(dateEnd);
-    final difference = startDate.difference(endDate).inDays;
-    if (difference.isNegative) {
+    final difference = endDate.difference(startDate).inDays;
+    if (difference.isNegative || todaysDate.isAfter(endDate)) {
       return 0;
     }
 
     return difference;
+  }
+
+  void filterOutUnsupportedSportsByChain(List<AthleteScoutModel> filteredList) {
+    if (state.selectedChain == EthereumChain.sxMainnet ||
+        state.selectedChain == EthereumChain.sxTestnet) {
+      filteredList
+          .removeWhere((element) => element.sport == SupportedSport.MLB);
+    } else {
+      filteredList
+          .removeWhere((element) => element.sport == SupportedSport.NFL);
+    }
   }
 }
