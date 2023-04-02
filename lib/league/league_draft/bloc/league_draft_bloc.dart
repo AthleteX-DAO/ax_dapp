@@ -32,8 +32,18 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     FetchAptsOwnedEvent event,
     Emitter<LeagueDraftState> emit,
   ) async {
-    final ownedApts = await _getTotalTokenBalanceUseCase.getOwnedApts();
-    emit(state.copyWith(ownedApts: ownedApts, status: BlocStatus.success));
+    try {
+      emit(state.copyWith(status: BlocStatus.loading));
+      final ownedApts = await _getTotalTokenBalanceUseCase.getOwnedApts();
+      emit(state.copyWith(ownedApts: ownedApts, status: BlocStatus.success));
+    } catch (_) {
+      emit(
+        state.copyWith(
+          ownedApts: [],
+          status: BlocStatus.error,
+        ),
+      );
+    }
   }
 
   void _onAddAptToTeam(

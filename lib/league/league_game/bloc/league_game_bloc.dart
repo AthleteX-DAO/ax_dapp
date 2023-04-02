@@ -161,6 +161,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
 
     filterOutUnsupportedSportsByChain(response);
 
+    emit(state.copyWith(athletes: response));
+
     add(CalculateAppreciationEvent(rosters: rosters, athletes: response));
   }
 

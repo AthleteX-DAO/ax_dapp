@@ -1,6 +1,7 @@
 import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,10 +10,12 @@ class DesktopLeagueDraft extends StatefulWidget {
   const DesktopLeagueDraft({
     super.key,
     required this.league,
+    required this.athletes,
     // required this.leagueID,
   });
 
   final League league;
+  final List<AthleteScoutModel> athletes;
   // final String leagueID;
 
   @override
@@ -23,6 +26,7 @@ class _DesktopLeagueDraftState extends State<DesktopLeagueDraft> {
   @override
   Widget build(BuildContext context) {
     final global = Global();
+    //debugPrint(widget.athletes.toString());
     return global.buildPage(
       context,
       BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
@@ -95,11 +99,13 @@ class _DesktopLeagueDraftState extends State<DesktopLeagueDraft> {
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text('Athlete (Seasonal APT)'),
-                            Text('Book Value / Change'),
-                            Text('My Team'),
-                            Text('3 / 5 Added'), //Change to dynamic value
+                          children: [
+                            const Text('Athlete (Seasonal APT)'),
+                            const Text('Book Value / Change'),
+                            const Text('My Team'),
+                            Text(
+                              '${state.athleteCount} / ${widget.league.teamSize}',
+                            ),
                           ],
                         ),
                       ),

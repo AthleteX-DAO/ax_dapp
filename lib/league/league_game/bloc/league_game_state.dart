@@ -5,6 +5,7 @@ class LeagueGameState extends Equatable {
     this.status = BlocStatus.initial,
     this.userTeams = const [],
     this.rosters = const {},
+    this.athletes = const [],
     this.selectedChain = EthereumChain.polygonMainnet,
     this.startDate = '',
     this.endDate = '',
@@ -18,6 +19,7 @@ class LeagueGameState extends Equatable {
   final BlocStatus status;
   final List<UserTeam> userTeams;
   final Map<String, Map<String, double>> rosters;
+  final List<AthleteScoutModel> athletes;
   final EthereumChain selectedChain;
   final String startDate;
   final String endDate;
@@ -31,6 +33,7 @@ class LeagueGameState extends Equatable {
     BlocStatus? status,
     List<UserTeam>? userTeams,
     Map<String, Map<String, double>>? rosters,
+    List<AthleteScoutModel>? athletes,
     EthereumChain? selectedChain,
     String? startDate,
     String? endDate,
@@ -44,6 +47,7 @@ class LeagueGameState extends Equatable {
       status: status ?? this.status,
       userTeams: userTeams ?? this.userTeams,
       rosters: rosters ?? this.rosters,
+      athletes: athletes ?? this.athletes,
       selectedChain: selectedChain ?? this.selectedChain,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
@@ -69,6 +73,7 @@ class LeagueGameState extends Equatable {
         status,
         userTeams,
         rosters,
+        athletes,
         selectedChain,
         startDate,
         endDate,

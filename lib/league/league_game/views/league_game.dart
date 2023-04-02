@@ -208,6 +208,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                 MaterialPageRoute(
                                   builder: (context) => DesktopLeagueDraft(
                                     league: widget.league,
+                                    athletes: state.athletes,
                                   ),
                                 ),
                               );
