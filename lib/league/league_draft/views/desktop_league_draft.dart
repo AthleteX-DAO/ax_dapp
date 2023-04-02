@@ -3,10 +3,11 @@ import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DesktopLeagueDraft extends StatefulWidget {
+class DesktopLeagueDraft extends StatelessWidget {
   const DesktopLeagueDraft({
     super.key,
     required this.league,
@@ -19,11 +20,6 @@ class DesktopLeagueDraft extends StatefulWidget {
   // final String leagueID;
 
   @override
-  State<DesktopLeagueDraft> createState() => _DesktopLeagueDraftState();
-}
-
-class _DesktopLeagueDraftState extends State<DesktopLeagueDraft> {
-  @override
   Widget build(BuildContext context) {
     final global = Global();
     //debugPrint(widget.athletes.toString());
@@ -33,6 +29,10 @@ class _DesktopLeagueDraftState extends State<DesktopLeagueDraft> {
         builder: (context, state) {
           final bloc = context.read<LeagueDraftBloc>();
           final ownedApts = state.ownedApts;
+          debugPrint('OWNED APTS -> $ownedApts');
+          if (state.status == BlocStatus.initial) {
+            bloc.add(FetchAptsOwnedEvent(athletes: athletes));
+          }
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               final width = constraints.maxWidth;
@@ -53,7 +53,7 @@ class _DesktopLeagueDraftState extends State<DesktopLeagueDraft> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            widget.league.name,
+                            league.name,
                             style: const TextStyle(
                               color: textColor,
                               fontFamily: 'OpenSans',
@@ -104,7 +104,7 @@ class _DesktopLeagueDraftState extends State<DesktopLeagueDraft> {
                             const Text('Book Value / Change'),
                             const Text('My Team'),
                             Text(
-                              '${state.athleteCount} / ${widget.league.teamSize}',
+                              '${state.athleteCount} / ${league.teamSize}',
                             ),
                           ],
                         ),

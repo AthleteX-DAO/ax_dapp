@@ -6,24 +6,28 @@ class LeagueDraftState extends Equatable {
     this.ownedApts = const [],
     this.myAptTeam = const [],
     this.athleteCount = 0,
+    this.athletes = const [],   
   });
 
   final BlocStatus status;
-  final List<Apt> ownedApts;
-  final List<Apt> myAptTeam;
+  final List<AthleteScoutModel> ownedApts;
+  final List<AthleteScoutModel> myAptTeam;
   final int athleteCount;
+  final List<AthleteScoutModel> athletes;
 
   LeagueDraftState copyWith({
     BlocStatus? status,
-    List<Apt>? ownedApts,
-    List<Apt>? myAptTeam,
+    List<AthleteScoutModel>? ownedApts,
+    List<AthleteScoutModel>? myAptTeam,
     int? athleteCount,
+    List<AthleteScoutModel>? athletes,
   }) {
     return LeagueDraftState(
       status: status ?? this.status,
       ownedApts: ownedApts ?? this.ownedApts,
       myAptTeam: myAptTeam ?? this.myAptTeam,
       athleteCount: athleteCount ?? this.athleteCount,
+      athletes: athletes ?? this.athletes,
     );
   }
 
@@ -33,5 +37,6 @@ class LeagueDraftState extends Equatable {
         ownedApts,
         myAptTeam,
         athleteCount,
+        athletes,
       ];
 }

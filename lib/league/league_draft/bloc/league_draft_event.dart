@@ -7,7 +7,14 @@ abstract class LeagueDraftEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchAptsOwnedEvent extends LeagueDraftEvent {}
+class FetchAptsOwnedEvent extends LeagueDraftEvent {
+  const FetchAptsOwnedEvent({required this.athletes});
+
+  final List<AthleteScoutModel> athletes;
+
+  @override
+  List<Object> get props => [athletes];
+}
 
 class AddAptToTeam extends LeagueDraftEvent {
   const AddAptToTeam({required this.apt});
@@ -18,7 +25,7 @@ class AddAptToTeam extends LeagueDraftEvent {
   List<Object> get props => [apt];
 }
 
-class RemoveAptFromTeam  extends LeagueDraftEvent {
+class RemoveAptFromTeam extends LeagueDraftEvent {
   const RemoveAptFromTeam({required this.apt});
 
   final Apt apt;
@@ -35,4 +42,13 @@ class ConfirmTeam extends LeagueDraftEvent {
 
   @override
   List<Object> get props => [walletAddress, myTeam];
+}
+
+class GetAthletes extends LeagueDraftEvent {
+  const GetAthletes({required this.athletes});
+
+  final List<AthleteScoutModel> athletes;
+
+  @override
+  List<Object> get props => [athletes];
 }
