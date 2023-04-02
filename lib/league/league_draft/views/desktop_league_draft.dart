@@ -1,5 +1,5 @@
 import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
-import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
+import 'package:ax_dapp/league/league_draft/widgets/league_draft_apt_card.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -28,8 +28,7 @@ class DesktopLeagueDraft extends StatelessWidget {
       BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
         builder: (context, state) {
           final bloc = context.read<LeagueDraftBloc>();
-          final ownedApts = state.ownedApts;
-          debugPrint('OWNED APTS -> $ownedApts');
+
           if (state.status == BlocStatus.initial) {
             bloc.add(FetchAptsOwnedEvent(athletes: athletes));
           }
@@ -43,10 +42,14 @@ class DesktopLeagueDraft extends StatelessWidget {
 
               return Align(
                 child: Container(
-                  height: height * 0.85,
+                  height: height * 0.75,
                   width: width * 0.90,
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.red)),
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.transparent,
+                    ),
+                  ),
                   child: Column(
                     children: <Widget>[
                       Row(
@@ -109,25 +112,42 @@ class DesktopLeagueDraft extends StatelessWidget {
                           ],
                         ),
                       ),
-                      DecoratedBox(
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            top: BorderSide(color: Color(0xFF646464), width: 4),
+                      Expanded(
+                        child: DecoratedBox(
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                color: Color(0xFF646464),
+                                width: 2,
+                              ),
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                child: const Placeholder(),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Material(
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: state.ownedApts.length,
+                                    itemBuilder: (context, index) {
+                                      var onTeam = false;
+                                      if (state.myAptTeam
+                                          .contains(state.ownedApts[index])) {
+                                        onTeam = true;
+                                      }
+                                      return APTCard(
+                                        apt: state.ownedApts[index],
+                                        onTeam: onTeam,
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                child: const Placeholder(),
+                              const Expanded(
+                                child: Placeholder(),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       )
                     ],

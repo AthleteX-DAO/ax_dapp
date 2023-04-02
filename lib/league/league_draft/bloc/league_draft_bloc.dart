@@ -34,7 +34,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     Emitter<LeagueDraftState> emit,
   ) async {
     final athletes = event.athletes;
-    debugPrint('$athletes');
+    //debugPrint('$athletes');
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       // final ownedApts = await _getTotalTokenBalanceUseCase.getOwnedApts();
