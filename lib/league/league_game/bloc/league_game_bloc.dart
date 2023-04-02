@@ -19,6 +19,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     required LeagueRepository leagueRepository,
     required this.rosters,
     required this.repo,
+    required this.startDate,
+    required this.endDate,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
   })  : _leagueRepository = leagueRepository,
@@ -26,6 +28,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
         super(
           LeagueGameState(
+            startDate: startDate,
+            endDate: endDate,
             rosters: rosters,
           ),
         ) {
@@ -37,10 +41,12 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<JoinLeagueEvent>(_onJoinLeagueEvent);
     on<LeaveLeagueEvent>(_onLeaveTeamEvent);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
+    on<CalculateRemainingDays>(_onCalculateRemainingDays);
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
 
     add(const WatchAppDataChangesStarted());
     add(FetchScoutInfoRequested());
+    add(CalculateRemainingDays());
   }
 
   final LeagueRepository _leagueRepository;
@@ -48,6 +54,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   final GetScoutAthletesDataUseCase repo;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
+  final String startDate;
+  final String endDate;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -152,6 +160,28 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     filterOutUnsupportedSportsByChain(response);
 
     add(CalculateAppreciationEvent(rosters: rosters, athletes: response));
+  }
+
+  void _onCalculateRemainingDays(
+    CalculateRemainingDays event,
+    Emitter<LeagueGameState> emit,
+  ) {
+    final startDate = state.startDate;
+    final endDate = state.endDate;
+    final difference = calculateRemainingDays(startDate, endDate);
+    emit(state.copyWith(difference: difference));
+  }
+
+  int calculateRemainingDays(String dateStart, String dateEnd) {
+    final todaysDate = DateTime.now();
+    final startDate = DateTime.parse(dateStart);
+    final endDate = DateTime.parse(dateEnd);
+    final difference = endDate.difference(startDate).inDays;
+    if (difference.isNegative || todaysDate.isAfter(endDate)) {
+      return 0;
+    }
+
+    return difference;
   }
 
   void filterOutUnsupportedSportsByChain(List<AthleteScoutModel> filteredList) {
