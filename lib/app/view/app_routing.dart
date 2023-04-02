@@ -244,6 +244,8 @@ class _MaterialApp extends StatelessWidget {
                   Global().pageName = 'league-game';
                   return BlocProvider(
                     create: (context) => LeagueGameBloc(
+                      startDate: league.dateStart,
+                      endDate: league.dateEnd,
                       streamAppDataChanges:
                           context.read<StreamAppDataChangesUseCase>(),
                       leagueRepository: context.read<LeagueRepository>(),

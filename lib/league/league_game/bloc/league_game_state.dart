@@ -6,24 +6,36 @@ class LeagueGameState extends Equatable {
     this.userTeams = const [],
     this.rosters = const {},
     this.selectedChain = EthereumChain.polygonMainnet,
+    this.startDate = '',
+    this.endDate = '',
+    this.difference = 0,
   });
 
   final BlocStatus status;
   final List<UserTeam> userTeams;
   final Map<String, Map<String, double>> rosters;
   final EthereumChain selectedChain;
+  final String startDate;
+  final String endDate;
+  final int difference;
 
   LeagueGameState copyWith({
     BlocStatus? status,
     List<UserTeam>? userTeams,
     Map<String, Map<String, double>>? rosters,
     EthereumChain? selectedChain,
+    String? startDate,
+    String? endDate,
+    int? difference,
   }) {
     return LeagueGameState(
       status: status ?? this.status,
       userTeams: userTeams ?? this.userTeams,
       rosters: rosters ?? this.rosters,
       selectedChain: selectedChain ?? this.selectedChain,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      difference: difference ?? this.difference,
     );
   }
 
@@ -33,5 +45,8 @@ class LeagueGameState extends Equatable {
         userTeams,
         rosters,
         selectedChain,
+        startDate,
+        endDate,
+        difference,
       ];
 }

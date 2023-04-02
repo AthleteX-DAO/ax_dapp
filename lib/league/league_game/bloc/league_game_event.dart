@@ -85,3 +85,5 @@ class JoinLeagueEvent extends LeagueGameEvent {
 }
 
 class LeaveLeagueEvent extends LeagueGameEvent {}
+
+class CalculateRemainingDays extends LeagueGameEvent {}

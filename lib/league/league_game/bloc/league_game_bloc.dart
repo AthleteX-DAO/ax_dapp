@@ -19,6 +19,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     required LeagueRepository leagueRepository,
     required this.rosters,
     required this.repo,
+    required this.startDate,
+    required this.endDate,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
   })  : _leagueRepository = leagueRepository,
@@ -26,6 +28,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
         super(
           LeagueGameState(
+            startDate: startDate,
+            endDate: endDate,
             rosters: rosters,
           ),
         ) {
@@ -37,10 +41,12 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<JoinLeagueEvent>(_onJoinLeagueEvent);
     on<LeaveLeagueEvent>(_onLeaveTeamEvent);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
+    on<CalculateRemainingDays>(_onCalculateRemainingDays);
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
 
     add(const WatchAppDataChangesStarted());
     add(FetchScoutInfoRequested());
+    add(CalculateRemainingDays());
   }
 
   final LeagueRepository _leagueRepository;
@@ -48,6 +54,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   final GetScoutAthletesDataUseCase repo;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
+  final String startDate;
+  final String endDate;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -163,5 +171,26 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
       filteredList
           .removeWhere((element) => element.sport == SupportedSport.NFL);
     }
+  }
+
+  void _onCalculateRemainingDays(
+    CalculateRemainingDays event,
+    Emitter<LeagueGameState> emit,
+  ) {
+    final startDate = state.startDate;
+    final endDate = state.endDate;
+    final difference = calculateRemainingDays(startDate, endDate);
+    emit(state.copyWith(difference: difference));
+  }
+
+  int calculateRemainingDays(String dateStart, String dateEnd) {
+    final startDate = DateTime.parse(dateStart);
+    final endDate = DateTime.parse(dateEnd);
+    final difference = startDate.difference(endDate).inDays;
+    if (difference.isNegative) {
+      return 0;
+    }
+
+    return difference;
   }
 }

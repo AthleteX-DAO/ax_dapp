@@ -7,6 +7,7 @@ import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class LeagueGame extends StatefulWidget {
   const LeagueGame({
@@ -40,6 +41,7 @@ class _LeagueGameState extends State<LeagueGame> {
             );
           }
           final userTeams = state.userTeams;
+          final difference = state.difference;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -77,14 +79,39 @@ class _LeagueGameState extends State<LeagueGame> {
                               ? constraints.maxWidth * 0.5
                               : constraints.maxWidth * 0.4,
                           child: Center(
-                            child: Text(
-                              widget.league.name,
-                              style: textStyle(
-                                Colors.amber[400]!,
-                                18,
-                                isBold: false,
-                                isUline: false,
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.league.name,
+                                  style: textStyle(
+                                    Colors.amber[400]!,
+                                    18,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  '${widget.league.dateStart} - ${widget.league.dateEnd}',
+                                  style: textStyle(
+                                    Colors.grey[400]!,
+                                    14,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  '$difference Days remaining',
+                                  style: textStyle(
+                                    Colors.grey[400]!,
+                                    14,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -115,32 +142,30 @@ class _LeagueGameState extends State<LeagueGame> {
                         color: Colors.grey,
                       ),
                     ),
-                    if (state.status == BlocStatus.loading)
-                      const Loader(),              
-                      SizedBox(
-                        height: constraints.maxHeight * 0.5,
-                        child: ListView.separated(
-                          padding: const EdgeInsets.all(8),
-                          itemCount: userTeams.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final userTeam = userTeams[index];
-                            return Container(
-                              height: 50,
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(userTeam.address),
-                                  Text('${userTeam.teamPerformance} %'),
-                                ],
-                              ),
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(),
-                        ),
+                    if (state.status == BlocStatus.loading) const Loader(),
+                    SizedBox(
+                      height: constraints.maxHeight * 0.5,
+                      child: ListView.separated(
+                        padding: const EdgeInsets.all(8),
+                        itemCount: userTeams.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final userTeam = userTeams[index];
+                          return Container(
+                            height: 50,
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(userTeam.address),
+                                Text('${userTeam.teamPerformance} %'),
+                              ],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
                       ),
+                    ),
                     Center(
                       child: DecoratedBox(
                         decoration: BoxDecoration(
