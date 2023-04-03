@@ -49,5 +49,11 @@ var MagicSDK = (function () {
         return email;
     }
 
+    Magic.prototype.requestAccount = async function () {
+        console.log("Requesting User Credentials");
+        const credentials = await this._web3.eth.requestAccount();
+        return credentials;
+    }
+
     return MagicSDK;
 })();
