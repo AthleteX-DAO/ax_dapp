@@ -43,19 +43,6 @@ class EditTeamsEvent extends LeagueGameEvent {
 
 class ClaimPrizeEvent extends LeagueGameEvent {}
 
-class TimerEvent extends LeagueGameEvent {
-  const TimerEvent({
-    required this.startDate,
-    required this.endDate,
-  });
-
-  final String startDate;
-  final String endDate;
-
-  @override
-  List<Object?> get props => [startDate, endDate];
-}
-
 class CalculateAppreciationEvent extends LeagueGameEvent {
   const CalculateAppreciationEvent({
     required this.rosters,

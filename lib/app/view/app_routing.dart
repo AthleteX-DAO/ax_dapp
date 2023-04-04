@@ -12,6 +12,7 @@ import 'package:ax_dapp/league/league_game/views/league_game.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/views/desktop_leauge.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -28,7 +29,6 @@ import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
-import 'package:ax_dapp/league/repository/ticker_repository.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
@@ -261,7 +261,7 @@ class _MaterialApp extends StatelessWidget {
                       ),
                       calculateTeamPerformanceUseCase:
                           context.read<CalculateTeamPerformanceUseCase>(),
-                      tickerRepository: context.read<TickerRepository>(),
+                      timerRepository: context.read<TimerRepository>(),
                     ),
                     child: LeagueGame(league: league, leagueID: leagueID),
                   );

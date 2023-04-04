@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:ax_dapp/league/models/timer_duration.dart';
 import 'package:shared/shared.dart';
 
-class TickerRepository {
+class TimerRepository {
   late Timer _timer;
   final _remainingTimeController = BehaviorSubject<TimerDuration>();
 

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:ax_dapp/league/models/timer_duration.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
-import 'package:ax_dapp/league/repository/ticker_repository.dart';
+import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
@@ -25,11 +25,11 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     required this.endDate,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
-    required TickerRepository tickerRepository,
+    required TimerRepository timerRepository,
   })  : _leagueRepository = leagueRepository,
         _streamAppDataChanges = streamAppDataChanges,
         _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
-        _tickerRepository = tickerRepository,
+        _tickerRepository = timerRepository,
         super(
           LeagueGameState(
             startDate: startDate,
@@ -40,7 +40,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<InviteEvent>(_onInviteEvent);
     on<EditTeamsEvent>(_onEditTeams);
     on<ClaimPrizeEvent>(_onClaimPrize);
-    on<TimerEvent>(_onTimerEvent);
     on<CalculateAppreciationEvent>(_onCalculateAppreciationEvent);
     on<JoinLeagueEvent>(_onJoinLeagueEvent);
     on<LeaveLeagueEvent>(_onLeaveTeamEvent);
@@ -60,7 +59,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
   final String startDate;
   final String endDate;
-  final TickerRepository _tickerRepository;
+  final TimerRepository _tickerRepository;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -99,11 +98,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
 
   Future<void> _onClaimPrize(
     ClaimPrizeEvent event,
-    Emitter<LeagueGameState> emit,
-  ) async {}
-
-  Future<void> _onTimerEvent(
-    TimerEvent event,
     Emitter<LeagueGameState> emit,
   ) async {}
 
