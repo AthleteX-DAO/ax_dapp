@@ -29,6 +29,7 @@ class _LeagueGameState extends State<LeagueGame> {
   @override
   Widget build(BuildContext context) {
     final global = Global();
+    final walletAddress = context.read<WalletBloc>().state.formattedWalletAddress;
     return global.buildPage(
       context,
       BlocBuilder<LeagueGameBloc, LeagueGameState>(
@@ -177,16 +178,55 @@ class _LeagueGameState extends State<LeagueGame> {
                         itemCount: userTeams.length,
                         itemBuilder: (BuildContext context, int index) {
                           final userTeam = userTeams[index];
-                          return Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            child: Row(
+                          final rosters = userTeam.roster.keys.toList();
+                          return ExpansionTile(
+                            title: Row(
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(userTeam.address),
                                 Text('${userTeam.teamPerformance} %'),
+                                Visibility(
+                                  visible: userTeam.address == walletAddress,
+                                  maintainSize: true,
+                                  maintainAnimation: true,
+                                  maintainState: true,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(100),
+                                      border:
+                                          Border.all(color: Colors.amber[400]!),
+                                    ),
+                                    child: TextButton(
+                                      onPressed: () {},
+                                      child: const Text(
+                                        'Edit Teams',
+                                        style: TextStyle(
+                                          color: Colors.amber,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
+                            controlAffinity: ListTileControlAffinity.leading,
+                            expandedAlignment: Alignment.center,
+                            textColor: Colors.white,
+                            iconColor: Colors.white,
+                            childrenPadding: const EdgeInsets.all(10),
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children:
+                                    rosters.map<Widget>(Text.new).toList(),
+                              ),
+                            ],
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) =>
