@@ -1,5 +1,6 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -44,6 +45,7 @@ class _LeagueGameState extends State<LeagueGame> {
           final differenceInHours = state.differenceInHours;
           final differenceInMinutes = state.differenceInMinutes;
           final differenceInSeconds = state.differenceInSeconds;
+          final timerStatus = state.timerStatus;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -104,15 +106,38 @@ class _LeagueGameState extends State<LeagueGame> {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                Text(
-                                  '$differenceInDays Days $differenceInHours Hours $differenceInMinutes Minutes $differenceInSeconds Seconds Remaining',
-                                  style: textStyle(
-                                    Colors.grey[400]!,
-                                    14,
-                                    isBold: false,
-                                    isUline: false,
+                                if (timerStatus == TimerStatus.pending) ...[
+                                  Text(
+                                    '$differenceInDays Days Until ${widget.league.name} Begins!',
+                                    style: textStyle(
+                                      Colors.grey[400]!,
+                                      14,
+                                      isBold: false,
+                                      isUline: false,
+                                    ),
                                   ),
-                                ),
+                                ] else if (timerStatus ==
+                                    TimerStatus.started) ...[
+                                  Text(
+                                    '$differenceInDays Days $differenceInHours Hours $differenceInMinutes Minutes $differenceInSeconds Seconds Remaining',
+                                    style: textStyle(
+                                      Colors.grey[400]!,
+                                      14,
+                                      isBold: false,
+                                      isUline: false,
+                                    ),
+                                  ),
+                                ] else ...[
+                                  Text(
+                                    '${widget.league.name} Has Ended!',
+                                    style: textStyle(
+                                      Colors.grey[400]!,
+                                      14,
+                                      isBold: false,
+                                      isUline: false,
+                                    ),
+                                  ),
+                                ]
                               ],
                             ),
                           ),

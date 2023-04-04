@@ -12,6 +12,7 @@ class LeagueGameState extends Equatable {
     this.differenceInHours = 0,
     this.differenceInMinutes = 0,
     this.differenceInSeconds = 0,
+    this.timerStatus = TimerStatus.initial,
   });
 
   final BlocStatus status;
@@ -24,6 +25,7 @@ class LeagueGameState extends Equatable {
   final int differenceInHours;
   final int differenceInMinutes;
   final int differenceInSeconds;
+  final TimerStatus timerStatus;
 
   LeagueGameState copyWith({
     BlocStatus? status,
@@ -36,6 +38,7 @@ class LeagueGameState extends Equatable {
     int? differenceInHours,
     int? differenceInMinutes,
     int? differenceInSeconds,
+    TimerStatus? timerStatus,
   }) {
     return LeagueGameState(
       status: status ?? this.status,
@@ -48,15 +51,17 @@ class LeagueGameState extends Equatable {
       differenceInHours: differenceInHours ?? this.differenceInHours,
       differenceInMinutes: differenceInMinutes ?? this.differenceInMinutes,
       differenceInSeconds: differenceInSeconds ?? this.differenceInSeconds,
+      timerStatus: timerStatus ?? this.timerStatus,
     );
   }
 
-  LeagueGameState coptWithTimerDuration(TimerDuration timerDuration) =>
+  LeagueGameState coptWithTimerDuration(DurationStatus durationStatus) =>
       copyWith(
-        differenceInDays: timerDuration.days,
-        differenceInHours: timerDuration.hours,
-        differenceInMinutes: timerDuration.minutes,
-        differenceInSeconds: timerDuration.seconds,
+        differenceInDays: durationStatus.days,
+        differenceInHours: durationStatus.hours,
+        differenceInMinutes: durationStatus.minutes,
+        differenceInSeconds: durationStatus.seconds,
+        timerStatus: durationStatus.timerStatus,
       );
 
   @override
@@ -71,5 +76,6 @@ class LeagueGameState extends Equatable {
         differenceInHours,
         differenceInMinutes,
         differenceInSeconds,
+        timerStatus,
       ];
 }

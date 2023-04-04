@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:ax_dapp/league/models/timer_duration.dart';
+import 'package:ax_dapp/league/models/duration_status.dart';
+import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
@@ -174,9 +175,9 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     final startDate = state.startDate;
     final endDate = state.endDate;
     _tickerRepository.timer(startDate, endDate);
-    await emit.forEach<TimerDuration>(
+    await emit.forEach<DurationStatus>(
       _tickerRepository.remainingTime,
-      onData: (timerDuration) => state.coptWithTimerDuration(timerDuration),
+      onData: (durationStatus) => state.coptWithTimerDuration(durationStatus),
     );
   }
 
