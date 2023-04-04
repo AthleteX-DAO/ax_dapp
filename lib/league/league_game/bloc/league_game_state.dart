@@ -8,7 +8,11 @@ class LeagueGameState extends Equatable {
     this.selectedChain = EthereumChain.polygonMainnet,
     this.startDate = '',
     this.endDate = '',
-    this.difference = 0,
+    this.differenceInDays = 0,
+    this.differenceInHours = 0,
+    this.differenceInMinutes = 0,
+    this.differenceInSeconds = 0,
+    this.timerStatus = TimerStatus.initial,
   });
 
   final BlocStatus status;
@@ -17,7 +21,11 @@ class LeagueGameState extends Equatable {
   final EthereumChain selectedChain;
   final String startDate;
   final String endDate;
-  final int difference;
+  final int differenceInDays;
+  final int differenceInHours;
+  final int differenceInMinutes;
+  final int differenceInSeconds;
+  final TimerStatus timerStatus;
 
   LeagueGameState copyWith({
     BlocStatus? status,
@@ -26,7 +34,11 @@ class LeagueGameState extends Equatable {
     EthereumChain? selectedChain,
     String? startDate,
     String? endDate,
-    int? difference,
+    int? differenceInDays,
+    int? differenceInHours,
+    int? differenceInMinutes,
+    int? differenceInSeconds,
+    TimerStatus? timerStatus,
   }) {
     return LeagueGameState(
       status: status ?? this.status,
@@ -35,9 +47,22 @@ class LeagueGameState extends Equatable {
       selectedChain: selectedChain ?? this.selectedChain,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
-      difference: difference ?? this.difference,
+      differenceInDays: differenceInDays ?? this.differenceInDays,
+      differenceInHours: differenceInHours ?? this.differenceInHours,
+      differenceInMinutes: differenceInMinutes ?? this.differenceInMinutes,
+      differenceInSeconds: differenceInSeconds ?? this.differenceInSeconds,
+      timerStatus: timerStatus ?? this.timerStatus,
     );
   }
+
+  LeagueGameState coptWithTimerDuration(DurationStatus durationStatus) =>
+      copyWith(
+        differenceInDays: durationStatus.days,
+        differenceInHours: durationStatus.hours,
+        differenceInMinutes: durationStatus.minutes,
+        differenceInSeconds: durationStatus.seconds,
+        timerStatus: durationStatus.timerStatus,
+      );
 
   @override
   List<Object> get props => [
@@ -47,6 +72,10 @@ class LeagueGameState extends Equatable {
         selectedChain,
         startDate,
         endDate,
-        difference,
+        differenceInDays,
+        differenceInHours,
+        differenceInMinutes,
+        differenceInSeconds,
+        timerStatus,
       ];
 }

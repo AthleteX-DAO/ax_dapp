@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:ax_dapp/league/models/duration_status.dart';
+import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
@@ -23,9 +26,11 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     required this.endDate,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
+    required TimerRepository timerRepository,
   })  : _leagueRepository = leagueRepository,
         _streamAppDataChanges = streamAppDataChanges,
         _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
+        _tickerRepository = timerRepository,
         super(
           LeagueGameState(
             startDate: startDate,
@@ -36,7 +41,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<InviteEvent>(_onInviteEvent);
     on<EditTeamsEvent>(_onEditTeams);
     on<ClaimPrizeEvent>(_onClaimPrize);
-    on<TimerEvent>(_onTimerEvent);
     on<CalculateAppreciationEvent>(_onCalculateAppreciationEvent);
     on<JoinLeagueEvent>(_onJoinLeagueEvent);
     on<LeaveLeagueEvent>(_onLeaveTeamEvent);
@@ -56,6 +60,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
   final String startDate;
   final String endDate;
+  final TimerRepository _tickerRepository;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -76,6 +81,12 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     );
   }
 
+  @override
+  Future<void> close() {
+    _tickerRepository.cancel();
+    return super.close();
+  }
+
   Future<void> _onInviteEvent(
     InviteEvent event,
     Emitter<LeagueGameState> emit,
@@ -88,11 +99,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
 
   Future<void> _onClaimPrize(
     ClaimPrizeEvent event,
-    Emitter<LeagueGameState> emit,
-  ) async {}
-
-  Future<void> _onTimerEvent(
-    TimerEvent event,
     Emitter<LeagueGameState> emit,
   ) async {}
 
@@ -162,26 +168,17 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     add(CalculateAppreciationEvent(rosters: rosters, athletes: response));
   }
 
-  void _onCalculateRemainingDays(
+  Future<void> _onCalculateRemainingDays(
     CalculateRemainingDays event,
     Emitter<LeagueGameState> emit,
-  ) {
+  ) async {
     final startDate = state.startDate;
     final endDate = state.endDate;
-    final difference = calculateRemainingDays(startDate, endDate);
-    emit(state.copyWith(difference: difference));
-  }
-
-  int calculateRemainingDays(String dateStart, String dateEnd) {
-    final todaysDate = DateTime.now();
-    final startDate = DateTime.parse(dateStart);
-    final endDate = DateTime.parse(dateEnd);
-    final difference = endDate.difference(startDate).inDays;
-    if (difference.isNegative || todaysDate.isAfter(endDate)) {
-      return 0;
-    }
-
-    return difference;
+    _tickerRepository.timer(startDate, endDate);
+    await emit.forEach<DurationStatus>(
+      _tickerRepository.remainingTime,
+      onData: (durationStatus) => state.coptWithTimerDuration(durationStatus),
+    );
   }
 
   void filterOutUnsupportedSportsByChain(List<AthleteScoutModel> filteredList) {
