@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:ax_dapp/league/models/timer_duration.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/ticker_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
@@ -23,9 +25,11 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     required this.endDate,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
+    required TickerRepository tickerRepository,
   })  : _leagueRepository = leagueRepository,
         _streamAppDataChanges = streamAppDataChanges,
         _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
+        _tickerRepository = tickerRepository,
         super(
           LeagueGameState(
             startDate: startDate,
@@ -56,6 +60,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
   final String startDate;
   final String endDate;
+  final TickerRepository _tickerRepository;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -74,6 +79,12 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         }
       },
     );
+  }
+
+  @override
+  Future<void> close() {
+    _tickerRepository.cancel();
+    return super.close();
   }
 
   Future<void> _onInviteEvent(
@@ -162,26 +173,17 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     add(CalculateAppreciationEvent(rosters: rosters, athletes: response));
   }
 
-  void _onCalculateRemainingDays(
+  Future<void> _onCalculateRemainingDays(
     CalculateRemainingDays event,
     Emitter<LeagueGameState> emit,
-  ) {
+  ) async {
     final startDate = state.startDate;
     final endDate = state.endDate;
-    final difference = calculateRemainingDays(startDate, endDate);
-    emit(state.copyWith(difference: difference));
-  }
-
-  int calculateRemainingDays(String dateStart, String dateEnd) {
-    final todaysDate = DateTime.now();
-    final startDate = DateTime.parse(dateStart);
-    final endDate = DateTime.parse(dateEnd);
-    final difference = endDate.difference(startDate).inDays;
-    if (difference.isNegative || todaysDate.isAfter(endDate)) {
-      return 0;
-    }
-
-    return difference;
+    _tickerRepository.timer(startDate, endDate);
+    await emit.forEach<TimerDuration>(
+      _tickerRepository.remainingTime,
+      onData: (timerDuration) => state.coptWithTimerDuration(timerDuration),
+    );
   }
 
   void filterOutUnsupportedSportsByChain(List<AthleteScoutModel> filteredList) {

@@ -40,7 +40,10 @@ class _LeagueGameState extends State<LeagueGame> {
             );
           }
           final userTeams = state.userTeams;
-          final difference = state.difference;
+          final differenceInDays = state.differenceInDays;
+          final differenceInHours = state.differenceInHours;
+          final differenceInMinutes = state.differenceInMinutes;
+          final differenceInSeconds = state.differenceInSeconds;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -90,7 +93,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                     isUline: false,
                                   ),
                                 ),
-                                 const SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Text(
                                   '${widget.league.dateStart} - ${widget.league.dateEnd}',
                                   style: textStyle(
@@ -102,7 +105,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  '$difference Days remaining',
+                                  '$differenceInDays Days $differenceInHours Hours $differenceInMinutes Minutes $differenceInSeconds Seconds Remaining',
                                   style: textStyle(
                                     Colors.grey[400]!,
                                     14,
