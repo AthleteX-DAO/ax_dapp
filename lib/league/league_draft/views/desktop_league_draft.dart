@@ -12,17 +12,15 @@ class DesktopLeagueDraft extends StatelessWidget {
     super.key,
     required this.league,
     required this.athletes,
-    // required this.leagueID,
   });
 
   final League league;
   final List<AthleteScoutModel> athletes;
-  // final String leagueID;
 
   @override
   Widget build(BuildContext context) {
     final global = Global();
-    //debugPrint(widget.athletes.toString());
+
     return global.buildPage(
       context,
       BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
@@ -32,6 +30,7 @@ class DesktopLeagueDraft extends StatelessWidget {
           if (state.status == BlocStatus.initial) {
             bloc.add(FetchAptsOwnedEvent(athletes: athletes));
           }
+          // debugPrint(state.ownedApts.toString());
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               final width = constraints.maxWidth;
@@ -130,11 +129,9 @@ class DesktopLeagueDraft extends StatelessWidget {
                                     shrinkWrap: true,
                                     itemCount: state.ownedApts.length,
                                     itemBuilder: (context, index) {
-                                      var onTeam = false;
-                                      if (state.myAptTeam
-                                          .contains(state.ownedApts[index])) {
-                                        onTeam = true;
-                                      }
+                                      final onTeam = state.myAptTeam
+                                          .contains(state.ownedApts[index]);
+
                                       return APTCard(
                                         apt: state.ownedApts[index],
                                         onTeam: onTeam,

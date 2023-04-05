@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ax_dapp/league/models/draft_apt.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
@@ -34,12 +35,14 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     Emitter<LeagueDraftState> emit,
   ) async {
     final athletes = event.athletes;
-    //debugPrint('$athletes');
+
     try {
       emit(state.copyWith(status: BlocStatus.loading));
-      // final ownedApts = await _getTotalTokenBalanceUseCase.getOwnedApts();
-      // debugPrint('$ownedApts');
-      emit(state.copyWith(ownedApts: athletes, status: BlocStatus.success));
+      final response = await _getTotalTokenBalanceUseCase.getOwnedApts();
+      debugPrint('$response');
+      final ownedApts = ownedAptToList(response, athletes);
+
+      emit(state.copyWith(ownedApts: ownedApts, status: BlocStatus.success));
     } catch (_) {
       emit(
         state.copyWith(
@@ -71,5 +74,59 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
   ) {
     final athletes = event.athletes;
     emit(state.copyWith(athletes: athletes));
+  }
+
+  List<DraftApt> ownedAptToList(
+    List<Apt> response,
+    List<AthleteScoutModel> athletes,
+  ) {
+    final ownedApts = <DraftApt>[];
+
+    for (final apt in response) {
+      for (final athlete in athletes) {
+        if (apt.athleteId == athlete.id) {
+          final double? bookPrice;
+          final double? bookPricePercent;
+
+          switch (apt.type) {
+            case AptType.long:
+              {
+                bookPrice = athlete.longTokenBookPrice;
+                bookPricePercent = athlete.longTokenBookPricePercent;
+              }
+              break;
+
+            case AptType.short:
+              {
+                bookPrice = athlete.shortTokenBookPrice;
+                bookPricePercent = athlete.shortTokenBookPricePercent;
+              }
+              break;
+
+            case AptType.none:
+              {
+                bookPrice = 0;
+                bookPricePercent = 0;
+              }
+              break;
+          }
+
+          var name = apt.name;
+          name = name.replaceAll('APT', '')..trim();
+
+          ownedApts.add(
+            DraftApt(
+              id: athlete.id,
+              name: name,
+              team: athlete.team,
+              sport: athlete.sport,
+              bookPrice: bookPrice,
+              bookPricePercent: bookPricePercent,
+            ),
+          );
+        }
+      }
+    }
+    return ownedApts;
   }
 }

@@ -205,6 +205,7 @@ class _LeagueGameState extends State<LeagueGame> {
                             onPressed: () {
                               Navigator.push(
                                 context,
+                                // ignore: inference_failure_on_instance_creation
                                 MaterialPageRoute(
                                   builder: (context) => DesktopLeagueDraft(
                                     league: widget.league,
