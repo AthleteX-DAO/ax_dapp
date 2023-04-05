@@ -1,8 +1,13 @@
+import 'dart:html';
 import 'dart:js_util';
 
 import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
+import 'package:ax_dapp/wallet/magic_api_client/magic_credentials.dart';
 import 'package:ax_dapp/wallet/magic_api_client/magic_wallet_api_client.dart';
 import 'package:ethereum_api/tokens_api.dart';
+import 'package:shared/shared.dart';
+import 'package:web3_browser/web3_browser.dart';
+import 'package:web3dart/web3dart.dart';
 
 /// {@template magic_wallet_api_client}
 /// Web only client that manages the wallet API(i.e. Magic).
@@ -70,5 +75,28 @@ class MagicApiClient implements MagicWalletApiClient {
     try {
       await _magicSDK.disconnect();
     } catch (_) {}
+  }
+
+  @override
+  Future<dynamic> requestAccount() async {
+    // This needs to return a credentials type
+    final addresses =
+        await promiseToFuture<List<String>>(_magicSDK.requestAccount());
+    final requiredAddress = addresses.single;
+    return requiredAddress;
+  }
+
+  @override
+  Future<WalletCredentials> getWalletCredentials() async {
+    final addresses =
+        await promiseToFuture<List<String>>(_magicSDK.requestAccount());
+    final requiredAddress = addresses.single;
+    final eth = window.ethereum;
+    return WalletCredentials(
+      MagicCredentials(
+        requiredAddress,
+        eth!,
+      ),
+    );
   }
 }
