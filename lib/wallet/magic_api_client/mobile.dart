@@ -1,4 +1,5 @@
 import 'package:ax_dapp/wallet/magic_api_client/magic_wallet_api_client.dart';
+import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 /// {@template mobile_magic_wallet_api_client}
@@ -45,5 +46,15 @@ class MagicApiClient implements MagicWalletApiClient {
     throw UnsupportedError(
       'disconnect',
     );
+  }
+
+  @override
+  Future<CredentialsWithKnownAddress> requestAccount() {
+    throw UnsupportedError('requestAccount');
+  }
+
+  @override
+  Future<WalletCredentials> getWalletCredentials() {
+    throw UnsupportedError('getWalletCredentials');
   }
 }
