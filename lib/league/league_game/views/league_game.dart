@@ -4,6 +4,7 @@ import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/percent_helper.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,8 @@ class _LeagueGameState extends State<LeagueGame> {
   @override
   Widget build(BuildContext context) {
     final global = Global();
-    final walletAddress = context.read<WalletBloc>().state.formattedWalletAddress;
+    final walletAddress =
+        context.read<WalletBloc>().state.formattedWalletAddress;
     return global.buildPage(
       context,
       BlocBuilder<LeagueGameBloc, LeagueGameState>(
@@ -185,7 +187,31 @@ class _LeagueGameState extends State<LeagueGame> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(userTeam.address),
-                                Text('${userTeam.teamPerformance} %'),
+                                Row(
+                                  children: [
+                                    Text(
+                                      getPercentageDesc(
+                                        userTeam.teamPerformance,
+                                      ),
+                                      style: TextStyle(
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 16,
+                                        color: getPercentageColor(
+                                          userTeam.teamPerformance,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      getPercentStatusIcon(
+                                        userTeam.teamPerformance,
+                                      ),
+                                      size: 50,
+                                      color: getPercentageColor(
+                                        userTeam.teamPerformance,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 Visibility(
                                   visible: userTeam.address == walletAddress,
                                   maintainSize: true,
