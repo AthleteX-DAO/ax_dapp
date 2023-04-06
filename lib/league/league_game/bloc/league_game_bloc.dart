@@ -113,13 +113,15 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     rosters.forEach((address, roster) {
       final teamPerformance = _calculateTeamPerformanceUseCase
           .calculateTeamPerformance(roster, athletes);
-      userTeams.add(
-        UserTeam(
-          address: address,
-          roster: roster,
-          teamPerformance: teamPerformance,
-        ),
-      );
+      userTeams
+        ..add(
+          UserTeam(
+            address: address,
+            roster: roster,
+            teamPerformance: teamPerformance,
+          ),
+        )
+        ..sort((b, a) => a.teamPerformance.compareTo(b.teamPerformance));
     });
     emit(
       state.copyWith(
