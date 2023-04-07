@@ -10,9 +10,13 @@ var MagicSDK = (function () {
             extensions: [new MagicConnectExtension()],
         });
         this._web3 = new Web3(this._magicSDK.rpcProvider);
+        
+        /// Places the magic ethereum client onto the window object
+        window.magicEthereum = this._magicSDK._web3.eth;
         console.log(Web3);
         console.log(this._magicSDK);
         console.log(this._magicSDK.rpcProvider);
+        console.log(`Comparing web3 obj: \n ${Web3} to the window.magicEthereum obj: ${window.magicEthereum}`)
     }
 
     MagicSDK.prototype.connect = async function () {
