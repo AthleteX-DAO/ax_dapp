@@ -179,7 +179,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     _tickerRepository.timer(startDate, endDate);
     await emit.forEach<DurationStatus>(
       _tickerRepository.remainingTime,
-      onData: (durationStatus) => state.coptWithTimerDuration(durationStatus),
+      onData: (durationStatus) => state.copyWithTimerDuration(durationStatus),
     );
   }
 

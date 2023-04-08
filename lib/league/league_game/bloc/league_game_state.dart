@@ -55,7 +55,7 @@ class LeagueGameState extends Equatable {
     );
   }
 
-  LeagueGameState coptWithTimerDuration(DurationStatus durationStatus) =>
+  LeagueGameState copyWithTimerDuration(DurationStatus durationStatus) =>
       copyWith(
         differenceInDays: durationStatus.days,
         differenceInHours: durationStatus.hours,
