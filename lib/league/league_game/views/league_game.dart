@@ -31,7 +31,7 @@ class _LeagueGameState extends State<LeagueGame> {
   Widget build(BuildContext context) {
     final global = Global();
     final walletAddress =
-        context.read<WalletBloc>().state.walletAddress;
+        context.select((WalletBloc bloc) => bloc.state.walletAddress);
     return global.buildPage(
       context,
       BlocBuilder<LeagueGameBloc, LeagueGameState>(
