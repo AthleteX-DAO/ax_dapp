@@ -5,46 +5,47 @@ class CalculateTeamPerformanceUseCase {
     Map<String, double> roster,
     List<AthleteScoutModel> athletes,
   ) {
-    var percentChange = 0.0;
-    var teamPerformance = 0.0;
-    final percentChangeList = <double>[];
-    roster.forEach((athlete, price) {
-      final name =
-          roster.keys.firstWhere((element) => roster[element] == price);
-      final athleteStringList = name.split(' ');
-      final aptType = athleteStringList[athleteStringList.length - 2];
-      final athleteName = athleteStringList
-          .getRange(0, athleteStringList.length - 2)
-          .toList()
-          .join(' ')
-          .trim();
-      final initialPrice = roster[name];
-      final athleteScoutModel = athletes.firstWhere(
-        (athlete) =>
-            athlete.name.trim().toLowerCase() ==
-            athleteName.trim().toLowerCase(),
-        orElse: () => AthleteScoutModel.empty,
-      );
-      if (aptType == 'Long') {
-        if (athleteScoutModel.longTokenBookPrice != roster[name]) {
-          percentChange =
-              ((athleteScoutModel.longTokenBookPrice! - initialPrice!) /
-                      initialPrice) *
-                  100;
-          percentChangeList.add(percentChange);
-          teamPerformance = percentChangeList.reduce((a, b) => a + b);
+    final percentChanges = <double>[];
+    roster.forEach(
+      (athlete, price) {
+        final name =
+            roster.keys.firstWhere((element) => roster[element] == price);
+        final athleteNameParts = name.split(' ');
+        final aptType = athleteNameParts[athleteNameParts.length - 2];
+        final athleteName = athleteNameParts
+            .getRange(0, athleteNameParts.length - 2)
+            .join(' ')
+            .trim();
+        final initialPrice = roster[name];
+        final athleteScoutModel = athletes.firstWhere(
+          (athlete) =>
+              athlete.name.trim().toLowerCase() ==
+              athleteName.trim().toLowerCase(),
+          orElse: () => AthleteScoutModel.empty,
+        );
+        if (aptType == 'Long') {
+          if (athleteScoutModel.longTokenBookPrice != roster[name]) {
+            final percentChange =
+                ((athleteScoutModel.longTokenBookPrice! - initialPrice!) /
+                        initialPrice) *
+                    100;
+            percentChanges.add(percentChange);
+          }
+        } else {
+          if (athleteScoutModel.shortTokenBookPrice != roster[name]) {
+            final percentChange =
+                ((initialPrice! - athleteScoutModel.shortTokenBookPrice!) /
+                        initialPrice) *
+                    100;
+            percentChanges.add(percentChange);
+          }
         }
-      } else {
-        if (athleteScoutModel.shortTokenBookPrice != roster[name]) {
-          percentChange =
-              ((initialPrice! - athleteScoutModel.shortTokenBookPrice!) /
-                      initialPrice) *
-                  100;
-          percentChangeList.add(percentChange);
-          teamPerformance = percentChangeList.reduce((a, b) => a + b);
-        }
-      }
-    });
-    return double.parse(teamPerformance.toStringAsFixed(2));
+      },
+    );
+
+    final teamPerformance =
+        double.parse(percentChanges.reduce((a, b) => a + b).toStringAsFixed(2));
+
+    return teamPerformance;
   }
 }
