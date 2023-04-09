@@ -8,6 +8,8 @@ class LeagueState extends Equatable {
     this.filteredLeagues = const [],
     this.rosters = const {},
     this.sports = const [],
+    this.selectedChain = EthereumChain.polygonMainnet,
+    this.selectedSport = SupportedSport.all,
   });
 
   final BlocStatus status;
@@ -16,6 +18,8 @@ class LeagueState extends Equatable {
   final List<League> filteredLeagues;
   final Map<String, List<String>> rosters;
   final List<SupportedSport> sports;
+  final EthereumChain selectedChain;
+  final SupportedSport selectedSport;
 
   LeagueState copyWith({
     BlocStatus? status,
@@ -24,6 +28,8 @@ class LeagueState extends Equatable {
     List<League>? filteredLeagues,
     Map<String, List<String>>? rosters,
     List<SupportedSport>? sports,
+    EthereumChain? selectedChain,
+    SupportedSport? selectedSport,
   }) {
     return LeagueState(
       status: status ?? this.status,
@@ -32,6 +38,8 @@ class LeagueState extends Equatable {
       filteredLeagues: filteredLeagues ?? this.filteredLeagues,
       rosters: rosters ?? this.rosters,
       sports: sports ?? this.sports,
+      selectedChain: selectedChain ?? this.selectedChain,
+      selectedSport: selectedSport ?? this.selectedSport,
     );
   }
 
@@ -43,5 +51,7 @@ class LeagueState extends Equatable {
         filteredLeagues,
         rosters,
         sports,
+        selectedChain,
+        selectedSport,
       ];
 }

@@ -81,6 +81,7 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => LeagueBloc(
             leagueRepository: context.read<LeagueRepository>(),
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
           ),
         ),
         BlocProvider(

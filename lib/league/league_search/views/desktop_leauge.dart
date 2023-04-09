@@ -21,6 +21,7 @@ class DesktopLeague extends StatefulWidget {
 class _DesktopLeagueState extends State<DesktopLeague> {
   final leagueSearchController = TextEditingController();
   var _selectedSport = SupportedSport.all;
+  EthereumChain? _selectedChain;
 
   @override
   void dispose() {
@@ -37,9 +38,20 @@ class _DesktopLeagueState extends State<DesktopLeague> {
     return global.buildPage(
       context,
       BlocBuilder<LeagueBloc, LeagueState>(
+        buildWhen: (previous, current) {
+          return current.status.name.isNotEmpty ||
+              previous.selectedChain.chainId != current.selectedChain.chainId;
+        },
         builder: (context, state) {
           final bloc = context.read<LeagueBloc>();
           final filteredLeagues = state.filteredLeagues;
+          if (_selectedChain != state.selectedChain) {
+            _selectedChain = state.selectedChain;
+            bloc.add(
+              FetchLeagues(),
+            );
+          }
+          _selectedSport = state.selectedSport;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               if (constraints.maxWidth < 800) {

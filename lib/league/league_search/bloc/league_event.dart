@@ -7,6 +7,10 @@ abstract class LeagueEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class WatchAppDataChangesStarted extends LeagueEvent {
+  const WatchAppDataChangesStarted();
+}
+
 class CreateLeague extends LeagueEvent {
   const CreateLeague({
     required this.name,
