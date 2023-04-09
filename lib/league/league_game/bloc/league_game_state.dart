@@ -6,6 +6,7 @@ class LeagueGameState extends Equatable {
     this.userTeams = const [],
     this.rosters = const {},
     this.athletes = const [],
+    this.filteredAthletes = const [],
     this.selectedChain = EthereumChain.polygonMainnet,
     this.startDate = '',
     this.endDate = '',
@@ -14,12 +15,14 @@ class LeagueGameState extends Equatable {
     this.differenceInMinutes = 0,
     this.differenceInSeconds = 0,
     this.timerStatus = TimerStatus.initial,
+    this.selectedSport = SupportedSport.all,
   });
 
   final BlocStatus status;
   final List<UserTeam> userTeams;
   final Map<String, Map<String, double>> rosters;
   final List<AthleteScoutModel> athletes;
+  final List<AthleteScoutModel> filteredAthletes;
   final EthereumChain selectedChain;
   final String startDate;
   final String endDate;
@@ -28,12 +31,14 @@ class LeagueGameState extends Equatable {
   final int differenceInMinutes;
   final int differenceInSeconds;
   final TimerStatus timerStatus;
+  final SupportedSport selectedSport;
 
   LeagueGameState copyWith({
     BlocStatus? status,
     List<UserTeam>? userTeams,
     Map<String, Map<String, double>>? rosters,
     List<AthleteScoutModel>? athletes,
+    List<AthleteScoutModel>? filteredAthletes,
     EthereumChain? selectedChain,
     String? startDate,
     String? endDate,
@@ -42,12 +47,14 @@ class LeagueGameState extends Equatable {
     int? differenceInMinutes,
     int? differenceInSeconds,
     TimerStatus? timerStatus,
+    SupportedSport? selectedSport,
   }) {
     return LeagueGameState(
       status: status ?? this.status,
       userTeams: userTeams ?? this.userTeams,
       rosters: rosters ?? this.rosters,
       athletes: athletes ?? this.athletes,
+      filteredAthletes: filteredAthletes ?? this.filteredAthletes,
       selectedChain: selectedChain ?? this.selectedChain,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
@@ -56,6 +63,7 @@ class LeagueGameState extends Equatable {
       differenceInMinutes: differenceInMinutes ?? this.differenceInMinutes,
       differenceInSeconds: differenceInSeconds ?? this.differenceInSeconds,
       timerStatus: timerStatus ?? this.timerStatus,
+      selectedSport: selectedSport ?? this.selectedSport,
     );
   }
 
@@ -74,6 +82,7 @@ class LeagueGameState extends Equatable {
         userTeams,
         rosters,
         athletes,
+        filteredAthletes,
         selectedChain,
         startDate,
         endDate,
@@ -82,5 +91,6 @@ class LeagueGameState extends Equatable {
         differenceInMinutes,
         differenceInSeconds,
         timerStatus,
+        selectedSport,
       ];
 }
