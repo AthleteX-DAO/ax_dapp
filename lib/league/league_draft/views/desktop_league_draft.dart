@@ -8,6 +8,7 @@ import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class DesktopLeagueDraft extends StatelessWidget {
   const DesktopLeagueDraft({
@@ -39,7 +40,7 @@ class DesktopLeagueDraft extends StatelessWidget {
           if (state.status == BlocStatus.initial) {
             bloc.add(FetchAptsOwnedEvent(athletes: athletes));
           }
-          // debugPrint(state.ownedApts.toString());
+
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               final width = constraints.maxWidth;
@@ -88,7 +89,7 @@ class DesktopLeagueDraft extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: TextButton(
-                                onPressed: () => {},
+                                onPressed: () => {context.goNamed('scout')},
                                 child: const Text(
                                   'Go Buy APTs',
                                   style: TextStyle(
@@ -182,9 +183,11 @@ class DesktopLeagueDraft extends StatelessWidget {
                                   bloc.add(
                                     ConfirmTeam(
                                       walletAddress: walletId,
+                                      leagueID: league.leagueID,
                                       myTeam: state.myAptTeam,
                                     ),
-                                  )
+                                  ),
+                                  Navigator.pop(context)
                                 },
                                 child: const Text(
                                   'Confirm',

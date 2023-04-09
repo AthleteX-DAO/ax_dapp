@@ -41,9 +41,8 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       final response = await _getTotalTokenBalanceUseCase.getOwnedApts();
-      debugPrint('$response');
+
       final ownedApts = ownedAptToList(response, athletes);
-      debugPrint('\n$ownedApts');
 
       emit(state.copyWith(ownedApts: ownedApts, status: BlocStatus.success));
     } catch (_) {
@@ -106,7 +105,32 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
   Future<void> _onConfirmTeam(
     ConfirmTeam event,
     Emitter<LeagueDraftState> emit,
-  ) async {}
+  ) async {
+    final userWallet = event.walletAddress;
+    final leagueID = event.leagueID;
+    final myTeam = event.myTeam;
+    final playerNames = <String>[];
+
+    for (final player in myTeam) {
+      playerNames.add(player.name);
+    }
+
+    final roster = {for (var e in playerNames) e: 0.0};
+
+    try {
+      emit(state.copyWith(status: BlocStatus.loading));
+
+      await _leagueRepository.enrollUser(
+        leagueID: leagueID,
+        userWallet: userWallet,
+        roster: roster,
+      );
+
+      emit(state.copyWith(status: BlocStatus.success));
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
 
   void _onGetAthletes(
     GetAthletes event,

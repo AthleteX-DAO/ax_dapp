@@ -89,7 +89,7 @@ class LeagueRepository {
           .get()
           .then(
             (querySnapshot) => querySnapshot.docs[0].reference
-                .set({'rosters.$userWallet': roster}),
+                .update({'rosters.$userWallet': roster}),
           );
     } on FirebaseException catch (e) {
       debugPrint('$e');

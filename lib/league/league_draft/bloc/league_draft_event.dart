@@ -39,13 +39,18 @@ class RemoveAptFromTeam extends LeagueDraftEvent {
 }
 
 class ConfirmTeam extends LeagueDraftEvent {
-  const ConfirmTeam({required this.walletAddress, required this.myTeam});
+  const ConfirmTeam({
+    required this.walletAddress,
+    required this.leagueID,
+    required this.myTeam,
+  });
 
   final String walletAddress;
+  final String leagueID;
   final List<DraftApt> myTeam;
 
   @override
-  List<Object> get props => [walletAddress, myTeam];
+  List<Object> get props => [walletAddress, leagueID, myTeam];
 }
 
 class GetAthletes extends LeagueDraftEvent {
