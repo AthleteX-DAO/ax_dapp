@@ -247,6 +247,14 @@ class _LeagueGameState extends State<LeagueGame> {
                         itemBuilder: (BuildContext context, int index) {
                           final userTeam = userTeams[index];
                           final rosters = userTeam.roster.keys.toList();
+                          final rosterFormatted = rosters
+                              .map(
+                                (e) => e
+                                    .split(' ')
+                                    .getRange(0, e.split(' ').length - 1)
+                                    .join(' '),
+                              )
+                              .toList();
                           return ExpansionTile(
                             title: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -315,8 +323,9 @@ class _LeagueGameState extends State<LeagueGame> {
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
-                                children:
-                                    rosters.map<Widget>(Text.new).toList(),
+                                children: rosterFormatted
+                                    .map<Widget>(Text.new)
+                                    .toList(),
                               ),
                             ],
                           );

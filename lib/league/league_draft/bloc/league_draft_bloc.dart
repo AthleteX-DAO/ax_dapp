@@ -161,7 +161,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
           : e.type == AptType.short
               ? athlete.shortTokenBookPricePercent
               : 0.0;
-      final aptName = e.name.replaceAll('APT', '').trim();
+      final aptName = '${e.name.replaceAll('APT', '').trim()} ${athlete.id}';
       return DraftApt(
         id: athlete.id,
         name: aptName,

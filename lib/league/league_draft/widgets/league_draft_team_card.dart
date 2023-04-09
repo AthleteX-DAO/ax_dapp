@@ -38,7 +38,12 @@ class MyTeamCard extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(apt.name),
+              Text(
+                apt.name
+                    .split(' ')
+                    .sublist(0, apt.name.split(' ').length - 1)
+                    .join(' '),
+              ),
               Text(apt.team),
             ],
           ),

@@ -11,16 +11,11 @@ class CalculateTeamPerformanceUseCase {
         final name =
             roster.keys.firstWhere((element) => roster[element] == price);
         final athleteNameParts = name.split(' ');
-        final aptType = athleteNameParts.last;
-        final athleteName = athleteNameParts
-            .getRange(0, athleteNameParts.length - 1)
-            .join(' ')
-            .trim();
+        final aptType = athleteNameParts[athleteNameParts.length - 2];
+        final athleteId = int.parse(athleteNameParts.last);
         final initialPrice = roster[name];
         final athleteScoutModel = athletes.firstWhere(
-          (athlete) =>
-              athlete.name.trim().toLowerCase() ==
-              athleteName.trim().toLowerCase(),
+          (athlete) => athlete.id == athleteId,
           orElse: () => AthleteScoutModel.empty,
         );
         if (aptType == 'Long') {
