@@ -1,5 +1,6 @@
 import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_draft/widgets/league_draft_apt_card.dart';
+import 'package:ax_dapp/league/league_draft/widgets/league_draft_team_card.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -129,19 +130,25 @@ class DesktopLeagueDraft extends StatelessWidget {
                                     shrinkWrap: true,
                                     itemCount: state.ownedApts.length,
                                     itemBuilder: (context, index) {
-                                      final onTeam = state.myAptTeam
-                                          .contains(state.ownedApts[index]);
-
                                       return APTCard(
                                         apt: state.ownedApts[index],
-                                        onTeam: onTeam,
                                       );
                                     },
                                   ),
                                 ),
                               ),
-                              const Expanded(
-                                child: Placeholder(),
+                              Expanded(
+                                child: Material(
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: state.myAptTeam.length,
+                                    itemBuilder: (context, index) {
+                                      return MyTeamCard(
+                                        apt: state.myAptTeam[index],
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
                             ],
                           ),

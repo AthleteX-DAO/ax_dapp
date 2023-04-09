@@ -19,7 +19,7 @@ class FetchAptsOwnedEvent extends LeagueDraftEvent {
 class AddAptToTeam extends LeagueDraftEvent {
   const AddAptToTeam({required this.apt});
 
-  final Apt apt;
+  final DraftApt apt;
 
   @override
   List<Object> get props => [apt];
@@ -28,7 +28,7 @@ class AddAptToTeam extends LeagueDraftEvent {
 class RemoveAptFromTeam extends LeagueDraftEvent {
   const RemoveAptFromTeam({required this.apt});
 
-  final Apt apt;
+  final DraftApt apt;
 
   @override
   List<Object> get props => [apt];
@@ -38,7 +38,7 @@ class ConfirmTeam extends LeagueDraftEvent {
   const ConfirmTeam({required this.walletAddress, required this.myTeam});
 
   final String walletAddress;
-  final List<Apt> myTeam;
+  final List<DraftApt> myTeam;
 
   @override
   List<Object> get props => [walletAddress, myTeam];
