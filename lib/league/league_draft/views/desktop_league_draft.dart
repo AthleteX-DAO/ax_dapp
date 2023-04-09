@@ -132,6 +132,7 @@ class DesktopLeagueDraft extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       return APTCard(
                                         apt: state.ownedApts[index],
+                                        teamSize: league.teamSize,
                                       );
                                     },
                                   ),

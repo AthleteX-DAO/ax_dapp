@@ -17,12 +17,16 @@ class FetchAptsOwnedEvent extends LeagueDraftEvent {
 }
 
 class AddAptToTeam extends LeagueDraftEvent {
-  const AddAptToTeam({required this.apt});
+  const AddAptToTeam({
+    required this.apt,
+    required this.teamSize,
+  });
 
   final DraftApt apt;
+  final int teamSize;
 
   @override
-  List<Object> get props => [apt];
+  List<Object> get props => [apt, teamSize];
 }
 
 class RemoveAptFromTeam extends LeagueDraftEvent {

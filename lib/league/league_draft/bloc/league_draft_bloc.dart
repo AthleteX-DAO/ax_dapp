@@ -60,22 +60,25 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     AddAptToTeam event,
     Emitter<LeagueDraftState> emit,
   ) {
-    emit(state.copyWith(status: BlocStatus.loading));
-    final apt = event.apt;
-    final ownedApts = List<DraftApt>.from(state.ownedApts)..remove(apt);
+    if (state.athleteCount < event.teamSize) {
+      emit(state.copyWith(status: BlocStatus.loading));
+      final apt = event.apt;
 
-    final myAptTeam = List<DraftApt>.from(state.myAptTeam)..add(apt);
+      final ownedApts = List<DraftApt>.from(state.ownedApts)..remove(apt);
 
-    final athleteCount = myAptTeam.length;
+      final myAptTeam = List<DraftApt>.from(state.myAptTeam)..add(apt);
 
-    emit(
-      state.copyWith(
-        ownedApts: ownedApts,
-        myAptTeam: myAptTeam,
-        athleteCount: athleteCount,
-        status: BlocStatus.success,
-      ),
-    );
+      final athleteCount = myAptTeam.length;
+
+      emit(
+        state.copyWith(
+          ownedApts: ownedApts,
+          myAptTeam: myAptTeam,
+          athleteCount: athleteCount,
+          status: BlocStatus.success,
+        ),
+      );
+    }
   }
 
   void _onRemoveAptFromTeam(

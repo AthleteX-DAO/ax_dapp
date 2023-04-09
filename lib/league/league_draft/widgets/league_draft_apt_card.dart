@@ -8,9 +8,11 @@ class APTCard extends StatelessWidget {
   const APTCard({
     super.key,
     required this.apt,
+    required this.teamSize,
   });
 
   final DraftApt apt;
+  final int teamSize;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class APTCard extends StatelessWidget {
                   size: statusIconSize,
                 ),
                 onPressed: () {
-                  bloc.add(AddAptToTeam(apt: apt));
+                  bloc.add(AddAptToTeam(apt: apt, teamSize: teamSize));
                 },
               )
             ],
