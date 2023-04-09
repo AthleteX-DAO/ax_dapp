@@ -43,7 +43,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
       final response = await _getTotalTokenBalanceUseCase.getOwnedApts();
       debugPrint('$response');
       final ownedApts = ownedAptToList(response, athletes);
-      debugPrint('\n\n$ownedApts');
+      debugPrint('\n$ownedApts');
 
       emit(state.copyWith(ownedApts: ownedApts, status: BlocStatus.success));
     } catch (_) {
@@ -66,7 +66,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
 
     final myAptTeam = List<DraftApt>.from(state.myAptTeam)..add(apt);
 
-    final athleteCount = state.myAptTeam.length;
+    final athleteCount = myAptTeam.length;
 
     emit(
       state.copyWith(
@@ -88,7 +88,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
 
     final myAptTeam = List<DraftApt>.from(state.myAptTeam)..remove(apt);
 
-    final athleteCount = state.myAptTeam.length;
+    final athleteCount = myAptTeam.length;
 
     emit(
       state.copyWith(
