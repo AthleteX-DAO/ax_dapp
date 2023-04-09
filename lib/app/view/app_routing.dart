@@ -278,22 +278,6 @@ class _MaterialApp extends StatelessWidget {
                   );
                 },
               ),
-              // GoRoute(
-              //   name: 'league-draft',
-              //   path: 'league-draft/:leagueID',
-              //   builder: (BuildContext context, GoRouterState state) {
-              //     final leagueID = state.params['leagueID']!;
-              //     final allLeagues =
-              //         context.watch<LeagueBloc>().state.allLeagues;
-              //     if (allLeagues.isEmpty) {
-              //       return const Loader();
-              //     }
-              //     final league = allLeagues
-              //         .firstWhere((league) => league.leagueID == leagueID);
-              //     Global().pageName = 'league-draft';
-              //     return DesktopLeagueDraft(league: league, leagueID: leagueID);
-              //   },
-              // ),
             ],
           ),
         ],

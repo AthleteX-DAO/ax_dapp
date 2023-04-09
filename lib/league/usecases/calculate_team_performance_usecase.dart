@@ -11,9 +11,9 @@ class CalculateTeamPerformanceUseCase {
         final name =
             roster.keys.firstWhere((element) => roster[element] == price);
         final athleteNameParts = name.split(' ');
-        final aptType = athleteNameParts[athleteNameParts.length - 2];
+        final aptType = athleteNameParts.last;
         final athleteName = athleteNameParts
-            .getRange(0, athleteNameParts.length - 2)
+            .getRange(0, athleteNameParts.length - 1)
             .join(' ')
             .trim();
         final initialPrice = roster[name];
@@ -25,16 +25,19 @@ class CalculateTeamPerformanceUseCase {
         );
         if (aptType == 'Long') {
           if (athleteScoutModel.longTokenBookPrice != roster[name]) {
-            final percentChange =
-                ((athleteScoutModel.longTokenBookPrice! - initialPrice!) /
+            final percentChange = initialPrice == 0.0
+                ? 0.0
+                : ((athleteScoutModel.longTokenBookPrice! - initialPrice!) /
                         initialPrice) *
                     100;
+
             percentChanges.add(percentChange);
           }
         } else {
           if (athleteScoutModel.shortTokenBookPrice != roster[name]) {
-            final percentChange =
-                ((initialPrice! - athleteScoutModel.shortTokenBookPrice!) /
+            final percentChange = initialPrice == 0.0
+                ? 0.0
+                : ((initialPrice! - athleteScoutModel.shortTokenBookPrice!) /
                         initialPrice) *
                     100;
             percentChanges.add(percentChange);

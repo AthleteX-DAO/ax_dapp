@@ -5,9 +5,9 @@ import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class DesktopLeagueDraft extends StatelessWidget {
@@ -30,12 +30,7 @@ class DesktopLeagueDraft extends StatelessWidget {
         builder: (context, state) {
           final bloc = context.read<LeagueDraftBloc>();
 
-          final walletAddress =
-              context.read<WalletBloc>().state.formattedWalletAddress;
-          final walletId =
-              (walletAddress.isEmpty || walletAddress == kEmptyAddress)
-                  ? ''
-                  : walletAddress;
+          final walletAddress = context.read<WalletBloc>().state.walletAddress;
 
           if (state.status == BlocStatus.initial) {
             bloc.add(FetchAptsOwnedEvent(athletes: athletes));
@@ -182,7 +177,7 @@ class DesktopLeagueDraft extends StatelessWidget {
                                 onPressed: () => {
                                   bloc.add(
                                     ConfirmTeam(
-                                      walletAddress: walletId,
+                                      walletAddress: walletAddress,
                                       leagueID: league.leagueID,
                                       myTeam: state.myAptTeam,
                                     ),
