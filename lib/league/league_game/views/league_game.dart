@@ -39,12 +39,25 @@ class _LeagueGameState extends State<LeagueGame> {
     return global.buildPage(
       context,
       BlocBuilder<LeagueGameBloc, LeagueGameState>(
+        buildWhen: (previous, current) {
+          return current.status.name.isNotEmpty ||
+              previous.selectedChain.chainId != current.selectedChain.chainId;
+        },
         builder: (context, state) {
           final bloc = context.read<LeagueGameBloc>();
+          final filteredAthletes = state.filteredAthletes;
           if (_selectedChain != state.selectedChain) {
             _selectedChain = state.selectedChain;
             bloc.add(
               FetchScoutInfoRequested(),
+            );
+          }
+          if (state.status == BlocStatus.success) {
+            bloc.add(
+              CalculateAppreciationEvent(
+                rosters: state.rosters,
+                athletes: filteredAthletes,
+              ),
             );
           }
           final userTeams = state.userTeams;

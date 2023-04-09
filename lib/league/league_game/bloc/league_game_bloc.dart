@@ -73,6 +73,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
             state.copyWith(
               status: BlocStatus.loading,
               selectedChain: appData.chain,
+              athletes: List.empty(),
+              filteredAthletes: List.empty(),
             ),
           );
         }
@@ -139,31 +141,50 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     FetchScoutInfoRequested event,
     Emitter<LeagueGameState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
-    var supportedSport = SupportedSport.MLB;
-    switch (state.selectedChain) {
-      case EthereumChain.goerliTestNet:
-      case EthereumChain.polygonMainnet:
-      case EthereumChain.unsupported:
-        supportedSport = SupportedSport.MLB;
-        break;
-      case EthereumChain.sxMainnet:
-      case EthereumChain.sxTestnet:
-        supportedSport = SupportedSport.NFL;
-        break;
-      // ignore: no_default_cases
-      default: // unsupported
-        supportedSport = SupportedSport.MLB;
-        break;
+    try {
+      emit(state.copyWith(status: BlocStatus.loading));
+      var supportedSport = SupportedSport.MLB;
+      switch (state.selectedChain) {
+        case EthereumChain.goerliTestNet:
+        case EthereumChain.polygonMainnet:
+        case EthereumChain.unsupported:
+          supportedSport = SupportedSport.MLB;
+          break;
+        case EthereumChain.sxMainnet:
+        case EthereumChain.sxTestnet:
+          supportedSport = SupportedSport.NFL;
+          break;
+        // ignore: no_default_cases
+        default: // unsupported
+          supportedSport = SupportedSport.MLB;
+          break;
+      }
+
+      final response = await repo.fetchSupportedAthletes(supportedSport);
+
+      filterOutUnsupportedSportsByChain(response);
+
+      if (response.isNotEmpty) {
+        emit(
+          state.copyWith(
+            athletes: response,
+            filteredAthletes: response,
+            status: BlocStatus.success,
+            selectedSport: supportedSport,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: BlocStatus.noData,
+            athletes: const [],
+            filteredAthletes: const [],
+          ),
+        );
+      }
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
     }
-
-    final response = await repo.fetchSupportedAthletes(supportedSport);
-
-    filterOutUnsupportedSportsByChain(response);
-
-    emit(state.copyWith(athletes: response));
-
-    add(CalculateAppreciationEvent(rosters: rosters, athletes: response));
   }
 
   Future<void> _onCalculateRemainingDays(
