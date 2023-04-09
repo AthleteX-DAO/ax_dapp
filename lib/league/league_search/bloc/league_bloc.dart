@@ -6,14 +6,19 @@ import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 
 part 'league_event.dart';
 part 'league_state.dart';
 
 class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
-  LeagueBloc({required LeagueRepository leagueRepository})
-      : _leagueRepository = leagueRepository,
+  LeagueBloc({
+    required LeagueRepository leagueRepository,
+    required StreamAppDataChangesUseCase streamAppDataChanges,
+  })  : _leagueRepository = leagueRepository,
+        _streamAppDataChanges = streamAppDataChanges,
         super(const LeagueState()) {
     on<CreateLeague>(_onCreateLeague);
     on<FetchLeagues>(_onFetchLeagues);
@@ -24,11 +29,33 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     on<RemoveUser>(_onRemoveUser);
     on<SearchLeague>(_onSearchLeague);
     on<SelectedSportChanged>(_onSelectedSportChanged);
+    on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
 
+    add(const WatchAppDataChangesStarted());
     add(FetchLeagues());
   }
 
   final LeagueRepository _leagueRepository;
+  final StreamAppDataChangesUseCase _streamAppDataChanges;
+
+  Future<void> _onWatchAppDataChangesStarted(
+    WatchAppDataChangesStarted _,
+    Emitter<LeagueState> emit,
+  ) async {
+    await emit.onEach<AppData>(
+      _streamAppDataChanges.appDataChanges,
+      onData: (appData) {
+        if (appData.chain.chainId != state.selectedChain.chainId) {
+          emit(
+            state.copyWith(
+              status: BlocStatus.loading,
+              selectedChain: appData.chain,
+            ),
+          );
+        }
+      },
+    );
+  }
 
   Future<void> _onCreateLeague(
     CreateLeague event,
@@ -68,11 +95,13 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       final leagues = await _leagueRepository.fetchLeagues();
+      filterOutUnsupportedSportsByChain(leagues);
       emit(
         state.copyWith(
           allLeagues: leagues,
           filteredLeagues: leagues,
           status: BlocStatus.success,
+          selectedSport: SupportedSport.all,
         ),
       );
     } catch (_) {
@@ -215,11 +244,13 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
             (league) => event.selectedSport.name == league.sports.first.name,
           )
           .toList();
+      filterOutUnsupportedSportsByChain(filteredList);
       if (filteredList.isNotEmpty) {
         emit(
           state.copyWith(
             status: BlocStatus.success,
             filteredLeagues: filteredList,
+            selectedSport: event.selectedSport,
           ),
         );
       } else {
@@ -227,6 +258,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
           state.copyWith(
             status: BlocStatus.noData,
             filteredLeagues: const [],
+            selectedSport: event.selectedSport,
           ),
         );
       }
@@ -238,6 +270,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         state.copyWith(
           status: BlocStatus.success,
           filteredLeagues: filteredList,
+          selectedSport: SupportedSport.all,
         ),
       );
     }
@@ -258,5 +291,16 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
       ),
     );
     return generatedLeagueID;
+  }
+
+  void filterOutUnsupportedSportsByChain(List<League> leagues) {
+    if (state.selectedChain == EthereumChain.sxMainnet ||
+        state.selectedChain == EthereumChain.sxTestnet) {
+      leagues
+          .removeWhere((element) => element.sports.first == SupportedSport.MLB);
+    } else {
+      leagues
+          .removeWhere((element) => element.sports.first == SupportedSport.NFL);
+    }
   }
 }
