@@ -68,7 +68,7 @@ class TimerRepository {
         hours: 0,
         minutes: 0,
         seconds: 0,
-        timerStatus: TimerStatus.closed,
+        timerStatus: TimerStatus.ended,
       ),
     );
     _timer.cancel();
