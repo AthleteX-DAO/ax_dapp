@@ -94,25 +94,6 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
   ) async {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
-      var supportedSport = SupportedSport.MLB;
-      debugPrint(
-        'Fetching league info for ${state.selectedChain.chainName}: ${state.selectedChain.chainId}',
-      );
-      switch (state.selectedChain) {
-        case EthereumChain.goerliTestNet:
-        case EthereumChain.polygonMainnet:
-        case EthereumChain.unsupported:
-          supportedSport = SupportedSport.MLB;
-          break;
-        case EthereumChain.sxMainnet:
-        case EthereumChain.sxTestnet:
-          supportedSport = SupportedSport.NFL;
-          break;
-        // ignore: no_default_cases
-        default: // unsupported
-          supportedSport = SupportedSport.MLB;
-          break;
-      }
       final leagues = await _leagueRepository.fetchLeagues();
       filterOutUnsupportedSportsByChain(leagues);
       emit(
@@ -120,7 +101,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
           allLeagues: leagues,
           filteredLeagues: leagues,
           status: BlocStatus.success,
-          selectedSport: supportedSport,
+          selectedSport: SupportedSport.all,
         ),
       );
     } catch (_) {
