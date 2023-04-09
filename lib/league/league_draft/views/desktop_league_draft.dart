@@ -7,6 +7,7 @@ import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 
 class DesktopLeagueDraft extends StatelessWidget {
   const DesktopLeagueDraft({
@@ -27,6 +28,13 @@ class DesktopLeagueDraft extends StatelessWidget {
       BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
         builder: (context, state) {
           final bloc = context.read<LeagueDraftBloc>();
+
+          final walletAddress =
+              context.read<WalletBloc>().state.formattedWalletAddress;
+          final walletId =
+              (walletAddress.isEmpty || walletAddress == kEmptyAddress)
+                  ? ''
+                  : walletAddress;
 
           if (state.status == BlocStatus.initial) {
             bloc.add(FetchAptsOwnedEvent(athletes: athletes));
@@ -154,7 +162,44 @@ class DesktopLeagueDraft extends StatelessWidget {
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: width / 5),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: buttonColorBG,
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: TextButton(
+                                onPressed: () => {
+                                  bloc.add(
+                                    ConfirmTeam(
+                                      walletAddress: walletId,
+                                      myTeam: state.myAptTeam,
+                                    ),
+                                  )
+                                },
+                                child: const Text(
+                                  'Confirm',
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
