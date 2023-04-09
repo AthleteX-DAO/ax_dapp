@@ -1,3 +1,4 @@
+import 'package:ax_dapp/app/config/app_config.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
@@ -8,7 +9,9 @@ import 'package:ax_dapp/util/percent_helper.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class LeagueGame extends StatefulWidget {
   const LeagueGame({
@@ -69,7 +72,54 @@ class _LeagueGameState extends State<LeagueGame> {
                             border: Border.all(color: Colors.amber[400]!),
                           ),
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: timerStatus.hasEnded
+                                ? () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        backgroundColor: Colors.transparent,
+                                        content: Text(
+                                          'The League Has Ended And Invite Links Are No Longer Available!',
+                                          style: TextStyle(
+                                            color: Colors.amber,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                : () {
+                                    final gamePageLocation =
+                                        GoRouter.of(context)
+                                            .location
+                                            .substring(1);
+                                    final gamePageUrl =
+                                        '$baseUrl$gamePageLocation';
+                                    Clipboard.setData(
+                                      ClipboardData(
+                                        text: gamePageUrl,
+                                      ),
+                                    ).then(
+                                      (_) => ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          backgroundColor: Colors.transparent,
+                                          content: Text(
+                                            'Copied Invite Link!',
+                                            style: TextStyle(
+                                              color: Colors.amber,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      ),
+                                    );
+                                  },
                             child: const Text(
                               'Invite',
                               style: TextStyle(
@@ -109,7 +159,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                if (timerStatus == TimerStatus.pending) ...[
+                                if (timerStatus.isPending) ...[
                                   Text(
                                     '$differenceInDays Days Until ${widget.league.name} Begins!',
                                     style: textStyle(
@@ -119,8 +169,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                       isUline: false,
                                     ),
                                   ),
-                                ] else if (timerStatus ==
-                                    TimerStatus.started) ...[
+                                ] else if (timerStatus.hasStarted) ...[
                                   Text(
                                     '$differenceInDays Days $differenceInHours Hours $differenceInMinutes Minutes $differenceInSeconds Seconds Remaining',
                                     style: textStyle(

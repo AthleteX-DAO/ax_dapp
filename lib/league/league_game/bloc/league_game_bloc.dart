@@ -38,7 +38,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
             rosters: rosters,
           ),
         ) {
-    on<InviteEvent>(_onInviteEvent);
     on<EditTeamsEvent>(_onEditTeams);
     on<ClaimPrizeEvent>(_onClaimPrize);
     on<CalculateAppreciationEvent>(_onCalculateAppreciationEvent);
@@ -86,11 +85,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     _tickerRepository.cancel();
     return super.close();
   }
-
-  Future<void> _onInviteEvent(
-    InviteEvent event,
-    Emitter<LeagueGameState> emit,
-  ) async {}
 
   Future<void> _onEditTeams(
     EditTeamsEvent event,

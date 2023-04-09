@@ -16,4 +16,12 @@ const baseApiUrl = (String.fromEnvironment(
     ? 'https://api-stage.athletex.io'
     : 'https://api.athletex.io';
 
+const baseUrl = (String.fromEnvironment(
+          'BUILD_TYPE',
+          defaultValue: 'staging',
+        ) ==
+        'staging')
+    ? 'https://stage.athletex.io/#/'
+    : 'https://app.athletex.io/#/';
+
 const kCollateralizationMultiplier = 1000;

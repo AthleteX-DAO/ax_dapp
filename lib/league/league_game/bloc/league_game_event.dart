@@ -13,19 +13,6 @@ class WatchAppDataChangesStarted extends LeagueGameEvent {
 
 class FetchScoutInfoRequested extends LeagueGameEvent {}
 
-class InviteEvent extends LeagueGameEvent {
-  const InviteEvent({
-    required this.leagueID,
-    required this.isPrivate,
-  });
-
-  final String leagueID;
-  final String isPrivate;
-
-  @override
-  List<Object?> get props => [leagueID, isPrivate];
-}
-
 class EditTeamsEvent extends LeagueGameEvent {
   const EditTeamsEvent({
     required this.rosters,
