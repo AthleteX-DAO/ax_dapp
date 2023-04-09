@@ -5,44 +5,36 @@ class CalculateTeamPerformanceUseCase {
     Map<String, double> roster,
     List<AthleteScoutModel> athletes,
   ) {
-    final percentChanges = <double>[];
-    roster.forEach(
-      (athlete, price) {
-        final name =
-            roster.keys.firstWhere((element) => roster[element] == price);
-        final athleteNameParts = name.split(' ');
-        final aptType = athleteNameParts[athleteNameParts.length - 2];
-        final athleteId = int.parse(athleteNameParts.last);
-        final initialPrice = roster[name];
-        final athleteScoutModel = athletes.firstWhere(
-          (athlete) => athlete.id == athleteId,
-          orElse: () => AthleteScoutModel.empty,
-        );
-        if (aptType == 'Long') {
-          if (athleteScoutModel.longTokenBookPrice != roster[name]) {
-            final percentChange = initialPrice == 0.0
-                ? 0.0
-                : ((athleteScoutModel.longTokenBookPrice! - initialPrice!) /
-                        initialPrice) *
-                    100;
+    final percentChanges = roster.entries.map((entry) {
+      final athleteName = entry.key;
+      final initialPrice = entry.value;
+      final nameParts = athleteName.split(' ');
+      final athleteId = int.parse(nameParts.last);
+      final aptType = nameParts[nameParts.length - 2];
+      final athlete = athletes.firstWhere(
+        (a) => a.id == athleteId,
+        orElse: () => AthleteScoutModel.empty,
+      );
 
-            percentChanges.add(percentChange);
-          }
-        } else {
-          if (athleteScoutModel.shortTokenBookPrice != roster[name]) {
-            final percentChange = initialPrice == 0.0
-                ? 0.0
-                : ((initialPrice! - athleteScoutModel.shortTokenBookPrice!) /
-                        initialPrice) *
-                    100;
-            percentChanges.add(percentChange);
-          }
-        }
-      },
-    );
+      double price;
+      double percentChange;
 
-    final teamPerformance =
-        double.parse(percentChanges.reduce((a, b) => a + b).toStringAsFixed(2));
+      if (aptType == 'Long') {
+        price = athlete.longTokenBookPrice!;
+        percentChange = (price - initialPrice) / initialPrice * 100;
+      } else {
+        price = athlete.shortTokenBookPrice!;
+        percentChange = (initialPrice - price) / initialPrice * 100;
+      }
+
+      if (price == initialPrice || initialPrice == 0) {
+        return 0.0;
+      }
+
+      return percentChange;
+    }).toList();
+
+    final teamPerformance = percentChanges.reduce((a, b) => a + b);
 
     return teamPerformance;
   }

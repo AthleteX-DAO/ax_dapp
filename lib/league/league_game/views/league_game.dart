@@ -222,15 +222,10 @@ class _LeagueGameState extends State<LeagueGame> {
                                 MaterialPageRoute(
                                   builder: (context) => DesktopLeagueDraft(
                                     league: widget.league,
-                                    athletes: state.athletes,
+                                    athletes: filteredAthletes,
                                   ),
                                 ),
                               );
-
-                              // context.goNamed(
-                              //   'league-draft',
-                              //   params: {'leagueID': widget.leagueID},
-                              // );
                             },
                             child: const Text(
                               'Join League',
