@@ -16,55 +16,54 @@ class APTCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
-      builder: (context, state) {
-        final bloc = context.read<LeagueDraftBloc>();
+    const sportIconSize = 30.0;
+    const statusIconSize = 30.0;
+    const statusIcon = Icons.add_box_outlined;
+    const statusIconColor = Colors.white;
 
-        const sportIconSize = 30.0;
-        const statusIconSize = 30.0;
-        const statusIcon = Icons.add_box_outlined;
-        const statusIconColor = Colors.white;
-
-        return Container(
-          height: 90,
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0xFF646464),
-              ),
-            ),
+    return Container(
+      height: 90,
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xFF646464),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Icon(
-                getSportIcon(apt.sport),
-                color: Colors.grey[400],
-                size: sportIconSize,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(apt.name),
-                  Text(apt.team),
-                ],
-              ),
-              Text('${apt.bookPrice?.toStringAsFixed(2)} AX'),
-              Text('${apt.bookPricePercent?.toStringAsFixed(2)}%'),
-              IconButton(
-                icon: const Icon(
-                  statusIcon,
-                  color: statusIconColor,
-                  size: statusIconSize,
-                ),
-                onPressed: () {
-                  bloc.add(AddAptToTeam(apt: apt, teamSize: teamSize));
-                },
-              )
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Icon(
+            getSportIcon(apt.sport),
+            color: Colors.grey[400],
+            size: sportIconSize,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(apt.name),
+              Text(apt.team),
             ],
           ),
-        );
-      },
+          Text('${apt.bookPrice?.toStringAsFixed(2)} AX'),
+          Text('${apt.bookPricePercent?.toStringAsFixed(2)}%'),
+          IconButton(
+            icon: const Icon(
+              statusIcon,
+              color: statusIconColor,
+              size: statusIconSize,
+            ),
+            onPressed: () {
+              context.read<LeagueDraftBloc>().add(
+                    AddAptToTeam(
+                      apt: apt,
+                      teamSize: teamSize,
+                    ),
+                  );
+            },
+          )
+        ],
+      ),
     );
   }
 }

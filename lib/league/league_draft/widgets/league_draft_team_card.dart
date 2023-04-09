@@ -14,52 +14,50 @@ class MyTeamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
-      builder: (context, state) {
-        final bloc = context.read<LeagueDraftBloc>();
+    const sportIconSize = 30.0;
+    const statusIconSize = 30.0;
+    const statusIconColor = Colors.white;
 
-        const sportIconSize = 30.0;
-        const statusIconSize = 30.0;
-        const statusIconColor = Colors.white;
-
-        return Container(
-          height: 90,
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0xFF646464),
-              ),
-            ),
+    return Container(
+      height: 90,
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xFF646464),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Icon(
-                getSportIcon(apt.sport),
-                color: Colors.grey[400],
-                size: sportIconSize,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(apt.name),
-                  Text(apt.team),
-                ],
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.remove_circle_outline_outlined,
-                  color: statusIconColor,
-                  size: statusIconSize,
-                ),
-                onPressed: () {
-                  bloc.add(RemoveAptFromTeam(apt: apt));
-                },
-              )
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Icon(
+            getSportIcon(apt.sport),
+            color: Colors.grey[400],
+            size: sportIconSize,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(apt.name),
+              Text(apt.team),
             ],
           ),
-        );
-      },
+          IconButton(
+            icon: const Icon(
+              Icons.remove_circle_outline_outlined,
+              color: statusIconColor,
+              size: statusIconSize,
+            ),
+            onPressed: () {
+              context.read<LeagueDraftBloc>().add(
+                    RemoveAptFromTeam(
+                      apt: apt,
+                    ),
+                  );
+            },
+          )
+        ],
+      ),
     );
   }
 }
