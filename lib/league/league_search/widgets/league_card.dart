@@ -1,5 +1,5 @@
+import 'package:ax_dapp/league/league_search/widgets/widgets.dart';
 import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,148 +37,37 @@ class LeagueCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            FittedBox(
-              child: SizedBox(
-                width: _width * 0.2,
-                child: Row(
-                  children: [
-                    Row(
-                      children: league.sports
-                          .map(
-                            (sport) => Icon(
-                              getSportIcon(sport),
-                              color: Colors.grey[400],
-                              size: sportIconSize,
-                            ),
-                          )
-                          .toList(),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    FittedBox(
-                      child: SizedBox(
-                        width: _width * 0.15,
-                        child: Text(
-                          league.name,
-                          style: TextStyle(
-                            color: Colors.amber,
-                            fontFamily: 'OpenSans',
-                            fontSize: textSize,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            LeagueName(
+              width: _width,
+              league: league,
+              sportIconSize: sportIconSize,
+              textSize: textSize,
             ),
             if (showDateRange)
-              FittedBox(
-                child: SizedBox(
-                  width: _width * 0.2,
-                  child: Text(
-                    '${league.dateStart} - ${league.dateEnd}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: textSize,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
+              DateRange(
+                width: _width,
+                league: league,
+                textSize: textSize,
               ),
-            FittedBox(
-              child: SizedBox(
-                width: _width * 0.2,
-                child: Row(
-                  children: [
-                    Container(
-                      width: axIconWidth,
-                      height: axIconHeight,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/x.jpg'),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      '${league.entryFee} AX',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'OpenSans',
-                        fontSize: textSize,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+            EntryFee(
+              width: _width,
+              axIconWidth: axIconWidth,
+              axIconHeight: axIconHeight,
+              league: league,
+              textSize: textSize,
             ),
-            FittedBox(
-              child: SizedBox(
-                width: _width * 0.2,
-                child: Row(
-                  children: [
-                    Container(
-                      width: axIconWidth,
-                      height: axIconHeight,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/x.jpg'),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    //TODO(anyone): get the prize pool for each league
-                    Text(
-                      '1000 AX',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'OpenSans',
-                        fontSize: textSize,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+            PrizePool(
+              width: _width,
+              axIconWidth: axIconWidth,
+              axIconHeight: axIconHeight,
+              league: league,
+              textSize: textSize,
             ),
             if (showToolTipIcon)
-              Tooltip(
-                triggerMode: TooltipTriggerMode.tap,
-                height: 50,
-                padding: const EdgeInsets.all(10),
-                verticalOffset: -100,
-                decoration: BoxDecoration(
-                  color: Colors.grey[800],
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                richMessage: TextSpan(
-                  //TODO(anyone): add relevant information to this tooltip
-                  text: '',
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: textSize,
-                    fontFamily: 'OpenSans',
-                  ),
-                ),
-                child: const Icon(
-                  Icons.info_outline_rounded,
-                  color: Colors.grey,
-                  size: 25,
-                ),
-              )
+              LeagueSearchPageToolTip(
+                league: league,
+                textSize: textSize,
+              ),
           ],
         ),
       ),
