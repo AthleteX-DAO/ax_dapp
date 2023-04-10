@@ -89,3 +89,23 @@ class AthleteScoutModel extends Equatable {
   String toString() =>
       'AthleteScoutModel(id: $id, name: $name, sport: ${sport.name})';
 }
+
+extension AthleteScoutModelListX on List<AthleteScoutModel> {
+  SupportedSport getAthleteSport(String athleteName) {
+    final athleteId = int.parse(athleteName.split(' ').last);
+    final athlete = firstWhere(
+      (athlete) => athlete.id == athleteId,
+      orElse: () => AthleteScoutModel.empty,
+    );
+    return athlete.sport;
+  }
+
+  String getAthleteTeam(String athleteName) {
+    final athleteId = int.parse(athleteName.split(' ').last);
+    final athlete = firstWhere(
+      (athlete) => athlete.id == athleteId,
+      orElse: () => AthleteScoutModel.empty,
+    );
+    return athlete.team;
+  }
+}
