@@ -3,6 +3,7 @@ import 'package:ax_dapp/league/league_draft/views/desktop_league_draft.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
+import 'package:ax_dapp/league/widgets/dialogs/edit_rules_dialog.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -208,35 +209,73 @@ class _LeagueGameState extends State<LeagueGame> {
                             ),
                           ),
                         ),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(color: Colors.amber[400]!),
-                          ),
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                // ignore: inference_failure_on_instance_creation
-                                MaterialPageRoute(
-                                  builder: (context) => DesktopLeagueDraft(
-                                    league: widget.league,
-                                    athletes: filteredAthletes,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(color: Colors.amber[400]!),
+                              ),
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    // ignore: inference_failure_on_instance_creation
+                                    MaterialPageRoute(
+                                      builder: (context) => DesktopLeagueDraft(
+                                        league: widget.league,
+                                        athletes: filteredAthletes,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'Join League',
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                              );
-                            },
-                            child: const Text(
-                              'Join League',
-                              style: TextStyle(
-                                color: Colors.amber,
-                                fontFamily: 'OpenSans',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
                               ),
                             ),
-                          ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            if (widget.league.adminWallet == "'$walletAddress'")
+                              DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(100),
+                                  border: Border.all(color: Colors.amber[400]!),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (context) => BlocProvider.value(
+                                        value: bloc,
+                                        child: EditRulesDialog(
+                                          league: widget.league,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'Edit League',
+                                    style: TextStyle(
+                                      color: Colors.amber,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ],
                     ),

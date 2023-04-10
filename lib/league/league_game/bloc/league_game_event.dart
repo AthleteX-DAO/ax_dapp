@@ -61,3 +61,49 @@ class JoinLeagueEvent extends LeagueGameEvent {
 class LeaveLeagueEvent extends LeagueGameEvent {}
 
 class CalculateRemainingDays extends LeagueGameEvent {}
+
+class EditLeagueEvent extends LeagueGameEvent {
+  const EditLeagueEvent({
+    required this.leagueID,
+    required this.name,
+    required this.adminWallet,
+    required this.dateStart,
+    required this.dateEnd,
+    required this.teamSize,
+    required this.maxTeams,
+    required this.entryFee,
+    required this.isPrivate,
+    required this.isLocked,
+    required this.rosters,
+    required this.sports,
+  });
+
+  final String leagueID;
+  final String name;
+  final String adminWallet;
+  final String dateStart;
+  final String dateEnd;
+  final int teamSize;
+  final int maxTeams;
+  final int entryFee;
+  final bool isPrivate;
+  final bool isLocked;
+  final Map<String, Map<String, double>> rosters;
+  final List<SupportedSport> sports;
+
+  @override
+  List<Object?> get props => [
+        leagueID,
+        name,
+        adminWallet,
+        dateStart,
+        dateEnd,
+        teamSize,
+        maxTeams,
+        entryFee,
+        isPrivate,
+        isLocked,
+        rosters,
+        sports,
+      ];
+}
