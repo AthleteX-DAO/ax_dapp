@@ -254,15 +254,36 @@ class _LeagueGameState extends State<LeagueGame> {
                                 ),
                                 child: TextButton(
                                   onPressed: () {
-                                    showDialog<void>(
-                                      context: context,
-                                      builder: (context) => BlocProvider.value(
-                                        value: bloc,
-                                        child: EditRulesDialog(
-                                          league: widget.league,
+                                    if (timerStatus.hasStarted ||
+                                        timerStatus.hasEnded) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          backgroundColor: Colors.transparent,
+                                          content: Text(
+                                            'Cannot Edit League At This Time Because Either The League Has Started Or Ended',
+                                            style: TextStyle(
+                                              color: Colors.amber,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          duration: Duration(seconds: 2),
                                         ),
-                                      ),
-                                    );
+                                      );
+                                    } else {
+                                      showDialog<void>(
+                                        context: context,
+                                        builder: (context) =>
+                                            BlocProvider.value(
+                                          value: bloc,
+                                          child: EditRulesDialog(
+                                            league: widget.league,
+                                          ),
+                                        ),
+                                      );
+                                    }
                                   },
                                   child: const Text(
                                     'Edit League',
