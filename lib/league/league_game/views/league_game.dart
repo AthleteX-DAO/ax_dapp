@@ -4,9 +4,11 @@ import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/widgets/dialogs/edit_rules_dialog.dart';
+import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -67,6 +69,7 @@ class _LeagueGameState extends State<LeagueGame> {
           final differenceInMinutes = state.differenceInMinutes;
           final differenceInSeconds = state.differenceInSeconds;
           final timerStatus = state.timerStatus;
+          final athletes = state.athletes;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -315,20 +318,20 @@ class _LeagueGameState extends State<LeagueGame> {
                         itemBuilder: (BuildContext context, int index) {
                           final userTeam = userTeams[index];
                           final rosters = userTeam.roster.keys.toList();
-                          final rosterFormatted = rosters
-                              .map(
-                                (e) => e
-                                    .split(' ')
-                                    .getRange(0, e.split(' ').length - 1)
-                                    .join(' '),
-                              )
-                              .toList();
                           return ExpansionTile(
                             title: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(userTeam.address),
+                                Text(
+                                  userTeam.address,
+                                  style: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 Row(
                                   children: [
                                     Text(
@@ -389,10 +392,58 @@ class _LeagueGameState extends State<LeagueGame> {
                             childrenPadding: const EdgeInsets.all(10),
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: rosterFormatted
-                                    .map<Widget>(Text.new)
+                                children: rosters
+                                    .map(
+                                      (athleteName) => Expanded(
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              getSportIcon(
+                                                athletes.getAthleteSport(
+                                                  athleteName,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  athleteName
+                                                      .split(' ')
+                                                      .sublist(
+                                                        0,
+                                                        athleteName
+                                                                .split(' ')
+                                                                .length -
+                                                            1,
+                                                      )
+                                                      .join(' '),
+                                                  style: TextStyle(
+                                                    color: Colors.grey[400],
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  athletes.getAthleteTeam(
+                                                    athleteName,
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: Colors.grey[400],
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
                                     .toList(),
                               ),
                             ],
