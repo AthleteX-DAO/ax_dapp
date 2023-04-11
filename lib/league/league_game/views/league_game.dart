@@ -173,7 +173,7 @@ class LeagueGame extends StatelessWidget {
                                 const SizedBox(height: 10),
                                 if (timerStatus.isPending) ...[
                                   Text(
-                                    '$differenceInDays Days Until ${league.name} Begins!',
+                                    '$differenceInDays Days $differenceInHours Hours $differenceInMinutes Minutes $differenceInSeconds Seconds Until ${league.name} Begins!',
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       14,
