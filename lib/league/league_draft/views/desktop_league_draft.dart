@@ -20,16 +20,20 @@ class DesktopLeagueDraft extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final walletAddress =
+        context.select((WalletBloc bloc) => bloc.state.walletAddress);
+    final isWalletConnected =
+        context.read<WalletBloc>().state.isWalletConnected;
+    final ownedApts =
+        context.select((LeagueDraftBloc bloc) => bloc.state.ownedApts);
+    final myAptTeam =
+        context.select((LeagueDraftBloc bloc) => bloc.state.myAptTeam);
     final global = Global();
-
     return global.buildPage(
       context,
       BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
         builder: (context, state) {
           final bloc = context.read<LeagueDraftBloc>();
-          final walletAddress = context.read<WalletBloc>().state.walletAddress;
-          final isWalletConnected =
-              context.read<WalletBloc>().state.isWalletConnected;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               final width = constraints.maxWidth;
@@ -128,10 +132,10 @@ class DesktopLeagueDraft extends StatelessWidget {
                                       ? const Loader()
                                       : ListView.builder(
                                           shrinkWrap: true,
-                                          itemCount: state.ownedApts.length,
+                                          itemCount: ownedApts.length,
                                           itemBuilder: (context, index) {
                                             return APTCard(
-                                              apt: state.ownedApts[index],
+                                              apt: ownedApts[index],
                                               teamSize: league.teamSize,
                                             );
                                           },
@@ -142,10 +146,10 @@ class DesktopLeagueDraft extends StatelessWidget {
                                 child: Material(
                                   child: ListView.builder(
                                     shrinkWrap: true,
-                                    itemCount: state.myAptTeam.length,
+                                    itemCount: myAptTeam.length,
                                     itemBuilder: (context, index) {
                                       return MyTeamCard(
-                                        apt: state.myAptTeam[index],
+                                        apt: myAptTeam[index],
                                       );
                                     },
                                   ),
@@ -171,15 +175,22 @@ class DesktopLeagueDraft extends StatelessWidget {
                               padding: const EdgeInsets.all(8),
                               child: TextButton(
                                 onPressed: () {
-                                  if (isWalletConnected) {
+                                  if (isWalletConnected &&
+                                      myAptTeam.isNotEmpty) {
                                     bloc.add(
                                       ConfirmTeam(
                                         walletAddress: walletAddress,
                                         leagueID: league.leagueID,
-                                        myTeam: state.myAptTeam,
+                                        myTeam: myAptTeam,
                                       ),
                                     );
                                     Navigator.pop(context);
+                                  } else if (myAptTeam.isEmpty) {
+                                    context.showWarningToast(
+                                      title: 'No Athletes Selected!',
+                                      description:
+                                          'Please Add Athletes Before Entering A League!',
+                                    );
                                   } else {
                                     context.showWalletWarningToast();
                                   }
