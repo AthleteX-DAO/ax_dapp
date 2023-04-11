@@ -89,6 +89,12 @@ class ConfigApiClient {
     _dependenciesController.add(initializeAppConfig());
   }
 
+  /// Injects a new client to engage with the app (useful for multi-wallet solutions)
+  void updateWeb3ClientDependency(Web3Client newClient) {
+    
+    _web3ClientController.add(newClient);
+  }
+
   // /// Switches the [LongShortPair] client.
   // void switchLspClient(String pairAddress) {
   //   final lspClient = LongShortPair(
