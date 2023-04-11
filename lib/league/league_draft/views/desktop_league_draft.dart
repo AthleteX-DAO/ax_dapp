@@ -2,9 +2,9 @@ import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_draft/widgets/league_draft_apt_card.dart';
 import 'package:ax_dapp/league/league_draft/widgets/league_draft_team_card.dart';
 import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,11 +14,9 @@ class DesktopLeagueDraft extends StatelessWidget {
   const DesktopLeagueDraft({
     super.key,
     required this.league,
-    required this.athletes,
   });
 
   final League league;
-  final List<AthleteScoutModel> athletes;
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +27,9 @@ class DesktopLeagueDraft extends StatelessWidget {
       BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
         builder: (context, state) {
           final bloc = context.read<LeagueDraftBloc>();
-
           final walletAddress = context.read<WalletBloc>().state.walletAddress;
-
-          if (state.status == BlocStatus.initial) {
-            bloc.add(FetchAptsOwnedEvent(athletes: athletes));
-          }
-
+          final isWalletConnected =
+              context.read<WalletBloc>().state.isWalletConnected;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               final width = constraints.maxWidth;
@@ -130,16 +124,18 @@ class DesktopLeagueDraft extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Material(
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: state.ownedApts.length,
-                                    itemBuilder: (context, index) {
-                                      return APTCard(
-                                        apt: state.ownedApts[index],
-                                        teamSize: league.teamSize,
-                                      );
-                                    },
-                                  ),
+                                  child: state.status == BlocStatus.loading
+                                      ? const Loader()
+                                      : ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: state.ownedApts.length,
+                                          itemBuilder: (context, index) {
+                                            return APTCard(
+                                              apt: state.ownedApts[index],
+                                              teamSize: league.teamSize,
+                                            );
+                                          },
+                                        ),
                                 ),
                               ),
                               Expanded(
@@ -174,15 +170,19 @@ class DesktopLeagueDraft extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: TextButton(
-                                onPressed: () => {
-                                  bloc.add(
-                                    ConfirmTeam(
-                                      walletAddress: walletAddress,
-                                      leagueID: league.leagueID,
-                                      myTeam: state.myAptTeam,
-                                    ),
-                                  ),
-                                  Navigator.pop(context)
+                                onPressed: () {
+                                  if (isWalletConnected) {
+                                    bloc.add(
+                                      ConfirmTeam(
+                                        walletAddress: walletAddress,
+                                        leagueID: league.leagueID,
+                                        myTeam: state.myAptTeam,
+                                      ),
+                                    );
+                                    Navigator.pop(context);
+                                  } else {
+                                    context.showWalletWarningToast();
+                                  }
                                 },
                                 child: const Text(
                                   'Confirm',

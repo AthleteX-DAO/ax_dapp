@@ -50,7 +50,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<EditLeagueEvent>(_onEditLeagueEvent);
 
     add(const WatchAppDataChangesStarted());
-    add(FetchScoutInfoRequested());
     add(CalculateRemainingDays());
   }
 
@@ -80,6 +79,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
             ),
           );
         }
+        add(FetchScoutInfoRequested());
       },
     );
   }
@@ -222,8 +222,11 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         sports: event.sports,
       );
 
-      await _leagueRepository.updateLeague(leagueID: event.leagueID, league: league);
-      
+      await _leagueRepository.updateLeague(
+        leagueID: event.leagueID,
+        league: league,
+      );
+
       emit(state.copyWith(status: BlocStatus.success));
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));

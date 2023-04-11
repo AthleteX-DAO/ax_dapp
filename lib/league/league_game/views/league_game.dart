@@ -1,10 +1,13 @@
 import 'package:ax_dapp/app/config/app_config.dart';
+import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_draft/views/desktop_league_draft.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
+import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/widgets/dialogs/edit_rules_dialog.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -16,8 +19,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
-class LeagueGame extends StatefulWidget {
+class LeagueGame extends StatelessWidget {
   const LeagueGame({
     super.key,
     required this.league,
@@ -28,17 +33,12 @@ class LeagueGame extends StatefulWidget {
   final String leagueID;
 
   @override
-  State<LeagueGame> createState() => _LeagueGameState();
-}
-
-class _LeagueGameState extends State<LeagueGame> {
-  EthereumChain? _selectedChain;
-
-  @override
   Widget build(BuildContext context) {
     final global = Global();
     final walletAddress =
         context.select((WalletBloc bloc) => bloc.state.walletAddress);
+    final isWalletConnected =
+        context.read<WalletBloc>().state.isWalletConnected;
     return global.buildPage(
       context,
       BlocBuilder<LeagueGameBloc, LeagueGameState>(
@@ -49,12 +49,6 @@ class _LeagueGameState extends State<LeagueGame> {
         builder: (context, state) {
           final bloc = context.read<LeagueGameBloc>();
           final filteredAthletes = state.filteredAthletes;
-          if (_selectedChain != state.selectedChain) {
-            _selectedChain = state.selectedChain;
-            bloc.add(
-              FetchScoutInfoRequested(),
-            );
-          }
           if (state.status == BlocStatus.success) {
             bloc.add(
               CalculateAppreciationEvent(
@@ -158,7 +152,7 @@ class _LeagueGameState extends State<LeagueGame> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  widget.league.name,
+                                  league.name,
                                   style: textStyle(
                                     Colors.amber[400]!,
                                     18,
@@ -168,7 +162,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  '${widget.league.dateStart} - ${widget.league.dateEnd}',
+                                  '${league.dateStart} - ${league.dateEnd}',
                                   style: textStyle(
                                     Colors.grey[400]!,
                                     14,
@@ -179,7 +173,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                 const SizedBox(height: 10),
                                 if (timerStatus.isPending) ...[
                                   Text(
-                                    '$differenceInDays Days Until ${widget.league.name} Begins!',
+                                    '$differenceInDays Days Until ${league.name} Begins!',
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       14,
@@ -199,7 +193,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                   ),
                                 ] else ...[
                                   Text(
-                                    '${widget.league.name} Has Ended!',
+                                    '${league.name} Has Ended!',
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       14,
@@ -223,16 +217,32 @@ class _LeagueGameState extends State<LeagueGame> {
                               ),
                               child: TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    // ignore: inference_failure_on_instance_creation
-                                    MaterialPageRoute(
-                                      builder: (context) => DesktopLeagueDraft(
-                                        league: widget.league,
-                                        athletes: filteredAthletes,
+                                  if (isWalletConnected) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute<void>(
+                                        builder: (context) => BlocProvider(
+                                          create: (context) => LeagueDraftBloc(
+                                            athletes: athletes,
+                                            leagueRepository: context
+                                                .read<LeagueRepository>(),
+                                            getTotalTokenBalanceUseCase:
+                                                GetTotalTokenBalanceUseCase(
+                                              walletRepository: context
+                                                  .read<WalletRepository>(),
+                                              tokensRepository: context
+                                                  .read<TokensRepository>(),
+                                            ),
+                                          ),
+                                          child: DesktopLeagueDraft(
+                                            league: league,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    context.showWalletWarningToast();
+                                  }
                                 },
                                 child: const Text(
                                   'Join League',
@@ -248,7 +258,7 @@ class _LeagueGameState extends State<LeagueGame> {
                             const SizedBox(
                               width: 5,
                             ),
-                            if (widget.league.adminWallet == "'$walletAddress'")
+                            if (league.adminWallet == "'$walletAddress'")
                               DecoratedBox(
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
@@ -282,7 +292,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                             BlocProvider.value(
                                           value: bloc,
                                           child: EditRulesDialog(
-                                            league: widget.league,
+                                            league: league,
                                           ),
                                         ),
                                       );

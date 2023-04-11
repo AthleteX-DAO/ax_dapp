@@ -52,12 +52,3 @@ class ConfirmTeam extends LeagueDraftEvent {
   @override
   List<Object> get props => [walletAddress, leagueID, myTeam];
 }
-
-class GetAthletes extends LeagueDraftEvent {
-  const GetAthletes({required this.athletes});
-
-  final List<AthleteScoutModel> athletes;
-
-  @override
-  List<Object> get props => [athletes];
-}

@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'dart:async';
 
 import 'package:ax_dapp/league/models/draft_apt.dart';
@@ -9,7 +7,6 @@ import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 part 'league_draft_event.dart';
@@ -19,6 +16,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
   LeagueDraftBloc({
     required LeagueRepository leagueRepository,
     required GetTotalTokenBalanceUseCase getTotalTokenBalanceUseCase,
+    required this.athletes,
   })  : _leagueRepository = leagueRepository,
         _getTotalTokenBalanceUseCase = getTotalTokenBalanceUseCase,
         super(const LeagueDraftState()) {
@@ -26,24 +24,22 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     on<AddAptToTeam>(_onAddAptToTeam);
     on<RemoveAptFromTeam>(_onRemoveAptFromTeam);
     on<ConfirmTeam>(_onConfirmTeam);
-    on<GetAthletes>(_onGetAthletes);
+    add(FetchAptsOwnedEvent(athletes: athletes));
   }
 
   final LeagueRepository _leagueRepository;
   final GetTotalTokenBalanceUseCase _getTotalTokenBalanceUseCase;
+  final List<AthleteScoutModel> athletes;
 
   Future<void> _onFetchAptsOwnedEvent(
     FetchAptsOwnedEvent event,
     Emitter<LeagueDraftState> emit,
   ) async {
     final athletes = event.athletes;
-
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       final response = await _getTotalTokenBalanceUseCase.getOwnedApts();
-
       final ownedApts = ownedAptToList(response, athletes);
-
       emit(state.copyWith(ownedApts: ownedApts, status: BlocStatus.success));
     } catch (_) {
       emit(
@@ -62,13 +58,9 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     if (state.athleteCount < event.teamSize) {
       emit(state.copyWith(status: BlocStatus.loading));
       final apt = event.apt;
-
       final ownedApts = List<DraftApt>.from(state.ownedApts)..remove(apt);
-
       final myAptTeam = List<DraftApt>.from(state.myAptTeam)..add(apt);
-
       final athleteCount = myAptTeam.length;
-
       emit(
         state.copyWith(
           ownedApts: ownedApts,
@@ -87,11 +79,8 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     emit(state.copyWith(status: BlocStatus.loading));
     final apt = event.apt;
     final ownedApts = List<DraftApt>.from(state.ownedApts)..add(apt);
-
     final myAptTeam = List<DraftApt>.from(state.myAptTeam)..remove(apt);
-
     final athleteCount = myAptTeam.length;
-
     emit(
       state.copyWith(
         ownedApts: ownedApts,
@@ -110,34 +99,21 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     final leagueID = event.leagueID;
     final myTeam = event.myTeam;
     final playerNames = <String>[];
-
     for (final player in myTeam) {
       playerNames.add(player.name);
     }
-
     final roster = {for (var e in playerNames) e: 0.0};
-
     try {
       emit(state.copyWith(status: BlocStatus.loading));
-
       await _leagueRepository.enrollUser(
         leagueID: leagueID,
         userWallet: userWallet,
         roster: roster,
       );
-
       emit(state.copyWith(status: BlocStatus.success));
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
     }
-  }
-
-  void _onGetAthletes(
-    GetAthletes event,
-    Emitter<LeagueDraftState> emit,
-  ) {
-    final athletes = event.athletes;
-    emit(state.copyWith(athletes: athletes));
   }
 
   List<DraftApt> ownedAptToList(
