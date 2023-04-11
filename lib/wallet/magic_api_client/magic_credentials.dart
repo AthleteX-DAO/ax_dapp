@@ -5,22 +5,22 @@ import 'package:web3_browser/web3_browser.dart';
 import 'package:web3dart/src/crypto/secp256k1.dart';
 import 'package:web3dart/web3dart.dart';
 
-class MagicCredentials extends CredentialsWithKnownAddress {
-  MagicCredentials(String hexAddress, Ethereum ethereuem)
-      : address = EthereumAddress.fromHex(hexAddress);
+class MagicCredentials extends Equatable {
+  const MagicCredentials(CredentialsWithKnownAddress credentials)
+      : _credentials = credentials;
 
+  final CredentialsWithKnownAddress _credentials;
   @override
-  // TODO: implement address
-  EthereumAddress address;
+  // TODO: implement props
+  List<Object?> get props => [_credentials.address];
+}
 
-  @override
-  Future<MsgSignature> signToSignature(
-    Uint8List payload, {
-    int? chainId,
-    bool isEIP1559 = false,
-  }) {
-    throw UnsupportedError('Signing raw payloads is not supported on MetaMask');
-  }
+extension MagicCredentialsX on MagicCredentials {
+    /// {@macro _credentials}
+  CredentialsWithKnownAddress get value => _credentials;
+
+  /// Returns the wallet address obtained from [CredentialsWithKnownAddress].
+  String get walletAddress => value.address.hex.toLowerCase();
 }
 
 

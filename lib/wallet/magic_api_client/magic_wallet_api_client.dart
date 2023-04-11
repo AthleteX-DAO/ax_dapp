@@ -1,13 +1,14 @@
-import 'package:ethereum_api/tokens_api.dart';
+import 'package:ethereum_api/wallet_api.dart';
 
 /// {@template magic_wallet_api_client}
 /// Client that manages the wallet API(i.e. Magic).
 /// {@endtemplate}
 ///
-abstract class MagicWalletApiClient {
+abstract class MagicApiClient with WalletApiClient {
   /// {@macro magic_api_client}
 
   /// Returns the current [EthereumChain] synchronously.
+  @override
   EthereumChain get currentChain;
 
   /// Asks the user to connect with Magic
@@ -25,4 +26,13 @@ abstract class MagicWalletApiClient {
 
   /// Disconnects a user from their Magic wallet
   Future<void> disconnect();
+
+  /// Asks the user to select an account and give your application access to it.
+  /// Returns the [WalletCredentials] for the connected account.
+
+  @override
+  Future<WalletCredentials> getWalletCredentials();
+
+  /// Connects to the magic client
+  Future<dynamic> requestAccount();
 }
