@@ -23,15 +23,6 @@ class TimerRepository {
         if (todaysDate.isBefore(startDate)) {
           final remainingTime = startDate.difference(todaysDate);
           if (remainingTime.isNegative) {
-            _remainingTimeController.add(
-              const DurationStatus(
-                days: 0,
-                hours: 0,
-                minutes: 0,
-                seconds: 0,
-                timerStatus: TimerStatus.ended,
-              ),
-            );
             cancel();
           } else {
             _remainingTimeController.add(
@@ -48,15 +39,6 @@ class TimerRepository {
           if (todaysDate.isAfter(startDate)) {
             final remainingTime = endDate.difference(todaysDate);
             if (remainingTime.isNegative) {
-              _remainingTimeController.add(
-                const DurationStatus(
-                  days: 0,
-                  hours: 0,
-                  minutes: 0,
-                  seconds: 0,
-                  timerStatus: TimerStatus.ended,
-                ),
-              );
               cancel();
             } else {
               _remainingTimeController.add(
@@ -76,6 +58,15 @@ class TimerRepository {
   }
 
   void cancel() {
+    _remainingTimeController.add(
+      const DurationStatus(
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        timerStatus: TimerStatus.ended,
+      ),
+    );
     _timer.cancel();
   }
 }
