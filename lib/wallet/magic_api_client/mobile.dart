@@ -5,7 +5,7 @@ import 'package:tokens_repository/tokens_repository.dart';
 /// {@template mobile_magic_wallet_api_client}
 /// Mobile client that manages the wallet API(i.e. Magic).
 /// {@endtemplate}
-class MagicApiClient implements MagicWalletApiClient {
+class MagicWalletApiClient implements MagicApiClient {
   /// {@macro mobile_magic_wallet_api_client}
 
   @override
@@ -57,4 +57,4 @@ class MagicApiClient implements MagicWalletApiClient {
   Future<WalletCredentials> getWalletCredentials() {
     throw UnsupportedError('getWalletCredentials');
   }
-}
+ }
