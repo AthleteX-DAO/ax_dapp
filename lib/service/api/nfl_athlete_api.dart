@@ -160,7 +160,6 @@ class NFLAthleteAPI {
     String? until,
     String interval,
   ) async {
-    print('nfl_athlete_api: getPlayersPriceHistory');
     final playersHistory = <AthletePriceRecord>[];
     for (final id in playerIds) {
       playersHistory
