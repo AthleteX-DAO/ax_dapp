@@ -22,8 +22,49 @@ class NFLAthlete extends SportAthlete {
     required String timeStamp,
   }) : super(id, name, team, position, price, timeStamp);
 
-  factory NFLAthlete.fromJson(Map<String, dynamic> json) =>
-      _$NFLAthleteFromJson(json);
+  // ignore: prefer_constructors_over_static_methods
+  static NFLAthlete fromJson(Map<String, dynamic> json) {
+    return NFLAthlete(
+      id: json['ID'] as int,
+      name: json['Name'] as String,
+      team: json['Team'] as String,
+      position: json['Position'] as String,
+      passingYards: (json['PassingYards'] as num).toDouble(),
+      passingTouchdowns: (json['PassingTouchdowns'] as num).toDouble(),
+      reception: (json['Receptions'] as num).toDouble(),
+      receivingYards: (json['ReceivingYards'] as num).toDouble(),
+      receivingTouchdowns: (json['ReceivingTouchdowns'] as num).toDouble(),
+      rushingYards: (json['RushingYards'] as num).toDouble(),
+      offensiveSnapsPlayed:
+          // (json['OffensiveSnapsPlayed'] as num ?? 0).toDouble(),
+          0,
+      defensiveSnapsPlayed:
+          // (json['DefensiveSnapsPlayed'] as num ?? 0).toDouble(),
+          0,
+      price: (json['BookPrice'] as num).toDouble(),
+      timeStamp: json['Time'] as String,
+    );
+  }
+
+  // ignore: prefer_constructors_over_static_methods
+  static NFLAthlete fromPartialJson(Map<String, dynamic> json) {
+    return NFLAthlete(
+      id: json['ID'] as int,
+      team: json['Team'] as String,
+      name: json['Name'] as String,
+      position: json['Position'] as String,
+      passingYards: (json['PassingYards'] as num).toDouble(),
+      rushingYards: (json['RushingYards'] as num).toDouble(),
+      reception: (json['Receptions'] as num).toDouble(),
+      receivingYards: (json['ReceivingYards'] as num).toDouble(),
+      receivingTouchdowns: (json['ReceivingTouchdowns'] as num).toDouble(),
+      passingTouchdowns: (json['PassingTouchdowns'] as num).toDouble(),
+      offensiveSnapsPlayed: 0,
+      defensiveSnapsPlayed: 0,
+      price: (json['BookPrice'] as num).toDouble(),
+      timeStamp: json['Time'] as String,
+    );
+  }
 
   @JsonKey(name: 'passingYards')
   final double passingYards;

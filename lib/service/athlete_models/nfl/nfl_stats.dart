@@ -17,8 +17,21 @@ class NFLStats {
     required this.timeStamp,
   });
 
-  factory NFLStats.fromJson(Map<String, dynamic> json) =>
-      _$NFLStatsFromJson(json);
+  // ignore: prefer_constructors_over_static_methods
+  static NFLStats create(List<double> stats, String time) {
+    return NFLStats(
+      passingYards: stats[0],
+      passingTouchdowns: stats[1],
+      reception: stats[2],
+      receivingYards: stats[3],
+      receivingTouchdowns: stats[4],
+      rushingYards: stats[5],
+      offensiveSnapsPlayed: stats[6],
+      defensiveSnapsPlayed: stats[7],
+      price: stats[8],
+      timeStamp: time,
+    );
+  }
 
   @JsonKey(name: 'passingYards')
   final double passingYards;
