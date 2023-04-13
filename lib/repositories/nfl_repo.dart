@@ -21,12 +21,14 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
 
   @override
   Future<List<NFLAthlete>> getPlayersById(List<int> ids) async {
-    return _api.getPlayersById(ids);
+    return _api.getPlayersById(PlayerIds(ids));
   }
 
   @override
   Future<List<NFLAthlete>> getSupportedPlayers() async {
-    return _api.getAllPlayers();
+    return _api.getPlayersById(
+      PlayerIds(nflApts.map((e) => e.athleteId).toList()),
+    );
   }
 
   @override
@@ -77,7 +79,8 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
     String from,
     String until,
   ) async {
-    final list = _api.getPlayersHistory(ids, from, until);
+    final playerIds = PlayerIds(ids);
+    final list = _api.getPlayersHistory(playerIds, from, until);
     return list;
   }
 
@@ -88,8 +91,9 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
     String? until,
     String? interval,
   }) async {
+    final playerIds = PlayerIds(ids);
     final list =
-        _api.getPlayersPriceHistory(ids, from, until, interval ?? '1d');
+        _api.getPlayersPriceHistory(playerIds, from, until, interval ?? '1d');
     return list;
   }
 }
