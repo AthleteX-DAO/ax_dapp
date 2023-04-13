@@ -1,62 +1,148 @@
+import 'dart:convert';
+
 import 'package:ax_dapp/app/config/app_config.dart';
 import 'package:ax_dapp/service/api/models/player_ids.dart';
 import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
+import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:dio/dio.dart';
-import 'package:retrofit/http.dart';
+import 'package:http/http.dart' as http;
 
-part 'nfl_athlete_api.g.dart';
+class NFLAthleteAPI {
+  NFLAthleteAPI(this.dio) {
+    initState();
+  }
 
-@RestApi(baseUrl: '$baseApiUrl/nfl')
-abstract class NFLAthleteAPI {
-  factory NFLAthleteAPI(Dio dio, {String baseUrl}) = _NFLAthleteAPI;
+  final Dio dio;
+  late String baseDataUrl;
+  final defaultFrom = '2023-01-01';
+  final defaultUntil = '2023-12-31';
+  final defaultInterval = 'Day';
 
-  @GET('/players')
-  Future<List<NFLAthlete>> getAllPlayers();
+  Future<void> initState() async {
+    const cidUrl =
+        'https://raw.githubusercontent.com/AthleteX-DAO/sports-cids/main/nfl.json';
+    try {
+      final response = await http.get(Uri.parse(cidUrl));
+      final decodedData = json.decode(response.body);
+      final cid = await decodedData['directory'] as String;
+      baseDataUrl = 'https://$cid.ipfs.nftstorage.link';
+    } catch (error) {
+      throw Exception('Failed to fetch data: $error');
+    }
+  }
 
-  @POST('/players')
-  Future<List<NFLAthlete>> getPlayersById(@Body() PlayerIds playerIds);
+  Future<List<NFLAthlete>> getAllPlayers() async {
+    final url = '$baseDataUrl/ALL_PLAYERS';
+    final jsonString = (await dio.get<String>(url)).data!;
+    final json = jsonDecode(jsonString) as Map<String, dynamic>;
+    final athleteList = json['Athletes'] as List<dynamic>;
+    return athleteList
+        .map((athlete) => NFLAthlete.fromJson(athlete as Map<String, dynamic>))
+        .toList();
+  }
 
-  @GET('/players/{id}')
-  Future<NFLAthlete> getPlayer(@Path() int id);
+  Future<List<NFLAthlete>> getPlayersById(List<int> ids) async {
+    final athletes = await Future.wait(ids.map(getPlayer));
+    return athletes;
+  }
 
-  @GET('/players')
-  Future<List<NFLAthlete>> getPlayersByTeam(@Query('team') String team);
+  Future<NFLAthlete> getPlayer(int id) async {
+    final url = '$baseDataUrl/$id';
+    return NFLAthlete.fromJson(
+      await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>,
+    );
+  }
 
-  @GET('/players')
-  Future<List<NFLAthlete>> getPlayersByPosition(
-      @Query('position') String position,);
+  Future<List<NFLAthlete>> getPlayersByTeam(String team) async {
+    final athletes = await getAllPlayers();
+    return athletes.where((athlete) => athlete.team == team).toList();
+  }
 
-  @GET('/players')
-  Future<List<NFLAthlete>> getPlayersByTeamAtPosition(@Query('team') String team,
-      @Query('position') String position,);
+  Future<List<NFLAthlete>> getPlayersByPosition(String position) async {
+    final athletes = await getAllPlayers();
+    return athletes.where((athlete) => athlete.position == position).toList();
+  }
 
-  @GET('/players/{id}/history')
-  Future<NFLAthleteStats> getPlayerHistory(@Path() int id,
-      @Query('from') String from,
-      @Query('until') String until,);
+  Future<List<NFLAthlete>> getPlayersByTeamAtPosition(
+    String team,
+    String position,
+  ) async {
+    final athletes = await getAllPlayers();
+    return athletes
+        .where(
+            (athlete) => athlete.position == position || athlete.team == team)
+        .toList();
+  }
 
-  @GET('/players/{id}/history/price')
+  Future<NFLAthleteStats> getPlayerHistory(
+    int id,
+    String from,
+    String until,
+  ) async {
+    final url = '$baseDataUrl/$id';
+    return NFLAthleteStats.fromJson(
+      await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>,
+    );
+  }
+
   Future<AthletePriceRecord> getPlayerPriceHistory(
-    @Path() int id,
-    @Query('from') String? from,
-    @Query('until') String? until,
-    @Query('interval') String? interval,
-  );
+    int id,
+    String? from,
+    String? until,
+    String? interval,
+  ) async {
+    final timeInterval = ((interval ?? 'hour').toLowerCase() == 'hour')
+        ? 'Hour'
+        : defaultInterval;
+    final fromTime = DateTime.parse(from ?? defaultFrom);
+    final untilTime = DateTime.parse(until ?? defaultUntil);
 
-  @POST('/players/history')
+    final url = '$baseDataUrl/${id}_history';
+    final jsonString = (await dio.get<String>(url)).data!;
+    final history = <PriceRecord>[];
+
+    final json = jsonDecode(jsonString) as Map<String, dynamic>;
+    final historyData = json[timeInterval] as List<dynamic>;
+    for (var i = 0; i < historyData.length; i++) {
+      final priceTime = historyData[i] as Map<String, dynamic>;
+      final time = DateTime.parse(priceTime['Time'] as String);
+      if (time.isAfter(fromTime) && time.isBefore(untilTime)) {
+        history.add(
+          PriceRecord(
+            price: priceTime['Price'] as double,
+            timestamp: time.toString(),
+          ),
+        );
+      }
+    }
+
+    return AthletePriceRecord(id: id, name: '', priceHistory: history);
+  }
+
   Future<List<NFLAthleteStats>> getPlayersHistory(
-    @Body() PlayerIds playerIds,
-    @Query('from') String from,
-    @Query('until') String until,
-  );
+    List<int> playerIds,
+    String from,
+    String until,
+  ) async {
+    final playersHistory = await Future.wait(
+      playerIds.map((id) => getPlayerHistory(id, from, until)),
+    );
 
-  @POST('/players/history/price')
+    return playersHistory;
+  }
+
   Future<List<AthletePriceRecord>> getPlayersPriceHistory(
-    @Body() PlayerIds playerIds,
-    @Query('from') String? from,
-    @Query('until') String? until,
-    @Query('interval') String interval,
-  );
+    List<int> playerIds,
+    String? from,
+    String? until,
+    String interval,
+  ) async {
+    final playersHistory = await Future.wait(
+      playerIds.map((id) => getPlayerPriceHistory(id, from, until, interval)),
+    );
+
+    return playersHistory;
+  }
 }
