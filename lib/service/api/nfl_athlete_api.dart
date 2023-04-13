@@ -23,8 +23,8 @@ class NFLAthleteAPI {
   Future<void> initState() async {
     const cidUrl =
         'https://raw.githubusercontent.com/AthleteX-DAO/sports-cids/main/nfl.json';
-    final response = await http.get(Uri.parse(cidUrl));
     try {
+      final response = await http.get(Uri.parse(cidUrl));
       final decodedData = json.decode(response.body);
       final cid = await decodedData['directory'] as String;
       baseDataUrl = 'https://$cid.ipfs.nftstorage.link';
@@ -34,17 +34,13 @@ class NFLAthleteAPI {
   }
 
   Future<List<NFLAthlete>> getAllPlayers() async {
-    final athletes = <NFLAthlete>[];
     final url = '$baseDataUrl/ALL_PLAYERS';
-    final jsonString = (await dio.get(url)).data as String;
+    final jsonString = (await dio.get<String>(url)).data!;
     final json = jsonDecode(jsonString) as Map<String, dynamic>;
     final athleteList = json['Athletes'] as List<dynamic>;
-    for (final athlete in athleteList) {
-      athletes.add(
-        NFLAthlete.fromJson(athlete as Map<String, dynamic>),
-      );
-    }
-    return athletes;
+    return athleteList
+        .map((athlete) => NFLAthlete.fromJson(athlete as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<NFLAthlete>> getPlayersById(List<int> ids) async {
@@ -55,7 +51,7 @@ class NFLAthleteAPI {
   Future<NFLAthlete> getPlayer(int id) async {
     final url = '$baseDataUrl/$id';
     return NFLAthlete.fromJson(
-      await dio.get(url) as Map<String, dynamic>,
+      await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>,
     );
   }
 
@@ -86,7 +82,9 @@ class NFLAthleteAPI {
     String until,
   ) async {
     final url = '$baseDataUrl/$id';
-    return NFLAthleteStats.fromJson(await dio.get(url) as Map<String, dynamic>);
+    return NFLAthleteStats.fromJson(
+      await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>,
+    );
   }
 
   Future<AthletePriceRecord> getPlayerPriceHistory(
@@ -102,7 +100,7 @@ class NFLAthleteAPI {
     final untilTime = DateTime.parse(until ?? defaultUntil);
 
     final url = '$baseDataUrl/${id}_history';
-    final jsonString = (await dio.get(url)).data as String;
+    final jsonString = (await dio.get<String>(url)).data!;
     final history = <PriceRecord>[];
 
     final json = jsonDecode(jsonString) as Map<String, dynamic>;
