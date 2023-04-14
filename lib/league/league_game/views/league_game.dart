@@ -344,7 +344,7 @@ class LeagueGame extends StatelessWidget {
                         itemCount: userTeams.length,
                         itemBuilder: (BuildContext context, int index) {
                           final userTeam = userTeams[index];
-                          final rosters = userTeam.roster.values.toList();
+                          final rosters = userTeam.roster.entries.toList();
                           return ExpansionTile(
                             title: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -420,18 +420,13 @@ class LeagueGame extends StatelessWidget {
                             children: [
                               Row(
                                 children: rosters.map((athleteName) {
-                                  final athleteNameList =
-                                      athleteName[0].split(' ');
-                                  final athleteNameFormatted = athleteNameList
-                                      .sublist(0, athleteNameList.length - 1)
-                                      .join(' ');
                                   return Expanded(
                                     child: Row(
                                       children: [
                                         Icon(
                                           getSportIcon(
                                             athletes.getAthleteSport(
-                                              athleteName[0],
+                                              athleteName.key,
                                             ),
                                           ),
                                         ),
@@ -441,7 +436,7 @@ class LeagueGame extends StatelessWidget {
                                         Column(
                                           children: [
                                             Text(
-                                              athleteNameFormatted,
+                                              athleteName.value[0],
                                               style: TextStyle(
                                                 color: Colors.grey[400],
                                                 fontFamily: 'OpenSans',
@@ -451,7 +446,7 @@ class LeagueGame extends StatelessWidget {
                                             ),
                                             Text(
                                               athletes.getAthleteTeam(
-                                                athleteName[0],
+                                                athleteName.key,
                                               ),
                                               style: TextStyle(
                                                 color: Colors.grey[400],

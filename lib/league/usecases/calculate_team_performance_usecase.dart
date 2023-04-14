@@ -7,10 +7,8 @@ class CalculateTeamPerformanceUseCase {
   ) {
     final percentChanges = roster.entries.map((entry) {
       final initialPrice = double.parse(entry.value[1]);
-
-      final athleteId = entry.key;
-      final nameParts = entry.value[0].split(' ');
-      final aptType = nameParts[nameParts.length - 1];
+      final athleteId = entry.key ~/ 10;
+      final aptType = entry.value[0].split(' ').last;
       final athlete = athletes.firstWhere(
         (a) => a.id == athleteId,
         orElse: () => AthleteScoutModel.empty,

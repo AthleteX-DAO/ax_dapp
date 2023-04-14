@@ -91,8 +91,8 @@ class AthleteScoutModel extends Equatable {
 }
 
 extension AthleteScoutModelListX on List<AthleteScoutModel> {
-  SupportedSport getAthleteSport(String athleteName) {
-    final athleteId = int.parse(athleteName.split(' ').last);
+  SupportedSport getAthleteSport(int athleteID) {
+    final athleteId = athleteID ~/ 10;
     final athlete = firstWhere(
       (athlete) => athlete.id == athleteId,
       orElse: () => AthleteScoutModel.empty,
@@ -100,8 +100,8 @@ extension AthleteScoutModelListX on List<AthleteScoutModel> {
     return athlete.sport;
   }
 
-  String getAthleteTeam(String athleteName) {
-    final athleteId = int.parse(athleteName.split(' ').last);
+  String getAthleteTeam(int athleteID) {
+    final athleteId = athleteID ~/ 10;
     final athlete = firstWhere(
       (athlete) => athlete.id == athleteId,
       orElse: () => AthleteScoutModel.empty,
