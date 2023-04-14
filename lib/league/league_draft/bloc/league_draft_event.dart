@@ -43,12 +43,19 @@ class ConfirmTeam extends LeagueDraftEvent {
     required this.walletAddress,
     required this.leagueID,
     required this.myTeam,
+    required this.existingTeam,
   });
 
   final String walletAddress;
   final String leagueID;
   final List<DraftApt> myTeam;
+  final LeagueTeam existingTeam;
 
   @override
-  List<Object> get props => [walletAddress, leagueID, myTeam];
+  List<Object> get props => [
+        walletAddress,
+        leagueID,
+        myTeam,
+        existingTeam,
+      ];
 }

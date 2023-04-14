@@ -42,16 +42,43 @@ class APTCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                apt.name
-                    .split(' ')
-                    .sublist(0, apt.name.split(' ').length - 1)
-                    .join(' '),
+                apt.name,
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontFamily: 'OpenSans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              Text(apt.team),
+              Text(
+                apt.team,
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontFamily: 'OpenSans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
-          Text('${apt.bookPrice?.toStringAsFixed(2)} AX'),
-          Text('${apt.bookPricePercent?.toStringAsFixed(2)}%'),
+          Text(
+            '${apt.bookPrice?.toStringAsFixed(2)} AX',
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontFamily: 'OpenSans',
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            '${apt.bookPricePercent?.toStringAsFixed(2)}%',
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontFamily: 'OpenSans',
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           IconButton(
             icon: const Icon(
               statusIcon,

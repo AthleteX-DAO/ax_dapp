@@ -6,7 +6,6 @@ class LeagueState extends Equatable {
     this.league = League.empty,
     this.allLeagues = const [],
     this.filteredLeagues = const [],
-    this.rosters = const {},
     this.sports = const [],
     this.selectedChain = EthereumChain.polygonMainnet,
     this.selectedSport = SupportedSport.all,
@@ -16,7 +15,7 @@ class LeagueState extends Equatable {
   final League league;
   final List<League> allLeagues;
   final List<League> filteredLeagues;
-  final Map<String, List<String>> rosters;
+
   final List<SupportedSport> sports;
   final EthereumChain selectedChain;
   final SupportedSport selectedSport;
@@ -26,7 +25,6 @@ class LeagueState extends Equatable {
     League? league,
     List<League>? allLeagues,
     List<League>? filteredLeagues,
-    Map<String, List<String>>? rosters,
     List<SupportedSport>? sports,
     EthereumChain? selectedChain,
     SupportedSport? selectedSport,
@@ -36,7 +34,6 @@ class LeagueState extends Equatable {
       league: league ?? this.league,
       allLeagues: allLeagues ?? this.allLeagues,
       filteredLeagues: filteredLeagues ?? this.filteredLeagues,
-      rosters: rosters ?? this.rosters,
       sports: sports ?? this.sports,
       selectedChain: selectedChain ?? this.selectedChain,
       selectedSport: selectedSport ?? this.selectedSport,
@@ -49,7 +46,6 @@ class LeagueState extends Equatable {
         league,
         allLeagues,
         filteredLeagues,
-        rosters,
         sports,
         selectedChain,
         selectedSport,

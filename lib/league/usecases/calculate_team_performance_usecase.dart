@@ -2,15 +2,13 @@ import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 
 class CalculateTeamPerformanceUseCase {
   double calculateTeamPerformance(
-    Map<String, double> roster,
+    Map<int, List<String>> roster,
     List<AthleteScoutModel> athletes,
   ) {
     final percentChanges = roster.entries.map((entry) {
-      final athleteName = entry.key;
-      final initialPrice = entry.value;
-      final nameParts = athleteName.split(' ');
-      final athleteId = int.parse(nameParts.last);
-      final aptType = nameParts[nameParts.length - 2];
+      final initialPrice = double.parse(entry.value[1]);
+      final athleteId = entry.key ~/ 10;
+      final aptType = entry.value[0].split(' ').last;
       final athlete = athletes.firstWhere(
         (a) => a.id == athleteId,
         orElse: () => AthleteScoutModel.empty,

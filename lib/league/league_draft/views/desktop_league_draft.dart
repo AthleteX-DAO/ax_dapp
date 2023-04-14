@@ -2,6 +2,7 @@ import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_draft/widgets/league_draft_apt_card.dart';
 import 'package:ax_dapp/league/league_draft/widgets/league_draft_team_card.dart';
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -14,9 +15,11 @@ class DesktopLeagueDraft extends StatelessWidget {
   const DesktopLeagueDraft({
     super.key,
     required this.league,
+    required this.existingTeam,
   });
 
   final League league;
+  final LeagueTeam existingTeam;
 
   @override
   Widget build(BuildContext context) {
@@ -182,6 +185,7 @@ class DesktopLeagueDraft extends StatelessWidget {
                                         walletAddress: walletAddress,
                                         leagueID: league.leagueID,
                                         myTeam: myAptTeam,
+                                        existingTeam: existingTeam,
                                       ),
                                     );
                                     Navigator.pop(context);

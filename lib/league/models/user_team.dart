@@ -8,7 +8,7 @@ class UserTeam extends Equatable {
   });
 
   final String address;
-  final Map<String, double> roster;
+  final Map<int, List<String>> roster;
   final double teamPerformance;
 
   static const empty = UserTeam(

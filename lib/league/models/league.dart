@@ -16,7 +16,6 @@ class League {
     required this.entryFee,
     required this.isPrivate,
     required this.isLocked,
-    required this.rosters,
     required this.sports,
   });
 
@@ -33,7 +32,6 @@ class League {
     entryFee: 0,
     isPrivate: false,
     isLocked: false,
-    rosters: {},
     sports: [],
   );
 
@@ -47,7 +45,6 @@ class League {
   final int entryFee;
   final bool isPrivate;
   final bool isLocked;
-  final Map<String, Map<String, double>> rosters;
   final List<SupportedSport> sports;
 
   Map<String, dynamic> toJson() => _$LeagueToJson(this);

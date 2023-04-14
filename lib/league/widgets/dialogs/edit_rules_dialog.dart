@@ -585,7 +585,6 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                                   entryFee: widget.league.entryFee,
                                   isPrivate: _privateToggle,
                                   isLocked: _lockToggle,
-                                  rosters: widget.league.rosters,
                                   sports: [dropDownValue],
                                 ),
                               ),

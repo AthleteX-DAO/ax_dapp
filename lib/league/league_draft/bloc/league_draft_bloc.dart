@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:ax_dapp/league/models/draft_apt.dart';
+import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -16,9 +18,11 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
   LeagueDraftBloc({
     required LeagueRepository leagueRepository,
     required GetTotalTokenBalanceUseCase getTotalTokenBalanceUseCase,
+    required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
     required this.athletes,
   })  : _leagueRepository = leagueRepository,
         _getTotalTokenBalanceUseCase = getTotalTokenBalanceUseCase,
+        _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
         super(const LeagueDraftState()) {
     on<FetchAptsOwnedEvent>(_onFetchAptsOwnedEvent);
     on<AddAptToTeam>(_onAddAptToTeam);
@@ -29,6 +33,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
 
   final LeagueRepository _leagueRepository;
   final GetTotalTokenBalanceUseCase _getTotalTokenBalanceUseCase;
+  final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
   final List<AthleteScoutModel> athletes;
 
   Future<void> _onFetchAptsOwnedEvent(
@@ -95,20 +100,32 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     ConfirmTeam event,
     Emitter<LeagueDraftState> emit,
   ) async {
-    final userWallet = event.walletAddress;
+    final userWalletID = event.walletAddress;
     final leagueID = event.leagueID;
     final myTeam = event.myTeam;
-    final playerNames = <String>[];
-    for (final player in myTeam) {
-      playerNames.add(player.name);
-    }
-    final roster = {for (var e in playerNames) e: 0.0};
+    final existingTeam = event.existingTeam;
+
+    final roster = {
+      for (var e in myTeam) e.id: [e.name, e.bookPrice.toString()]
+    };
     try {
       emit(state.copyWith(status: BlocStatus.loading));
+
+      final teamAppreciation = _calculateTeamPerformanceUseCase
+              .calculateTeamPerformance(roster, athletes) +
+          existingTeam.teamAppreciation;
+
+      if (existingTeam.userWalletID == '') {}
+
+      final team = LeagueTeam(
+        userWalletID: userWalletID,
+        teamAppreciation: teamAppreciation,
+        roster: roster,
+      );
+
       await _leagueRepository.enrollUser(
         leagueID: leagueID,
-        userWallet: userWallet,
-        roster: roster,
+        team: team,
       );
       emit(state.copyWith(status: BlocStatus.success));
     } catch (_) {
@@ -137,9 +154,10 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
           : e.type == AptType.short
               ? athlete.shortTokenBookPricePercent
               : 0.0;
-      final aptName = '${e.name.replaceAll('APT', '').trim()} ${athlete.id}';
+      final aptName = e.name.replaceAll('APT', '').trim();
+      final id = e.type == AptType.long ? int.parse('${athlete.id}1') : int.parse('${athlete.id}0');
       return DraftApt(
-        id: athlete.id,
+        id: id,
         name: aptName,
         team: athlete.team,
         sport: athlete.sport,
