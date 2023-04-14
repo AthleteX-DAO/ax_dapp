@@ -3,6 +3,7 @@ import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_draft/views/desktop_league_draft.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/widgets/dialogs/edit_rules_dialog.dart';
@@ -21,6 +22,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 
 class LeagueGame extends StatelessWidget {
   const LeagueGame({
@@ -50,12 +52,16 @@ class LeagueGame extends StatelessWidget {
           final bloc = context.read<LeagueGameBloc>();
           final filteredAthletes = state.filteredAthletes;
           if (state.status == BlocStatus.success) {
-            bloc.add(
-              CalculateAppreciationEvent(
-                rosters: state.rosters,
-                athletes: filteredAthletes,
-              ),
-            );
+            bloc
+              ..add(
+                FetchLeagueTeamsEvent(leagueID: leagueID),
+              )
+              ..add(
+                CalculateAppreciationEvent(
+                  leagueTeams: state.leagueTeams,
+                  athletes: filteredAthletes,
+                ),
+              );
           }
           final userTeams = state.userTeams;
           final differenceInDays = state.differenceInDays;
@@ -218,6 +224,13 @@ class LeagueGame extends StatelessWidget {
                               child: TextButton(
                                 onPressed: () {
                                   if (isWalletConnected) {
+                                    LeagueTeam existingTeam = LeagueTeam.empty;
+                                    for (final team in state.leagueTeams) {
+                                      if (team.userWalletID == walletAddress) {
+                                        existingTeam = team;
+                                      }
+                                    }
+
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute<void>(
@@ -233,9 +246,13 @@ class LeagueGame extends StatelessWidget {
                                               tokensRepository: context
                                                   .read<TokensRepository>(),
                                             ),
+                                            calculateTeamPerformanceUseCase:
+                                                context.read<
+                                                    CalculateTeamPerformanceUseCase>(),
                                           ),
                                           child: DesktopLeagueDraft(
                                             league: league,
+                                            existingTeam: existingTeam,
                                           ),
                                         ),
                                       ),
@@ -327,7 +344,7 @@ class LeagueGame extends StatelessWidget {
                         itemCount: userTeams.length,
                         itemBuilder: (BuildContext context, int index) {
                           final userTeam = userTeams[index];
-                          final rosters = userTeam.roster.keys.toList();
+                          final rosters = userTeam.roster.values.toList();
                           return ExpansionTile(
                             title: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -410,7 +427,7 @@ class LeagueGame extends StatelessWidget {
                                             Icon(
                                               getSportIcon(
                                                 athletes.getAthleteSport(
-                                                  athleteName,
+                                                  athleteName[0],
                                                 ),
                                               ),
                                             ),

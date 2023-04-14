@@ -6,7 +6,6 @@ import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 
@@ -22,11 +21,6 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         super(const LeagueState()) {
     on<CreateLeague>(_onCreateLeague);
     on<FetchLeagues>(_onFetchLeagues);
-    on<DeleteLeague>(_onDeleteLeague);
-    on<UpdateLeague>(_onUpdateLeague);
-    on<UpdateRoster>(_onUpdateRoster);
-    on<EnrollUser>(_onEnrollUser);
-    on<RemoveUser>(_onRemoveUser);
     on<SearchLeague>(_onSearchLeague);
     on<SelectedSportChanged>(_onSelectedSportChanged);
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -75,7 +69,6 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         entryFee: event.entryFee,
         isPrivate: event.isPrivate,
         isLocked: event.isLocked,
-        rosters: event.rosters,
         sports: event.sports,
       );
 
@@ -112,93 +105,6 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
           status: BlocStatus.error,
         ),
       );
-    }
-  }
-
-  Future<void> _onDeleteLeague(
-    DeleteLeague event,
-    Emitter<LeagueState> emit,
-  ) async {
-    final leagueId = event.leagueID;
-    await _leagueRepository.deleteLeague(
-      leagueID: leagueId,
-    );
-    emit(
-      state.copyWith(
-        status: BlocStatus.success,
-      ),
-    );
-  }
-
-  Future<void> _onUpdateLeague(
-    UpdateLeague event,
-    Emitter<LeagueState> emit,
-  ) async {
-    try {
-      final leagueId = event.leagueID;
-      final league = event.league;
-      await _leagueRepository.updateLeague(
-        leagueID: leagueId,
-        league: league,
-      );
-    } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
-    }
-  }
-
-  Future<void> _onUpdateRoster(
-    UpdateRoster event,
-    Emitter<LeagueState> emit,
-  ) async {
-    try {
-      final leagueId = event.leagueID;
-      final userWallet = event.userWallet;
-
-      final roster = {for (var e in event.roster) e: 0.0};
-
-      await _leagueRepository.updateRoster(
-        leagueID: leagueId,
-        userWallet: userWallet,
-        roster: roster,
-      );
-    } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
-    }
-  }
-
-  Future<void> _onEnrollUser(
-    EnrollUser event,
-    Emitter<LeagueState> emit,
-  ) async {
-    try {
-      final leagueId = event.leagueID;
-      final userWallet = event.userWallet;
-
-      final roster = {for (var e in event.roster) e: 0.0};
-
-      await _leagueRepository.enrollUser(
-        leagueID: leagueId,
-        userWallet: userWallet,
-        roster: roster,
-      );
-    } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
-    }
-  }
-
-  Future<void> _onRemoveUser(
-    RemoveUser event,
-    Emitter<LeagueState> emit,
-  ) async {
-    try {
-      final leagueId = event.leagueID;
-      final userWallet = event.userWallet;
-      await _leagueRepository.removeUser(
-        leagueID: leagueId,
-        userWallet: userWallet,
-      );
-    } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
     }
   }
 

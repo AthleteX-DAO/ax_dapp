@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/league/models/duration_status.dart';
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
@@ -21,7 +22,6 @@ part 'league_game_state.dart';
 class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   LeagueGameBloc({
     required LeagueRepository leagueRepository,
-    required this.rosters,
     required this.repo,
     required this.startDate,
     required this.endDate,
@@ -36,7 +36,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
           LeagueGameState(
             startDate: startDate,
             endDate: endDate,
-            rosters: rosters,
           ),
         ) {
     on<EditTeamsEvent>(_onEditTeams);
@@ -48,13 +47,13 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<CalculateRemainingDays>(_onCalculateRemainingDays);
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<EditLeagueEvent>(_onEditLeagueEvent);
+    on<FetchLeagueTeamsEvent>(_onFetchLeagueTeamsEvent);
 
     add(const WatchAppDataChangesStarted());
     add(CalculateRemainingDays());
   }
 
   final LeagueRepository _leagueRepository;
-  final Map<String, Map<String, double>> rosters;
   final GetScoutAthletesDataUseCase repo;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
@@ -105,22 +104,22 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     Emitter<LeagueGameState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
-    final rosters = event.rosters;
+    final leagueTeams = event.leagueTeams;
     final athletes = event.athletes;
     final userTeams = <UserTeam>[];
-    rosters.forEach((address, roster) {
+    for (final team in leagueTeams) {
       final teamPerformance = _calculateTeamPerformanceUseCase
-          .calculateTeamPerformance(roster, athletes);
+          .calculateTeamPerformance(team.roster, athletes);
       userTeams
         ..add(
           UserTeam(
-            address: address,
-            roster: roster,
+            address: team.userWalletID,
+            roster: team.roster,
             teamPerformance: teamPerformance,
           ),
         )
         ..sort((b, a) => a.teamPerformance.compareTo(b.teamPerformance));
-    });
+    }
     emit(
       state.copyWith(
         userTeams: userTeams,
@@ -218,7 +217,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         entryFee: event.entryFee,
         isPrivate: event.isPrivate,
         isLocked: event.isLocked,
-        rosters: event.rosters,
         sports: event.sports,
       );
 
@@ -241,6 +239,28 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     } else {
       filteredList
           .removeWhere((element) => element.sport == SupportedSport.NFL);
+    }
+  }
+
+  FutureOr<void> _onFetchLeagueTeamsEvent(
+    FetchLeagueTeamsEvent event,
+    Emitter<LeagueGameState> emit,
+  ) async {
+    final leagueID = event.leagueID;
+    try {
+      emit(state.copyWith(status: BlocStatus.loading));
+
+      final leagueTeams =
+          await _leagueRepository.getLeagueTeams(leagueID: leagueID);
+
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          leagueTeams: leagueTeams,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
     }
   }
 }

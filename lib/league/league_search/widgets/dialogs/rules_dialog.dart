@@ -570,7 +570,6 @@ class _LeagueDialog extends State<LeagueDialog> {
                                   entryFee: int.parse(entryFeeController.text),
                                   isPrivate: _privateToggle,
                                   isLocked: _lockToggle,
-                                  rosters: const {},
                                   sports: [dropDownValue],
                                 ),
                               ),

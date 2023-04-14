@@ -251,7 +251,6 @@ class _MaterialApp extends StatelessWidget {
                       streamAppDataChanges:
                           context.read<StreamAppDataChangesUseCase>(),
                       leagueRepository: context.read<LeagueRepository>(),
-                      rosters: league.rosters,
                       repo: GetScoutAthletesDataUseCase(
                         tokensRepository: context.read<TokensRepository>(),
                         graphRepo: RepositoryProvider.of<SubGraphRepo>(context),

@@ -4,6 +4,7 @@ class LeagueGameState extends Equatable {
   const LeagueGameState({
     this.status = BlocStatus.initial,
     this.userTeams = const [],
+    this.leagueTeams = const [],
     this.rosters = const {},
     this.athletes = const [],
     this.filteredAthletes = const [],
@@ -20,6 +21,7 @@ class LeagueGameState extends Equatable {
 
   final BlocStatus status;
   final List<UserTeam> userTeams;
+  final List<LeagueTeam> leagueTeams;
   final Map<String, Map<String, double>> rosters;
   final List<AthleteScoutModel> athletes;
   final List<AthleteScoutModel> filteredAthletes;
@@ -36,6 +38,7 @@ class LeagueGameState extends Equatable {
   LeagueGameState copyWith({
     BlocStatus? status,
     List<UserTeam>? userTeams,
+    List<LeagueTeam>? leagueTeams,
     Map<String, Map<String, double>>? rosters,
     List<AthleteScoutModel>? athletes,
     List<AthleteScoutModel>? filteredAthletes,
@@ -52,6 +55,7 @@ class LeagueGameState extends Equatable {
     return LeagueGameState(
       status: status ?? this.status,
       userTeams: userTeams ?? this.userTeams,
+      leagueTeams: leagueTeams ?? this.leagueTeams,
       rosters: rosters ?? this.rosters,
       athletes: athletes ?? this.athletes,
       filteredAthletes: filteredAthletes ?? this.filteredAthletes,
@@ -80,6 +84,7 @@ class LeagueGameState extends Equatable {
   List<Object> get props => [
         status,
         userTeams,
+        leagueTeams,
         rosters,
         athletes,
         filteredAthletes,

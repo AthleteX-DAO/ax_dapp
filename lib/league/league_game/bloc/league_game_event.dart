@@ -32,15 +32,18 @@ class ClaimPrizeEvent extends LeagueGameEvent {}
 
 class CalculateAppreciationEvent extends LeagueGameEvent {
   const CalculateAppreciationEvent({
-    required this.rosters,
+    required this.leagueTeams,
     required this.athletes,
   });
 
-  final Map<String, Map<String, double>> rosters;
+  final List<LeagueTeam> leagueTeams;
   final List<AthleteScoutModel> athletes;
 
   @override
-  List<Object?> get props => [rosters, athletes];
+  List<Object?> get props => [
+        leagueTeams,
+        athletes,
+      ];
 }
 
 class JoinLeagueEvent extends LeagueGameEvent {
@@ -74,7 +77,6 @@ class EditLeagueEvent extends LeagueGameEvent {
     required this.entryFee,
     required this.isPrivate,
     required this.isLocked,
-    required this.rosters,
     required this.sports,
   });
 
@@ -88,7 +90,7 @@ class EditLeagueEvent extends LeagueGameEvent {
   final int entryFee;
   final bool isPrivate;
   final bool isLocked;
-  final Map<String, Map<String, double>> rosters;
+
   final List<SupportedSport> sports;
 
   @override
@@ -103,7 +105,15 @@ class EditLeagueEvent extends LeagueGameEvent {
         entryFee,
         isPrivate,
         isLocked,
-        rosters,
         sports,
       ];
+}
+
+class FetchLeagueTeamsEvent extends LeagueGameEvent {
+  const FetchLeagueTeamsEvent({required this.leagueID});
+
+  final String leagueID;
+
+  @override
+  List<Object?> get props => [leagueID];
 }
