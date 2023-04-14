@@ -6,6 +6,7 @@ import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/league/widgets/dialogs/edit_rules_dialog.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
@@ -22,7 +23,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 
 class LeagueGame extends StatelessWidget {
   const LeagueGame({
@@ -224,7 +224,7 @@ class LeagueGame extends StatelessWidget {
                               child: TextButton(
                                 onPressed: () {
                                   if (isWalletConnected) {
-                                    LeagueTeam existingTeam = LeagueTeam.empty;
+                                    var existingTeam = LeagueTeam.empty;
                                     for (final team in state.leagueTeams) {
                                       if (team.userWalletID == walletAddress) {
                                         existingTeam = team;
@@ -419,59 +419,53 @@ class LeagueGame extends StatelessWidget {
                             childrenPadding: const EdgeInsets.all(10),
                             children: [
                               Row(
-                                children: rosters
-                                    .map(
-                                      (athleteName) => Expanded(
-                                        child: Row(
+                                children: rosters.map((athleteName) {
+                                  final athleteNameList =
+                                      athleteName[0].split(' ');
+                                  final athleteNameFormatted = athleteNameList
+                                      .sublist(0, athleteNameList.length - 1)
+                                      .join(' ');
+                                  return Expanded(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          getSportIcon(
+                                            athletes.getAthleteSport(
+                                              athleteName[0],
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Column(
                                           children: [
-                                            Icon(
-                                              getSportIcon(
-                                                athletes.getAthleteSport(
-                                                  athleteName[0],
-                                                ),
+                                            Text(
+                                              athleteNameFormatted,
+                                              style: TextStyle(
+                                                color: Colors.grey[400],
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  athleteName
-                                                      .split(' ')
-                                                      .sublist(
-                                                        0,
-                                                        athleteName
-                                                                .split(' ')
-                                                                .length -
-                                                            1,
-                                                      )
-                                                      .join(' '),
-                                                  style: TextStyle(
-                                                    color: Colors.grey[400],
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  athletes.getAthleteTeam(
-                                                    athleteName,
-                                                  ),
-                                                  style: TextStyle(
-                                                    color: Colors.grey[400],
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
+                                            Text(
+                                              athletes.getAthleteTeam(
+                                                athleteName[0],
+                                              ),
+                                              style: TextStyle(
+                                                color: Colors.grey[400],
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    )
-                                    .toList(),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
                               ),
                             ],
                           );
