@@ -117,3 +117,12 @@ class FetchLeagueTeamsEvent extends LeagueGameEvent {
   @override
   List<Object?> get props => [leagueID];
 }
+
+class ProcessLeagueWinnerEvent extends LeagueGameEvent {
+  const ProcessLeagueWinnerEvent({required this.leagueID});
+
+  final String leagueID;
+
+  @override
+  List<Object?> get props => [leagueID];
+}

@@ -62,6 +62,10 @@ class LeagueGame extends StatelessWidget {
                   athletes: filteredAthletes,
                 ),
               );
+
+            if (state.timerStatus.hasEnded && league.winner.isEmpty) {
+              bloc.add(ProcessLeagueWinnerEvent(leagueID: leagueID));
+            }
           }
           final userTeams = state.userTeams;
           final differenceInDays = state.differenceInDays;
