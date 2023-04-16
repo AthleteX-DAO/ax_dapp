@@ -1,5 +1,4 @@
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
-import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -164,10 +163,12 @@ class _LeagueDialog extends State<LeagueDialog> {
                       controller: startDateController,
                       readOnly: true,
                       onTap: () async {
+                        final leagueStartDate =
+                            DateTime.now().add(const Duration(days: 1));
                         final startDate = await showDatePicker(
                           context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
+                          initialDate: leagueStartDate,
+                          firstDate: leagueStartDate,
                           lastDate: DateTime(2101),
                         );
                         if (startDate != null) {
@@ -219,10 +220,13 @@ class _LeagueDialog extends State<LeagueDialog> {
                       controller: endDateController,
                       readOnly: true,
                       onTap: () async {
+                        final leagueEndDate =
+                            DateTime.parse(startDateController.text)
+                                .add(const Duration(days: 1));
                         final endDate = await showDatePicker(
                           context: context,
-                          initialDate: DateTime.parse(startDateController.text),
-                          firstDate: DateTime.parse(startDateController.text),
+                          initialDate: leagueEndDate,
+                          firstDate: leagueEndDate,
                           lastDate: DateTime(2101),
                         );
                         if (endDate != null) {
@@ -335,7 +339,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20)),
                         ),
-                        hintText: 'Enter Number',
+                        hintText: 'Enter Participants',
                       ),
                     ),
                   ),

@@ -106,7 +106,7 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Create League',
+                      'Edit League',
                       style: textStyle(
                         Colors.white,
                         20,
@@ -181,10 +181,12 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                       controller: startDateController,
                       readOnly: true,
                       onTap: () async {
+                        final leagueStartDate =
+                            DateTime.parse(startDateController.text);
                         final startDate = await showDatePicker(
                           context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
+                          initialDate: leagueStartDate,
+                          firstDate: DateTime.now().add(const Duration(days: 1)),
                           lastDate: DateTime(2101),
                         );
                         if (startDate != null) {
@@ -236,10 +238,13 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                       controller: endDateController,
                       readOnly: true,
                       onTap: () async {
+                        final leagueEndDate =
+                            DateTime.parse(startDateController.text)
+                                .add(const Duration(days: 1));
                         final endDate = await showDatePicker(
                           context: context,
-                          initialDate: DateTime.parse(startDateController.text),
-                          firstDate: DateTime.parse(startDateController.text),
+                          initialDate: leagueEndDate,
+                          firstDate: leagueEndDate,
                           lastDate: DateTime(2101),
                         );
                         if (endDate != null) {
@@ -352,7 +357,7 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20)),
                         ),
-                        hintText: 'Enter Number',
+                        hintText: 'Enter Participants',
                       ),
                     ),
                   ),
@@ -562,7 +567,9 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                             DateTime.parse(
                               endDateController.text,
                             ),
-                          ))
+                              ) ||
+                              DateTime.parse(startDateController.text) ==
+                                  DateTime.parse(endDateController.text))
                             {
                               context.showWarningToast(
                                 title: 'Error',
