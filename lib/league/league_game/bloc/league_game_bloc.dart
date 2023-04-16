@@ -48,6 +48,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<EditLeagueEvent>(_onEditLeagueEvent);
     on<FetchLeagueTeamsEvent>(_onFetchLeagueTeamsEvent);
+    on<ProcessLeagueWinnerEvent>(_onProcessLeagueWinnerEvent);
 
     add(const WatchAppDataChangesStarted());
     add(CalculateRemainingDays());
@@ -115,7 +116,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
           UserTeam(
             address: team.userWalletID,
             roster: team.roster,
-            teamPerformance: teamPerformance,
+            teamPerformance: teamPerformance + team.teamAppreciation,
           ),
         )
         ..sort((b, a) => a.teamPerformance.compareTo(b.teamPerformance));
@@ -218,6 +219,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         isPrivate: event.isPrivate,
         isLocked: event.isLocked,
         sports: event.sports,
+        winner: '',
       );
 
       await _leagueRepository.updateLeague(
@@ -262,5 +264,43 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
     }
+  }
+
+  FutureOr<void> _onProcessLeagueWinnerEvent(
+    ProcessLeagueWinnerEvent event,
+    Emitter<LeagueGameState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+    final leagueID = event.leagueID;
+
+    var winnerWallet = '';
+    var winnerAppreciation = 0.0;
+
+    for (final team in state.leagueTeams) {
+      final teamPerformance = _calculateTeamPerformanceUseCase
+          .calculateTeamPerformance(team.roster, state.athletes);
+
+      final newAppreciation = teamPerformance + team.teamAppreciation;
+
+      final newTeam = LeagueTeam(
+        userWalletID: team.userWalletID,
+        roster: team.roster,
+        teamAppreciation: newAppreciation,
+      );
+
+      await _leagueRepository.updateRoster(leagueID: leagueID, team: newTeam);
+
+      if (newAppreciation > winnerAppreciation) {
+        winnerWallet = team.userWalletID;
+        winnerAppreciation = newAppreciation;
+      }
+    }
+
+    await _leagueRepository.updateWinnner(
+      leagueID: leagueID,
+      winnerWallet: winnerWallet,
+    );
+
+    emit(state.copyWith(status: BlocStatus.success));
   }
 }

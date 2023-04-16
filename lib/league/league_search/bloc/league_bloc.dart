@@ -70,6 +70,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         isPrivate: event.isPrivate,
         isLocked: event.isLocked,
         sports: event.sports,
+        winner: '',
       );
 
       await _leagueRepository.createLeague(league: league);

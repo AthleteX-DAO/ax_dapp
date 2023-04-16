@@ -158,4 +158,22 @@ class LeagueRepository {
       debugPrint('$e');
     }
   }
+
+  Future<void> updateWinnner({
+    required String leagueID,
+    required String winnerWallet,
+  }) async {
+    try {
+      final leagueRef = (await _fireStore
+              .collection('Leagues')
+              .where('leagueID', isEqualTo: leagueID)
+              .get())
+          .docs[0]
+          .reference;
+
+      await leagueRef.update({'winner': winnerWallet});
+    } on FirebaseException catch (e) {
+      debugPrint('$e');
+    }
+  }
 }
