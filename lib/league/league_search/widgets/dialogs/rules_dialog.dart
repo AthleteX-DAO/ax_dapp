@@ -339,7 +339,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20)),
                         ),
-                        hintText: 'Enter Number',
+                        hintText: 'Enter Participants',
                       ),
                     ),
                   ),

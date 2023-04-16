@@ -357,7 +357,7 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20)),
                         ),
-                        hintText: 'Enter Number',
+                        hintText: 'Enter Participants',
                       ),
                     ),
                   ),
