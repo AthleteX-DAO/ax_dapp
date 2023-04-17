@@ -8,8 +8,9 @@ import 'package:ax_dapp/wallet/magic_api_client/magic_wallet_api_client.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/config_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared/shared.dart';
-import 'package:web3dart/web3dart.dart';
+import 'package:web3_browser/web3_browser.dart';
 
 /// {@template magic_wallet_api_client}
 /// Web only client that manages the wallet API(i.e. Magic).
@@ -18,15 +19,15 @@ class MagicWalletApiClient implements MagicApiClient {
   /// {@macro magic_wallet_api_client}
   MagicWalletApiClient({
     required MagicSDK magicSDK,
-    required ValueStream<Web3Client> reactiveWeb3Client,
-  })  : _magicSDK = magicSDK,
-        _reactiveWeb3Client = reactiveWeb3Client;
+  }) : _magicSDK = magicSDK;
 
   final MagicSDK _magicSDK;
-  final ValueStream<Web3Client> _reactiveWeb3Client;
-  Web3Client get _magicWeb3Client => _reactiveWeb3Client.value;
+  final _reactiveApiClient = BehaviorSubject<ConfigApiClient>();
+  ConfigApiClient get _configApiClient => _reactiveApiClient.value;
   @override
   EthereumChain get currentChain => EthereumChain.polygonMainnet;
+  /// The eth client here is directly related to the magic eth client
+  Ethereum get eth => window.magicEthereum!;
 
   /// Allows the user to connect to a 'Magic' wallet.
   ///
@@ -152,8 +153,15 @@ class MagicWalletApiClient implements MagicApiClient {
 
   @override
   void updateWalletClient() {
-    final magicEthereum = window.magicEthereum;
-    final client = Web3Client.custom(magicEthereum!.asRpcService());
-    ConfigApiClient(defaultChain: null, httpClient: null).updateWeb3ClientDependency(client);
+    // ignore: avoid_dynamic_calls
+    final client = Web3Client.custom(eth.asRpcService());
+    debugPrint('I am now switching out the old client for a new client');
+    _configApiClient.updateWeb3ClientDependency(client);
+  }
+
+  @override
+  Future<WalletCredentials> getWalletCredentials() {
+    // TODO: implement getWalletCredentials
+    throw UnimplementedError();
   }
 }

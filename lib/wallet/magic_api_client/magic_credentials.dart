@@ -1,9 +1,4 @@
-import 'dart:typed_data';
-
 import 'package:shared/shared.dart';
-import 'package:web3_browser/web3_browser.dart';
-import 'package:web3dart/src/crypto/secp256k1.dart';
-import 'package:web3dart/web3dart.dart';
 
 class MagicCredentials extends Equatable {
   const MagicCredentials(CredentialsWithKnownAddress credentials)

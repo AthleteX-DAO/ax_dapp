@@ -19,7 +19,6 @@ class MagicRepository {
   /// Allows listening to changes to the current [Wallet].
   Stream<Wallet> get walletChanges => _walletChanges;
 
-
   /// Allows the user to connect to a 'Magic' wallet.
   ///
   /// Returns the hexadecimal representation of the wallet address.
@@ -94,11 +93,9 @@ class MagicRepository {
     final prefs = await SharedPreferences.getInstance();
     try {
       await prefs.setBool(WalletRepository.searchForWalletKey, true);
-      final credentials = await _magicWalletApiClient.getWalletCredentials();
-      
-      final walletAddress = credentials.value.address.hex;
-
-      
+      _magicWalletApiClient.updateWalletClient();
+      final address = _magicWalletApiClient.connect();
+      final walletAddress = address.toString();
 
       _magicWalletChangeController.add(
         Wallet(

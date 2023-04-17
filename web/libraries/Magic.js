@@ -13,6 +13,7 @@ var MagicSDK = (function () {
         
         /// Places the magic ethereum client onto the window object
         window.magicEthereum = this._web3.eth;
+        this.eth = this._web3.eth;
         console.log(Web3);
         console.log(this._magicSDK);
         console.log(this._magicSDK.rpcProvider);
@@ -30,9 +31,6 @@ var MagicSDK = (function () {
 
     MagicSDK.prototype.showWallet = async function () {
         await this._magicSDK.connect.showWallet();
-        // extension.showWallet();
-        // const token = await this._magicSDK.webauthn.registerNewUser({ username: 'michael' });
-        // await this._magicSDK.connect.showWallet();
     }
 
     MagicSDK.prototype.disconnect = async function () {

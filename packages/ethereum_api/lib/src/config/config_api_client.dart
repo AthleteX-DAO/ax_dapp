@@ -91,8 +91,9 @@ class ConfigApiClient {
 
   /// Injects a new client to engage with the app (useful for multi-wallet solutions)
   void updateWeb3ClientDependency(Web3Client newClient) {
-    
+    final previousWeb3Client = _web3ClientController.valueOrNull;
     _web3ClientController.add(newClient);
+    previousWeb3Client?.dispose();
   }
 
   // /// Switches the [LongShortPair] client.

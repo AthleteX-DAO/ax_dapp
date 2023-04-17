@@ -5,7 +5,7 @@ import 'package:tokens_repository/tokens_repository.dart';
 /// {@template mobile_magic_wallet_api_client}
 /// Mobile client that manages the wallet API(i.e. Magic).
 /// {@endtemplate}
-class MagicWalletApiClient implements MagicApiClient {
+class MagicWalletApiClient extends MagicApiClient {
   /// {@macro mobile_magic_wallet_api_client}
 
   @override
@@ -56,5 +56,61 @@ class MagicWalletApiClient implements MagicApiClient {
   @override
   Future<WalletCredentials> getWalletCredentials() {
     throw UnsupportedError('getWalletCredentials');
+  }
+  
+  @override
+  Future<void> addChain(EthereumChain chain) {
+    // TODO: implement addChain
+    throw UnimplementedError();
+  }
+  
+  @override
+  void addChainChangedListener() {
+    // TODO: implement addChainChangedListener
+  }
+  
+  @override
+  Future<void> addToken({required String tokenAddress, required String tokenImageUrl}) {
+    // TODO: implement addToken
+    throw UnimplementedError();
+  }
+  
+  @override
+  // TODO: implement chainChanges
+  Stream<EthereumChain> get chainChanges => throw UnimplementedError();
+  
+  @override
+  Future<BigInt> getDecimals(String tokenAddress) {
+    // TODO: implement getDecimals
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<double> getGasPrice() {
+    // TODO: implement getGasPrice
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<BigInt> getRawTokenBalance({required String tokenAddress, required String walletAddress}) {
+    // TODO: implement getRawTokenBalance
+    throw UnimplementedError();
+  }
+  
+  @override
+  void removeChainChangedListener() {
+    // TODO: implement removeChainChangedListener
+  }
+  
+  @override
+  Future<void> switchChain(EthereumChain chain) {
+    // TODO: implement switchChain
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<void> syncChain(EthereumChain chain) {
+    // TODO: implement syncChain
+    throw UnimplementedError();
   }
  }
