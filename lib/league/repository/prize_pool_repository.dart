@@ -8,29 +8,51 @@ class PrizePoolRepository {
   PrizePoolRepository();
 
   Controller controller = Controller();
-  String adminAddress = '';
+  RxString adminAddress = ''.obs;
 
-  set admin(String address) => adminAddress;
   late Prizepool prizePool;
-  String get admin => adminAddress;
   Web3Client tokenClient = Web3Client('https://polygon-rpc.com/', Client());
   RxString aptUserAddress = ''.obs;
+  RxString prizePoolAddress = ''.obs;
+
+  String get admin => adminAddress.value;
   String get tokenAddress => aptUserAddress.value;
+  String get contractAddress => prizePoolAddress.value;
+
+  set admin(String address) => adminAddress.value = address;
+  set contractAddress(String newAddress) => prizePoolAddress.value = newAddress;
   set tokenAddress(String pairAddress) => aptUserAddress.value = pairAddress;
 
   Future<void> joinLeague() async {
-    final userAddress = EthereumAddress.fromHex(aptUserAddress.value);
-    prizePool = Prizepool(address: userAddress, client: tokenClient);
+    final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
+    prizePool = Prizepool(address: poolAddress, client: tokenClient);
     final theCredentials = controller.credentials;
-    final transactionHash = await prizePool.joinLeague(credentials: theCredentials);
+    final transactionHash =
+        await prizePool.joinLeague(credentials: theCredentials);
     controller.transactionHash = transactionHash;
   }
 
-  //Future<void> withdrawBeforePoolStarts() async {
-  //  prizePool.withdrawBeforeLeagueStarts();
-  //}
+  // Future<void> withdrawBeforePoolStarts() async {
+  //   final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
+  //   prizePool = Prizepool(address: poolAddress, client: tokenClient);
+  //  prizePool;
+  // }
+
+  Future<void> createLeague() async {
+    final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
+    prizePool = Prizepool(address: poolAddress, client: tokenClient);
+    final theCredentials = controller.credentials;
+    final txnHash = await prizePool.joinLeague(credentials: theCredentials);
+    controller.transactionHash = txnHash;
+  }
 
   Future<void> distributePrize(String winnerAddress) async {
-    prizePool.distributePrize();
+    final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
+    prizePool = Prizepool(address: poolAddress, client: tokenClient);
+    final theCredentials = controller.credentials;
+    final winner = EthereumAddress.fromHex(winnerAddress);
+    final txnHash =
+        await prizePool.distributePrize(winner, credentials: theCredentials);
+    controller.transactionHash = txnHash;
   }
 }
