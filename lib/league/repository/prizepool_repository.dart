@@ -10,18 +10,36 @@ class PrizePoolRepository {
   String adminAddress = '';
 
   set admin(String address) => adminAddress;
-  late PrizePool prizePool;
+  late Prizepool prizePool;
   String get admin => adminAddress;
 
   Future<void> joinPrizePool() async {
     prizePool.joinLeague();
   }
 
-  Future<void> withdrawBeforePoolStarts() async {
-    prizePool.withdrawBeforeLeagueStarts();
-  }
+  //Future<void> withdrawBeforePoolStarts() async {
+  //  prizePool.withdrawBeforeLeagueStarts();
+  //}
 
   Future<void> distributePrize(String winnerAddress) async {
     prizePool.distributePrize();
   }
 }
+
+/// A Placeholder PrizePool.sol ABI
+///
+///
+// class PrizePool {
+//   /// The Prize Pool is where each league's funds are stored
+//   PrizePool();
+
+//   /// Join a newly created league
+//   void joinLeague() {}
+
+//   /// Withdraw from a league before it starts
+//   void withdrawBeforeLeagueStarts() {}
+
+//   /// Pay out the prize to the winner of the league
+//   void distributePrize() {}
+// }
+
