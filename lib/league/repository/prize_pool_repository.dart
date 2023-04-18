@@ -27,16 +27,18 @@ class PrizePoolRepository {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
     prizePool = Prizepool(address: poolAddress, client: tokenClient);
     final theCredentials = controller.credentials;
-    final transactionHash =
+    final txnHash =
         await prizePool.joinLeague(credentials: theCredentials);
-    controller.transactionHash = transactionHash;
+    controller.transactionHash = txnHash;
   }
 
-  // Future<void> withdrawBeforePoolStarts() async {
-  //   final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
-  //   prizePool = Prizepool(address: poolAddress, client: tokenClient);
-  //  prizePool;
-  // }
+  Future<void> withdrawBeforeLeagueStarts() async {
+    final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
+    prizePool = Prizepool(address: poolAddress, client: tokenClient);
+    final theCredentials = controller.credentials;
+    final txnHash = await prizePool.withdrawBeforeLeagueStarts(credentials: theCredentials);
+    controller.transactionHash = txnHash;
+  }
 
   Future<void> createLeague() async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
