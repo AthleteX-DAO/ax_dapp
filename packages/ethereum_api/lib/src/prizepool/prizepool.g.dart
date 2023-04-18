@@ -4,7 +4,7 @@
 import 'package:web3dart/web3dart.dart' as _i1;
 
 final _contractAbi = _i1.ContractAbi.fromJson(
-  '[{"inputs":[{"internalType":"address","name":"_axToken","type":"address"},{"internalType":"uint256","name":"_entryFeeAmount","type":"uint256"},{"internalType":"uint256","name":"_leagueStartTime","type":"uint256"},{"internalType":"uint256","name":"_leagueEndTime","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"admin","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"approveAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"axToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"winner","type":"address"}],"name":"distributePrize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"entryFeeAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"joinLeague","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"leagueEndTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"leagueStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"myBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakedAmounts","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]',
+  '[{"inputs":[{"internalType":"address","name":"_axToken","type":"address"},{"internalType":"uint256","name":"_entryFeeAmount","type":"uint256"},{"internalType":"uint256","name":"_leagueStartTime","type":"uint256"},{"internalType":"uint256","name":"_leagueEndTime","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"admin","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"approveAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"axToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"winner","type":"address"}],"name":"distributePrize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"entryFeeAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"joinLeague","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"leagueEndTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"leagueStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"myBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakedAmounts","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdrawBeforeLeagueStarts","outputs":[],"stateMutability":"nonpayable","type":"function"}]',
   'Prizepool',
 );
 
@@ -180,5 +180,23 @@ class Prizepool extends _i1.GeneratedContract {
       atBlock,
     );
     return (response[0] as BigInt);
+  }
+
+  /// The optional [transaction] parameter can be used to override parameters
+  /// like the gas price, nonce and max gas. The `data` and `to` fields will be
+  /// set by the contract.
+  Future<String> withdrawBeforeLeagueStarts({
+    required _i1.Credentials credentials,
+    _i1.Transaction? transaction,
+  }) async {
+    final function = self.abi.functions[11];
+    assert(checkSignature(function, '9d43dc46'));
+    final params = [];
+    return write(
+      credentials,
+      transaction,
+      function,
+      params,
+    );
   }
 }
