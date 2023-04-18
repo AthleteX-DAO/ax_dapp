@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -16,7 +17,9 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
   LeagueBloc({
     required LeagueRepository leagueRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
+    required PrizePoolRepository prizePoolRepository,
   })  : _leagueRepository = leagueRepository,
+        _prizePoolRepository = prizePoolRepository,
         _streamAppDataChanges = streamAppDataChanges,
         super(const LeagueState()) {
     on<CreateLeague>(_onCreateLeague);
@@ -30,6 +33,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
   }
 
   final LeagueRepository _leagueRepository;
+  final PrizePoolRepository _prizePoolRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -72,8 +76,13 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         sports: event.sports,
         winner: '',
       );
-
-      await _leagueRepository.createLeague(league: league);
+      // TODO check for status of contract creation/league creation
+      print("Before Prize Pool");
+      await _prizePoolRepository.createLeague().then((_) async{
+        await _leagueRepository.createLeague(league: league);
+      });
+      print("After Prize Pool Repo");
+      //await _leagueRepository.createLeague(league: league);
 
       add(FetchLeagues());
       emit(state.copyWith(status: BlocStatus.success));

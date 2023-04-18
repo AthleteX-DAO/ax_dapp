@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ax_dapp/league/models/draft_apt.dart';
 import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
@@ -17,10 +18,12 @@ part 'league_draft_state.dart';
 class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
   LeagueDraftBloc({
     required LeagueRepository leagueRepository,
+    required PrizePoolRepository prizePoolRepository,
     required GetTotalTokenBalanceUseCase getTotalTokenBalanceUseCase,
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
     required this.athletes,
   })  : _leagueRepository = leagueRepository,
+        _prizePoolRepository = prizePoolRepository,
         _getTotalTokenBalanceUseCase = getTotalTokenBalanceUseCase,
         _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
         super(const LeagueDraftState()) {
@@ -32,6 +35,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
   }
 
   final LeagueRepository _leagueRepository;
+  final PrizePoolRepository _prizePoolRepository;
   final GetTotalTokenBalanceUseCase _getTotalTokenBalanceUseCase;
   final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
   final List<AthleteScoutModel> athletes;
@@ -122,7 +126,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
         teamAppreciation: teamAppreciation,
         roster: roster,
       );
-
+      await _prizePoolRepository.joinLeague();
       await _leagueRepository.enrollUser(
         leagueID: leagueID,
         team: team,

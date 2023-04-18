@@ -6,6 +6,7 @@ import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
@@ -22,6 +23,7 @@ part 'league_game_state.dart';
 class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   LeagueGameBloc({
     required LeagueRepository leagueRepository,
+    required PrizePoolRepository prizePoolRepository,
     required this.repo,
     required this.startDate,
     required this.endDate,
@@ -29,6 +31,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
     required TimerRepository timerRepository,
   })  : _leagueRepository = leagueRepository,
+        _prizePoolRepository = prizePoolRepository,
         _streamAppDataChanges = streamAppDataChanges,
         _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
         _tickerRepository = timerRepository,
@@ -55,6 +58,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   }
 
   final LeagueRepository _leagueRepository;
+  final PrizePoolRepository _prizePoolRepository;
   final GetScoutAthletesDataUseCase repo;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
@@ -137,7 +141,17 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   Future<void> _onLeaveTeamEvent(
     LeaveLeagueEvent event,
     Emitter<LeagueGameState> emit,
-  ) async {}
+  ) async {
+    try{
+      emit(state.copyWith(status: BlocStatus.loading));
+      await _prizePoolRepository.withdrawBeforeLeagueStarts();
+      await _leagueRepository.removeUser(leagueID: event.leagueID, userWallet: event.userWalletID);
+      emit(state.copyWith(status: BlocStatus.success));
+    }
+    catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
 
   Future<void> _onFetchScoutInfoRequested(
     FetchScoutInfoRequested event,
@@ -301,6 +315,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
       leagueID: leagueID,
       winnerWallet: winnerWallet,
     );
+
+    await _prizePoolRepository.distributePrize(winnerWallet);
 
     emit(state.copyWith(status: BlocStatus.success));
   }

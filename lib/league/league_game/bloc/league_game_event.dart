@@ -61,7 +61,20 @@ class JoinLeagueEvent extends LeagueGameEvent {
   List<Object?> get props => [leagueID, entryFee, isPrivate];
 }
 
-class LeaveLeagueEvent extends LeagueGameEvent {}
+class LeaveLeagueEvent extends LeagueGameEvent {
+  const LeaveLeagueEvent({
+    required this.leagueID,
+    required this.userWalletID,
+  });
+  final String leagueID;
+  final String userWalletID;
+  
+  @override
+  List<Object?> get props => [
+        leagueID,
+        userWalletID,
+      ];
+}
 
 class CalculateRemainingDays extends LeagueGameEvent {}
 
