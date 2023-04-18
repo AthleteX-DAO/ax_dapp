@@ -116,6 +116,15 @@ class _MaterialApp extends StatelessWidget {
             },
           ),
           GoRoute(
+            name: 'Predict',
+            path: '/predict',
+            builder: (BuildContext context, GoRouterState state) {
+              Global().pageName = 'predict';
+
+              return BlocProvider(create: (BuildContext context) => )
+            },
+          ),
+          GoRoute(
             name: 'scout',
             path: '/scout',
             builder: (BuildContext context, GoRouterState state) {
