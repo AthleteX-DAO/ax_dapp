@@ -45,6 +45,11 @@ class DesktopLeagueDraft extends StatelessWidget {
               const textColor = Color(0xFFFEC500);
               const buttonColorBG = Color(0xFF3C3009);
 
+              const athleteHeadingWR = 0.1;
+              const bookValueHeadingWR = 0.1;
+              const myTeamHeadingWR = 0.2;
+              const athleteCountHeadingWR = 0.03;
+
               return Align(
                 child: Container(
                   height: height * 0.75,
@@ -108,11 +113,23 @@ class DesktopLeagueDraft extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Athlete (Seasonal APT)'),
-                            const Text('Book Value / Change'),
-                            const Text('My Team'),
-                            Text(
-                              '${state.athleteCount} / ${league.teamSize}',
+                            SizedBox(
+                              width: width * athleteHeadingWR,
+                              child: const Text('Athlete (Seasonal APT)'),
+                            ),
+                            SizedBox(
+                              width: width * bookValueHeadingWR,
+                              child: const Text('Book Value / Change'),
+                            ),
+                            SizedBox(
+                              width: width * myTeamHeadingWR,
+                              child: const Text('My Team'),
+                            ),
+                            SizedBox(
+                              width: width * athleteCountHeadingWR,
+                              child: Text(
+                                '${state.athleteCount} / ${league.teamSize}',
+                              ),
                             ),
                           ],
                         ),
@@ -133,28 +150,41 @@ class DesktopLeagueDraft extends StatelessWidget {
                                 child: Material(
                                   child: state.status == BlocStatus.loading
                                       ? const Loader()
-                                      : ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: ownedApts.length,
-                                          itemBuilder: (context, index) {
-                                            return APTCard(
-                                              apt: ownedApts[index],
-                                              teamSize: league.teamSize,
-                                            );
-                                          },
+                                      : Align(
+                                          alignment: Alignment.topCenter,
+                                          child: ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            itemCount: ownedApts.length,
+                                            itemBuilder: (context, index) {
+                                              return APTCard(
+                                                apt: ownedApts[index],
+                                                teamSize: league.teamSize,
+                                                width: width,
+                                                height: height,
+                                              );
+                                            },
+                                          ),
                                         ),
                                 ),
                               ),
+                              const VerticalDivider(),
                               Expanded(
                                 child: Material(
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: myAptTeam.length,
-                                    itemBuilder: (context, index) {
-                                      return MyTeamCard(
-                                        apt: myAptTeam[index],
-                                      );
-                                    },
+                                  child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      itemCount: myAptTeam.length,
+                                      itemBuilder: (context, index) {
+                                        return MyTeamCard(
+                                          apt: myAptTeam[index],
+                                          width: width,
+                                          height: height,
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
