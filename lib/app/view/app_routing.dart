@@ -8,6 +8,7 @@ import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
+import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -121,7 +122,14 @@ class _MaterialApp extends StatelessWidget {
             builder: (BuildContext context, GoRouterState state) {
               Global().pageName = 'predict';
 
-              return BlocProvider(create: (BuildContext context) => )
+              return BlocProvider(
+                create: (BuildContext context) => PredictPageBloc(
+                  walletRepository: context.read<WalletRepository>(),
+                  streamAppDataChangesUseCase:
+                      context.read<StreamAppDataChangesUseCase>(),
+                ),
+                child: const Predict(),
+              );
             },
           ),
           GoRoute(
@@ -249,7 +257,8 @@ class _MaterialApp extends StatelessWidget {
   }
 
   bool notLanding(String location) {
-    return location.contains('scout') ||
+    return location.contains('predict') ||
+        location.contains('scout') ||
         location.contains('athlete') ||
         location.contains('trade') ||
         location.contains('pool') ||
