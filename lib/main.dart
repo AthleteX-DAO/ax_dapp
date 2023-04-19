@@ -54,12 +54,7 @@ void main() async {
 
   final httpClient = http.Client();
 
-  final magic = MagicSDK(
-    'pk_live_A0EFC48FF2C1D624',
-    137,
-    'https://polygon-rpc.com/',
-    'en_US',
-  );
+  final magic = MagicSDK('pk_live_A0EFC48FF2C1D624');
 
   await initHiveForFlutter();
   // usePathUrlStrategy();
@@ -73,7 +68,9 @@ void main() async {
   final reactiveWeb3Client = appConfig.reactiveWeb3Client;
   final walletApiClient =
       EthereumWalletApiClient(reactiveWeb3Client: reactiveWeb3Client);
-  final magicWalletApiClient = MagicWalletApiClient(magicSDK: magic,);
+  final magicWalletApiClient = MagicWalletApiClient(
+    magicSDK: magic,
+  );
   final tokensApiClient = TokensApiClient(
     defaultChain: defaultChain,
     reactiveWeb3Client: reactiveWeb3Client,

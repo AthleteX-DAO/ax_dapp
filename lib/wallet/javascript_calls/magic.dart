@@ -7,9 +7,6 @@ import 'package:js/js.dart';
 class MagicSDK {
   external MagicSDK(
     String apiKey,
-    int chainId,
-    String rpcUrl,
-    String locale,
   );
 
   external dynamic get rpcProvider;

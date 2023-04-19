@@ -26,8 +26,9 @@ class MagicWalletApiClient implements MagicApiClient {
   ConfigApiClient get _configApiClient => _reactiveApiClient.value;
   @override
   EthereumChain get currentChain => EthereumChain.polygonMainnet;
+
   /// The eth client here is directly related to the magic eth client
-  Ethereum get eth => window.magicEthereum!;
+  Ethereum? get eth => window.magicEthereum;
 
   /// Allows the user to connect to a 'Magic' wallet.
   ///
@@ -151,12 +152,16 @@ class MagicWalletApiClient implements MagicApiClient {
     throw UnimplementedError();
   }
 
-  @override
   void updateWalletClient() {
     // ignore: avoid_dynamic_calls
-    final client = Web3Client.custom(eth.asRpcService());
-    debugPrint('I am now switching out the old client for a new client');
+    if (eth == null) {
+      print("Magic Not Available!");
+      return;
+    }
+    final client = Web3Client.custom(eth!.asRpcService());
     _configApiClient.updateWeb3ClientDependency(client);
+
+    debugPrint('I am now switching out the old client for a new client');
   }
 
   @override

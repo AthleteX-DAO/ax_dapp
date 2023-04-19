@@ -27,6 +27,10 @@ class MagicRepository {
   Future<dynamic> connect() async {
     try {
       final walletAddress = await _magicWalletApiClient.connect();
+
+      // This event updates the dapps Web3Client using Magic's version
+      _magicWalletApiClient.updateWalletClient();
+
       _magicWalletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(EthereumChain.polygonMainnet),
@@ -78,37 +82,5 @@ class MagicRepository {
   Future<dynamic> requestUserInfo() async {
     final email = await _magicWalletApiClient.requestUserInfo();
     return email;
-  }
-
-  /// Allows the user to connect to a 'Magic' wallet along with the necessary credentials
-  ///
-  /// Returns the hexadecimal representation of the wallet address
-  ///
-  /// Throws:
-  /// - [WalletUnavailableFailure]
-  /// - [WalletOperationRejectedFailure]
-  /// - [EthereumWalletFailure]
-  /// - [UnknownWalletFailure]
-  Future<String> connectMagicWallet() async {
-    final prefs = await SharedPreferences.getInstance();
-    try {
-      await prefs.setBool(WalletRepository.searchForWalletKey, true);
-      _magicWalletApiClient.updateWalletClient();
-      final address = _magicWalletApiClient.connect();
-      final walletAddress = address.toString();
-
-      _magicWalletChangeController.add(
-        Wallet(
-          status: WalletStatus.fromChain(EthereumChain.polygonMainnet),
-          address: walletAddress,
-          chain: currentChain,
-        ),
-      );
-
-      return walletAddress;
-    } catch (_) {
-      await prefs.setBool(WalletRepository.searchForWalletKey, false);
-      return kNullAddress;
-    }
   }
 }
