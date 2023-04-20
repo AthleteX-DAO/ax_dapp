@@ -13,8 +13,7 @@ var MagicSDK = (function () {
         console.log("Connecting to Magic");      
         const address = (await this._web3.eth.getAccounts())[0];
         console.log(this._web3);
-        console.log("This is the address " + address);
-        console.log(typeof address);
+        console.log("[MagicSDK] This is the address " + address);
         return address;
     }
 
