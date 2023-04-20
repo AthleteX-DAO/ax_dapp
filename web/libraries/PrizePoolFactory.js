@@ -5,6 +5,9 @@ var PrizePoolFactory = ( function () {
         if (window.ethereum != null){
             this._web3 = new Web3(window.ethereum);
             //https://rpc.sx.technology/ 
+        } else 
+        {
+            this._web3 = new Web3('https://rpc.sx.technology');
         }
         
     }
