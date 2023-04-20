@@ -39,12 +39,9 @@ class PrizePoolRepository {
     controller.transactionHash = txnHash;
   }
 
-  Future<void> createLeague() async {
-    final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
-    print("here -> $poolAddress");
-    prizePool = prizePoolFactory.createLeague();
-    final theCredentials = controller.credentials;
-    final txnHash = prizePool.createLeague();
+  Future<void> createLeague(int entryFeeAmount, int leagueStartTime, int leagueEndTime) async {
+    final axToken = Token.ax;
+    final txnHash = prizePoolFactory.createLeague(axToken, entryFeeAmount, leagueStartTime, leagueEndTime);
     controller.transactionHash = txnHash;
   }
 
