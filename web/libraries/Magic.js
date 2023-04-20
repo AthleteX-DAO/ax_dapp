@@ -1,8 +1,9 @@
 var MagicSDK = (function () {
     function MagicSDK(apiKey) {
         this._magicSDK = new Magic('pk_live_A0EFC48FF2C1D624');
-        this._web3 = new Web3(this._magicSDK.rpcProvider);
+        this._web3 = new Web3(this._magicSDK.rpcProvider); // Comment: the Web3 function exists in the DOM
         
+        this._magicSDK.preload().then(() => console.log('Magic <iframe> loaded.'));
         /// Places the magic ethereum client onto the window object
         window.magicEthereum = this._web3.eth;
         console.log(Web3);
@@ -18,12 +19,12 @@ var MagicSDK = (function () {
     }
 
     MagicSDK.prototype.showWallet = async function () {
-        await this._magicSDK.connect.showWallet();
+        await this._magicSDK.wallet.connectWithUI();
     }
 
     MagicSDK.prototype.disconnect = async function () {
         console.log("disconnect");
-        await this._magicSDK.connect.disconnect();
+        await this._magicSDK.wallet.disconnect();
     }
 
     MagicSDK.prototype.getWalletInfo = async function () {
@@ -44,6 +45,5 @@ var MagicSDK = (function () {
         const credentials = await this._web3.eth.requestAccount();
         return credentials;
     }
-q
     return MagicSDK;
 })();
