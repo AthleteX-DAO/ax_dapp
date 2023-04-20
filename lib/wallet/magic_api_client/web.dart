@@ -159,9 +159,8 @@ class MagicWalletApiClient implements MagicApiClient {
       return;
     }
     final client = Web3Client.custom(eth!.asRpcService());
-    _configApiClient.updateWeb3ClientDependency(client);
-
     debugPrint('I am now switching out the old client for a new client');
+    _configApiClient.updateWeb3ClientDependency(client);
   }
 
   @override

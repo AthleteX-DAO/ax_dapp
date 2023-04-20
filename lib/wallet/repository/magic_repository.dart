@@ -1,4 +1,6 @@
 import 'package:ax_dapp/wallet/magic_api_client/web.dart';
+import 'package:ethereum_api/tokens_api.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -27,7 +29,9 @@ class MagicRepository {
   Future<dynamic> connect() async {
     try {
       final walletAddress = await _magicWalletApiClient.connect();
-
+      // Successfully invoked connect()
+      debugPrint(
+          'Stepping into the updateWalletClient -- magic_repository.connect() successfully called!');
       // This event updates the dapps Web3Client using Magic's version
       _magicWalletApiClient.updateWalletClient();
 
@@ -47,6 +51,14 @@ class MagicRepository {
   /// Throws:
   Future<void> showWallet() async {
     await _magicWalletApiClient.showWallet();
+    final walletAddress = Token.empty.address;
+    _magicWalletChangeController.add(
+      Wallet(
+        status: WalletStatus.fromChain(EthereumChain.polygonMainnet),
+        address: walletAddress,
+        chain: currentChain,
+      ),
+    );
   }
 
   /// Disconnects the user from their 'Magic' wallet.
