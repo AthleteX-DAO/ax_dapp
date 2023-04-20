@@ -2,7 +2,11 @@
 
 var PrizePoolFactory = ( function () {
     function PrizePoolFactory() {
-        this._web3 = new web3('https://rpc.sx.technology/');
+        if (window.ethereum != null){
+            this._web3 = new Web3(window.ethereum);
+            //https://rpc.sx.technology/ 
+        }
+        
     }
 
     // This function creates a pool contract, and then https://github.com/Riiz0/AX_PrizePool/blob/main/Prizepool.sol#L16
@@ -23,4 +27,5 @@ var PrizePoolFactory = ( function () {
     PrizePoolFactory.prototype.hello = async function() {
         console.log('Hello World!');
     }
+    return PrizePoolFactory;
 })();
