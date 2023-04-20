@@ -42,8 +42,8 @@ class PrizePoolRepository {
 
   Future<void> createLeague(int entryFeeAmount, int leagueStartTime, int leagueEndTime) async {
     final axAddress = EthereumAddress.fromHex('0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909');
-    final axToken = ERC20(address: axAddress, client: contractClient);
-    await prizePoolFactory.createLeague(axToken, entryFeeAmount, leagueStartTime, leagueEndTime);
+    final axTokenAddress = '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
+    await prizePoolFactory.createLeague(axTokenAddress, entryFeeAmount, leagueStartTime, leagueEndTime);
   }
 
   Future<void> distributePrize(String winnerAddress) async {
