@@ -78,7 +78,9 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
       );
       // TODO check for status of contract creation/league creation
       print("Before Prize Pool");
-      await _prizePoolRepository.createLeague().then((_) async{
+      final dateStartInt = DateTime.parse(event.dateStart).millisecondsSinceEpoch;
+      final dateEndInt = DateTime.parse(event.dateEnd).millisecondsSinceEpoch;
+      await _prizePoolRepository.createLeague(event.entryFee, dateStartInt, dateEndInt).then((_) async{
         await _leagueRepository.createLeague(league: league);
       });
       print("After Prize Pool Repo");

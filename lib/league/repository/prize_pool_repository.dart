@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ethereum_api/erc20_api.dart';
 import 'package:ethereum_api/prizepool_api.dart';
 import 'package:get/get.dart';
 import '../models/PrizePoolFactory.dart';
@@ -14,7 +15,7 @@ class PrizePoolRepository {
   late Prizepool prizePool;
   PrizePoolFactory prizePoolFactory = PrizePoolFactory();
   Web3Client contractClient = Web3Client('https://polygon-rpc.com/', Client());
-  RxString prizePoolAddress = ''.obs;
+  RxString prizePoolAddress = '0x8939C4029463007b9dA2EC58244eF15b63B04668'.obs;
 
   String get admin => adminAddress.value;
   String get contractAddress => prizePoolAddress.value;
@@ -40,9 +41,9 @@ class PrizePoolRepository {
   }
 
   Future<void> createLeague(int entryFeeAmount, int leagueStartTime, int leagueEndTime) async {
-    final axToken = Token.ax;
-    final txnHash = prizePoolFactory.createLeague(axToken, entryFeeAmount, leagueStartTime, leagueEndTime);
-    controller.transactionHash = txnHash;
+    final axAddress = EthereumAddress.fromHex('0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909');
+    final axToken = ERC20(address: axAddress, client: contractClient);
+    await prizePoolFactory.createLeague(axToken, entryFeeAmount, leagueStartTime, leagueEndTime);
   }
 
   Future<void> distributePrize(String winnerAddress) async {
