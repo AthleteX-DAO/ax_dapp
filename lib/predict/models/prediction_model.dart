@@ -1,10 +1,11 @@
 import 'package:shared/shared.dart';
 
 class PredictionModel extends Equatable {
-  const PredictionModel({this.prompt, this.details, this.resolution});
+  const PredictionModel(
+      {required this.prompt, required this.details, this.resolution});
 
-  final String? prompt;
-  final String? details;
+  final String prompt;
+  final String details;
   final bool? resolution;
 
   @override
