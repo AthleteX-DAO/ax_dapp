@@ -119,10 +119,20 @@ class FetchLeagueTeamsEvent extends LeagueGameEvent {
 }
 
 class ProcessLeagueWinnerEvent extends LeagueGameEvent {
-  const ProcessLeagueWinnerEvent({required this.leagueID});
+  const ProcessLeagueWinnerEvent({
+    required this.leagueID,
+    required this.leagueTeams,
+    required this.athletes,
+  });
 
+  final List<LeagueTeam> leagueTeams;
   final String leagueID;
+  final List<AthleteScoutModel> athletes;
 
   @override
-  List<Object?> get props => [leagueID];
+  List<Object?> get props => [
+        leagueID,
+        leagueTeams,
+        athletes,
+      ];
 }

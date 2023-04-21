@@ -24,7 +24,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-class LeagueGame extends StatelessWidget {
+class LeagueGame extends StatefulWidget {
   const LeagueGame({
     super.key,
     required this.league,
@@ -34,6 +34,12 @@ class LeagueGame extends StatelessWidget {
   final League league;
   final String leagueID;
 
+  @override
+  State<LeagueGame> createState() => _LeagueGameState();
+}
+
+class _LeagueGameState extends State<LeagueGame> {
+  EthereumChain? _selectedChain;
   @override
   Widget build(BuildContext context) {
     final global = Global();
@@ -51,22 +57,43 @@ class LeagueGame extends StatelessWidget {
         builder: (context, state) {
           final bloc = context.read<LeagueGameBloc>();
           final filteredAthletes = state.filteredAthletes;
-          if (state.status == BlocStatus.success) {
-            bloc
-              ..add(
-                FetchLeagueTeamsEvent(leagueID: leagueID),
-              )
-              ..add(
-                CalculateAppreciationEvent(
-                  leagueTeams: state.leagueTeams,
-                  athletes: filteredAthletes,
-                ),
-              );
-
-            if (state.timerStatus.hasEnded && league.winner.isEmpty) {
-              bloc.add(ProcessLeagueWinnerEvent(leagueID: leagueID));
-            }
+          if (_selectedChain != state.selectedChain) {
+            _selectedChain = state.selectedChain;
+            bloc.add(
+              FetchScoutInfoRequested(),
+            );
           }
+          if (state.status == BlocStatus.initial) {
+            bloc.add(
+              FetchScoutInfoRequested(),
+            );
+          }
+          if (state.status == BlocStatus.scoutsLoaded) {
+            bloc.add(FetchLeagueTeamsEvent(leagueID: widget.leagueID));
+          }
+          if (state.status == BlocStatus.leaguesLoaded) {
+            bloc.add(
+              CalculateAppreciationEvent(
+                leagueTeams: state.leagueTeams,
+                athletes: filteredAthletes,
+              ),
+            );
+          }
+          if (state.timerStatus.hasEnded &&
+              widget.league.winner.isEmpty &&
+              state.leagueTeams.isNotEmpty &&
+              state.status == BlocStatus.scoutsLoaded &&
+              state.status == BlocStatus.leaguesLoaded &&
+              filteredAthletes.isNotEmpty) {
+            bloc.add(
+              ProcessLeagueWinnerEvent(
+                leagueID: widget.leagueID,
+                leagueTeams: state.leagueTeams,
+                athletes: filteredAthletes,
+              ),
+            );
+          }
+
           final userTeams = state.userTeams;
           final differenceInDays = state.differenceInDays;
           final differenceInHours = state.differenceInHours;
@@ -162,7 +189,7 @@ class LeagueGame extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  league.name,
+                                  widget.league.name,
                                   style: textStyle(
                                     Colors.amber[400]!,
                                     18,
@@ -172,7 +199,7 @@ class LeagueGame extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  '${league.dateStart} - ${league.dateEnd}',
+                                  '${widget.league.dateStart} - ${widget.league.dateEnd}',
                                   style: textStyle(
                                     Colors.grey[400]!,
                                     14,
@@ -183,7 +210,7 @@ class LeagueGame extends StatelessWidget {
                                 const SizedBox(height: 10),
                                 if (timerStatus.isPending) ...[
                                   Text(
-                                    '$differenceInDays Days $differenceInHours Hours $differenceInMinutes Minutes $differenceInSeconds Seconds Until ${league.name} Begins!',
+                                    '$differenceInDays Days $differenceInHours Hours $differenceInMinutes Minutes $differenceInSeconds Seconds Until ${widget.league.name} Begins!',
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       14,
@@ -203,7 +230,7 @@ class LeagueGame extends StatelessWidget {
                                   ),
                                 ] else ...[
                                   Text(
-                                    '${league.name} Has Ended!',
+                                    '${widget.league.name} Has Ended!',
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       14,
@@ -255,7 +282,7 @@ class LeagueGame extends StatelessWidget {
                                                     CalculateTeamPerformanceUseCase>(),
                                           ),
                                           child: DesktopLeagueDraft(
-                                            league: league,
+                                            league: widget.league,
                                             existingTeam: existingTeam,
                                           ),
                                         ),
@@ -279,7 +306,7 @@ class LeagueGame extends StatelessWidget {
                             const SizedBox(
                               width: 5,
                             ),
-                            if (league.adminWallet == "'$walletAddress'")
+                            if (widget.league.adminWallet == "'$walletAddress'")
                               DecoratedBox(
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
@@ -313,7 +340,7 @@ class LeagueGame extends StatelessWidget {
                                             BlocProvider.value(
                                           value: bloc,
                                           child: EditRulesDialog(
-                                            league: league,
+                                            league: widget.league,
                                           ),
                                         ),
                                       );
