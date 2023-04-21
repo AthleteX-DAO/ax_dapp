@@ -10,7 +10,16 @@ class PredictPageState extends Equatable {
 
   final BlocStatus status;
 
+  PredictPageState copyWith({
+    List<PredictionModel>? predictions,
+    BlocStatus? status,
+  }) {
+    return PredictPageState(
+      predictions: predictions ?? this.predictions,
+      status: status ?? this.status,
+    );
+  }
+
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [predictions, status];
 }

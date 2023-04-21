@@ -23,6 +23,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
   Global global = Global();
   double minTeamWidth = 875;
   double minViewWidth = 1090;
+  List<PredictionModel> currentPredictions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
         BlocBuilder<PredictPageBloc, PredictPageState>(
             builder: (context, state) {
       final bloc = context.read<PredictPageBloc>();
+      currentPredictions = state.predictions;
       return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(
@@ -75,17 +77,21 @@ class _DesktopPredictState extends State<DesktopPredict> {
               // Body
               Stack(
                 alignment: Alignment.center,
-                children: [
+                children: <Widget>[
                   if (state.status == BlocStatus.loading) const Loader(),
-                  DesktopPrediction(
-                    predictionModel: const PredictionModel(
-                      prompt:
-                          'Will Gervonta ‘Tank’ Davis beat Ryan ‘King’ Garcia on April 22nd?',
-                      details:
-                          'This market will resolve to “Yes” if Gervonta Davis wins his fight on April 22, 2023. Otherwise, this market will resolve to “No”. A “No” resolution would mean Ryan Garcia won the flight. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled, postponed, or ends in a draw, Yes and No will resolve to 50/50.',
-                    ),
-                    minTeamWidth: minTeamWidth,
-                    minViewWidth: minViewWidth,
+                  SizedBox(
+                    height: constraints.maxHeight * 0.8 - 120,
+                    child: ListView.builder(
+                        padding: const EdgeInsets.only(top: 10),
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: currentPredictions.length,
+                        itemBuilder: (context, index) {
+                          return DesktopPrediction(
+                            predictionModel: currentPredictions[index],
+                            minTeamWidth: minTeamWidth,
+                            minViewWidth: minViewWidth,
+                          );
+                        }),
                   )
                 ],
               ),

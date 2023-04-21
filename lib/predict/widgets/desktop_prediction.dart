@@ -1,4 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/widgets/Probability.dart';
+import 'package:ax_dapp/predict/widgets/Prompt.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -38,23 +40,42 @@ class DesktopPrediction extends StatelessWidget {
           // TODO: Update Buttons to match Figma
           children: <Widget>[
             Row(
-              children: [Text(_prompt)],
-            ),
-            Row(
-              children: [Text("Probability: ZERO")],
+              children: [
+                Row(
+                  children: [
+                    Prompt(
+                      prompt: _prompt,
+                    )
+                  ],
+                ),
+                Row(
+                  children: [Probability(prompt: _prompt)],
+                ),
+              ],
             ),
             Row(
               children: [
                 TextButton(
+                  onPressed: () {
+                    print('yes');
+                  },
+                  child: TextButton(
                     onPressed: () {
                       print('yes');
                     },
-                    child: const Text('Yes')),
+                    child: const Text('Yes'),
+                  ),
+                ),
                 TextButton(
-                  child: const Text('No'),
                   onPressed: () {
                     print('no');
                   },
+                  child: TextButton(
+                    onPressed: () {
+                      print('no');
+                    },
+                    child: const Text('No'),
+                  ),
                 )
               ],
             )
