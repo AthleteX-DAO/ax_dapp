@@ -1,5 +1,4 @@
 import 'package:ax_dapp/wallet/magic_api_client/web.dart';
-import 'package:ethereum_api/tokens_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,9 +48,11 @@ class MagicRepository {
   /// Allows the user to show their 'Magic' wallet.
   ///
   /// Throws:
-  Future<void> showWallet() async {
+  Future<String> showWallet() async {
     await _magicWalletApiClient.showWallet();
-    final walletAddress = Token.empty.address;
+    const walletAddress = kNullAddress;
+    debugPrint('[MagicRepository] Incoming wallet address: $walletAddress');
+    _magicWalletApiClient.updateWalletClient();
     _magicWalletChangeController.add(
       Wallet(
         status: WalletStatus.fromChain(EthereumChain.polygonMainnet),
@@ -59,6 +60,8 @@ class MagicRepository {
         chain: currentChain,
       ),
     );
+
+    return walletAddress;
   }
 
   /// Disconnects the user from their 'Magic' wallet.

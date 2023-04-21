@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:html' as html;
 import 'dart:js_util';
 
 import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
@@ -26,9 +26,7 @@ class MagicWalletApiClient implements MagicApiClient {
   ConfigApiClient get _configApiClient => _reactiveApiClient.value;
   @override
   EthereumChain get currentChain => EthereumChain.polygonMainnet;
-
-  /// The eth client here is directly related to the magic eth client
-  Ethereum? get eth => window.magicEthereum;
+  html.Window get _window => html.window;
 
   /// Allows the user to connect to a 'Magic' wallet.
   ///
@@ -57,9 +55,11 @@ class MagicWalletApiClient implements MagicApiClient {
   ///
   /// Throws:
   @override
-  Future<void> showWallet() async {
+  Future<dynamic> showWallet() async {
     try {
-      await _magicSDK.showWallet();
+      final address = await promiseToFuture<String>(_magicSDK.showWallet());
+      debugPrint('[MagicApiClient]showWallet invoked.  address: $address');
+      return address;
     } catch (_) {}
   }
 
@@ -154,14 +154,15 @@ class MagicWalletApiClient implements MagicApiClient {
 
   void updateWalletClient() {
     // ignore: avoid_dynamic_calls
-    if (eth == null) {
-      print("Magic Not Available!");
-      return;
-    }
-    final client = Web3Client.custom(eth!.asRpcService());
+
+    final client = _window.magicEthereum;
+
     debugPrint(
         'I am now switching out the old client for a new client  \n $client');
-    _configApiClient.updateWeb3ClientDependency(client);
+    if (client == null) {
+      debugPrint('[MagicWalletApiClient] the client is null');
+    }
+    // _configApiClient.updateWeb3ClientDependency(client);
   }
 
   @override
