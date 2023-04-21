@@ -104,7 +104,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     CalculateAppreciationEvent event,
     Emitter<LeagueGameState> emit,
   ) async {
-    print('Calling Appreciation');
     emit(state.copyWith(status: BlocStatus.loading));
     final leagueTeams = event.leagueTeams;
     final athletes = event.athletes;
@@ -144,7 +143,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     FetchScoutInfoRequested event,
     Emitter<LeagueGameState> emit,
   ) async {
-    print('Calling Scout Info');
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       var supportedSport = SupportedSport.MLB;
@@ -250,7 +248,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     FetchLeagueTeamsEvent event,
     Emitter<LeagueGameState> emit,
   ) async {
-    print('Calling League Teams');
     final leagueID = event.leagueID;
     try {
       emit(state.copyWith(status: BlocStatus.loading));
@@ -273,7 +270,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     ProcessLeagueWinnerEvent event,
     Emitter<LeagueGameState> emit,
   ) async {
-    print('CALLING WINNER EVENT');
     final leagueID = event.leagueID;
     final leagueTeams = event.leagueTeams;
     final athletes = event.athletes;
@@ -285,11 +281,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
       final teamPerformance = _calculateTeamPerformanceUseCase
           .calculateTeamPerformance(team.roster, athletes);
 
-      print('TEAM PERFORMANCE -> $teamPerformance');
-
       final newAppreciation = teamPerformance + team.teamAppreciation;
-
-      print('NEW APPRECIATION -> $newAppreciation');
 
       final newTeam = LeagueTeam(
         userWalletID: team.userWalletID,
@@ -297,11 +289,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         teamAppreciation: newAppreciation,
       );
 
-      print('NEW TEAM -> ${newTeam.userWalletID}');
-
-      print('CALLING UPDATE ROSTER BEFORE');
       await _leagueRepository.updateRoster(leagueID: leagueID, team: newTeam);
-      print('CALLING UPDATE ROSTER AFTER');
 
       if (newAppreciation > winnerAppreciation) {
         winnerWallet = team.userWalletID;

@@ -74,7 +74,6 @@ class LeagueGame extends StatelessWidget {
                 leagueTeams.isNotEmpty &&
                 filteredAthletes.isNotEmpty &&
                 athletes.isNotEmpty) {
-              print('THE TIMER HAS ENDED');
               bloc.add(
                 ProcessLeagueWinnerEvent(
                   leagueID: leagueID,
