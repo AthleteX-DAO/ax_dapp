@@ -42,6 +42,31 @@ class TopNavigationBarWeb extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
+                    if (page != 'predict') {
+                      context.goNamed('predict');
+                    }
+                  },
+                  child: Text(
+                    'Predict',
+                    style: textSwapState(
+                      condition: page == 'predict',
+                      tabNotSelected: textStyle(
+                        Colors.white,
+                        tabTextSize,
+                        isBold: true,
+                        isUline: false,
+                      ),
+                      tabSelected: textStyle(
+                        Colors.amber[400]!,
+                        tabTextSize,
+                        isBold: true,
+                        isUline: true,
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
                     if (page != 'scout') {
                       context.goNamed('scout');
                     }

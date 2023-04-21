@@ -12,19 +12,21 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
   PredictPageBloc({
     required WalletRepository walletRepository,
     required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
-  }) : _walletRepository = walletRepository,
-      _streamAppDataChanges = streamAppDataChangesUseCase
-   {
+  })  : _walletRepository = walletRepository,
+        _streamAppDataChanges = streamAppDataChangesUseCase,
+        super(const PredictPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
-    add( const WatchAppDataChangesStarted());
+    add(const WatchAppDataChangesStarted());
   }
 
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
 
-
   Future<void> _onWatchAppDataChangesStarted(
       WatchAppDataChangesStarted _, Emitter<PredictPageState> emit) async {
-        await emit.onEach<AppData>(_streamAppDataChanges.appDataChanges, onData: )
-      }
+    await emit.onEach<AppData>(_streamAppDataChanges.appDataChanges,
+        onData: (appData) {
+      print('Hello!');
+    });
+  }
 }
