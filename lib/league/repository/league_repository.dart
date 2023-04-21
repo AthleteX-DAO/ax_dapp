@@ -103,14 +103,12 @@ class LeagueRepository {
 
       final teamRef = (await leagueRef
               .collection('Teams')
-              .where('userWallet', isEqualTo: team.userWalletID)
+              .where('userWalletID', isEqualTo: team.userWalletID)
               .get())
           .docs[0]
           .reference;
 
-      await teamRef.update(
-        {'roster': team.roster, 'teamAppreciation': team.teamAppreciation},
-      );
+      await teamRef.update(team.toJson());
     } on FirebaseException catch (e) {
       debugPrint('$e');
     }

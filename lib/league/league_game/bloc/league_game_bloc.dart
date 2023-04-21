@@ -171,7 +171,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
           state.copyWith(
             athletes: response,
             filteredAthletes: response,
-            status: BlocStatus.success,
+            status: BlocStatus.scoutsLoaded,
             selectedSport: supportedSport,
           ),
         );
@@ -257,7 +257,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
 
       emit(
         state.copyWith(
-          status: BlocStatus.success,
+          status: BlocStatus.leaguesLoaded,
           leagueTeams: leagueTeams,
         ),
       );
@@ -270,15 +270,16 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     ProcessLeagueWinnerEvent event,
     Emitter<LeagueGameState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
     final leagueID = event.leagueID;
+    final leagueTeams = event.leagueTeams;
+    final athletes = event.athletes;
 
     var winnerWallet = '';
     var winnerAppreciation = 0.0;
 
-    for (final team in state.leagueTeams) {
+    for (final team in leagueTeams) {
       final teamPerformance = _calculateTeamPerformanceUseCase
-          .calculateTeamPerformance(team.roster, state.athletes);
+          .calculateTeamPerformance(team.roster, athletes);
 
       final newAppreciation = teamPerformance + team.teamAppreciation;
 

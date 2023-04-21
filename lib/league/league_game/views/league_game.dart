@@ -51,22 +51,6 @@ class LeagueGame extends StatelessWidget {
         builder: (context, state) {
           final bloc = context.read<LeagueGameBloc>();
           final filteredAthletes = state.filteredAthletes;
-          if (state.status == BlocStatus.success) {
-            bloc
-              ..add(
-                FetchLeagueTeamsEvent(leagueID: leagueID),
-              )
-              ..add(
-                CalculateAppreciationEvent(
-                  leagueTeams: state.leagueTeams,
-                  athletes: filteredAthletes,
-                ),
-              );
-
-            if (state.timerStatus.hasEnded && league.winner.isEmpty) {
-              bloc.add(ProcessLeagueWinnerEvent(leagueID: leagueID));
-            }
-          }
           final userTeams = state.userTeams;
           final differenceInDays = state.differenceInDays;
           final differenceInHours = state.differenceInHours;
@@ -74,6 +58,28 @@ class LeagueGame extends StatelessWidget {
           final differenceInSeconds = state.differenceInSeconds;
           final timerStatus = state.timerStatus;
           final athletes = state.athletes;
+          final leagueTeams = state.leagueTeams;
+          if (state.status == BlocStatus.scoutsLoaded) {
+            bloc.add(FetchLeagueTeamsEvent(leagueID: leagueID));
+          }
+          if (state.status == BlocStatus.leaguesLoaded) {
+            bloc.add(
+              CalculateAppreciationEvent(
+                leagueTeams: state.leagueTeams,
+                athletes: filteredAthletes,
+              ),
+            );
+            if (timerStatus.hasEnded &&
+                league.winner.isEmpty) {
+              bloc.add(
+                ProcessLeagueWinnerEvent(
+                  leagueID: leagueID,
+                  leagueTeams: leagueTeams,
+                  athletes: filteredAthletes,
+                ),
+              );
+            }
+          }
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
