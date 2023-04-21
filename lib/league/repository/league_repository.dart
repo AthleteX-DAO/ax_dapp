@@ -93,6 +93,7 @@ class LeagueRepository {
     required String leagueID,
     required LeagueTeam team,
   }) async {
+    print('UPDATING THE ROSTER');
     try {
       final leagueRef = (await _fireStore
               .collection('Leagues')

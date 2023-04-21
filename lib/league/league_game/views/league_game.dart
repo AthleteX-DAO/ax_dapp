@@ -24,7 +24,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-class LeagueGame extends StatefulWidget {
+class LeagueGame extends StatelessWidget {
   const LeagueGame({
     super.key,
     required this.league,
@@ -34,12 +34,6 @@ class LeagueGame extends StatefulWidget {
   final League league;
   final String leagueID;
 
-  @override
-  State<LeagueGame> createState() => _LeagueGameState();
-}
-
-class _LeagueGameState extends State<LeagueGame> {
-  EthereumChain? _selectedChain;
   @override
   Widget build(BuildContext context) {
     final global = Global();
@@ -57,19 +51,13 @@ class _LeagueGameState extends State<LeagueGame> {
         builder: (context, state) {
           final bloc = context.read<LeagueGameBloc>();
           final filteredAthletes = state.filteredAthletes;
-          if (_selectedChain != state.selectedChain) {
-            _selectedChain = state.selectedChain;
-            bloc.add(
-              FetchScoutInfoRequested(),
-            );
-          }
-          if (state.status == BlocStatus.initial) {
-            bloc.add(
-              FetchScoutInfoRequested(),
-            );
-          }
+          // if (state.status == BlocStatus.initial) {
+          //   bloc.add(
+          //     FetchScoutInfoRequested(),
+          //   );
+          // }
           if (state.status == BlocStatus.scoutsLoaded) {
-            bloc.add(FetchLeagueTeamsEvent(leagueID: widget.leagueID));
+            bloc.add(FetchLeagueTeamsEvent(leagueID: leagueID));
           }
           if (state.status == BlocStatus.leaguesLoaded) {
             bloc.add(
@@ -80,14 +68,13 @@ class _LeagueGameState extends State<LeagueGame> {
             );
           }
           if (state.timerStatus.hasEnded &&
-              widget.league.winner.isEmpty &&
+              league.winner.isEmpty &&
               state.leagueTeams.isNotEmpty &&
-              state.status == BlocStatus.scoutsLoaded &&
-              state.status == BlocStatus.leaguesLoaded &&
-              filteredAthletes.isNotEmpty) {
+              filteredAthletes.isNotEmpty &&
+              state.athletes.isNotEmpty) {
             bloc.add(
               ProcessLeagueWinnerEvent(
-                leagueID: widget.leagueID,
+                leagueID: leagueID,
                 leagueTeams: state.leagueTeams,
                 athletes: filteredAthletes,
               ),
@@ -189,7 +176,7 @@ class _LeagueGameState extends State<LeagueGame> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  widget.league.name,
+                                  league.name,
                                   style: textStyle(
                                     Colors.amber[400]!,
                                     18,
@@ -199,7 +186,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  '${widget.league.dateStart} - ${widget.league.dateEnd}',
+                                  '${league.dateStart} - ${league.dateEnd}',
                                   style: textStyle(
                                     Colors.grey[400]!,
                                     14,
@@ -210,7 +197,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                 const SizedBox(height: 10),
                                 if (timerStatus.isPending) ...[
                                   Text(
-                                    '$differenceInDays Days $differenceInHours Hours $differenceInMinutes Minutes $differenceInSeconds Seconds Until ${widget.league.name} Begins!',
+                                    '$differenceInDays Days $differenceInHours Hours $differenceInMinutes Minutes $differenceInSeconds Seconds Until ${league.name} Begins!',
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       14,
@@ -230,7 +217,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                   ),
                                 ] else ...[
                                   Text(
-                                    '${widget.league.name} Has Ended!',
+                                    '${league.name} Has Ended!',
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       14,
@@ -282,7 +269,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                                     CalculateTeamPerformanceUseCase>(),
                                           ),
                                           child: DesktopLeagueDraft(
-                                            league: widget.league,
+                                            league: league,
                                             existingTeam: existingTeam,
                                           ),
                                         ),
@@ -306,7 +293,7 @@ class _LeagueGameState extends State<LeagueGame> {
                             const SizedBox(
                               width: 5,
                             ),
-                            if (widget.league.adminWallet == "'$walletAddress'")
+                            if (league.adminWallet == "'$walletAddress'")
                               DecoratedBox(
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
@@ -340,7 +327,7 @@ class _LeagueGameState extends State<LeagueGame> {
                                             BlocProvider.value(
                                           value: bloc,
                                           child: EditRulesDialog(
-                                            league: widget.league,
+                                            league: league,
                                           ),
                                         ),
                                       );

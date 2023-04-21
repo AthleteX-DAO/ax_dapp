@@ -79,7 +79,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
             ),
           );
         }
-        //add(FetchScoutInfoRequested());
+        add(FetchScoutInfoRequested());
       },
     );
   }
@@ -273,6 +273,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     ProcessLeagueWinnerEvent event,
     Emitter<LeagueGameState> emit,
   ) async {
+    print('CALLING WINNER EVENT');
     final leagueID = event.leagueID;
     final leagueTeams = event.leagueTeams;
     final athletes = event.athletes;

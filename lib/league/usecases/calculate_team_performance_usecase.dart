@@ -5,6 +5,8 @@ class CalculateTeamPerformanceUseCase {
     Map<int, List<String>> roster,
     List<AthleteScoutModel> athletes,
   ) {
+    roster.forEach((key, value) {print('KEY VALUE PAIRS -> $key, $value');});
+    athletes.forEach((element) {print('ATHLETE NAME -> ${element.name}');});
     final percentChanges = roster.entries.map((entry) {
       final initialPrice = double.parse(entry.value[1]);
       final athleteId = entry.key ~/ 10;
