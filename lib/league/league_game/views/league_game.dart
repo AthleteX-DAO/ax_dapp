@@ -70,10 +70,7 @@ class LeagueGame extends StatelessWidget {
               ),
             );
             if (timerStatus.hasEnded &&
-                league.winner.isEmpty &&
-                leagueTeams.isNotEmpty &&
-                filteredAthletes.isNotEmpty &&
-                athletes.isNotEmpty) {
+                league.winner.isEmpty) {
               bloc.add(
                 ProcessLeagueWinnerEvent(
                   leagueID: leagueID,
