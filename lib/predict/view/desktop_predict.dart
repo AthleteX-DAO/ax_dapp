@@ -78,7 +78,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
               Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
-                  if (state.status == BlocStatus.loading) const Loader(),
+                  // if (state.status == BlocStatus.loading) const Loader(),
                   SizedBox(
                     height: constraints.maxHeight * 0.8 - 120,
                     child: ListView.builder(

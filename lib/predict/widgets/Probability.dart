@@ -14,9 +14,9 @@ class Probability extends StatelessWidget {
     return SizedBox(
       width: _width * 0.18 > 175 ? _width * 0.18 : 175,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [Text('top of column'), Text('bottom of column')],
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: const [Text('0%')],
       ),
     );
   }

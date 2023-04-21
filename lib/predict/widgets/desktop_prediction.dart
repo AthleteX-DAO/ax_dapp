@@ -1,6 +1,8 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/widgets/Probability.dart';
 import 'package:ax_dapp/predict/widgets/Prompt.dart';
+import 'package:ax_dapp/predict/widgets/predict_no_button.dart';
+import 'package:ax_dapp/predict/widgets/predict_yes_button.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -39,44 +41,20 @@ class DesktopPrediction extends StatelessWidget {
 
           // TODO: Update Buttons to match Figma
           children: <Widget>[
+            // prompt, probability
             Row(
-              children: [
-                Row(
-                  children: [
-                    Prompt(
-                      prompt: _prompt,
-                    )
-                  ],
-                ),
-                Row(
-                  children: [Probability(prompt: _prompt)],
-                ),
+              children: <Widget>[
+                PromptDetails(
+                  model: predictionModel,
+                ).promptDetailsCardforWeb(),
+                Probability(prompt: _prompt)
               ],
             ),
+            // yes, no
             Row(
               children: [
-                TextButton(
-                  onPressed: () {
-                    print('yes');
-                  },
-                  child: TextButton(
-                    onPressed: () {
-                      print('yes');
-                    },
-                    child: const Text('Yes'),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    print('no');
-                  },
-                  child: TextButton(
-                    onPressed: () {
-                      print('no');
-                    },
-                    child: const Text('No'),
-                  ),
-                )
+                PredictYesButton(prediction: predictionModel),
+                PredictNoButton(prediction: predictionModel)
               ],
             )
           ],

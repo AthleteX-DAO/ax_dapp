@@ -1,6 +1,7 @@
 import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/widgets/desktop_prediction_widget.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,8 @@ class PredictionPage extends StatefulWidget {
 class _PredictionPageState extends State<PredictionPage> {
   Global global = Global();
   late PredictionModel predictionModel;
-
+  final predictionDetailsWidget =
+      NoPredictionsShowWidget().predictionPageDetails();
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
 
   @override
@@ -48,7 +50,7 @@ class _PredictionPageState extends State<PredictionPage> {
             fit: BoxFit.fill,
           ),
         ),
-        child: const Text('Predictions Page goes here!'),
+        child: predictionDetailsWidget,
       ),
     );
   }
