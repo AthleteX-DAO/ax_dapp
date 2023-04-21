@@ -8,7 +8,10 @@ import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
+import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/view/desktop_predict.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
+import 'package:ax_dapp/predict/view/prediction_page.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -128,9 +131,19 @@ class _MaterialApp extends StatelessWidget {
                   streamAppDataChangesUseCase:
                       context.read<StreamAppDataChangesUseCase>(),
                 ),
-                child: const Predict(),
+                child: const DesktopPredict(),
               );
             },
+            routes: [
+              GoRoute(
+                name: 'prediction',
+                path: 'prediction-page',
+                builder: (BuildContext context, GoRouterState state) {
+                  Global().pageName = 'Prediction';
+                  return const PredictionPage();
+                },
+              )
+            ],
           ),
           GoRoute(
             name: 'scout',
