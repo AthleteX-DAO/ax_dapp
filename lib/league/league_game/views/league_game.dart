@@ -51,11 +51,14 @@ class LeagueGame extends StatelessWidget {
         builder: (context, state) {
           final bloc = context.read<LeagueGameBloc>();
           final filteredAthletes = state.filteredAthletes;
-          // if (state.status == BlocStatus.initial) {
-          //   bloc.add(
-          //     FetchScoutInfoRequested(),
-          //   );
-          // }
+          final userTeams = state.userTeams;
+          final differenceInDays = state.differenceInDays;
+          final differenceInHours = state.differenceInHours;
+          final differenceInMinutes = state.differenceInMinutes;
+          final differenceInSeconds = state.differenceInSeconds;
+          final timerStatus = state.timerStatus;
+          final athletes = state.athletes;
+          final leagueTeams = state.leagueTeams;
           if (state.status == BlocStatus.scoutsLoaded) {
             bloc.add(FetchLeagueTeamsEvent(leagueID: leagueID));
           }
@@ -66,28 +69,21 @@ class LeagueGame extends StatelessWidget {
                 athletes: filteredAthletes,
               ),
             );
+            if (timerStatus.hasEnded &&
+                league.winner.isEmpty &&
+                leagueTeams.isNotEmpty &&
+                filteredAthletes.isNotEmpty &&
+                athletes.isNotEmpty) {
+              print('THE TIMER HAS ENDED');
+              bloc.add(
+                ProcessLeagueWinnerEvent(
+                  leagueID: leagueID,
+                  leagueTeams: leagueTeams,
+                  athletes: filteredAthletes,
+                ),
+              );
+            }
           }
-          if (state.timerStatus.hasEnded &&
-              league.winner.isEmpty &&
-              state.leagueTeams.isNotEmpty &&
-              filteredAthletes.isNotEmpty &&
-              state.athletes.isNotEmpty) {
-            bloc.add(
-              ProcessLeagueWinnerEvent(
-                leagueID: leagueID,
-                leagueTeams: state.leagueTeams,
-                athletes: filteredAthletes,
-              ),
-            );
-          }
-
-          final userTeams = state.userTeams;
-          final differenceInDays = state.differenceInDays;
-          final differenceInHours = state.differenceInHours;
-          final differenceInMinutes = state.differenceInMinutes;
-          final differenceInSeconds = state.differenceInSeconds;
-          final timerStatus = state.timerStatus;
-          final athletes = state.athletes;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(

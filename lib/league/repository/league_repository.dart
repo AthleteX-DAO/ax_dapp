@@ -94,6 +94,8 @@ class LeagueRepository {
     required LeagueTeam team,
   }) async {
     print('UPDATING THE ROSTER');
+    print(leagueID);
+    print(team.userWalletID);
     try {
       final leagueRef = (await _fireStore
               .collection('Leagues')
@@ -102,12 +104,16 @@ class LeagueRepository {
           .docs[0]
           .reference;
 
+      print(leagueRef.id);
+
       final teamRef = (await leagueRef
               .collection('Teams')
-              .where('userWallet', isEqualTo: team.userWalletID)
+              .where('userWalletID', isEqualTo: team.userWalletID)
               .get())
           .docs[0]
           .reference;
+      
+      print(teamRef.id);
 
       await teamRef.update(
         {'roster': team.roster, 'teamAppreciation': team.teamAppreciation},

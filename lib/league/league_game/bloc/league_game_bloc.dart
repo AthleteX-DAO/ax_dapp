@@ -285,7 +285,11 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
       final teamPerformance = _calculateTeamPerformanceUseCase
           .calculateTeamPerformance(team.roster, athletes);
 
+      print('TEAM PERFORMANCE -> $teamPerformance');
+
       final newAppreciation = teamPerformance + team.teamAppreciation;
+
+      print('NEW APPRECIATION -> $newAppreciation');
 
       final newTeam = LeagueTeam(
         userWalletID: team.userWalletID,
@@ -293,7 +297,11 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         teamAppreciation: newAppreciation,
       );
 
+      print('NEW TEAM -> ${newTeam.userWalletID}');
+
+      print('CALLING UPDATE ROSTER BEFORE');
       await _leagueRepository.updateRoster(leagueID: leagueID, team: newTeam);
+      print('CALLING UPDATE ROSTER AFTER');
 
       if (newAppreciation > winnerAppreciation) {
         winnerWallet = team.userWalletID;
