@@ -126,7 +126,6 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
         teamAppreciation: teamAppreciation,
         roster: roster,
       );
-      await _prizePoolRepository.joinLeague();
       await _leagueRepository.enrollUser(
         leagueID: leagueID,
         team: team,
