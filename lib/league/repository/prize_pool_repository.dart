@@ -1,8 +1,10 @@
+import 'dart:js_util';
+
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ethereum_api/erc20_api.dart';
 import 'package:ethereum_api/prizepool_api.dart';
 import 'package:get/get.dart';
-import '../models/PrizePoolFactory.dart';
+import '../models/prize_pool_factory.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -40,10 +42,22 @@ class PrizePoolRepository {
     controller.transactionHash = txnHash;
   }
 
-  Future<void> createLeague(int entryFeeAmount, int leagueStartTime, int leagueEndTime) async {
-    final axAddress = EthereumAddress.fromHex('0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909');
-    final axTokenAddress = '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
-    await prizePoolFactory.createLeague(axTokenAddress, entryFeeAmount, leagueStartTime, leagueEndTime);
+  Future<String> createLeague(
+    int entryFeeAmount,
+    int leagueStartTime,
+    int leagueEndTime,
+  ) async {
+    const axTokenAddress = '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
+    final prizePoolAddress = promiseToFuture<String>(
+      prizePoolFactory.createLeague(
+        axTokenAddress,
+        entryFeeAmount,
+        leagueStartTime,
+        leagueEndTime,
+      ),
+    );
+    print('this is the prize pool address: $prizePoolAddress');
+    return prizePoolAddress;
   }
 
   Future<void> distributePrize(String winnerAddress) async {

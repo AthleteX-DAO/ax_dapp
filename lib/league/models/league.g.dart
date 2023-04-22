@@ -21,6 +21,7 @@ League _$LeagueFromJson(Map<String, dynamic> json) => League(
           .map((e) => $enumDecode(_$SupportedSportEnumMap, e))
           .toList(),
       winner: json['winner'] as String,
+      prizePoolAddress: json['prizePoolAddress'] as String,
     );
 
 Map<String, dynamic> _$LeagueToJson(League instance) => <String, dynamic>{
@@ -37,6 +38,7 @@ Map<String, dynamic> _$LeagueToJson(League instance) => <String, dynamic>{
       'sports':
           instance.sports.map((e) => _$SupportedSportEnumMap[e]!).toList(),
       'winner': instance.winner,
+      'prizePoolAddress': instance.prizePoolAddress,
     };
 
 const _$SupportedSportEnumMap = {

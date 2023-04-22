@@ -184,6 +184,7 @@ var PrizePoolFactory = ( function () {
             gas: 2000000
         })
         .on('receipt', function(receipt){
+            console.log(receipt.contractAddress);
             return receipt.contractAddress
         });
 
