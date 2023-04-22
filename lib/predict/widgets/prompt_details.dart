@@ -33,22 +33,38 @@ class PromptDetails extends StatelessWidget {
                   children: [
                     Text(
                       'Price Overview',
-                      style: textStyle(Colors.white, 24,
-                          isBold: false, isUline: false),
+                      style: textStyle(
+                        Colors.white,
+                        24,
+                        isBold: false,
+                        isUline: false,
+                      ),
                     ),
                     const Spacer(),
-                    const SizedBox(
+                    SizedBox(
                       width: 100,
                       height: 20,
-                      child: TickerSymbol(symbol: '---'),
+                      child: Text(
+                        'Probability',
+                        style: textStyle(
+                          Colors.grey,
+                          14,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
                     ),
                     const Spacer(),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
-                        'Current',
-                        style: textStyle(greyTextColor, 14,
-                            isBold: false, isUline: false),
+                        'Max',
+                        style: textStyle(
+                          greyTextColor,
+                          14,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     )
                   ],
@@ -62,12 +78,22 @@ class PromptDetails extends StatelessWidget {
                   children: [
                     Text(
                       'YES Market Price',
-                      style: textStyle(greyTextColor, 20,
-                          isBold: false, isUline: false),
+                      style: textStyle(
+                        greyTextColor,
+                        20,
+                        isBold: false,
+                        isUline: false,
+                      ),
                     ),
                     const SizedBox(
-                      width: 200,
-                      child: Text('something goes here'),
+                      width: 100,
+                      child: Text('Odds Unknown'),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: const SizedBox(
+                        child: Text('1.0 AX'),
+                      ),
                     )
                   ],
                 ),
@@ -76,12 +102,22 @@ class PromptDetails extends StatelessWidget {
                   children: [
                     Text(
                       'NO Market Price',
-                      style: textStyle(greyTextColor, 20,
-                          isBold: false, isUline: false),
+                      style: textStyle(
+                        greyTextColor,
+                        20,
+                        isBold: false,
+                        isUline: false,
+                      ),
                     ),
                     const SizedBox(
-                      width: 200,
-                      child: Text('something goes here'),
+                      width: 100,
+                      child: Text('Odds Unknown'),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: const SizedBox(
+                        child: Text('0.0 AX'),
+                      ),
                     )
                   ],
                 )
