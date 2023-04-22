@@ -7,6 +7,7 @@ import 'package:ax_dapp/dialogs/redeem/bloc/redeem_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/redeem/redeem_dialog.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/sell_dialog.dart';
+import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/scout/models/models.dart';
@@ -177,7 +178,8 @@ class MintButton extends StatelessWidget {
                     walletRepository: context.read<WalletRepository>(),
                     tokensRepository: context.read<TokensRepository>(),
                   ),
-                  longShortPairRepository: context.read<LongShortPairRepository>(),
+                  longShortPairRepository:
+                      context.read<LongShortPairRepository>(),
                   athleteId: athlete.id,
                   supportedSport: athlete.sport,
                 ),
@@ -235,7 +237,8 @@ class RedeemButton extends StatelessWidget {
                     walletRepository: context.read<WalletRepository>(),
                     tokensRepository: context.read<TokensRepository>(),
                   ),
-                  longShortPairRepository: context.read<LongShortPairRepository>(),
+                  longShortPairRepository:
+                      context.read<LongShortPairRepository>(),
                   athleteId: athlete.id,
                   supportedSport: athlete.sport,
                 ),
@@ -257,6 +260,62 @@ class RedeemButton extends StatelessWidget {
           style: textStyle(Colors.white, 20, false, false),
           maxLines: 1,
         ),
+      ),
+    );
+  }
+}
+
+class YesButton extends StatelessWidget {
+  const YesButton({
+    super.key,
+    required this.prompt,
+    required this.isPortraitMode,
+    required this.containerWdt,
+  });
+
+  final PredictionModel prompt;
+  final bool isPortraitMode;
+  final double containerWdt;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
+      height: 50,
+      // if portrait mode, use 1/3 of container width
+      decoration: boxDecoration(primaryOrangeColor, 100, 0, primaryWhiteColor),
+      child: TextButton(
+        onPressed: () {
+          print('yes');
+        },
+        child: Text('Yes', style: textStyle(Colors.black, 20, false, false)),
+      ),
+    );
+  }
+}
+
+class NoButton extends StatelessWidget {
+  const NoButton({
+    super.key,
+    required this.prompt,
+    required this.isPortraitMode,
+    required this.containerWdt,
+  });
+
+  final PredictionModel prompt;
+  final bool isPortraitMode;
+  final double containerWdt;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
+      height: 50,
+      // if portrait mode, use 1/3 of container width
+      decoration: boxDecoration(Colors.white, 100, 0, Colors.white),
+      child: TextButton(
+        onPressed: () {
+          print('no');
+        },
+        child: Text('No', style: textStyle(Colors.black, 20, false, false)),
       ),
     );
   }
