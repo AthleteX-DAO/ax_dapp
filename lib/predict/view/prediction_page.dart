@@ -1,7 +1,7 @@
 import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/predict/widgets/Prompt.dart';
+import 'package:ax_dapp/predict/widgets/prompt_details.dart';
 import 'package:ax_dapp/predict/widgets/desktop_prediction_widget.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/foundation.dart';
@@ -11,34 +11,50 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class PredictionPage extends StatefulWidget {
-  const PredictionPage({
-    super.key,
-  });
+// class PredictionPage2 extends StatefulWidget {
+//   const PredictionPage2({
+//     super.key,
+//   });
 
-  @override
-  State<StatefulWidget> createState() => _PredictionPageState();
-}
+//   @override
+//   State<StatefulWidget> createState() => _PredictionPage2State();
+// }
 
-class _PredictionPageState extends State<PredictionPage> {
-  Global global = Global();
+// class _PredictionPage2State extends State<PredictionPage2> {
+//   late PredictionModel predictionModel;
 
-  late PredictionModel predictionModel;
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     // Return nothing as the prediction model
+//     predictionModel = PredictionModel.generic;
+//   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // Return nothing as the prediction model
-    predictionModel = PredictionModel.generic;
-  }
+//   Color indexUnselectedStackBackgroundColor = Colors.transparent;
 
-  Color indexUnselectedStackBackgroundColor = Colors.transparent;
+//   @override
+//   Widget build(BuildContext context) {
+//     // TODO: implement build
+//     throw UnimplementedError();
+//   }
+// }
+
+class PredictionPage extends StatelessWidget {
+  PredictionPage({super.key, required this.prediction});
+
+  final PredictionModel prediction;
+  final Global global = Global();
 
   @override
   Widget build(BuildContext context) {
-    if (global.pageName != 'predictions') {
-      context.goNamed(global.pageName);
+    final paramPrompt = prediction.prompt;
+
+    if (global.pageName != 'prediction') {
+      context.goNamed(
+        global.pageName,
+        params: {'id': paramPrompt},
+      );
     }
 
     return Scaffold(
@@ -70,12 +86,10 @@ class _PredictionPageState extends State<PredictionPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GraphSide(
-                    predictionModel: predictionModel,
-                    containerWidth: 1160,
-                    containerHeight: 660,
+                    predictionModel: prediction,
                   ),
                   PromptDetails(
-                    model: predictionModel,
+                    model: prediction,
                   )
                 ],
               ),

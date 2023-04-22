@@ -23,15 +23,17 @@ class _DesktopPredictState extends State<DesktopPredict> {
   Global global = Global();
   double minTeamWidth = 875;
   double minViewWidth = 1090;
-  List<PredictionModel> currentPredictions = [];
 
+  List<PredictionModel> currentPredictions = [];
   @override
   Widget build(BuildContext context) {
     return global.buildPage(context,
         BlocBuilder<PredictPageBloc, PredictPageState>(
             builder: (context, state) {
       final bloc = context.read<PredictPageBloc>();
-      currentPredictions = state.predictions;
+      Global().predictionsList = state.predictions;
+      currentPredictions = Global().predictionsList;
+
       return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(

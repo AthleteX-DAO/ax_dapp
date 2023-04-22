@@ -1,7 +1,7 @@
 import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/widgets/Probability.dart';
-import 'package:ax_dapp/predict/widgets/Prompt.dart';
+import 'package:ax_dapp/predict/widgets/prompt_details.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,8 +25,11 @@ class DesktopPrediction extends StatelessWidget {
       height: 70,
       child: OutlinedButton(
         onPressed: () {
+          final param_prompt = predictionModel.prompt;
+          final param_details = predictionModel.details;
           context.goNamed(
             'prediction',
+            params: {'id': param_prompt},
           );
         },
         child: Row(
@@ -40,11 +43,12 @@ class DesktopPrediction extends StatelessWidget {
                 PromptDetails(
                   model: predictionModel,
                 ).promptDetailsCardforWeb(),
-                Probability(prompt: _prompt)
+                // Probability(prompt: _prompt)
               ],
             ),
             // yes, no
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 YesButton(
                   prompt: predictionModel,

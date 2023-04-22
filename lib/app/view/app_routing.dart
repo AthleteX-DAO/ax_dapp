@@ -137,10 +137,12 @@ class _MaterialApp extends StatelessWidget {
             routes: [
               GoRoute(
                 name: 'prediction',
-                path: 'prediction-page',
+                path: 'prediction/:id',
                 builder: (BuildContext context, GoRouterState state) {
                   Global().pageName = 'Prediction';
-                  return const PredictionPage();
+                  return PredictionPage(
+                    prediction: _toPrediction(state.params['id']!)!,
+                  );
                 },
               )
             ],
@@ -265,6 +267,13 @@ class _MaterialApp extends StatelessWidget {
       if ((athlete.id.toString() + athlete.name) == id) {
         return athlete;
       }
+    }
+    return null;
+  }
+
+  PredictionModel? _toPrediction(String id) {
+    for (final predictions in Global().predictionsList) {
+      if (predictions.prompt == id) return predictions;
     }
     return null;
   }

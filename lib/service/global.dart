@@ -1,4 +1,5 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
+import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class Global extends PropertyChangeNotifier<String> {
 
   Global._internal() {
     _athleteList = [];
+    _predictionsList = [];
     _page = 'landing';
     _selectedIndex = 0;
   }
@@ -18,6 +20,7 @@ class Global extends PropertyChangeNotifier<String> {
   /// Variables
 
   List<AthleteScoutModel> _athleteList = [];
+  List<PredictionModel> _predictionsList = [];
   String _page = 'landing';
   int _selectedIndex = 0;
 
@@ -39,6 +42,12 @@ class Global extends PropertyChangeNotifier<String> {
   set selectedIndex(int _selectedIndex) {
     this._selectedIndex = _selectedIndex;
     notifyListeners('selectedIndex');
+  }
+
+  List<PredictionModel> get predictionsList => _predictionsList;
+  set predictionsList(List<PredictionModel> list) {
+    this._predictionsList = list;
+    notifyListeners('predictionsList');
   }
 
   Scaffold buildPage(BuildContext context, Widget page) {
