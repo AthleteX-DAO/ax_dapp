@@ -73,7 +73,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         dateStartInt,
         dateEndInt,
       );
-      debugPrint('the blocs prize pool address $prizePoolAddress');
+      debugPrint('the blocs prize pool address: $prizePoolAddress');
 
       final league = League(
         leagueID: leagueID,

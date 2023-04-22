@@ -48,7 +48,7 @@ class PrizePoolRepository {
     int leagueEndTime,
   ) async {
     const axTokenAddress = '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
-    final prizePoolAddress = promiseToFuture<String>(
+    final prizePoolAddress = await promiseToFuture<dynamic>(
       prizePoolFactory.createLeague(
         axTokenAddress,
         entryFeeAmount,
@@ -57,7 +57,7 @@ class PrizePoolRepository {
       ),
     );
     print('this is the prize pool address: $prizePoolAddress');
-    return prizePoolAddress;
+    return prizePoolAddress.toString();
   }
 
   Future<void> distributePrize(String winnerAddress) async {

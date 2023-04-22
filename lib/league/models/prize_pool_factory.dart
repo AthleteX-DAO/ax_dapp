@@ -13,5 +13,4 @@ class PrizePoolFactory {
     int leagueStartTime,
     int leagueEndTime,
   );
-  external Future<dynamic> hello(); //This is to test js functionality
 }
