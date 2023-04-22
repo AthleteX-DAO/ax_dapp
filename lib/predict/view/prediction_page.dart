@@ -81,9 +81,9 @@ class PredictionPage extends StatelessWidget {
           width: 1160,
           child: Center(
             child: SizedBox(
-              width: 1160 * 0.9,
+              width: MediaQuery.of(context).size.width * 0.9,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   GraphSide(
                     predictionModel: prediction,

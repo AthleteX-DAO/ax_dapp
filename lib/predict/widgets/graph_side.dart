@@ -27,7 +27,7 @@ class GraphSide extends StatelessWidget {
     );
     return Container(
       height: _height / 1.5,
-      constraints: const BoxConstraints(minHeight: 650, maxHeight: 850),
+      width: wid,
       child: Column(
         children: [
           PromptPageTitle(
