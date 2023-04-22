@@ -10,3 +10,11 @@ abstract class PredictPageEvent extends Equatable {
 class WatchAppDataChangesStarted extends PredictPageEvent {
   const WatchAppDataChangesStarted();
 }
+
+class LoadPredictionsEvent extends PredictPageEvent {
+  const LoadPredictionsEvent();
+}
+
+class ViewPredictionDetails extends PredictPageEvent {
+  const ViewPredictionDetails();
+}

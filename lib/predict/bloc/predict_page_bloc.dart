@@ -16,7 +16,9 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
         _streamAppDataChanges = streamAppDataChangesUseCase,
         super(const PredictPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
+    on<LoadPredictionsEvent>(_onLoadPredictions);
     add(const WatchAppDataChangesStarted());
+    add(const LoadPredictionsEvent());
   }
 
   final WalletRepository _walletRepository;
@@ -63,6 +65,27 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> _onLoadPredictions(
+    LoadPredictionsEvent _,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(
+      state.copyWith(predictions: fightQuestions, status: BlocStatus.initial),
+    );
+  }
+
+  Future<void> _onYesButtonTapped() async {
+    emit(
+      state.copyWith(),
+    );
+  }
+
+  Future<void> _onNoButtonTapped() async {
+    emit(
+      state.copyWith(),
     );
   }
 }
