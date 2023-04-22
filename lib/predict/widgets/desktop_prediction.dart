@@ -1,15 +1,8 @@
+import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/widgets/Probability.dart';
 import 'package:ax_dapp/predict/widgets/Prompt.dart';
-import 'package:ax_dapp/predict/widgets/predict_no_button.dart';
-import 'package:ax_dapp/predict/widgets/predict_yes_button.dart';
-import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/scout/widgets/widgets.dart';
-import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
-import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class DesktopPrediction extends StatelessWidget {
@@ -53,8 +46,16 @@ class DesktopPrediction extends StatelessWidget {
             // yes, no
             Row(
               children: [
-                PredictYesButton(prediction: predictionModel),
-                PredictNoButton(prediction: predictionModel)
+                YesButton(
+                  prompt: predictionModel,
+                  isPortraitMode: false,
+                  containerWdt: _width,
+                ),
+                NoButton(
+                  prompt: predictionModel,
+                  isPortraitMode: false,
+                  containerWdt: _width,
+                )
               ],
             )
           ],

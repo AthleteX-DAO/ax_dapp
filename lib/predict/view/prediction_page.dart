@@ -1,10 +1,12 @@
 import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/widgets/Prompt.dart';
 import 'package:ax_dapp/predict/widgets/desktop_prediction_widget.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../widgets/graph_side.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -20,9 +22,17 @@ class PredictionPage extends StatefulWidget {
 
 class _PredictionPageState extends State<PredictionPage> {
   Global global = Global();
+
   late PredictionModel predictionModel;
-  final predictionDetailsWidget =
-      NoPredictionsShowWidget().predictionPageDetails();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Return nothing as the prediction model
+    predictionModel = PredictionModel.generic;
+  }
+
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
 
   @override
@@ -50,7 +60,28 @@ class _PredictionPageState extends State<PredictionPage> {
             fit: BoxFit.fill,
           ),
         ),
-        child: predictionDetailsWidget,
+        child: SizedBox(
+          height: 660,
+          width: 1160,
+          child: Center(
+            child: SizedBox(
+              width: 1160 * 0.9,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GraphSide(
+                    predictionModel: predictionModel,
+                    containerWidth: 1160,
+                    containerHeight: 660,
+                  ),
+                  PromptDetails(
+                    model: predictionModel,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
