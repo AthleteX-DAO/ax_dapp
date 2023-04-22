@@ -3,14 +3,12 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
 class PredictYesButton extends StatelessWidget {
-  const PredictYesButton({required this.prediction, super.key});
-
-  final PredictionModel prediction;
+  const PredictYesButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.20,
+      width: MediaQuery.of(context).size.width * 0.05,
       height: 36,
       decoration: boxDecoration(
         const Color.fromRGBO(

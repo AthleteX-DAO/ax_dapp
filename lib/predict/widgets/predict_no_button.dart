@@ -3,30 +3,18 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
 class PredictNoButton extends StatelessWidget {
-  const PredictNoButton({required this.prediction, super.key});
-
-  final PredictionModel prediction;
+  const PredictNoButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.20,
+      width: MediaQuery.of(context).size.width * 0.14,
       height: 36,
       decoration: boxDecoration(
-        const Color.fromRGBO(
-          254,
-          197,
-          0,
-          0.2,
-        ),
+        Colors.grey,
         100,
         0,
-        const Color.fromRGBO(
-          254,
-          197,
-          0,
-          0.2,
-        ),
+        Colors.white,
       ),
       child: TextButton(
         onPressed: () {
