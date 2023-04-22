@@ -8,6 +8,11 @@ class PredictionModel extends Equatable {
   final String details;
   final bool? resolution;
 
+  static const empty = PredictionModel(prompt: "nothing", details: "details");
+  static const generic = PredictionModel(
+    prompt: 'Will you win today?',
+    details: 'This market will resolve to fuck yea',
+  );
   @override
   List<Object?> get props => [
         prompt,
