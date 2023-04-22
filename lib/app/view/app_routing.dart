@@ -7,6 +7,14 @@ import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
+import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
+import 'package:ax_dapp/league/league_game/views/league_game.dart';
+import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
+import 'package:ax_dapp/league/league_search/views/desktop_leauge.dart';
+import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
+import 'package:ax_dapp/league/repository/timer_repository.dart';
+import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -25,6 +33,7 @@ import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/gysr_api.dart';
@@ -67,7 +76,14 @@ class App extends StatelessWidget {
           create: (context) => TrackingCubit(
             context.read<TrackingRepository>(),
           )..setup(),
-        )
+        ),
+        BlocProvider(
+          create: (context) => LeagueBloc(
+            leagueRepository: context.read<LeagueRepository>(),
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+            prizePoolRepository: context.read<PrizePoolRepository>(),
+          ),
+        ),
       ],
       child: const _MaterialApp(),
     );
@@ -211,6 +227,51 @@ class _MaterialApp extends StatelessWidget {
               );
             },
           ),
+          GoRoute(
+            name: 'league',
+            path: '/league',
+            builder: (BuildContext context, GoRouterState state) {
+              Global().pageName = 'league';
+              return const DesktopLeague();
+            },
+            routes: [
+              GoRoute(
+                name: 'league-game',
+                path: 'league-game/:leagueID',
+                builder: (BuildContext context, GoRouterState state) {
+                  final leagueID = state.params['leagueID']!;
+                  final allLeagues =
+                      context.watch<LeagueBloc>().state.allLeagues;
+                  if (allLeagues.isEmpty) return const Loader();
+                  final league = allLeagues
+                      .firstWhere((league) => league.leagueID == leagueID);
+                  Global().pageName = 'league-game';
+                  return BlocProvider(
+                    create: (context) => LeagueGameBloc(
+                      startDate: league.dateStart,
+                      endDate: league.dateEnd,
+                      streamAppDataChanges:
+                          context.read<StreamAppDataChangesUseCase>(),
+                      leagueRepository: context.read<LeagueRepository>(),
+                      repo: GetScoutAthletesDataUseCase(
+                        tokensRepository: context.read<TokensRepository>(),
+                        graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+                        sportsRepos: [
+                          RepositoryProvider.of<MLBRepo>(context),
+                          RepositoryProvider.of<NFLRepo>(context),
+                        ],
+                      ),
+                      calculateTeamPerformanceUseCase:
+                          context.read<CalculateTeamPerformanceUseCase>(),
+                      timerRepository: context.read<TimerRepository>(),
+                      prizePoolRepository: context.read<PrizePoolRepository>(),
+                    ),
+                    child: LeagueGame(league: league, leagueID: leagueID),
+                  );
+                },
+              ),
+            ],
+          ),
         ],
         errorPageBuilder: (context, state) => MaterialPage(
           key: UniqueKey(),
@@ -244,6 +305,7 @@ class _MaterialApp extends StatelessWidget {
         location.contains('athlete') ||
         location.contains('trade') ||
         location.contains('pool') ||
-        location.contains('farm');
+        location.contains('farm') ||
+        location.contains('league');
   }
 }
