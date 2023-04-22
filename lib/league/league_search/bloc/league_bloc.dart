@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'dart:math';
 
 import 'package:ax_dapp/league/models/league.dart';
@@ -7,6 +8,7 @@ import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 
@@ -62,6 +64,17 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     try {
       final leagueID = generateLeagueID(15);
 
+      final dateStartInt =
+          DateTime.parse(event.dateStart).millisecondsSinceEpoch;
+      final dateEndInt = DateTime.parse(event.dateEnd).millisecondsSinceEpoch;
+
+      final prizePoolAddress = await _prizePoolRepository.createLeague(
+        event.entryFee,
+        dateStartInt,
+        dateEndInt,
+      );
+      debugPrint('the blocs prize pool address: $prizePoolAddress');
+
       final league = League(
         leagueID: leagueID,
         name: event.name,
@@ -75,16 +88,10 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         isLocked: event.isLocked,
         sports: event.sports,
         winner: '',
+        prizePoolAddress: prizePoolAddress,
       );
-      // TODO check for status of contract creation/league creation
-      print("Before Prize Pool");
-      final dateStartInt = DateTime.parse(event.dateStart).millisecondsSinceEpoch;
-      final dateEndInt = DateTime.parse(event.dateEnd).millisecondsSinceEpoch;
-      await _prizePoolRepository.createLeague(event.entryFee, dateStartInt, dateEndInt).then((_) async{
-        await _leagueRepository.createLeague(league: league);
-      });
-      print("After Prize Pool Repo");
-      //await _leagueRepository.createLeague(league: league);
+
+      await _leagueRepository.createLeague(league: league);
 
       add(FetchLeagues());
       emit(state.copyWith(status: BlocStatus.success));

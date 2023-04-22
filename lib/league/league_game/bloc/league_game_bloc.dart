@@ -142,13 +142,13 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     LeaveLeagueEvent event,
     Emitter<LeagueGameState> emit,
   ) async {
-    try{
+    try {
       emit(state.copyWith(status: BlocStatus.loading));
       await _prizePoolRepository.withdrawBeforeLeagueStarts();
-      await _leagueRepository.removeUser(leagueID: event.leagueID, userWallet: event.userWalletID);
+      await _leagueRepository.removeUser(
+          leagueID: event.leagueID, userWallet: event.userWalletID);
       emit(state.copyWith(status: BlocStatus.success));
-    }
-    catch (_) {
+    } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
     }
   }
@@ -234,6 +234,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
         isLocked: event.isLocked,
         sports: event.sports,
         winner: '',
+        prizePoolAddress: event.prizePoolAddress,
       );
 
       await _leagueRepository.updateLeague(
