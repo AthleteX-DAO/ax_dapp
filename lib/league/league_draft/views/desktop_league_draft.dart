@@ -45,7 +45,7 @@ class DesktopLeagueDraft extends StatelessWidget {
               const textColor = Color(0xFFFEC500);
               const buttonColorBG = Color(0xFF3C3009);
 
-              const athleteHeadingWR = 0.1;
+              const athleteHeadingWR = 0.2;
               const bookValueHeadingWR = 0.1;
               const myTeamHeadingWR = 0.2;
               const athleteCountHeadingWR = 0.03;
@@ -111,24 +111,44 @@ class DesktopLeagueDraft extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: width * athleteHeadingWR,
-                              child: const Text('Athlete (Seasonal APT)'),
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.red),
+                              ),
+                              child: SizedBox(
+                                width: width * athleteHeadingWR,
+                                child: const Text('Athlete (Seasonal APT)'),
+                              ),
                             ),
-                            SizedBox(
-                              width: width * bookValueHeadingWR,
-                              child: const Text('Book Value / Change'),
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.lightGreen),
+                              ),
+                              child: SizedBox(
+                                width: width * bookValueHeadingWR,
+                                child: const Text('Book Value / Change'),
+                              ),
                             ),
-                            SizedBox(
-                              width: width * myTeamHeadingWR,
-                              child: const Text('My Team'),
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.lightBlue),
+                              ),
+                              child: SizedBox(
+                                width: width * myTeamHeadingWR,
+                                child: const Text('My Team'),
+                              ),
                             ),
-                            SizedBox(
-                              width: width * athleteCountHeadingWR,
-                              child: Text(
-                                '${state.athleteCount} / ${league.teamSize}',
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.pink),
+                              ),
+                              child: SizedBox(
+                                width: width * athleteCountHeadingWR,
+                                child: Text(
+                                  '${state.athleteCount} / ${league.teamSize}',
+                                ),
                               ),
                             ),
                           ],
