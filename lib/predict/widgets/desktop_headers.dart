@@ -36,9 +36,11 @@ class DesktopHeaders extends StatelessWidget {
           ),
         SizedBox(
           // width: 175,
+
+          // Text: 'Probability' goes here
           width: _width * 0.18 > 175 ? _width * 0.18 : 175,
           child: Text(
-            'Probability',
+            '',
             style: textStyle(
               Colors.grey[400]!,
               10,
