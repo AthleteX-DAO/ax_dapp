@@ -275,7 +275,7 @@ class _MaterialApp extends StatelessWidget {
     for (final predictions in Global().predictionsList) {
       if (predictions.prompt == id) return predictions;
     }
-    return null;
+    return PredictionModel.empty;
   }
 
   bool notLanding(String location) {

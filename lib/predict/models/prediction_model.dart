@@ -8,7 +8,11 @@ class PredictionModel extends Equatable {
   final String details;
   final bool? resolution;
 
-  static const empty = PredictionModel(prompt: "nothing", details: "details");
+  static const empty = PredictionModel(
+    prompt: 'Oops!  You got me',
+    details:
+        "Lol, You're not supposed to be here.  Do me a favor and click on 'Predict' on the top left of your screen",
+  );
   static const generic = PredictionModel(
     prompt: 'Will you win today?',
     details: 'This market will resolve to fuck yea',
