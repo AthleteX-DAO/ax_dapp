@@ -1,10 +1,10 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';
 
+import 'package:ax_dapp/league/models/prize_pool_factory.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ethereum_api/erc20_api.dart';
 import 'package:ethereum_api/prizepool_api.dart';
 import 'package:get/get.dart';
-import '../models/prize_pool_factory.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 

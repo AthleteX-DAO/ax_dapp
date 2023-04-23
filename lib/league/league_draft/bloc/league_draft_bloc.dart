@@ -11,6 +11,8 @@ import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'league_draft_event.dart';
 part 'league_draft_state.dart';
@@ -21,16 +23,22 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     required PrizePoolRepository prizePoolRepository,
     required GetTotalTokenBalanceUseCase getTotalTokenBalanceUseCase,
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
+    required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
+    required WalletRepository walletRepository,
     required this.athletes,
   })  : _leagueRepository = leagueRepository,
         _prizePoolRepository = prizePoolRepository,
         _getTotalTokenBalanceUseCase = getTotalTokenBalanceUseCase,
         _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
+        _streamAppDataChangesUseCase = streamAppDataChangesUseCase,
+        _walletRepository = walletRepository,
         super(const LeagueDraftState()) {
     on<FetchAptsOwnedEvent>(_onFetchAptsOwnedEvent);
     on<AddAptToTeam>(_onAddAptToTeam);
     on<RemoveAptFromTeam>(_onRemoveAptFromTeam);
     on<ConfirmTeam>(_onConfirmTeam);
+    on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
+    add(const WatchAppDataChangesStarted());
     add(FetchAptsOwnedEvent(athletes: athletes));
   }
 
@@ -38,7 +46,25 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
   final PrizePoolRepository _prizePoolRepository;
   final GetTotalTokenBalanceUseCase _getTotalTokenBalanceUseCase;
   final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
+  final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
+  final WalletRepository _walletRepository;
   final List<AthleteScoutModel> athletes;
+
+  Future<void> _onWatchAppDataChangesStarted(
+    WatchAppDataChangesStarted event,
+    Emitter<LeagueDraftState> emit,
+  ) async {
+    await emit.onEach<AppData>(
+      _streamAppDataChangesUseCase.appDataChanges,
+      onData: (appData) {
+        final appConfig = appData.appConfig;
+        _prizePoolRepository.controller.client.value =
+            appConfig.reactiveWeb3Client.value;
+        _prizePoolRepository.controller.credentials =
+            _walletRepository.credentials.value;
+      },
+    );
+  }
 
   Future<void> _onFetchAptsOwnedEvent(
     FetchAptsOwnedEvent event,
@@ -108,6 +134,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     final leagueID = event.leagueID;
     final myTeam = event.myTeam;
     final existingTeam = event.existingTeam;
+    final prizePoolAddress = event.prizePoolAddress;
 
     final roster = {
       for (var e in myTeam) e.id: [e.name, e.bookPrice.toString()]
@@ -120,6 +147,10 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
           existingTeam.teamAppreciation;
 
       if (existingTeam.userWalletID == '') {}
+
+      _prizePoolRepository.contractAddress = prizePoolAddress;
+
+      await _prizePoolRepository.joinLeague();
 
       final team = LeagueTeam(
         userWalletID: userWalletID,
@@ -158,7 +189,9 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
               ? athlete.shortTokenBookPricePercent
               : 0.0;
       final aptName = e.name.replaceAll('APT', '').trim();
-      final id = e.type == AptType.long ? int.parse('${athlete.id}1') : int.parse('${athlete.id}0');
+      final id = e.type == AptType.long
+          ? int.parse('${athlete.id}1')
+          : int.parse('${athlete.id}0');
       return DraftApt(
         id: id,
         name: aptName,

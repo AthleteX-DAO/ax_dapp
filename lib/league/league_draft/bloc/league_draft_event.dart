@@ -7,6 +7,10 @@ abstract class LeagueDraftEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class WatchAppDataChangesStarted extends LeagueDraftEvent {
+  const WatchAppDataChangesStarted();
+}
+
 class FetchAptsOwnedEvent extends LeagueDraftEvent {
   const FetchAptsOwnedEvent({required this.athletes});
 
@@ -44,12 +48,14 @@ class ConfirmTeam extends LeagueDraftEvent {
     required this.leagueID,
     required this.myTeam,
     required this.existingTeam,
+    required this.prizePoolAddress,
   });
 
   final String walletAddress;
   final String leagueID;
   final List<DraftApt> myTeam;
   final LeagueTeam existingTeam;
+  final String prizePoolAddress;
 
   @override
   List<Object> get props => [
@@ -57,5 +63,6 @@ class ConfirmTeam extends LeagueDraftEvent {
         leagueID,
         myTeam,
         existingTeam,
+        prizePoolAddress,
       ];
 }

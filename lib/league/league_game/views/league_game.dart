@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class LeagueGame extends StatelessWidget {
@@ -70,8 +71,7 @@ class LeagueGame extends StatelessWidget {
                 athletes: filteredAthletes,
               ),
             );
-            if (timerStatus.hasEnded &&
-                league.winner.isEmpty) {
+            if (timerStatus.hasEnded && league.winner.isEmpty) {
               bloc.add(
                 ProcessLeagueWinnerEvent(
                   leagueID: leagueID,
@@ -260,7 +260,13 @@ class LeagueGame extends StatelessWidget {
                                             calculateTeamPerformanceUseCase:
                                                 context.read<
                                                     CalculateTeamPerformanceUseCase>(),
-                                            prizePoolRepository: context.read<PrizePoolRepository>(),
+                                            prizePoolRepository: context
+                                                .read<PrizePoolRepository>(),
+                                            streamAppDataChangesUseCase:
+                                                context.read<
+                                                    StreamAppDataChangesUseCase>(),
+                                            walletRepository: context
+                                                .read<WalletRepository>(),
                                           ),
                                           child: DesktopLeagueDraft(
                                             league: league,
