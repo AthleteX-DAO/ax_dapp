@@ -39,7 +39,7 @@ class PrizePool extends StatelessWidget {
               width: 5,
             ),
             Text(
-              '${league.rosters.entries.length * league.entryFee}',
+              '1000 AX',
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'OpenSans',
