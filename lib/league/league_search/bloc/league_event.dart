@@ -7,6 +7,10 @@ abstract class LeagueEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class WatchAppDataChangesStarted extends LeagueEvent {
+  const WatchAppDataChangesStarted();
+}
+
 class CreateLeague extends LeagueEvent {
   const CreateLeague({
     required this.name,
@@ -18,7 +22,6 @@ class CreateLeague extends LeagueEvent {
     required this.entryFee,
     required this.isPrivate,
     required this.isLocked,
-    required this.rosters,
     required this.sports,
   });
 
@@ -31,7 +34,7 @@ class CreateLeague extends LeagueEvent {
   final int entryFee;
   final bool isPrivate;
   final bool isLocked;
-  final Map<String, Map<String, double>> rosters;
+
   final List<SupportedSport> sports;
 
   @override
@@ -45,82 +48,11 @@ class CreateLeague extends LeagueEvent {
         entryFee,
         isPrivate,
         isLocked,
-        rosters,
         sports,
       ];
 }
 
 class FetchLeagues extends LeagueEvent {}
-
-class DeleteLeague extends LeagueEvent {
-  const DeleteLeague({
-    required this.leagueID,
-  });
-
-  final String leagueID;
-
-  @override
-  List<Object?> get props => [leagueID];
-}
-
-class UpdateLeague extends LeagueEvent {
-  const UpdateLeague({
-    required this.leagueID,
-    required this.league,
-  });
-
-  final String leagueID;
-  final League league;
-
-  @override
-  List<Object?> get props => [
-        leagueID,
-        league,
-      ];
-}
-
-class UpdateRoster extends LeagueEvent {
-  const UpdateRoster({
-    required this.leagueID,
-    required this.userWallet,
-    required this.roster,
-  });
-
-  final String leagueID;
-  final String userWallet;
-  final List<String> roster;
-
-  @override
-  List<Object?> get props => [leagueID, userWallet, roster];
-}
-
-class EnrollUser extends LeagueEvent {
-  const EnrollUser({
-    required this.leagueID,
-    required this.userWallet,
-    required this.roster,
-  });
-
-  final String leagueID;
-  final String userWallet;
-  final List<String> roster;
-
-  @override
-  List<Object?> get props => [leagueID, userWallet, roster];
-}
-
-class RemoveUser extends LeagueEvent {
-  const RemoveUser({
-    required this.leagueID,
-    required this.userWallet,
-  });
-
-  final String leagueID;
-  final String userWallet;
-
-  @override
-  List<Object?> get props => [leagueID, userWallet];
-}
 
 class SearchLeague extends LeagueEvent {
   const SearchLeague({

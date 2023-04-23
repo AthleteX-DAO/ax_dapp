@@ -24,4 +24,16 @@ class GetTotalTokenBalanceUseCase {
     final balance = await _walletRepository.getTokenBalance(tokenAddress);
     return balance ?? 0;
   }
+
+  Future<List<Apt>> getOwnedApts() async {
+    final currentApts = _tokensRepository.currentApts;
+    final ownedApts = <Apt>[];
+    for (final apt in currentApts) {
+      final balance = await getTotalBalanceForToken(apt.address);
+      if (balance > 0) {
+        ownedApts.add(apt);
+      }
+    }
+    return ownedApts;
+  }
 }
