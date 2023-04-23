@@ -136,7 +136,8 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     final existingTeam = event.existingTeam;
     final prizePoolAddress = event.prizePoolAddress;
     final entryFee = event.entryFee.toDouble();
-    final tokenDecimal = await _walletRepository.getDecimals('0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909');
+    final tokenDecimal = await _walletRepository
+        .getDecimals('0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909');
 
     final roster = {
       for (var e in myTeam) e.id: [e.name, e.bookPrice.toString()]

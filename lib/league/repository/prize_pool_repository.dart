@@ -38,7 +38,8 @@ class PrizePoolRepository {
     var txnHash = '';
     final tokenAAddress = EthereumAddress.fromHex(axTokenAddress);
     final prizePoolAddress = EthereumAddress.fromHex(contractAddress);
-    final tokenAAmount = normalizeInput(entryFeeAmount.value, decimal: decimalA.value);
+    final tokenAAmount =
+        normalizeInput(entryFeeAmount.value, decimal: decimalA.value);
     final tokenA =
         ERC20(address: tokenAAddress, client: controller.client.value);
     try {
@@ -58,16 +59,21 @@ class PrizePoolRepository {
 
   Future<void> joinLeague() async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
-    prizePool = Prizepool(address: poolAddress, client: controller.client.value);
-    final txnHash = await prizePool.joinLeague(credentials: controller.credentials);
+    prizePool =
+        Prizepool(address: poolAddress, client: controller.client.value);
+    final txnHash = await prizePool.joinLeague(
+      credentials: controller.credentials,
+    );
     controller.transactionHash = txnHash;
   }
 
   Future<void> withdrawBeforeLeagueStarts() async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
-    prizePool = Prizepool(address: poolAddress, client: controller.client.value);
-    final txnHash =
-        await prizePool.withdrawBeforeLeagueStarts(credentials: controller.credentials);
+    prizePool =
+        Prizepool(address: poolAddress, client: controller.client.value);
+    final txnHash = await prizePool.withdrawBeforeLeagueStarts(
+      credentials: controller.credentials,
+    );
     controller.transactionHash = txnHash;
   }
 
@@ -89,7 +95,8 @@ class PrizePoolRepository {
 
   Future<void> distributePrize(String winnerAddress) async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
-    prizePool = Prizepool(address: poolAddress, client: controller.client.value);
+    prizePool =
+        Prizepool(address: poolAddress, client: controller.client.value);
     final theCredentials = controller.credentials;
     final winner = EthereumAddress.fromHex(winnerAddress);
     final txnHash =
