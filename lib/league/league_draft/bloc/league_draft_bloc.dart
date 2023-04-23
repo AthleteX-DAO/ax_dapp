@@ -13,6 +13,7 @@ import 'package:equatable/equatable.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:ethereum_api/src/tokens/models/contract.dart';
 
 part 'league_draft_event.dart';
 part 'league_draft_state.dart';
@@ -62,6 +63,8 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
             appConfig.reactiveWeb3Client.value;
         _prizePoolRepository.controller.credentials =
             _walletRepository.credentials.value;
+        _prizePoolRepository.routerAddress.value =
+            Contract.exchangeRouter(appData.chain).address;
       },
     );
   }
@@ -135,6 +138,8 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     final myTeam = event.myTeam;
     final existingTeam = event.existingTeam;
     final prizePoolAddress = event.prizePoolAddress;
+    final entryFee = event.entryFee;
+    final tokenDecimal = await _walletRepository.getDecimals('0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909');
 
     final roster = {
       for (var e in myTeam) e.id: [e.name, e.bookPrice.toString()]
@@ -148,7 +153,12 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
 
       if (existingTeam.userWalletID == '') {}
 
-      _prizePoolRepository.contractAddress = prizePoolAddress;
+      _prizePoolRepository
+        ..entryAmount = entryFee
+        ..contractAddress = prizePoolAddress
+        ..tokenDecimals = tokenDecimal.toInt();
+
+      await _prizePoolRepository.approve(prizePoolAddress);
 
       await _prizePoolRepository.joinLeague();
 

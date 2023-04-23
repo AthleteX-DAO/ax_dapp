@@ -49,6 +49,7 @@ class ConfirmTeam extends LeagueDraftEvent {
     required this.myTeam,
     required this.existingTeam,
     required this.prizePoolAddress,
+    required this.entryFee,
   });
 
   final String walletAddress;
@@ -56,6 +57,7 @@ class ConfirmTeam extends LeagueDraftEvent {
   final List<DraftApt> myTeam;
   final LeagueTeam existingTeam;
   final String prizePoolAddress;
+  final int entryFee;
 
   @override
   List<Object> get props => [
@@ -64,5 +66,6 @@ class ConfirmTeam extends LeagueDraftEvent {
         myTeam,
         existingTeam,
         prizePoolAddress,
+        entryFee,
       ];
 }
