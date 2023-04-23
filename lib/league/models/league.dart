@@ -16,8 +16,9 @@ class League {
     required this.entryFee,
     required this.isPrivate,
     required this.isLocked,
-    required this.rosters,
     required this.sports,
+    required this.winner,
+    required this.prizePoolAddress,
   });
 
   factory League.fromJson(Map<String, dynamic> json) => _$LeagueFromJson(json);
@@ -33,8 +34,9 @@ class League {
     entryFee: 0,
     isPrivate: false,
     isLocked: false,
-    rosters: {},
     sports: [],
+    winner: '',
+    prizePoolAddress: '',
   );
 
   final String leagueID;
@@ -47,8 +49,9 @@ class League {
   final int entryFee;
   final bool isPrivate;
   final bool isLocked;
-  final Map<String, Map<String, double>> rosters;
   final List<SupportedSport> sports;
+  final String winner;
+  final String prizePoolAddress;
 
   Map<String, dynamic> toJson() => _$LeagueToJson(this);
 }

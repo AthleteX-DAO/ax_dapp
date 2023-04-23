@@ -1,4 +1,5 @@
-import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
+import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
+import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -8,31 +9,49 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
-class LeagueDialog extends StatefulWidget {
-  const LeagueDialog({super.key});
+class EditRulesDialog extends StatefulWidget {
+  const EditRulesDialog({
+    super.key,
+    required this.league,
+  });
+
+  final League league;
 
   @override
-  State<LeagueDialog> createState() => _LeagueDialog();
+  State<EditRulesDialog> createState() => _EditRulesDialog();
 }
 
-class _LeagueDialog extends State<LeagueDialog> {
+class _EditRulesDialog extends State<EditRulesDialog> {
   final TextEditingController leagueNameController = TextEditingController();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController teamSizeController = TextEditingController();
   final TextEditingController participantsController = TextEditingController();
-  final TextEditingController entryFeeController = TextEditingController();
   final List<bool> _private = <bool>[true, false];
   final List<bool> _lock = <bool>[true, false];
-  var _privateToggle = false;
-  var _lockToggle = false;
+
   bool vertical = false;
-  final items = [
+  final availableSports = [
     SupportedSport.MLB,
     SupportedSport.NFL,
     SupportedSport.NBA,
   ];
-  SupportedSport dropDownValue = SupportedSport.MLB;
+  late SupportedSport dropDownValue;
+  late bool _privateToggle;
+  late bool _lockToggle;
+
+  @override
+  void initState() {
+    leagueNameController.text = widget.league.name;
+    startDateController.text = widget.league.dateStart;
+    endDateController.text = widget.league.dateEnd;
+    teamSizeController.text = widget.league.teamSize.toString();
+    participantsController.text = widget.league.maxTeams.toString();
+    dropDownValue = widget.league.sports.first;
+    _privateToggle = widget.league.isPrivate;
+    _lockToggle = widget.league.isLocked;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -41,13 +60,12 @@ class _LeagueDialog extends State<LeagueDialog> {
     endDateController.dispose();
     teamSizeController.dispose();
     participantsController.dispose();
-    entryFeeController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<LeagueBloc>();
+    final bloc = context.read<LeagueGameBloc>();
     final walletAddress =
         context.read<WalletBloc>().state.formattedWalletAddress;
     final walletId = (walletAddress.isEmpty || walletAddress == kEmptyAddress)
@@ -88,7 +106,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Create League',
+                      'Edit League',
                       style: textStyle(
                         Colors.white,
                         20,
@@ -164,11 +182,12 @@ class _LeagueDialog extends State<LeagueDialog> {
                       readOnly: true,
                       onTap: () async {
                         final leagueStartDate =
-                            DateTime.now().add(const Duration(days: 1));
+                            DateTime.parse(startDateController.text);
                         final startDate = await showDatePicker(
                           context: context,
                           initialDate: leagueStartDate,
-                          firstDate: leagueStartDate,
+                          firstDate:
+                              DateTime.now().add(const Duration(days: 1)),
                           lastDate: DateTime(2101),
                         );
                         if (startDate != null) {
@@ -360,12 +379,8 @@ class _LeagueDialog extends State<LeagueDialog> {
                   SizedBox(
                     width: textBoxWid,
                     child: TextFormField(
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(
-                          RegExp('[0-9.]'),
-                        ),
-                      ],
-                      controller: entryFeeController,
+                      readOnly: true,
+                      initialValue: widget.league.entryFee.toString(),
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -403,8 +418,9 @@ class _LeagueDialog extends State<LeagueDialog> {
                   DropdownButton<SupportedSport>(
                     value: dropDownValue,
                     icon: const Icon(Icons.keyboard_arrow_down),
-                    items: items.map<DropdownMenuItem<SupportedSport>>(
-                        (SupportedSport item) {
+                    items: availableSports
+                        .map<DropdownMenuItem<SupportedSport>>(
+                            (SupportedSport item) {
                       return DropdownMenuItem(
                         value: item,
                         child: Text(item.name),
@@ -549,10 +565,12 @@ class _LeagueDialog extends State<LeagueDialog> {
                       child: TextButton(
                         onPressed: () => {
                           if (DateTime.parse(startDateController.text).isAfter(
-                            DateTime.parse(
-                              endDateController.text,
-                            ),
-                          ))
+                                DateTime.parse(
+                                  endDateController.text,
+                                ),
+                              ) ||
+                              DateTime.parse(startDateController.text) ==
+                                  DateTime.parse(endDateController.text))
                             {
                               context.showWarningToast(
                                 title: 'Error',
@@ -563,7 +581,8 @@ class _LeagueDialog extends State<LeagueDialog> {
                           else
                             {
                               bloc.add(
-                                CreateLeague(
+                                EditLeagueEvent(
+                                  leagueID: widget.league.leagueID,
                                   name: leagueNameController.text,
                                   adminWallet: walletId,
                                   dateStart: startDateController.text,
@@ -571,10 +590,12 @@ class _LeagueDialog extends State<LeagueDialog> {
                                   teamSize: int.parse(teamSizeController.text),
                                   maxTeams:
                                       int.parse(participantsController.text),
-                                  entryFee: int.parse(entryFeeController.text),
+                                  entryFee: widget.league.entryFee,
                                   isPrivate: _privateToggle,
                                   isLocked: _lockToggle,
                                   sports: [dropDownValue],
+                                  prizePoolAddress:
+                                      widget.league.prizePoolAddress,
                                 ),
                               ),
                               Navigator.pop(context),

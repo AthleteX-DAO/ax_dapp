@@ -12,6 +12,9 @@ String getPercentageDesc(double percentage) {
 }
 
 Color getPercentageColor(double percentage) {
-  if (percentage >= 0) return Colors.green;
-  return Colors.red;
+  return percentage >= 0 ? Colors.green : Colors.red;
+}
+
+IconData getPercentStatusIcon(double percentage) {
+  return percentage >= 0 ? Icons.trending_up : Icons.trending_down;
 }
