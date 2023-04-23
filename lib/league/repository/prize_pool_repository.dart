@@ -1,44 +1,79 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';
 
+import 'package:ax_dapp/league/models/prize_pool_factory.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:ethereum_api/erc20_api.dart';
 import 'package:ethereum_api/prizepool_api.dart';
 import 'package:get/get.dart';
-import '../models/prize_pool_factory.dart';
-import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
 class PrizePoolRepository {
   PrizePoolRepository();
 
   Controller controller = Controller();
-  RxString adminAddress = ''.obs;
 
   late Prizepool prizePool;
   PrizePoolFactory prizePoolFactory = PrizePoolFactory();
-  Web3Client contractClient = Web3Client('https://polygon-rpc.com/', Client());
-  RxString prizePoolAddress = '0x8939C4029463007b9dA2EC58244eF15b63B04668'.obs;
 
+  RxString adminAddress = ''.obs;
+  RxString prizePoolAddress = ''.obs;
+  RxDouble entryFeeAmount = 0.0.obs;
+  RxInt decimalA = 0.obs;
+
+  double get entryAmount => entryFeeAmount.value;
   String get admin => adminAddress.value;
   String get contractAddress => prizePoolAddress.value;
+  int get tokenDecimals => decimalA.value;
 
+  set tokenDecimals(int decimal) => decimalA.value = decimal;
+  set entryAmount(double newAmount) => entryFeeAmount.value = newAmount;
   set admin(String address) => adminAddress.value = address;
   set contractAddress(String newAddress) => prizePoolAddress.value = newAddress;
 
+  final axTokenAddress = '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
+
+  Future<void> approve() async {
+    var txnHash = '';
+    final tokenAAddress = EthereumAddress.fromHex(axTokenAddress);
+    final prizePoolAddress = EthereumAddress.fromHex(contractAddress);
+    final tokenAAmount =
+        normalizeInput(entryFeeAmount.value, decimal: decimalA.value);
+    final tokenA =
+        ERC20(address: tokenAAddress, client: controller.client.value);
+    try {
+      txnHash = await tokenA.approve(
+        prizePoolAddress,
+        tokenAAmount,
+        credentials: controller.credentials,
+      );
+    } catch (e) {
+      txnHash = '';
+      controller.transactionHash = txnHash;
+      return Future.error(e);
+    }
+
+    controller.transactionHash = txnHash;
+  }
+
   Future<void> joinLeague() async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
-    prizePool = Prizepool(address: poolAddress, client: contractClient);
-    final theCredentials = controller.credentials;
-    final txnHash = await prizePool.joinLeague(credentials: theCredentials);
+    prizePool =
+        Prizepool(address: poolAddress, client: controller.client.value);
+    final txnHash = await prizePool.joinLeague(
+      credentials: controller.credentials,
+    );
     controller.transactionHash = txnHash;
   }
 
   Future<void> withdrawBeforeLeagueStarts() async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
-    prizePool = Prizepool(address: poolAddress, client: contractClient);
-    final theCredentials = controller.credentials;
-    final txnHash =
-        await prizePool.withdrawBeforeLeagueStarts(credentials: theCredentials);
+    prizePool =
+        Prizepool(address: poolAddress, client: controller.client.value);
+    final txnHash = await prizePool.withdrawBeforeLeagueStarts(
+      credentials: controller.credentials,
+    );
     controller.transactionHash = txnHash;
   }
 
@@ -47,7 +82,6 @@ class PrizePoolRepository {
     int leagueStartTime,
     int leagueEndTime,
   ) async {
-    const axTokenAddress = '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
     final prizePoolAddress = await promiseToFuture<dynamic>(
       prizePoolFactory.createLeague(
         axTokenAddress,
@@ -56,13 +90,13 @@ class PrizePoolRepository {
         leagueEndTime,
       ),
     );
-    print('this is the prize pool address: $prizePoolAddress');
     return prizePoolAddress.toString();
   }
 
   Future<void> distributePrize(String winnerAddress) async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
-    prizePool = Prizepool(address: poolAddress, client: contractClient);
+    prizePool =
+        Prizepool(address: poolAddress, client: controller.client.value);
     final theCredentials = controller.credentials;
     final winner = EthereumAddress.fromHex(winnerAddress);
     final txnHash =

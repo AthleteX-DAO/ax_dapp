@@ -186,6 +186,8 @@ class DesktopLeagueDraft extends StatelessWidget {
                                         leagueID: league.leagueID,
                                         myTeam: myAptTeam,
                                         existingTeam: existingTeam,
+                                        prizePoolAddress: league.prizePoolAddress,
+                                        entryFee: league.entryFee,
                                       ),
                                     );
                                     Navigator.pop(context);
