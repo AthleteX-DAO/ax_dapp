@@ -1,11 +1,14 @@
 import 'dart:async';
+
 import 'dart:math';
 
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 
@@ -16,7 +19,9 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
   LeagueBloc({
     required LeagueRepository leagueRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
+    required PrizePoolRepository prizePoolRepository,
   })  : _leagueRepository = leagueRepository,
+        _prizePoolRepository = prizePoolRepository,
         _streamAppDataChanges = streamAppDataChanges,
         super(const LeagueState()) {
     on<CreateLeague>(_onCreateLeague);
@@ -30,6 +35,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
   }
 
   final LeagueRepository _leagueRepository;
+  final PrizePoolRepository _prizePoolRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -58,6 +64,17 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     try {
       final leagueID = generateLeagueID(15);
 
+      final dateStartInt =
+          DateTime.parse(event.dateStart).millisecondsSinceEpoch;
+      final dateEndInt = DateTime.parse(event.dateEnd).millisecondsSinceEpoch;
+
+      final prizePoolAddress = await _prizePoolRepository.createLeague(
+        event.entryFee,
+        dateStartInt,
+        dateEndInt,
+      );
+      debugPrint('the blocs prize pool address: $prizePoolAddress');
+
       final league = League(
         leagueID: leagueID,
         name: event.name,
@@ -71,6 +88,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         isLocked: event.isLocked,
         sports: event.sports,
         winner: '',
+        prizePoolAddress: prizePoolAddress,
       );
 
       await _leagueRepository.createLeague(league: league);

@@ -12,6 +12,7 @@ import 'package:ax_dapp/league/league_game/views/league_game.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/views/desktop_leauge.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
@@ -80,6 +81,7 @@ class App extends StatelessWidget {
           create: (context) => LeagueBloc(
             leagueRepository: context.read<LeagueRepository>(),
             streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+            prizePoolRepository: context.read<PrizePoolRepository>(),
           ),
         ),
       ],
@@ -262,6 +264,7 @@ class _MaterialApp extends StatelessWidget {
                       calculateTeamPerformanceUseCase:
                           context.read<CalculateTeamPerformanceUseCase>(),
                       timerRepository: context.read<TimerRepository>(),
+                      prizePoolRepository: context.read<PrizePoolRepository>(),
                     ),
                     child: LeagueGame(league: league, leagueID: leagueID),
                   );

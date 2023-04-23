@@ -6,6 +6,7 @@ import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/league/widgets/dialogs/edit_rules_dialog.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
@@ -22,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class LeagueGame extends StatelessWidget {
@@ -69,8 +71,7 @@ class LeagueGame extends StatelessWidget {
                 athletes: filteredAthletes,
               ),
             );
-            if (timerStatus.hasEnded &&
-                league.winner.isEmpty) {
+            if (timerStatus.hasEnded && league.winner.isEmpty) {
               bloc.add(
                 ProcessLeagueWinnerEvent(
                   leagueID: leagueID,
@@ -259,6 +260,13 @@ class LeagueGame extends StatelessWidget {
                                             calculateTeamPerformanceUseCase:
                                                 context.read<
                                                     CalculateTeamPerformanceUseCase>(),
+                                            prizePoolRepository: context
+                                                .read<PrizePoolRepository>(),
+                                            streamAppDataChangesUseCase:
+                                                context.read<
+                                                    StreamAppDataChangesUseCase>(),
+                                            walletRepository: context
+                                                .read<WalletRepository>(),
                                           ),
                                           child: DesktopLeagueDraft(
                                             league: league,

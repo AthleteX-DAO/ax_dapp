@@ -5,6 +5,7 @@ import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/firebase_options.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
@@ -168,6 +169,9 @@ void main() async {
           ),
           RepositoryProvider(
             create: (context) => TimerRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => PrizePoolRepository(),
           ),
         ],
         child: App(configRepository: configRepository),

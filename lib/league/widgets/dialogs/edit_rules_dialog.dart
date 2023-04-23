@@ -186,7 +186,8 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                         final startDate = await showDatePicker(
                           context: context,
                           initialDate: leagueStartDate,
-                          firstDate: DateTime.now().add(const Duration(days: 1)),
+                          firstDate:
+                              DateTime.now().add(const Duration(days: 1)),
                           lastDate: DateTime(2101),
                         );
                         if (startDate != null) {
@@ -564,9 +565,9 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                       child: TextButton(
                         onPressed: () => {
                           if (DateTime.parse(startDateController.text).isAfter(
-                            DateTime.parse(
-                              endDateController.text,
-                            ),
+                                DateTime.parse(
+                                  endDateController.text,
+                                ),
                               ) ||
                               DateTime.parse(startDateController.text) ==
                                   DateTime.parse(endDateController.text))
@@ -593,6 +594,8 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                                   isPrivate: _privateToggle,
                                   isLocked: _lockToggle,
                                   sports: [dropDownValue],
+                                  prizePoolAddress:
+                                      widget.league.prizePoolAddress,
                                 ),
                               ),
                               Navigator.pop(context),

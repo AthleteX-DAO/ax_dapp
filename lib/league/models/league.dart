@@ -18,6 +18,7 @@ class League {
     required this.isLocked,
     required this.sports,
     required this.winner,
+    required this.prizePoolAddress,
   });
 
   factory League.fromJson(Map<String, dynamic> json) => _$LeagueFromJson(json);
@@ -35,6 +36,7 @@ class League {
     isLocked: false,
     sports: [],
     winner: '',
+    prizePoolAddress: '',
   );
 
   final String leagueID;
@@ -49,6 +51,7 @@ class League {
   final bool isLocked;
   final List<SupportedSport> sports;
   final String winner;
+  final String prizePoolAddress;
 
   Map<String, dynamic> toJson() => _$LeagueToJson(this);
 }
