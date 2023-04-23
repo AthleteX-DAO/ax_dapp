@@ -21,7 +21,6 @@ class PrizePoolRepository {
   RxString prizePoolAddress = ''.obs;
   RxDouble entryFeeAmount = 0.0.obs;
   RxInt decimalA = 0.obs;
-  RxString routerAddress = ''.obs;
 
   double get entryAmount => entryFeeAmount.value;
   String get admin => adminAddress.value;
