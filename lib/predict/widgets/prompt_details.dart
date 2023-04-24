@@ -92,7 +92,7 @@ class PromptDetails extends StatelessWidget {
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: const SizedBox(
-                        child: Text('1.0 AX'),
+                        child: Text('100.0 AX'),
                       ),
                     )
                   ],
@@ -116,7 +116,7 @@ class PromptDetails extends StatelessWidget {
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: const SizedBox(
-                        child: Text('0.0 AX'),
+                        child: Text('000.0 AX'),
                       ),
                     )
                   ],

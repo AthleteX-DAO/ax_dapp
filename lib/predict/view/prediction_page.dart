@@ -11,35 +11,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-// class PredictionPage2 extends StatefulWidget {
-//   const PredictionPage2({
-//     super.key,
-//   });
-
-//   @override
-//   State<StatefulWidget> createState() => _PredictionPage2State();
-// }
-
-// class _PredictionPage2State extends State<PredictionPage2> {
-//   late PredictionModel predictionModel;
-
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     // Return nothing as the prediction model
-//     predictionModel = PredictionModel.generic;
-//   }
-
-//   Color indexUnselectedStackBackgroundColor = Colors.transparent;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // TODO: implement build
-//     throw UnimplementedError();
-//   }
-// }
-
 class PredictionPage extends StatelessWidget {
   PredictionPage({super.key, required this.prediction});
 
@@ -78,7 +49,7 @@ class PredictionPage extends StatelessWidget {
         ),
         child: SizedBox(
           height: 660,
-          width: 1160,
+          width: MediaQuery.of(context).size.width / 2,
           child: Center(
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
