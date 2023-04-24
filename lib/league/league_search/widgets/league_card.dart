@@ -1,12 +1,18 @@
 import 'package:ax_dapp/league/league_search/widgets/widgets.dart';
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class LeagueCard extends StatelessWidget {
-  const LeagueCard({super.key, required this.league});
+  const LeagueCard({
+    super.key,
+    required this.league,
+    required this.leagueTeams,
+  });
 
   final League league;
+  final List<LeagueTeam> leagueTeams;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +68,7 @@ class LeagueCard extends StatelessWidget {
               axIconHeight: axIconHeight,
               league: league,
               textSize: textSize,
+              leagueTeams: leagueTeams,
             ),
             if (showToolTipIcon)
               LeagueSearchPageToolTip(

@@ -1,4 +1,5 @@
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:flutter/material.dart';
 
 class PrizePool extends StatelessWidget {
@@ -9,6 +10,7 @@ class PrizePool extends StatelessWidget {
     required this.axIconHeight,
     required this.league,
     required this.textSize,
+    required this.leagueTeams,
   }) : _width = width;
 
   final double _width;
@@ -16,6 +18,7 @@ class PrizePool extends StatelessWidget {
   final double axIconHeight;
   final League league;
   final double textSize;
+  final List<LeagueTeam> leagueTeams;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class PrizePool extends StatelessWidget {
               width: 5,
             ),
             Text(
-              '1000 AX',
+              '${leagueTeams.length * league.entryFee} AX',
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'OpenSans',
