@@ -14,12 +14,13 @@ class ShowDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
     var wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
 
     return SizedBox(
       width: wid,
-      height: 400,
+      height: _height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -29,7 +30,7 @@ class ShowDetailsWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   promptDetails,
-                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.center,
                   style: textStyle(
                     Colors.white,
                     20,

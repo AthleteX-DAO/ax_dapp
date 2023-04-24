@@ -19,13 +19,14 @@ class GraphSide extends StatelessWidget {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
     final wid = _width * 0.4;
+    final hei = _height / 3;
     const indexUnselectedStackBackgroundColor = Colors.transparent;
     final _zoomPanBehavior = ZoomPanBehavior(
       enableMouseWheelZooming: true,
       enablePanning: true,
       enablePinching: true,
     );
-    return Container(
+    return SizedBox(
       height: _height / 1.5,
       width: wid,
       child: Column(
@@ -33,14 +34,11 @@ class GraphSide extends StatelessWidget {
           PromptPageTitle(
             wid: wid,
             prompt: predictionModel.prompt,
-            width: _width,
-            height: _height,
           ),
           PromptPageDetails(
             wid: wid,
+            height: hei,
             promptDetails: predictionModel.details,
-            width: _width,
-            height: _height,
           ),
         ],
       ),

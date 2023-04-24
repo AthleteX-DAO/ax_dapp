@@ -10,15 +10,10 @@ class PromptPageTitle extends StatelessWidget {
     super.key,
     required this.wid,
     required this.prompt,
-    required double width,
-    required double height,
-  })  : _width = width,
-        _height = height;
+  });
 
   final double wid;
   final String prompt;
-  final double _width;
-  final double _height;
 
   @override
   Widget build(BuildContext context) {
