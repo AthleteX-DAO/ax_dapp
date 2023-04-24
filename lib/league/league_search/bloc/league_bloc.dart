@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/models/league_info.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -107,11 +108,20 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       final leagues = await _leagueRepository.fetchLeagues();
+      final leagueTeams = await Future.wait(
+        leagues.map((league) async {
+          final leagueTeam =
+              await _leagueRepository.getLeagueTeams(leagueID: league.leagueID);
+          return leagueTeam;
+        }),
+      );
+      final leagueInfo = LeagueInfo(leagues: leagues, leagueTeams: leagueTeams);
       filterOutUnsupportedSportsByChain(leagues);
       emit(
         state.copyWith(
           allLeagues: leagues,
           filteredLeagues: leagues,
+          leagueInfo: leagueInfo,
           status: BlocStatus.success,
           selectedSport: SupportedSport.all,
         ),
@@ -121,6 +131,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         state.copyWith(
           allLeagues: [],
           filteredLeagues: [],
+          leagueInfo: LeagueInfo.empty,
           status: BlocStatus.error,
         ),
       );
