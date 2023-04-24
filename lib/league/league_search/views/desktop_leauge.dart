@@ -44,8 +44,8 @@ class _DesktopLeagueState extends State<DesktopLeague> {
         },
         builder: (context, state) {
           final bloc = context.read<LeagueBloc>();
-          final leagueInfo = state.leagueInfo;
           final filteredLeagues = state.filteredLeagues;
+          final filteredLeagueTeams = state.filteredLeagueTeams;
           if (_selectedChain != state.selectedChain) {
             _selectedChain = state.selectedChain;
             bloc.add(
@@ -342,8 +342,8 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                         itemCount: filteredLeagues.length,
                         itemBuilder: (context, index) {
                           return LeagueCard(
-                            league: leagueInfo.leagues[index],
-                            leagueTeams: leagueInfo.leagueTeams[index],
+                            league: filteredLeagues[index],
+                            leagueTeams: filteredLeagueTeams[index],
                           );
                         },
                       ),

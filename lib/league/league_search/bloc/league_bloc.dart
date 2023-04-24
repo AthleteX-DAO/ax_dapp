@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/league/models/league_info.dart';
+import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -116,12 +116,12 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
           return leagueTeam;
         }),
       );
-      final leagueInfo = LeagueInfo(leagues: leagues, leagueTeams: leagueTeams);
       emit(
         state.copyWith(
           allLeagues: leagues,
           filteredLeagues: leagues,
-          leagueInfo: leagueInfo,
+          leagueTeams: leagueTeams,
+          filteredLeagueTeams: leagueTeams,
           status: BlocStatus.success,
           selectedSport: SupportedSport.all,
         ),
@@ -131,7 +131,8 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         state.copyWith(
           allLeagues: [],
           filteredLeagues: [],
-          leagueInfo: LeagueInfo.empty,
+          leagueTeams: [],
+          filteredLeagueTeams: [],
           status: BlocStatus.error,
         ),
       );
