@@ -108,6 +108,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       final leagues = await _leagueRepository.fetchLeagues();
+      filterOutUnsupportedSportsByChain(leagues);
       final leagueTeams = await Future.wait(
         leagues.map((league) async {
           final leagueTeam =
@@ -116,7 +117,6 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         }),
       );
       final leagueInfo = LeagueInfo(leagues: leagues, leagueTeams: leagueTeams);
-      filterOutUnsupportedSportsByChain(leagues);
       emit(
         state.copyWith(
           allLeagues: leagues,
