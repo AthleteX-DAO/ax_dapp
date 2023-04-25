@@ -310,12 +310,62 @@ class NoButton extends StatelessWidget {
       width: isPortraitMode ? containerWdt / 3 : 175,
       height: 50,
       // if portrait mode, use 1/3 of container width
-      decoration: boxDecoration(Colors.white, 100, 0, Colors.white),
+      decoration: boxDecoration(Colors.black, 100, 0, Colors.white),
       child: TextButton(
         onPressed: () {
           print('no');
         },
-        child: Text('No', style: textStyle(Colors.black, 20, false, false)),
+        child: Text('No', style: textStyle(Colors.white, 20, false, false)),
+      ),
+    );
+  }
+}
+
+class GenericMintButton extends StatelessWidget {
+  const GenericMintButton(
+      {super.key, required this.isPortraitMode, required this.containerWdt});
+
+  final bool isPortraitMode;
+  final double containerWdt;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
+      height: 50,
+      decoration: boxDecoration(primaryOrangeColor, 100, 0, Colors.green),
+      child: TextButton(
+        onPressed: () {
+          print('Mint');
+        },
+        child: Text(
+          'Mint',
+          style: textStyle(Colors.black, 20, false, false),
+        ),
+      ),
+    );
+  }
+}
+
+class GenericRedeemButton extends StatelessWidget {
+  const GenericRedeemButton(
+      {super.key, required this.containerWdt, required this.isPortraitMode});
+
+  final double containerWdt;
+  final bool isPortraitMode;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
+      height: 50,
+      decoration: boxDecoration(Colors.greenAccent, 100, 0, Colors.white10),
+      child: TextButton(
+        onPressed: () {
+          print('Redeem!');
+        },
+        child: Text(
+          'Redeem',
+          style: textStyle(Colors.black, 20, false, false),
+        ),
       ),
     );
   }

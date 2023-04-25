@@ -110,6 +110,11 @@ class _MaterialApp extends StatelessWidget {
               Global().athleteList.isEmpty) {
             return '/scout';
           }
+
+          if (state.location.contains('/prediction') &&
+              Global().predictionsList.isEmpty) {
+            return '/predict';
+          }
         },
         routes: <GoRoute>[
           GoRoute(
@@ -275,7 +280,7 @@ class _MaterialApp extends StatelessWidget {
     for (final predictions in Global().predictionsList) {
       if (predictions.prompt == id) return predictions;
     }
-    return PredictionModel.empty;
+    return null;
   }
 
   bool notLanding(String location) {

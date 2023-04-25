@@ -1,5 +1,6 @@
 import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/widgets/advanced_features.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
@@ -124,8 +125,10 @@ class PromptDetails extends StatelessWidget {
               ],
             ),
           ),
+          // Yes & No Button
+
           SizedBox(
-            height: 250,
+            height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -149,6 +152,15 @@ class PromptDetails extends StatelessWidget {
                   ],
                 )
               ],
+            ),
+          ),
+
+          // Advanced Features
+          SizedBox(
+            height: 180,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [AdvancedFeatures()],
             ),
           ),
         ],
