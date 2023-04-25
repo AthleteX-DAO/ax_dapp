@@ -9,7 +9,7 @@ class PredictionModel extends Equatable {
   final bool? resolution;
 
   static const empty = PredictionModel(
-    prompt: 'Oops!  You got me',
+    prompt: 'Did you predict this could happen?',
     details:
         "Lol, You're not supposed to be here.  Do me a favor and click on 'Predict' on the top left of your screen",
   );

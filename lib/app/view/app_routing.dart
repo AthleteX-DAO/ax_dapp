@@ -11,7 +11,7 @@ import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/view/desktop_predict.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
-import 'package:ax_dapp/predict/view/prediction_page.dart';
+import 'package:ax_dapp/prediction/widgets/prediction_page.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';

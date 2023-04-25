@@ -1,7 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/predict/widgets/prompt_page_title.dart';
-import 'package:ax_dapp/predict/widgets/prompt_page_details.dart';
-import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
+import 'package:ax_dapp/prediction/widgets/prompt_page_details.dart';
+import 'package:ax_dapp/prediction/widgets/prompt_page_title.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 

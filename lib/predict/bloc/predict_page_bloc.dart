@@ -1,7 +1,7 @@
-import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -25,18 +25,20 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final List<PredictionModel> fightQuestions = [
     const PredictionModel(
-        prompt:
-            'Will Gervonta ‘Tank’ Davis beat Ryan ‘King’ Garcia on April 22nd?',
-        details:
-            'This market will resolve to “Yes” if Gervonta Davis wins his fight on April 22, 2023. Otherwise, this market will resolve to “No”. A “No” resolution would mean Ryan Garcia won the flight. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled, postponed, or ends in a draw, Yes and No will resolve to 50/50.'),
+      prompt: 'Atlanta Hawks vs Boston Celtics',
+      details:
+          'This market will resolve to “Yes” if Gervonta Davis wins his fight on April 22, 2023. Otherwise, this market will resolve to “No”. A “No” resolution would mean Ryan Garcia won the flight. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled, postponed, or ends in a draw, Yes and No will resolve to 50/50.',
+    ),
     const PredictionModel(
-        prompt: 'Will the fight end in a knockout?',
-        details:
-            'This market will resolve to “Yes” if either fighter wins by knockout on April 22, 2023. Otherwise, this market will resolve to “No”. A “No” resolution would mean the fight is won by TKO, Decision, or ends in Draw. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.'),
+      prompt: 'Los Angeles Clippers vs Phoenix Suns',
+      details:
+          'This market will resolve to “Yes” if either fighter wins by knockout on April 22, 2023. Otherwise, this market will resolve to “No”. A “No” resolution would mean the fight is won by TKO, Decision, or ends in Draw. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.',
+    ),
     const PredictionModel(
-        prompt: 'Will the fight end in a draw?',
-        details:
-            'This market will resolve to “Yes” if the fight ends in a Draw. Otherwise, this market will resolve to “No”. A “No” resolution would mean the fight is won by either Davis or Garcia. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.'),
+      prompt: 'Will the fight end in a draw?',
+      details:
+          'This market will resolve to “Yes” if the fight ends in a Draw. Otherwise, this market will resolve to “No”. A “No” resolution would mean the fight is won by either Davis or Garcia. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.',
+    ),
     const PredictionModel(
         prompt: 'Will Davis get knocked down?',
         details:
