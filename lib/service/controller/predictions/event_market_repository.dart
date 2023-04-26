@@ -9,21 +9,30 @@ import 'package:web3dart/web3dart.dart';
 
 class EventMarketRepository {
   Controller controller = Controller();
-  RxDouble createAmt = 0.0.obs;
   late HAWKSCELTICS hawksceltics;
+  RxString marketAddress = ''.obs;
+  RxDouble createAmt = 0.0.obs;
   Web3Client tokenClient = Web3Client(
     'https://sx.technology.com',
     Client(),
   );
 
+  String get eventMarketAddress => marketAddress.value;
+
+  set eventMarketAddress(String newAddress) => marketAddress.value = newAddress;
+
   Future<void> create() async {
-    BigInt createTokensAmount;
-    await hawksceltics.create(createTokensAmount, credentials: userCredentials);
+    var address = EthereumAddress.fromHex(marketAddress.value);
+    hawksceltics = HAWKSCELTICS(address: address, client: tokenClient);
+    final userCredentials = controller.credentials;
+    final intCreate = (createAmt.value * 1e18) as BigInt;
+    final createTokensAmount = BigInt.from(1);
+    await hawksceltics.create(intCreate, credentials: userCredentials);
   }
 
   Future<void> redeem() async {
-    BigInt redeemTokensAmnt = BigInt.from(1);
-
+    final userCredentials = controller.credentials;
+    final redeemTokensAmnt = BigInt.from(1);
     await hawksceltics.redeem(redeemTokensAmnt, credentials: userCredentials);
   }
 

@@ -1,6 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/widgets/desktop_headers.dart';
-import 'package:ax_dapp/predict/widgets/desktop_prediction.dart';
+import 'package:ax_dapp/prediction/widgets/desktop_prediction.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/widgets/loader.dart';
 import 'package:flutter/material.dart';

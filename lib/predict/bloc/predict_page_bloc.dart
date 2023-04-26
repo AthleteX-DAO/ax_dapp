@@ -23,34 +23,42 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
 
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
-  final List<PredictionModel> fightQuestions = [
+  final List<PredictionModel> questions = [
     const PredictionModel(
-      prompt: 'Atlanta Hawks vs Boston Celtics',
+      prompt: 'Houston Astros vs Tampa Bay Rays',
       details:
-          'This market will resolve to “Yes” if Gervonta Davis wins his fight on April 22, 2023. Otherwise, this market will resolve to “No”. A “No” resolution would mean Ryan Garcia won the flight. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled, postponed, or ends in a draw, Yes and No will resolve to 50/50.',
+          'This market will resolve to “Red Sox” if Boston Red Sox win the game against Baltimore Orioles on April 26, 2023. If the Baltimore Orioles win the game the market will resolve to “Orioles”. The resolution source for this market will be MLB or a consensus of credible reporting will also suffice. If the fight is canceled, postponed, or ends in a draw, Yes and No will resolve to 50/50.',
+      address: '',
     ),
     const PredictionModel(
-      prompt: 'Los Angeles Clippers vs Phoenix Suns',
+      prompt: 'Washington Nationals vs New York Mets',
       details:
-          'This market will resolve to “Yes” if either fighter wins by knockout on April 22, 2023. Otherwise, this market will resolve to “No”. A “No” resolution would mean the fight is won by TKO, Decision, or ends in Draw. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.',
+          'This market will resolve to “Knicks” if the New York Knicks win the game against the Cleveland Cavaliers on April 26, 2023. If the Cleveland Cavaliers win the game the market will resolve to “Cavaliers”. The resolution source for this market will be NBA or a consensus of credible reporting will also suffice. If the fight is canceled, postponed, or ends in a draw, Yes and No will resolve to 50/50.',
+      address: '',
     ),
     const PredictionModel(
-      prompt: 'Will the fight end in a draw?',
+      prompt: 'New York Knicks vs Cleveland Cavaliers',
       details:
-          'This market will resolve to “Yes” if the fight ends in a Draw. Otherwise, this market will resolve to “No”. A “No” resolution would mean the fight is won by either Davis or Garcia. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.',
+          'This market will resolve to “Yes” if the Gervonta Davis is knocked down at least once. Otherwise, this market will resolve to “No”. A “No” resolution would mean Garcia does not knockdown Davis during the fight. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.',
+      address: '',
     ),
     const PredictionModel(
-        prompt: 'Will Davis get knocked down?',
-        details:
-            'This market will resolve to “Yes” if the Gervonta Davis is knocked down at least once. Otherwise, this market will resolve to “No”. A “No” resolution would mean Garcia does not knockdown Davis during the fight. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.'),
+      prompt: 'Los Angeles Lakers vs Memphis Grizzlies',
+      details:
+          'This market will resolve to “Davis” if Gervonta Davis is knocked down more than Garcia. This market will resolve to “Garcia” if Ryan Garcia is knocked down more than Davis. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If Davis and Garcia are knocked down equally, Yes and No will resolve to 50/50. If the fight is canceled or postponed, Yes and No will resolve to 50/50.',
+      address: '',
+    ),
     const PredictionModel(
-        prompt: 'Who will get knocked down more?',
-        details:
-            'This market will resolve to “Davis” if Gervonta Davis is knocked down more than Garcia. This market will resolve to “Garcia” if Ryan Garcia is knocked down more than Davis. The resolution source for this market will be WBA or a consensus of credible reporting will also suffice. If Davis and Garcia are knocked down equally, Yes and No will resolve to 50/50. If the fight is canceled or postponed, Yes and No will resolve to 50/50.'),
+      prompt: 'Miami Heat vs Milwaukee Bucks',
+      details:
+          'This market will resolve to “Yes” if the winner of the fight cries during the in-ring post-fight interview. If the winner of the fight does not shed a tear in the ring during the post-fight interview, this market will resolve to “No”. Post-fight press conferences outside the ring do not apply to this market. The resolution source for this market will be post-fight interview video or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.',
+      address: '',
+    ),
     const PredictionModel(
-        prompt: 'Will the winner cry in the post-fight interview?',
-        details:
-            'This market will resolve to “Yes” if the winner of the fight cries during the in-ring post-fight interview. If the winner of the fight does not shed a tear in the ring during the post-fight interview, this market will resolve to “No”. Post-fight press conferences outside the ring do not apply to this market. The resolution source for this market will be post-fight interview video or a consensus of credible reporting will also suffice. If the fight is canceled or postponed, Yes and No will resolve to 50/50.'),
+      prompt: 'Golden State Warriors vs Sacramento Kings',
+      details: '',
+      address: '',
+    ),
   ];
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -63,7 +71,6 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
         emit(
           state.copyWith(
             status: BlocStatus.loading,
-            predictions: fightQuestions,
           ),
         );
       },
@@ -75,7 +82,7 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     Emitter<PredictPageState> emit,
   ) async {
     emit(
-      state.copyWith(predictions: fightQuestions, status: BlocStatus.initial),
+      state.copyWith(predictions: questions, status: BlocStatus.initial),
     );
   }
 
