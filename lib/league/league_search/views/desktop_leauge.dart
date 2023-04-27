@@ -128,20 +128,40 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                             border: Border.all(color: Colors.amber[400]!),
                           ),
                           child: TextButton(
-                            onPressed: () {
-                              final isWalletDisconnected = context
-                                  .read<WalletBloc>()
-                                  .state
-                                  .isWalletDisconnected;
-                              if (isWalletDisconnected) {
-                                context.showWalletWarningToast();
-                                return;
-                              }
-                              showDialog<void>(
-                                context: context,
-                                builder: (context) => const LeagueDialog(),
-                              );
-                            },
+                            onPressed: state.selectedChain ==
+                                    EthereumChain.polygonMainnet
+                                ? () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        backgroundColor: Colors.transparent,
+                                        content: Text(
+                                          'Switch To SX Network To Create Leagues!',
+                                          style: TextStyle(
+                                            color: Colors.amber,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                : () {
+                                    final isWalletDisconnected = context
+                                        .read<WalletBloc>()
+                                        .state
+                                        .isWalletDisconnected;
+                                    if (isWalletDisconnected) {
+                                      context.showWalletWarningToast();
+                                      return;
+                                    }
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (context) =>
+                                          const LeagueDialog(),
+                                    );
+                                  },
                             child: const Text(
                               'Create a League',
                               style: TextStyle(
