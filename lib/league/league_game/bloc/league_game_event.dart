@@ -65,14 +65,17 @@ class LeaveLeagueEvent extends LeagueGameEvent {
   const LeaveLeagueEvent({
     required this.leagueID,
     required this.userWalletID,
+    required this.prizePoolAddress,
   });
   final String leagueID;
   final String userWalletID;
+  final String prizePoolAddress;
 
   @override
   List<Object?> get props => [
         leagueID,
         userWalletID,
+        prizePoolAddress,
       ];
 }
 

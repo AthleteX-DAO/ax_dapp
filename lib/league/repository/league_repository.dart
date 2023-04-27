@@ -146,7 +146,7 @@ class LeagueRepository {
 
       final teamRef = (await leagueRef
               .collection('Teams')
-              .where('userWallet', isEqualTo: userWallet)
+              .where('userWalletID', isEqualTo: userWallet)
               .get())
           .docs[0]
           .reference;

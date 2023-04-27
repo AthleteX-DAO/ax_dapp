@@ -94,71 +94,128 @@ class LeagueGame extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(color: Colors.amber[400]!),
-                          ),
-                          child: TextButton(
-                            onPressed: timerStatus.hasEnded
-                                ? () {
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(color: Colors.amber[400]!),
+                              ),
+                              child: TextButton(
+                                onPressed: timerStatus.hasEnded
+                                    ? () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.transparent,
+                                            content: Text(
+                                              'The League Has Ended And Invite Links Are No Longer Available!',
+                                              style: TextStyle(
+                                                color: Colors.amber,
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                      }
+                                    : () {
+                                        final gamePageLocation =
+                                            GoRouter.of(context)
+                                                .location
+                                                .substring(1);
+                                        final gamePageUrl =
+                                            '$baseUrl$gamePageLocation';
+                                        Clipboard.setData(
+                                          ClipboardData(
+                                            text: gamePageUrl,
+                                          ),
+                                        ).then(
+                                          (_) => ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              content: Text(
+                                                'Copied Invite Link!',
+                                                style: TextStyle(
+                                                  color: Colors.amber,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              duration: Duration(seconds: 2),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                child: const Text(
+                                  'Invite',
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(color: Colors.amber[400]!),
+                              ),
+                              child: TextButton(
+                                onPressed: () {
+                                  if (timerStatus.hasStarted ||
+                                      timerStatus.hasEnded) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
+                                      SnackBar(
                                         backgroundColor: Colors.transparent,
                                         content: Text(
-                                          'The League Has Ended And Invite Links Are No Longer Available!',
-                                          style: TextStyle(
+                                          'Cannot Leave ${league.name} At This Time Because Either The League Has Started Or Ended',
+                                          style: const TextStyle(
                                             color: Colors.amber,
                                             fontFamily: 'OpenSans',
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
-                                        duration: Duration(seconds: 2),
+                                        duration: const Duration(seconds: 2),
+                                      ),
+                                    );
+                                  } else {
+                                    bloc.add(
+                                      LeaveLeagueEvent(
+                                        leagueID: leagueID,
+                                        userWalletID: walletAddress,
+                                        prizePoolAddress:
+                                            league.prizePoolAddress,
                                       ),
                                     );
                                   }
-                                : () {
-                                    final gamePageLocation =
-                                        GoRouter.of(context)
-                                            .location
-                                            .substring(1);
-                                    final gamePageUrl =
-                                        '$baseUrl$gamePageLocation';
-                                    Clipboard.setData(
-                                      ClipboardData(
-                                        text: gamePageUrl,
-                                      ),
-                                    ).then(
-                                      (_) => ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          backgroundColor: Colors.transparent,
-                                          content: Text(
-                                            'Copied Invite Link!',
-                                            style: TextStyle(
-                                              color: Colors.amber,
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                          duration: Duration(seconds: 2),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                            child: const Text(
-                              'Invite',
-                              style: TextStyle(
-                                color: Colors.amber,
-                                fontFamily: 'OpenSans',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
+                                },
+                                child: const Text(
+                                  'Leave League',
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                         SizedBox(
                           width: (constraints.maxWidth > 800)

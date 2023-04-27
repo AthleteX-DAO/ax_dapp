@@ -16,6 +16,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'league_game_event.dart';
 part 'league_game_state.dart';
@@ -30,11 +31,13 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
     required TimerRepository timerRepository,
+    required WalletRepository walletRepository,
   })  : _leagueRepository = leagueRepository,
         _prizePoolRepository = prizePoolRepository,
         _streamAppDataChanges = streamAppDataChanges,
         _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
         _tickerRepository = timerRepository,
+        _walletRepository = walletRepository,
         super(
           LeagueGameState(
             startDate: startDate,
@@ -65,6 +68,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   final String startDate;
   final String endDate;
   final TimerRepository _tickerRepository;
+  final WalletRepository _walletRepository;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -73,6 +77,11 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     await emit.onEach<AppData>(
       _streamAppDataChanges.appDataChanges,
       onData: (appData) {
+        final appConfig = appData.appConfig;
+        _prizePoolRepository.controller.client.value =
+            appConfig.reactiveWeb3Client.value;
+        _prizePoolRepository.controller.credentials =
+            _walletRepository.credentials.value;
         if (appData.chain.chainId != state.selectedChain.chainId) {
           emit(
             state.copyWith(
@@ -142,11 +151,14 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     LeaveLeagueEvent event,
     Emitter<LeagueGameState> emit,
   ) async {
+    _prizePoolRepository.contractAddress = event.prizePoolAddress;
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       await _prizePoolRepository.withdrawBeforeLeagueStarts();
       await _leagueRepository.removeUser(
-          leagueID: event.leagueID, userWallet: event.userWalletID);
+        leagueID: event.leagueID,
+        userWallet: event.userWalletID,
+      );
       emit(state.copyWith(status: BlocStatus.success));
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));

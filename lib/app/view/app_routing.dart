@@ -265,6 +265,7 @@ class _MaterialApp extends StatelessWidget {
                           context.read<CalculateTeamPerformanceUseCase>(),
                       timerRepository: context.read<TimerRepository>(),
                       prizePoolRepository: context.read<PrizePoolRepository>(),
+                      walletRepository: context.read<WalletRepository>(),
                     ),
                     child: LeagueGame(league: league, leagueID: leagueID),
                   );
