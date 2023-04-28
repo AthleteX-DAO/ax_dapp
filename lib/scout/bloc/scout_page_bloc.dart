@@ -29,7 +29,6 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     on<AthleteSearchChanged>(_onAthleteSearchChanged);
 
     add(const WatchAppDataChangesStarted());
-    add(FetchScoutInfoRequested());
   }
 
   final WalletRepository _walletRepository;
@@ -60,6 +59,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
             ),
           );
         }
+        add(FetchScoutInfoRequested());
       },
     );
   }

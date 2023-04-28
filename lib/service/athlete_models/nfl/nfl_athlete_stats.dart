@@ -13,8 +13,30 @@ class NFLAthleteStats {
     required this.statHistory,
   });
 
-  factory NFLAthleteStats.fromJson(Map<String, dynamic> json) =>
-      _$NFLAthleteStatsFromJson(json);
+  static NFLAthleteStats fromJson(Map<String, dynamic> json) {
+    final statsItems = <double>[
+      (json['PassingYards'] as num).toDouble(),
+      (json['PassingTouchdowns'] as num).toDouble(),
+      (json['Reception'] as num).toDouble(),
+      (json['ReceivingYards'] as num).toDouble(),
+      (json['ReceivingTouchdowns'] as num).toDouble(),
+      (json['RushingYards'] as num).toDouble(),
+      0,
+      0,
+      (json['BookPrice'] as num).toDouble(),
+    ];
+    final stats = <NFLStats>[
+      NFLStats.create(statsItems, json['Time'] as String)
+    ];
+
+    return NFLAthleteStats(
+      id: json['ID'] as int,
+      name: json['Name'] as String,
+      team: json['Team'] as String,
+      position: json['Position'] as String,
+      statHistory: stats,
+    );
+  }
 
   @JsonKey(name: 'id')
   final int id;
