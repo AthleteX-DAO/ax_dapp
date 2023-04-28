@@ -13,22 +13,18 @@ class WatchAppDataChangesStarted extends LeagueGameEvent {
 
 class FetchScoutInfoRequested extends LeagueGameEvent {}
 
-class EditTeamsEvent extends LeagueGameEvent {
-  const EditTeamsEvent({
-    required this.rosters,
-    required this.sports,
-    required this.teamSize,
+class ClaimPrizeEvent extends LeagueGameEvent {
+  const ClaimPrizeEvent({
+    required this.prizePoolAddress,
+    required this.winnerAddress,
   });
 
-  final String rosters;
-  final String sports;
-  final String teamSize;
+  final String prizePoolAddress;
+  final String winnerAddress;
 
   @override
-  List<Object?> get props => [rosters, sports, teamSize];
+  List<Object?> get props => [prizePoolAddress, winnerAddress];
 }
-
-class ClaimPrizeEvent extends LeagueGameEvent {}
 
 class CalculateAppreciationEvent extends LeagueGameEvent {
   const CalculateAppreciationEvent({
@@ -44,21 +40,6 @@ class CalculateAppreciationEvent extends LeagueGameEvent {
         leagueTeams,
         athletes,
       ];
-}
-
-class JoinLeagueEvent extends LeagueGameEvent {
-  const JoinLeagueEvent({
-    required this.leagueID,
-    required this.entryFee,
-    required this.isPrivate,
-  });
-
-  final String leagueID;
-  final String entryFee;
-  final String isPrivate;
-
-  @override
-  List<Object?> get props => [leagueID, entryFee, isPrivate];
 }
 
 class LeaveLeagueEvent extends LeagueGameEvent {

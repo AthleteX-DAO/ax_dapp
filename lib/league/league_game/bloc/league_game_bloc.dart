@@ -44,10 +44,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
             endDate: endDate,
           ),
         ) {
-    on<EditTeamsEvent>(_onEditTeams);
     on<ClaimPrizeEvent>(_onClaimPrize);
     on<CalculateAppreciationEvent>(_onCalculateAppreciationEvent);
-    on<JoinLeagueEvent>(_onJoinLeagueEvent);
     on<LeaveLeagueEvent>(_onLeaveTeamEvent);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
     on<CalculateRemainingDays>(_onCalculateRemainingDays);
@@ -103,15 +101,19 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     return super.close();
   }
 
-  Future<void> _onEditTeams(
-    EditTeamsEvent event,
-    Emitter<LeagueGameState> emit,
-  ) async {}
-
   Future<void> _onClaimPrize(
     ClaimPrizeEvent event,
     Emitter<LeagueGameState> emit,
-  ) async {}
+  ) async {
+    try {
+      _prizePoolRepository
+        ..winner = event.winnerAddress
+        ..contractAddress = event.prizePoolAddress;
+      await _prizePoolRepository.distributePrize();
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
 
   Future<void> _onCalculateAppreciationEvent(
     CalculateAppreciationEvent event,
@@ -141,11 +143,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
       ),
     );
   }
-
-  Future<void> _onJoinLeagueEvent(
-    JoinLeagueEvent event,
-    Emitter<LeagueGameState> emit,
-  ) async {}
 
   Future<void> _onLeaveTeamEvent(
     LeaveLeagueEvent event,
@@ -328,8 +325,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
       leagueID: leagueID,
       winnerWallet: winnerWallet,
     );
-
-    await _prizePoolRepository.distributePrize(winnerWallet);
 
     emit(state.copyWith(status: BlocStatus.success));
   }
