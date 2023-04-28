@@ -19,18 +19,21 @@ class PrizePoolRepository {
 
   RxString adminAddress = ''.obs;
   RxString prizePoolAddress = ''.obs;
+  RxString winnerAddress = ''.obs;
   RxDouble entryFeeAmount = 0.0.obs;
   RxInt decimalA = 0.obs;
 
   double get entryAmount => entryFeeAmount.value;
   String get admin => adminAddress.value;
   String get contractAddress => prizePoolAddress.value;
+  String get winner => winnerAddress.value;
   int get tokenDecimals => decimalA.value;
 
   set tokenDecimals(int decimal) => decimalA.value = decimal;
   set entryAmount(double newAmount) => entryFeeAmount.value = newAmount;
   set admin(String address) => adminAddress.value = address;
   set contractAddress(String newAddress) => prizePoolAddress.value = newAddress;
+  set winner(String newWinnerAddress) => winnerAddress.value = newWinnerAddress;
 
   final axTokenAddress = '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
 
@@ -93,14 +96,15 @@ class PrizePoolRepository {
     return prizePoolAddress.toString();
   }
 
-  Future<void> distributePrize(String winnerAddress) async {
+  Future<void> distributePrize() async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
     prizePool =
         Prizepool(address: poolAddress, client: controller.client.value);
-    final theCredentials = controller.credentials;
-    final winner = EthereumAddress.fromHex(winnerAddress);
-    final txnHash =
-        await prizePool.distributePrize(winner, credentials: theCredentials);
+    final winner = EthereumAddress.fromHex(winnerAddress.value);
+    final txnHash = await prizePool.distributePrize(
+      winner,
+      credentials: controller.credentials,
+    );
     controller.transactionHash = txnHash;
   }
 }

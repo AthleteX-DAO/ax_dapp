@@ -41,6 +41,8 @@ class LeagueGame extends StatelessWidget {
     final global = Global();
     final walletAddress =
         context.select((WalletBloc bloc) => bloc.state.walletAddress);
+    final formattedWalletAddress =
+        context.select((WalletBloc bloc) => bloc.state.formattedWalletAddress);
     final isWalletConnected =
         context.read<WalletBloc>().state.isWalletConnected;
     return global.buildPage(
@@ -298,7 +300,6 @@ class LeagueGame extends StatelessWidget {
                                         existingTeam = team;
                                       }
                                     }
-
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute<void>(
@@ -350,7 +351,7 @@ class LeagueGame extends StatelessWidget {
                             const SizedBox(
                               width: 5,
                             ),
-                            if (league.adminWallet == "'$walletAddress'")
+                            if (league.adminWallet == formattedWalletAddress)
                               DecoratedBox(
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
@@ -544,27 +545,35 @@ class LeagueGame extends StatelessWidget {
                             const Divider(),
                       ),
                     ),
-                    Center(
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: Colors.amber[400]!),
-                        ),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'CLAIM PRIZE',
-                            style: TextStyle(
-                              color: Colors.amber,
-                              fontFamily: 'OpenSans',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                    if (league.winner == walletAddress && timerStatus.hasEnded)
+                      Center(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(color: Colors.amber[400]!),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              bloc.add(
+                                ClaimPrizeEvent(
+                                  prizePoolAddress: league.prizePoolAddress,
+                                  winnerAddress: league.winner,
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'CLAIM PRIZE',
+                              style: TextStyle(
+                                color: Colors.amber,
+                                fontFamily: 'OpenSans',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               );
