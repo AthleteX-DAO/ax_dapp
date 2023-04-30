@@ -1,18 +1,14 @@
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
-import 'package:ax_dapp/service/api/models/player_ids.dart';
 import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete_stats.dart';
-// ignore: don't_import_implementation_files
-import 'package:ethereum_api/src/config/models/apts/mlb_apt_list.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class MLBRepo extends SportsRepo<MLBAthlete> {
   MLBRepo(MLBAthleteAPI api)
       : _api = api,
         super(SupportedSport.MLB);
-
   final MLBAthleteAPI _api;
 
   @override
@@ -22,14 +18,12 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
 
   @override
   Future<List<MLBAthlete>> getPlayersById(List<int> ids) async {
-    return _api.getPlayersById(PlayerIds(ids));
+    return _api.getPlayersById(ids);
   }
 
   @override
   Future<List<MLBAthlete>> getSupportedPlayers() async {
-    return _api.getPlayersById(
-      PlayerIds(mlbApts.map((e) => e.athleteId).toList()),
-    );
+    return _api.getAllPlayers();
   }
 
   @override
@@ -80,8 +74,7 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
     String from,
     String until,
   ) async {
-    final playerIds = PlayerIds(ids);
-    final list = _api.getPlayersHistory(playerIds, from, until);
+    final list = _api.getPlayersHistory(ids, from, until);
     return list;
   }
 
@@ -92,9 +85,8 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
     String? until,
     String? interval,
   }) async {
-    final playerIds = PlayerIds(ids);
     final list =
-        _api.getPlayersPriceHistory(playerIds, from, until, interval ?? '1d');
+        _api.getPlayersPriceHistory(ids, from, until, interval ?? '1d');
     return list;
   }
 }
