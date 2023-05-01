@@ -15,6 +15,10 @@ class MLBAthlete extends SportAthlete {
     required this.stolenBases,
     required this.plateAppearances,
     required this.weightedOnBasePercentage,
+    required this.homeRuns,
+    required this.strikeouts,
+    required this.saves,
+    required this.atBats,
     required double price,
     required String timeStamp,
   }) : super(id, name, team, position, price, timeStamp);
@@ -31,6 +35,10 @@ class MLBAthlete extends SportAthlete {
       stolenBases: json['StolenBases'] as double,
       plateAppearances: json['PlateAppearances'] as double,
       weightedOnBasePercentage: json['WeightedOnBasePercentage'] as double,
+      homeRuns: json['HomeRuns'] as double,
+      strikeouts: json['Strikeouts'] as double,
+      saves: json['Saves'] as double,
+      atBats: json['AtBats'] as double,
       price: (json['BookPrice'] as num).toDouble(),
       timeStamp: json['Time'] as String,
     );
@@ -46,6 +54,14 @@ class MLBAthlete extends SportAthlete {
   final double plateAppearances;
   @JsonKey(name: 'weightedOnBasePercentage')
   final double weightedOnBasePercentage;
+  @JsonKey(name: 'HomeRuns')
+  final double homeRuns;
+  @JsonKey(name: 'Strikeouts')
+  final double strikeouts;
+  @JsonKey(name: 'Saves')
+  final double saves;
+  @JsonKey(name: 'AtBats')
+  final double atBats;
 
   // Map<String, dynamic> toJson() => _$MLBAthleteToJson(this);
 }

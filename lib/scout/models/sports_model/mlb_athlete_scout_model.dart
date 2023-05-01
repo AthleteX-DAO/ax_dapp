@@ -20,21 +20,21 @@ class MLBAthleteScoutModel extends AthleteScoutModel {
     required double super.shortTokenPercentage,
     required double super.longTokenPriceUsd,
     required double super.shortTokenPriceUsd,
-    // required this.homeRuns,
-    // required this.strikeOuts,
-    // required this.saves,
+    required this.homeRuns,
+    required this.strikeOuts,
+    required this.saves,
     required this.stolenBases,
-    // required this.atBats,
+    required this.atBats,
     required this.weightedOnBasePercentage,
     required this.errors,
     // required this.inningsPlayed,
   });
 
-  // final double homeRuns;
-  // final double strikeOuts;
-  // final double saves;
+  final double homeRuns;
+  final double strikeOuts;
+  final double saves;
   final double stolenBases;
-  // final double atBats;
+  final double atBats;
   final double weightedOnBasePercentage;
   final double errors;
   // final double inningsPlayed;

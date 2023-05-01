@@ -16,7 +16,7 @@ class MLBAthleteAPI {
   late String baseDataUrl;
   final defaultFrom = '2023-01-01';
   final defaultUntil = '2023-12-31';
-  final defaultInterval = 'Day';
+  final defaultInterval = 'Hour';
 
   Future<void> initState() async {
     const cidUrl =
@@ -91,9 +91,8 @@ class MLBAthleteAPI {
     String? until,
     String? interval,
   ) async {
-    final timeInterval = ((interval ?? 'hour').toLowerCase() == 'hour')
-        ? 'Hour'
-        : defaultInterval;
+    final timeInterval =
+        ((interval ?? 'day').toLowerCase() == 'day') ? 'Day' : defaultInterval;
     final fromTime = DateTime.parse(from ?? defaultFrom);
     final untilTime = DateTime.parse(until ?? defaultUntil);
 
@@ -102,6 +101,7 @@ class MLBAthleteAPI {
     final history = <PriceRecord>[];
 
     final json = jsonDecode(jsonString) as Map<String, dynamic>;
+    final name = json['Name'] as String;
     final historyData = json[timeInterval] as List<dynamic>;
     for (var i = 0; i < historyData.length; i++) {
       final priceTime = historyData[i] as Map<String, dynamic>;
@@ -109,14 +109,14 @@ class MLBAthleteAPI {
       if (time.isAfter(fromTime) && time.isBefore(untilTime)) {
         history.add(
           PriceRecord(
-            price: priceTime['Price'] as double,
+            price: priceTime['BookPrice'] as double,
             timestamp: time.toString(),
           ),
         );
       }
     }
 
-    return AthletePriceRecord(id: id, name: '', priceHistory: history);
+    return AthletePriceRecord(id: id, name: name, priceHistory: history);
   }
 
   Future<List<MLBAthleteStats>> getPlayersHistory(

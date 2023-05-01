@@ -235,18 +235,18 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'InPl',
-                        style: textStyle(
-                          greyTextColor,
-                          15,
-                          isBold: false,
-                          isUline: false,
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   alignment: Alignment.bottomLeft,
+                    //   child: Text(
+                    //     'InPl',
+                    //     style: textStyle(
+                    //       greyTextColor,
+                    //       15,
+                    //       isBold: false,
+                    //       isUline: false,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -270,30 +270,30 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Container(
-                    //   alignment: Alignment.bottomLeft,
-                    //   child: Text(
-                    //     athlete.atBats.toString(),
-                    //     style: textStyle(
-                    //       greyTextColor,
-                    //       15,
-                    //       isBold: false,
-                    //       isUline: false,
-                    //     ),
-                    //   ),
-                    // ),
-                    // Container(
-                    //   alignment: Alignment.bottomLeft,
-                    //   child: Text(
-                    //     athlete.homeRuns.toString(),
-                    //     style: textStyle(
-                    //       greyTextColor,
-                    //       15,
-                    //       isBold: false,
-                    //       isUline: false,
-                    //     ),
-                    //   ),
-                    // ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.atBats.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.homeRuns.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
@@ -371,53 +371,53 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             ),
           ),
           Divider(thickness: 1, color: greyTextColor),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Text(
-          //       'AtBat',
-          //       style: textStyle(
-          //         greyTextColor,
-          //         20,
-          //         isBold: false,
-          //         isUline: false,
-          //       ),
-          //     ),
-          //     Text(
-          //       athlete.atBats.toString(),
-          //       //toDo add map for the different league
-          //       style: textStyle(
-          //         greyTextColor,
-          //         20,
-          //         isBold: false,
-          //         isUline: false,
-          //       ),
-          //     )
-          //   ],
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Text(
-          //       'HR',
-          //       style: textStyle(
-          //         greyTextColor,
-          //         20,
-          //         isBold: false,
-          //         isUline: false,
-          //       ),
-          //     ),
-          //     Text(
-          //       athlete.homeRuns.toString(),
-          //       style: textStyle(
-          //         greyTextColor,
-          //         20,
-          //         isBold: false,
-          //         isUline: false,
-          //       ),
-          //     )
-          //   ],
-          // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'AtBat',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.atBats.toString(),
+                //toDo add map for the different league
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'HR',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.homeRuns.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
