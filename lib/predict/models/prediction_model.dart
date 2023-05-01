@@ -20,10 +20,9 @@ class PredictionModel extends Equatable {
   final String? shortTokenAddress;
 
   static const empty = PredictionModel(
-    prompt: 'Did you predict this could happen?',
-    details:
-        "Lol, You're not supposed to be here.  Do me a favor and click on 'Predict' on the top left of your screen",
-    address: kNullAddress,
+    prompt: '',
+    details: '',
+    address: kEmptyAddress,
   );
   static const generic = PredictionModel(
     prompt: 'Will you win today?',

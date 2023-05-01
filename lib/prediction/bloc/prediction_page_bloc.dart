@@ -1,3 +1,4 @@
+import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
