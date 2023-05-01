@@ -8,10 +8,10 @@ import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
+import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/view/desktop_predict.dart';
-import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
-import 'package:ax_dapp/prediction/widgets/prediction_page.dart';
+import 'package:ax_dapp/prediction/view/prediction_page.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -88,7 +88,7 @@ class _MaterialApp extends StatelessWidget {
         (defaultTargetPlatform == TargetPlatform.iOS ||
             defaultTargetPlatform == TargetPlatform.android);
     final _appRouter = MaterialApp.router(
-      title: 'AthleteX',
+      title: 'AthleteX Markets',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         canvasColor: Colors.transparent,
@@ -106,6 +106,7 @@ class _MaterialApp extends StatelessWidget {
             context.read<WalletBloc>().add(const ConnectWalletRequested());
           }
 
+          // INFO: This section is focused on redirecting users if they are caught in a subpage
           if (state.location.contains('/athlete') &&
               Global().athleteList.isEmpty) {
             return '/scout';

@@ -9,7 +9,7 @@ import 'package:web3dart/web3dart.dart';
 
 class EventMarketRepository {
   Controller controller = Controller();
-  late HAWKSCELTICS hawksceltics;
+  late EventBasedPredictionMarket _eventBasedPredictionMarket;
   RxString marketAddress = ''.obs;
   RxDouble createAmt = 0.0.obs;
   Web3Client tokenClient = Web3Client(
@@ -23,17 +23,22 @@ class EventMarketRepository {
 
   Future<void> create() async {
     var address = EthereumAddress.fromHex(marketAddress.value);
-    hawksceltics = HAWKSCELTICS(address: address, client: tokenClient);
+    _eventBasedPredictionMarket =
+        EventBasedPredictionMarket(address: address, client: tokenClient);
     final userCredentials = controller.credentials;
     final intCreate = (createAmt.value * 1e18) as BigInt;
     final createTokensAmount = BigInt.from(1);
-    await hawksceltics.create(intCreate, credentials: userCredentials);
+    await _eventBasedPredictionMarket.create(
+      intCreate,
+      credentials: userCredentials,
+    );
   }
 
   Future<void> redeem() async {
     final userCredentials = controller.credentials;
     final redeemTokensAmnt = BigInt.from(1);
-    await hawksceltics.redeem(redeemTokensAmnt, credentials: userCredentials);
+    await _eventBasedPredictionMarket.redeem(redeemTokensAmnt,
+        credentials: userCredentials);
   }
 
   Future<void> approve(String axtAddress, double amount) async {
@@ -43,7 +48,11 @@ class EventMarketRepository {
     final _amount = normalizeInput(amount);
   }
 
-  Future<void> buy() async {}
+  Future<void> buy() async {
+    print('You are now buying!');
+  }
 
-  Future<void> sell() async {}
+  Future<void> sell() async {
+    print('You are now selling!');
+  }
 }
