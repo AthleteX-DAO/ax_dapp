@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:ax_dapp/app/config/app_config.dart';
-import 'package:ax_dapp/service/api/models/player_ids.dart';
 import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';

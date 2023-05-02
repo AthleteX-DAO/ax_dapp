@@ -342,13 +342,13 @@ class GetScoutAthletesDataUseCase {
               longTokenPercentage: longToken.percentage,
               shortTokenPercentage: shortToken.percentage,
               homeRuns: mlbAthlete.homeRuns,
-              strikeOuts: mlbAthlete.strikeOuts,
+              strikeOuts: mlbAthlete.strikeouts,
               saves: mlbAthlete.saves,
               stolenBases: mlbAthlete.stolenBases,
               atBats: mlbAthlete.atBats,
               weightedOnBasePercentage: mlbAthlete.weightedOnBasePercentage,
               errors: mlbAthlete.errors,
-              inningsPlayed: mlbAthlete.inningsPlayed,
+              // inningsPlayed: mlbAthlete.inningsPlayed,
             );
           }
           break;

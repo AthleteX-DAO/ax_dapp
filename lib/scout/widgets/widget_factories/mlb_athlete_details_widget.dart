@@ -235,18 +235,18 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'InPl',
-                        style: textStyle(
-                          greyTextColor,
-                          15,
-                          isBold: false,
-                          isUline: false,
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   alignment: Alignment.bottomLeft,
+                    //   child: Text(
+                    //     'InPl',
+                    //     style: textStyle(
+                    //       greyTextColor,
+                    //       15,
+                    //       isBold: false,
+                    //       isUline: false,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -330,18 +330,18 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        athlete.inningsPlayed.toString(),
-                        style: textStyle(
-                          greyTextColor,
-                          15,
-                          isBold: false,
-                          isUline: false,
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   alignment: Alignment.bottomLeft,
+                    //   child: Text(
+                    //     athlete.inningsPlayed.toString(),
+                    //     style: textStyle(
+                    //       greyTextColor,
+                    //       15,
+                    //       isBold: false,
+                    //       isUline: false,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               )
@@ -464,29 +464,29 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
               )
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'InPl',
-                style: textStyle(
-                  greyTextColor,
-                  20,
-                  isBold: false,
-                  isUline: false,
-                ),
-              ),
-              Text(
-                athlete.inningsPlayed.toString(),
-                style: textStyle(
-                  greyTextColor,
-                  20,
-                  isBold: false,
-                  isUline: false,
-                ),
-              )
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       'InPl',
+          //       style: textStyle(
+          //         greyTextColor,
+          //         20,
+          //         isBold: false,
+          //         isUline: false,
+          //       ),
+          //     ),
+          //     Text(
+          //       athlete.inningsPlayed.toString(),
+          //       style: textStyle(
+          //         greyTextColor,
+          //         20,
+          //         isBold: false,
+          //         isUline: false,
+          //       ),
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );
