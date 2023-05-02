@@ -24,7 +24,7 @@ class NFLAthleteAPI {
     try {
       final response = await http.get(Uri.parse(cidUrl));
       final decodedData = json.decode(response.body);
-      final cid = await decodedData['directory'] as String;
+      final cid = decodedData['directory'];
       baseDataUrl = 'https://$cid.ipfs.nftstorage.link';
     } catch (error) {
       throw Exception('Failed to fetch data: $error');
@@ -70,7 +70,8 @@ class NFLAthleteAPI {
     final athletes = await getAllPlayers();
     return athletes
         .where(
-            (athlete) => athlete.position == position || athlete.team == team)
+          (athlete) => athlete.position == position || athlete.team == team,
+        )
         .toList();
   }
 
@@ -80,8 +81,10 @@ class NFLAthleteAPI {
     String until,
   ) async {
     final url = '$baseDataUrl/$id';
+    final response =
+        await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>;
     return NFLAthleteStats.fromJson(
-      await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>,
+      response,
     );
   }
 
@@ -102,6 +105,7 @@ class NFLAthleteAPI {
     final history = <PriceRecord>[];
 
     final json = jsonDecode(jsonString) as Map<String, dynamic>;
+    final name = json['Name'] as String;
     final historyData = json[timeInterval] as List<dynamic>;
     for (var i = 0; i < historyData.length; i++) {
       final priceTime = historyData[i] as Map<String, dynamic>;
@@ -116,7 +120,7 @@ class NFLAthleteAPI {
       }
     }
 
-    return AthletePriceRecord(id: id, name: '', priceHistory: history);
+    return AthletePriceRecord(id: id, name: name, priceHistory: history);
   }
 
   Future<List<NFLAthleteStats>> getPlayersHistory(

@@ -23,26 +23,8 @@ class MLBAthlete extends SportAthlete {
     required String timeStamp,
   }) : super(id, name, team, position, price, timeStamp);
 
-  // ignore: prefer_constructors_over_static_methods
-  static MLBAthlete fromJson(Map<String, dynamic> json) {
-    return MLBAthlete(
-      id: json['ID'] as int,
-      name: json['Name'] as String,
-      team: json['Team'] as String,
-      position: json['Position'] as String,
-      games: json['Games'] as double,
-      errors: json['Errors'] as double,
-      stolenBases: json['StolenBases'] as double,
-      plateAppearances: json['PlateAppearances'] as double,
-      weightedOnBasePercentage: json['WeightedOnBasePercentage'] as double,
-      homeRuns: json['HomeRuns'] as double,
-      strikeouts: json['Strikeouts'] as double,
-      saves: json['Saves'] as double,
-      atBats: json['AtBats'] as double,
-      price: (json['BookPrice'] as num).toDouble(),
-      timeStamp: json['Time'] as String,
-    );
-  }
+  factory MLBAthlete.fromJson(Map<String, dynamic> json) =>
+      _$MLBAthleteFromJson(json);
 
   @JsonKey(name: 'games')
   final double games;
@@ -63,5 +45,5 @@ class MLBAthlete extends SportAthlete {
   @JsonKey(name: 'AtBats')
   final double atBats;
 
-  // Map<String, dynamic> toJson() => _$MLBAthleteToJson(this);
+  Map<String, dynamic> toJson() => _$MLBAthleteToJson(this);
 }

@@ -348,7 +348,6 @@ class GetScoutAthletesDataUseCase {
               atBats: mlbAthlete.atBats,
               weightedOnBasePercentage: mlbAthlete.weightedOnBasePercentage,
               errors: mlbAthlete.errors,
-              // inningsPlayed: mlbAthlete.inningsPlayed,
             );
           }
           break;
@@ -380,8 +379,6 @@ class GetScoutAthletesDataUseCase {
               receivingYards: nflAthlete.receivingYards,
               receivingTouchdowns: nflAthlete.receivingTouchdowns,
               rushingYards: nflAthlete.rushingYards,
-              offensiveSnapsPlayed: nflAthlete.offensiveSnapsPlayed,
-              defensiveSnapsPlayed: nflAthlete.defensiveSnapsPlayed,
             );
           }
           break;

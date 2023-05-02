@@ -24,7 +24,7 @@ class MLBAthleteAPI {
     try {
       final response = await http.get(Uri.parse(cidUrl));
       final decodedData = json.decode(response.body);
-      final cid = await decodedData['directory'] as String;
+      final cid = decodedData['directory'];
       baseDataUrl = 'https://$cid.ipfs.nftstorage.link';
     } catch (error) {
       throw Exception('Failed to fetch data: $error');
@@ -70,7 +70,8 @@ class MLBAthleteAPI {
     final athletes = await getAllPlayers();
     return athletes
         .where(
-            (athlete) => athlete.position == position || athlete.team == team)
+          (athlete) => athlete.position == position || athlete.team == team,
+        )
         .toList();
   }
 
@@ -80,8 +81,10 @@ class MLBAthleteAPI {
     String until,
   ) async {
     final url = '$baseDataUrl/$id';
+    final response =
+        await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>;
     return MLBAthleteStats.fromJson(
-      await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>,
+      response,
     );
   }
 
