@@ -29,6 +29,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   static bool isLongToken = true;
   static SupportedSport _selectedSport = SupportedSport.all;
   String allSportsTitle = 'All Sports';
+  EthereumChain? _selectedChain;
   List<AthleteScoutModel> filteredAthletes = [];
   double minTeamWidth = 875;
   double minViewWidth = 1090;
@@ -63,6 +64,12 @@ class _DesktopScoutState extends State<DesktopScout> {
           final bloc = context.read<ScoutPageBloc>();
           global.athleteList = state.athletes;
           filteredAthletes = state.filteredAthletes;
+          if (_selectedChain != state.selectedChain) {
+            _selectedChain = state.selectedChain;
+            bloc.add(
+              FetchScoutInfoRequested(),
+            );
+          }
           _selectedSport = state.selectedSport;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
@@ -412,10 +419,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                         if (state.status == BlocStatus.loading) const Loader(),
                         if (state.status == BlocStatus.error)
                           const ScoutLoadingError(),
-                        // if (state.status == BlocStatus.noData)
-                        //   FilterMenuError(
-                        //     selectedChain: _selectedChain,
-                        //   ),
+                        if (state.status == BlocStatus.noData)
+                          FilterMenuError(
+                            selectedChain: _selectedChain,
+                          ),
                         if (state.status == BlocStatus.success &&
                             filteredAthletes.isEmpty)
                           const NoResultFound(),
