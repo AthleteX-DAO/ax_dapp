@@ -40,7 +40,7 @@ import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 void main() async {
-  const defaultChain = EthereumChain.polygonMainnet;
+  const defaultChain = EthereumChain.sxMainnet;
 
   _setupLogging();
   final dio = Dio()..interceptors.add(LoggingInterceptor());
