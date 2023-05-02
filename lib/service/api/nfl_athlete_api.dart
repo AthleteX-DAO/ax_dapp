@@ -105,7 +105,6 @@ class NFLAthleteAPI {
     final history = <PriceRecord>[];
 
     final json = jsonDecode(jsonString) as Map<String, dynamic>;
-    final name = json['Name'] as String;
     final historyData = json[timeInterval] as List<dynamic>;
     for (var i = 0; i < historyData.length; i++) {
       final priceTime = historyData[i] as Map<String, dynamic>;
@@ -120,7 +119,7 @@ class NFLAthleteAPI {
       }
     }
 
-    return AthletePriceRecord(id: id, name: name, priceHistory: history);
+    return AthletePriceRecord(id: id, name: '', priceHistory: history);
   }
 
   Future<List<NFLAthleteStats>> getPlayersHistory(
