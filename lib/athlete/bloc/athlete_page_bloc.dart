@@ -105,7 +105,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
         try {
           final priceRecord = await mlbRepo.getPlayerPriceHistory(
             playerId,
-            from: '2022-06-02',
+            from: '2023-04-30',
           );
           final recordLength = priceRecord.priceHistory.length;
           if (recordLength > 0) {

@@ -65,7 +65,7 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
     String? until,
     String? interval,
   }) {
-    return _api.getPlayerPriceHistory(id, from, until, interval ?? '1d');
+    return _api.getPlayerPriceHistory(id, from, until, interval ?? 'Day');
   }
 
   @override

@@ -91,8 +91,16 @@ class MLBAthleteAPI {
     String? until,
     String? interval,
   ) async {
-    final timeInterval =
-        ((interval ?? 'day').toLowerCase() == 'day') ? 'Day' : defaultInterval;
+    var timeInterval = '';
+    switch (interval?.toLowerCase()) {
+      case 'hour':
+        timeInterval = 'Hour';
+        break;
+      case 'day':
+      default:
+        timeInterval = 'Day';
+        break;
+    }
     final fromTime = DateTime.parse(from ?? defaultFrom);
     final untilTime = DateTime.parse(until ?? defaultUntil);
 
