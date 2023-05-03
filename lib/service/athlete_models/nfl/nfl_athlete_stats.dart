@@ -13,7 +13,7 @@ class NFLAthleteStats {
     required this.statHistory,
   });
 
-  factory NFLAthleteStats.fromJson(Map<String, dynamic> json) =>
+    factory NFLAthleteStats.fromJson(Map<String, dynamic> json) =>
       _$NFLAthleteStatsFromJson(json);
 
   @JsonKey(name: 'id')

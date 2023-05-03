@@ -27,7 +27,6 @@ class MLBAthleteScoutModel extends AthleteScoutModel {
     required this.atBats,
     required this.weightedOnBasePercentage,
     required this.errors,
-    required this.inningsPlayed,
   });
 
   final double homeRuns;
@@ -37,7 +36,6 @@ class MLBAthleteScoutModel extends AthleteScoutModel {
   final double atBats;
   final double weightedOnBasePercentage;
   final double errors;
-  final double inningsPlayed;
 
   @override
   List<Object?> get props => super.props
@@ -49,6 +47,5 @@ class MLBAthleteScoutModel extends AthleteScoutModel {
       atBats,
       weightedOnBasePercentage,
       errors,
-      inningsPlayed,
     ]);
 }
