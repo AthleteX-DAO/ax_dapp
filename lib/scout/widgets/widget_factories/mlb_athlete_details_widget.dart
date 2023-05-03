@@ -270,30 +270,30 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Container(
-                    //   alignment: Alignment.bottomLeft,
-                    //   child: Text(
-                    //     athlete.atBats.toString(),
-                    //     style: textStyle(
-                    //       greyTextColor,
-                    //       15,
-                    //       isBold: false,
-                    //       isUline: false,
-                    //     ),
-                    //   ),
-                    // ),
-                    // Container(
-                    //   alignment: Alignment.bottomLeft,
-                    //   child: Text(
-                    //     athlete.homeRuns.toString(),
-                    //     style: textStyle(
-                    //       greyTextColor,
-                    //       15,
-                    //       isBold: false,
-                    //       isUline: false,
-                    //     ),
-                    //   ),
-                    // ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.atBats.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.homeRuns.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
