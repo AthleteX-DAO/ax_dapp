@@ -49,7 +49,7 @@ class DesktopLeagueDraft extends StatelessWidget {
               final width = constraints.maxWidth;
               final height = constraints.maxHeight;
               if (width <= 800) {
-                textSize = 14.0;
+                textSize = 12.0;
                 leagueHeaderTextSize = 18.0;
                 verticalView = false;
               }
@@ -120,7 +120,9 @@ class DesktopLeagueDraft extends StatelessWidget {
                         height: 50,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        padding: verticalView
+                            ? const EdgeInsets.symmetric(horizontal: 30)
+                            : EdgeInsets.zero,
                         child: Row(
                           children: [
                             FittedBox(
