@@ -2,6 +2,7 @@ import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared/shared.dart';
 
 class LeagueRepository {
   LeagueRepository({required FirebaseFirestore fireStore})
@@ -19,15 +20,12 @@ class LeagueRepository {
     }
   }
 
-  Future<List<League>> fetchLeagues() async {
-    try {
-      final leagues = await _fireStore.collection('Leagues').get();
-      return leagues.docs.map((e) => League.fromJson(e.data())).toList();
-    } on FirebaseException catch (e) {
-      debugPrint('$e');
-      return [];
-    }
-  }
+  Stream<List<League>> fetchLeagues() =>
+      _fireStore.collection('Leagues').snapshots().map(
+            (querySnapShot) => querySnapShot.docs
+                .map((e) => League.fromJson(e.data()))
+                .toList(),
+          );
 
   Future<void> deleteLeague({required String leagueID}) async {
     try {
@@ -68,7 +66,7 @@ class LeagueRepository {
     }
   }
 
-  Future<List<LeagueTeam>> getLeagueTeams({
+  Future<List<LeagueTeam>> fetchLeagueTeams({
     required String leagueID,
   }) async {
     try {
@@ -87,6 +85,19 @@ class LeagueRepository {
       debugPrint('$e');
       return [];
     }
+  }
+
+  Stream<List<LeagueTeam>> getLeagueTeams({required String leagueID}) {
+    final leagueRef = _fireStore
+        .collection('Leagues')
+        .where('leagueID', isEqualTo: leagueID)
+        .snapshots()
+        .map((querySnapShot) => querySnapShot.docs.first.reference);
+    return leagueRef.flatMap((ref) => ref.collection('Teams').snapshots()).map(
+          (querySnapShot) => querySnapShot.docs
+              .map((e) => LeagueTeam.fromJson(e.data()))
+              .toList(),
+        );
   }
 
   Future<void> updateRoster({

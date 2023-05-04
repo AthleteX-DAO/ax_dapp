@@ -273,21 +273,17 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     Emitter<LeagueGameState> emit,
   ) async {
     final leagueID = event.leagueID;
-    try {
-      emit(state.copyWith(status: BlocStatus.loading));
-
-      final leagueTeams =
-          await _leagueRepository.getLeagueTeams(leagueID: leagueID);
-
-      emit(
-        state.copyWith(
-          status: BlocStatus.leaguesLoaded,
-          leagueTeams: leagueTeams,
-        ),
-      );
-    } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
-    }
+    await emit.onEach<List<LeagueTeam>>(
+      _leagueRepository.getLeagueTeams(leagueID: leagueID),
+      onData: (leagueTeams) {
+        emit(
+          state.copyWith(
+            status: BlocStatus.leaguesLoaded,
+            leagueTeams: leagueTeams,
+          ),
+        );
+      },
+    );
   }
 
   FutureOr<void> _onProcessLeagueWinnerEvent(
