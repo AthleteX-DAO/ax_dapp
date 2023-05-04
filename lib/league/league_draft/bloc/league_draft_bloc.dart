@@ -25,7 +25,9 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
     required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
     required WalletRepository walletRepository,
+    required this.isEditing,
     required this.athletes,
+    required this.leagueTeam,
   })  : _leagueRepository = leagueRepository,
         _prizePoolRepository = prizePoolRepository,
         _getTotalTokenBalanceUseCase = getTotalTokenBalanceUseCase,
@@ -39,7 +41,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     on<ConfirmTeam>(_onConfirmTeam);
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     add(const WatchAppDataChangesStarted());
-    add(FetchAptsOwnedEvent(athletes: athletes));
+    add(FetchAptsOwnedEvent(athletes: athletes, leagueTeam: leagueTeam));
   }
 
   final LeagueRepository _leagueRepository;
@@ -49,6 +51,8 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
   final WalletRepository _walletRepository;
   final List<AthleteScoutModel> athletes;
+  final bool isEditing;
+  final LeagueTeam leagueTeam;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted event,
@@ -71,11 +75,30 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     Emitter<LeagueDraftState> emit,
   ) async {
     final athletes = event.athletes;
+    final leagueTeam = event.leagueTeam;
     try {
+      final rosterIds = leagueTeam.roster.keys.toList();
       emit(state.copyWith(status: BlocStatus.loading));
       final response = await _getTotalTokenBalanceUseCase.getOwnedApts();
       final ownedApts = ownedAptToList(response, athletes);
       emit(state.copyWith(ownedApts: ownedApts, status: BlocStatus.success));
+      if (isEditing) {
+        final existingAptTeam = ownedApts
+            .where((apt) => rosterIds.any((element) => element == apt.id))
+            .toList();
+        final availableOwnedApts = ownedApts
+            .where((apt) => !rosterIds.any((element) => element == apt.id))
+            .toList();
+        final existingTeamSize = existingAptTeam.length;
+        emit(
+          state.copyWith(
+            ownedApts: availableOwnedApts,
+            myAptTeam:  existingAptTeam,
+            athleteCount: existingTeamSize,
+            status: BlocStatus.success,
+          ),
+        );
+      }
     } catch (_) {
       emit(
         state.copyWith(

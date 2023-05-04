@@ -12,12 +12,16 @@ class WatchAppDataChangesStarted extends LeagueDraftEvent {
 }
 
 class FetchAptsOwnedEvent extends LeagueDraftEvent {
-  const FetchAptsOwnedEvent({required this.athletes});
+  const FetchAptsOwnedEvent({
+    required this.athletes,
+    required this.leagueTeam,
+  });
 
   final List<AthleteScoutModel> athletes;
+  final LeagueTeam leagueTeam;
 
   @override
-  List<Object> get props => [athletes];
+  List<Object> get props => [athletes, leagueTeam];
 }
 
 class AddAptToTeam extends LeagueDraftEvent {

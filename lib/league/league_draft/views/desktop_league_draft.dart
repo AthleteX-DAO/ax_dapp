@@ -16,10 +16,12 @@ class DesktopLeagueDraft extends StatelessWidget {
     super.key,
     required this.league,
     required this.existingTeam,
+    required this.isEditing,
   });
 
   final League league;
   final LeagueTeam existingTeam;
+  final bool isEditing;
 
   @override
   Widget build(BuildContext context) {

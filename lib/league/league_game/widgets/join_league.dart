@@ -2,7 +2,6 @@ import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_draft/views/desktop_league_draft.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
@@ -42,12 +41,8 @@ class JoinLeague extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           if (isWalletConnected) {
-            var existingTeam = LeagueTeam.empty;
-            for (final team in leagueTeams) {
-              if (team.userWalletID == walletAddress) {
-                existingTeam = team;
-              }
-            }
+            final existingTeam = leagueTeams
+                .firstWhere((team) => team.userWalletID == walletAddress);
             Navigator.push(
               context,
               MaterialPageRoute<void>(
@@ -65,10 +60,13 @@ class JoinLeague extends StatelessWidget {
                     streamAppDataChangesUseCase:
                         context.read<StreamAppDataChangesUseCase>(),
                     walletRepository: context.read<WalletRepository>(),
+                    isEditing: false,
+                    leagueTeam: existingTeam,
                   ),
                   child: DesktopLeagueDraft(
                     league: league,
                     existingTeam: existingTeam,
+                    isEditing: false,
                   ),
                 ),
               ),
