@@ -20,17 +20,30 @@ class APTCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const sportIconSize = 30.0;
-    const statusIconSize = 30.0;
-    const statusIcon = Icons.add_box_outlined;
-    const statusIconColor = Colors.white;
+    final _width = MediaQuery.of(context).size.width;
+    var sportIconSize = 30.0;
+    var statusIconSize = 30.0;
+    var textSize = 16.0;
+    var bookPriceTextSize = 16.0;
+    var showBookPricePercentChange = true;
+    var sportIconWR = .03;
+    var athleteNameWR = .1;
+    var bookValueWR = .05;
+    var bookPercentWR = .05;
+    var moveIconWR = .05;
 
-    // WR = Width Ratio
-    const sportIconWR = .03;
-    const athleteNameWR = .1;
-    const bookValueWR = .05;
-    const bookPercentWR = .05;
-    const moveIconWR = .05;
+    if (_width <= 800) {
+      sportIconSize = 20.0;
+      statusIconSize = 20.0;
+      textSize = 12.0;
+      showBookPricePercentChange = false;
+      sportIconWR = .025;
+      athleteNameWR = .125;
+      moveIconWR = .04;
+      bookValueWR = .1;
+      bookPercentWR = .04;
+      bookPriceTextSize = 10.0;
+    }
 
     return Container(
       height: 90,
@@ -44,82 +57,103 @@ class APTCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          SizedBox(
-            width: width * sportIconWR,
-            child: Icon(
-              getSportIcon(apt.sport),
-              color: Colors.grey[400],
-              size: sportIconSize,
-            ),
-          ),
-          SizedBox(
-            width: width * athleteNameWR,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  apt.name,
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontFamily: 'OpenSans',
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  apt.team,
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontFamily: 'OpenSans',
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: width * bookValueWR,
-            child: Text(
-              '${apt.bookPrice?.toStringAsFixed(2)} AX',
-              style: TextStyle(
+          FittedBox(
+            child: SizedBox(
+              width: width * sportIconWR,
+              child: Icon(
+                getSportIcon(apt.sport),
                 color: Colors.grey[400],
-                fontFamily: 'OpenSans',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+                size: sportIconSize,
               ),
-              textAlign: TextAlign.right,
             ),
           ),
-          SizedBox(
-            width: width * bookPercentWR,
-            child: Text(
-              '${apt.bookPricePercent?.toStringAsFixed(2)}%',
-              style: TextStyle(
-                color: Colors.grey[400],
-                fontFamily: 'OpenSans',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.right,
-            ),
-          ),
-          SizedBox(
-            width: width * moveIconWR,
-            child: IconButton(
-              icon: const Icon(
-                statusIcon,
-                color: statusIconColor,
-                size: statusIconSize,
-              ),
-              onPressed: () {
-                context.read<LeagueDraftBloc>().add(
-                      AddAptToTeam(
-                        apt: apt,
-                        teamSize: teamSize,
+          FittedBox(
+            child: SizedBox(
+              width: width * athleteNameWR,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FittedBox(
+                    child: SizedBox(
+                      width: width * athleteNameWR,
+                      child: Text(
+                        apt.name,
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontFamily: 'OpenSans',
+                          fontSize: textSize,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    );
-              },
+                    ),
+                  ),
+                  FittedBox(
+                    child: SizedBox(
+                      width: width * athleteNameWR,
+                      child: Text(
+                        apt.team,
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontFamily: 'OpenSans',
+                          fontSize: textSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          FittedBox(
+            child: SizedBox(
+              width: width * bookValueWR,
+              child: Text(
+                '${apt.bookPrice?.toStringAsFixed(2)} AX',
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontFamily: 'OpenSans',
+                  fontSize: bookPriceTextSize,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.right,
+              ),
+            ),
+          ),
+          if (showBookPricePercentChange)
+            FittedBox(
+              child: SizedBox(
+                width: width * bookPercentWR,
+                child: Text(
+                  '${apt.bookPricePercent?.toStringAsFixed(2)}%',
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontFamily: 'OpenSans',
+                    fontSize: textSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.right,
+                ),
+              ),
+            ),
+          FittedBox(
+            child: SizedBox(
+              width: width * moveIconWR,
+              child: IconButton(
+                icon: Icon(
+                  Icons.add_box_outlined,
+                  color: Colors.white,
+                  size: statusIconSize,
+                ),
+                onPressed: () {
+                  context.read<LeagueDraftBloc>().add(
+                        AddAptToTeam(
+                          apt: apt,
+                          teamSize: teamSize,
+                        ),
+                      );
+                },
+              ),
             ),
           )
         ],

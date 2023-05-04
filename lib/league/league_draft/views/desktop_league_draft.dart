@@ -32,6 +32,13 @@ class DesktopLeagueDraft extends StatelessWidget {
     final myAptTeam =
         context.select((LeagueDraftBloc bloc) => bloc.state.myAptTeam);
     final global = Global();
+    var textSize = 16.0;
+    var leagueHeaderTextSize = 36.0;
+    var verticalView = true;
+    const athleteHeadingWR = 0.22;
+    const bookValueHeadingWR = 0.1;
+    const myTeamHeadingWR = 0.35;
+    const athleteCountHeadingWR = 0.153;
     return global.buildPage(
       context,
       BlocBuilder<LeagueDraftBloc, LeagueDraftState>(
@@ -41,15 +48,11 @@ class DesktopLeagueDraft extends StatelessWidget {
             builder: (BuildContext context, BoxConstraints constraints) {
               final width = constraints.maxWidth;
               final height = constraints.maxHeight;
-
-              const textColor = Color(0xFFFEC500);
-              const buttonColorBG = Color(0xFF3C3009);
-
-              const athleteHeadingWR = 0.22;
-              const bookValueHeadingWR = 0.1;
-              const myTeamHeadingWR = 0.35;
-              const athleteCountHeadingWR = 0.153;
-
+              if (width <= 800) {
+                textSize = 14.0;
+                leagueHeaderTextSize = 18.0;
+                verticalView = false;
+              }
               return Align(
                 child: Container(
                   height: height * 0.75,
@@ -63,25 +66,33 @@ class DesktopLeagueDraft extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          SizedBox(
+                            width: 70,
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Icon(
+                                Icons.arrow_back,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                           Text(
                             league.name,
-                            style: const TextStyle(
-                              color: textColor,
+                            style: TextStyle(
+                              color: const Color(0xFFFEC500),
                               fontFamily: 'OpenSans',
-                              fontSize: 36,
+                              fontSize: leagueHeaderTextSize,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
                           DecoratedBox(
                             decoration: BoxDecoration(
-                              color: buttonColorBG,
+                              color: const Color(0xFF3C3009),
                               borderRadius: BorderRadius.circular(100),
                               border: Border.all(
                                 color: Colors.transparent,
@@ -91,12 +102,12 @@ class DesktopLeagueDraft extends StatelessWidget {
                               padding: const EdgeInsets.all(8),
                               child: TextButton(
                                 onPressed: () => {context.goNamed('scout')},
-                                child: const Text(
+                                child: Text(
                                   'Go Buy APTs',
                                   style: TextStyle(
-                                    color: textColor,
+                                    color: const Color(0xFFFEC500),
                                     fontFamily: 'OpenSans',
-                                    fontSize: 16,
+                                    fontSize: textSize,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -111,35 +122,45 @@ class DesktopLeagueDraft extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Row(
-                          // mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: width * athleteHeadingWR,
-                              child: const Text(
-                                'Athlete (Seasonal APT)',
-                                textAlign: TextAlign.center,
+                            FittedBox(
+                              child: SizedBox(
+                                width: width * athleteHeadingWR,
+                                child: Text(
+                                  'Athlete (Seasonal APT)',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: textSize),
+                                ),
                               ),
                             ),
-                            SizedBox(
-                              width: width * bookValueHeadingWR,
-                              child: const Text(
-                                'Book Value / Change',
-                                textAlign: TextAlign.center,
+                            FittedBox(
+                              child: SizedBox(
+                                width: width * bookValueHeadingWR,
+                                child: Text(
+                                  'Book Value / Change',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: textSize),
+                                ),
                               ),
                             ),
-                            SizedBox(
-                              width: width * myTeamHeadingWR,
-                              child: const Text(
-                                'My Team',
-                                textAlign: TextAlign.end,
-                                style: TextStyle(fontSize: 20),
+                            FittedBox(
+                              child: SizedBox(
+                                width: width * myTeamHeadingWR,
+                                child: Text(
+                                  'My Team',
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(fontSize: textSize),
+                                ),
                               ),
                             ),
-                            SizedBox(
-                              width: width * athleteCountHeadingWR,
-                              child: Text(
-                                '${state.athleteCount} / ${league.teamSize}',
-                                textAlign: TextAlign.end,
+                            FittedBox(
+                              child: SizedBox(
+                                width: width * athleteCountHeadingWR,
+                                child: Text(
+                                  '${state.athleteCount} / ${league.teamSize}',
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(fontSize: textSize),
+                                ),
                               ),
                             ),
                           ],
@@ -155,7 +176,9 @@ class DesktopLeagueDraft extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Row(
+                          child: Flex(
+                            direction:
+                                verticalView ? Axis.horizontal : Axis.vertical,
                             children: [
                               Expanded(
                                 child: Material(
@@ -179,7 +202,12 @@ class DesktopLeagueDraft extends StatelessWidget {
                                         ),
                                 ),
                               ),
-                              const VerticalDivider(),
+                              if (verticalView)
+                                const VerticalDivider()
+                              else
+                                const Divider(
+                                  thickness: 3,
+                                ),
                               Expanded(
                                 child: Material(
                                   child: Align(
@@ -204,12 +232,16 @@ class DesktopLeagueDraft extends StatelessWidget {
                         ),
                       ),
                       Align(
-                        alignment: Alignment.centerRight,
+                        alignment: verticalView
+                            ? Alignment.centerRight
+                            : Alignment.center,
                         child: Padding(
-                          padding: EdgeInsets.only(right: width / 5),
+                          padding: verticalView
+                              ? EdgeInsets.only(right: width / 5)
+                              : EdgeInsets.zero,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              color: buttonColorBG,
+                              color: const Color(0xFF3C3009),
                               borderRadius: BorderRadius.circular(100),
                               border: Border.all(
                                 color: Colors.transparent,
@@ -227,7 +259,8 @@ class DesktopLeagueDraft extends StatelessWidget {
                                         leagueID: league.leagueID,
                                         myTeam: myAptTeam,
                                         existingTeam: existingTeam,
-                                        prizePoolAddress: league.prizePoolAddress,
+                                        prizePoolAddress:
+                                            league.prizePoolAddress,
                                         entryFee: league.entryFee,
                                       ),
                                     );
@@ -242,12 +275,12 @@ class DesktopLeagueDraft extends StatelessWidget {
                                     context.showWalletWarningToast();
                                   }
                                 },
-                                child: const Text(
+                                child: Text(
                                   'Confirm',
                                   style: TextStyle(
-                                    color: textColor,
+                                    color: const Color(0xFFFEC500),
                                     fontFamily: 'OpenSans',
-                                    fontSize: 16,
+                                    fontSize: textSize,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
