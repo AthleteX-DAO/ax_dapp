@@ -93,7 +93,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
         emit(
           state.copyWith(
             ownedApts: availableOwnedApts,
-            myAptTeam:  existingAptTeam,
+            myAptTeam: existingAptTeam,
             athleteCount: existingTeamSize,
             status: BlocStatus.success,
           ),
@@ -166,31 +166,46 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
       for (var e in myTeam) e.id: [e.name, e.bookPrice.toString()]
     };
     try {
-      emit(state.copyWith(status: BlocStatus.loading));
+      if (!isEditing) {
+        emit(state.copyWith(status: BlocStatus.loading));
 
-      final teamAppreciation = _calculateTeamPerformanceUseCase
-              .calculateTeamPerformance(roster, athletes) +
-          existingTeam.teamAppreciation;
+        final teamAppreciation = _calculateTeamPerformanceUseCase
+                .calculateTeamPerformance(roster, athletes) +
+            existingTeam.teamAppreciation;
 
-      if (existingTeam.userWalletID == '') {}
+        if (existingTeam.userWalletID == '') {}
 
-      _prizePoolRepository
-        ..entryAmount = entryFee
-        ..contractAddress = prizePoolAddress
-        ..tokenDecimals = tokenDecimal.toInt();
+        _prizePoolRepository
+          ..entryAmount = entryFee
+          ..contractAddress = prizePoolAddress
+          ..tokenDecimals = tokenDecimal.toInt();
 
-      await _prizePoolRepository.approve();
-      await _prizePoolRepository.joinLeague();
+        await _prizePoolRepository.approve();
+        await _prizePoolRepository.joinLeague();
 
-      final team = LeagueTeam(
-        userWalletID: userWalletID,
-        teamAppreciation: teamAppreciation,
-        roster: roster,
-      );
-      await _leagueRepository.enrollUser(
-        leagueID: leagueID,
-        team: team,
-      );
+        final team = LeagueTeam(
+          userWalletID: userWalletID,
+          teamAppreciation: teamAppreciation,
+          roster: roster,
+        );
+        await _leagueRepository.enrollUser(
+          leagueID: leagueID,
+          team: team,
+        );
+      } else {
+        final teamAppreciation = _calculateTeamPerformanceUseCase
+                .calculateTeamPerformance(roster, athletes) +
+            existingTeam.teamAppreciation;
+        final team = LeagueTeam(
+          userWalletID: userWalletID,
+          teamAppreciation: teamAppreciation,
+          roster: roster,
+        );
+        await _leagueRepository.updateRoster(
+          leagueID: leagueID,
+          team: team,
+        );
+      }
       emit(state.copyWith(status: BlocStatus.success));
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));

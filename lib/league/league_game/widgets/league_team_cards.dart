@@ -2,6 +2,7 @@ import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_draft/views/desktop_league_draft.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
@@ -107,8 +108,10 @@ class LeagueTeamCards extends StatelessWidget {
               ),
               child: TextButton(
                 onPressed: () {
-                  final existingTeam = leagueTeams
-                      .firstWhere((team) => team.userWalletID == walletAddress);
+                  final existingTeam = leagueTeams.firstWhere(
+                    (team) => team.userWalletID == walletAddress,
+                    orElse: () => LeagueTeam.empty,
+                  );
                   Navigator.push(
                     context,
                     MaterialPageRoute<void>(
