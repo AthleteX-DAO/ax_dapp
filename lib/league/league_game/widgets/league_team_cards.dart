@@ -3,6 +3,7 @@ import 'package:ax_dapp/league/league_draft/views/desktop_league_draft.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/league_team.dart';
+import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
@@ -39,6 +40,8 @@ class LeagueTeamCards extends StatelessWidget {
         context.select((LeagueGameBloc bloc) => bloc.state.athletes);
     final leagueTeams =
         context.select((LeagueGameBloc bloc) => bloc.state.leagueTeams);
+    final timerStatus =
+        context.select((LeagueGameBloc bloc) => bloc.state.timerStatus);
     var formattedWalletAddress = '';
     var iconSize = 16.0;
     var textSize = 16.0;
@@ -107,41 +110,63 @@ class LeagueTeamCards extends StatelessWidget {
                 border: Border.all(color: Colors.amber[400]!),
               ),
               child: TextButton(
-                onPressed: () {
-                  final existingTeam = leagueTeams.firstWhere(
-                    (team) => team.userWalletID == walletAddress,
-                    orElse: () => LeagueTeam.empty,
-                  );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => BlocProvider(
-                        create: (context) => LeagueDraftBloc(
-                          athletes: athletes,
-                          leagueRepository: context.read<LeagueRepository>(),
-                          getTotalTokenBalanceUseCase:
-                              GetTotalTokenBalanceUseCase(
-                            walletRepository: context.read<WalletRepository>(),
-                            tokensRepository: context.read<TokensRepository>(),
+                onPressed: league.isLocked && timerStatus.hasStarted
+                    ? () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Colors.transparent,
+                            content: Text(
+                              'Cannot Edit Teams At This Time!',
+                              style: TextStyle(
+                                color: Colors.amber,
+                                fontFamily: 'OpenSans',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            duration: Duration(seconds: 2),
                           ),
-                          calculateTeamPerformanceUseCase:
-                              context.read<CalculateTeamPerformanceUseCase>(),
-                          prizePoolRepository:
-                              context.read<PrizePoolRepository>(),
-                          streamAppDataChangesUseCase:
-                              context.read<StreamAppDataChangesUseCase>(),
-                          walletRepository: context.read<WalletRepository>(),
-                          isEditing: true,
-                          leagueTeam: existingTeam,
-                        ),
-                        child: DesktopLeagueDraft(
-                          league: league,
-                          existingTeam: existingTeam,
-                        ),
-                      ),
-                    ),
-                  );
-                },
+                        );
+                      }
+                    : () {
+                        final existingTeam = leagueTeams.firstWhere(
+                          (team) => team.userWalletID == walletAddress,
+                          orElse: () => LeagueTeam.empty,
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) => BlocProvider(
+                              create: (context) => LeagueDraftBloc(
+                                athletes: athletes,
+                                leagueRepository:
+                                    context.read<LeagueRepository>(),
+                                getTotalTokenBalanceUseCase:
+                                    GetTotalTokenBalanceUseCase(
+                                  walletRepository:
+                                      context.read<WalletRepository>(),
+                                  tokensRepository:
+                                      context.read<TokensRepository>(),
+                                ),
+                                calculateTeamPerformanceUseCase: context
+                                    .read<CalculateTeamPerformanceUseCase>(),
+                                prizePoolRepository:
+                                    context.read<PrizePoolRepository>(),
+                                streamAppDataChangesUseCase:
+                                    context.read<StreamAppDataChangesUseCase>(),
+                                walletRepository:
+                                    context.read<WalletRepository>(),
+                                isEditing: true,
+                                leagueTeam: existingTeam,
+                              ),
+                              child: DesktopLeagueDraft(
+                                league: league,
+                                existingTeam: existingTeam,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                 child: Text(
                   'Edit Teams',
                   style: TextStyle(
