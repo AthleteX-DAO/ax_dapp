@@ -77,12 +77,11 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     final athletes = event.athletes;
     final leagueTeam = event.leagueTeam;
     try {
-      final rosterIds = leagueTeam.roster.keys.toList();
       emit(state.copyWith(status: BlocStatus.loading));
       final response = await _getTotalTokenBalanceUseCase.getOwnedApts();
       final ownedApts = ownedAptToList(response, athletes);
-      emit(state.copyWith(ownedApts: ownedApts, status: BlocStatus.success));
       if (isEditing) {
+        final rosterIds = leagueTeam.roster.keys.toList();
         final existingAptTeam = ownedApts
             .where((apt) => rosterIds.any((element) => element == apt.id))
             .toList();
@@ -95,6 +94,13 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
             ownedApts: availableOwnedApts,
             myAptTeam: existingAptTeam,
             athleteCount: existingTeamSize,
+            status: BlocStatus.success,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            ownedApts: ownedApts,
             status: BlocStatus.success,
           ),
         );
@@ -114,7 +120,6 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     Emitter<LeagueDraftState> emit,
   ) {
     if (state.athleteCount < event.teamSize) {
-      emit(state.copyWith(status: BlocStatus.loading));
       final apt = event.apt;
       final ownedApts = List<DraftApt>.from(state.ownedApts)..remove(apt);
       final myAptTeam = List<DraftApt>.from(state.myAptTeam)..add(apt);
@@ -134,7 +139,6 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     RemoveAptFromTeam event,
     Emitter<LeagueDraftState> emit,
   ) {
-    emit(state.copyWith(status: BlocStatus.loading));
     final apt = event.apt;
     final ownedApts = List<DraftApt>.from(state.ownedApts)..add(apt);
     final myAptTeam = List<DraftApt>.from(state.myAptTeam)..remove(apt);
@@ -166,7 +170,20 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
       for (var e in myTeam) e.id: [e.name, e.bookPrice.toString()]
     };
     try {
-      if (!isEditing) {
+      if (isEditing) {
+        final teamAppreciation = _calculateTeamPerformanceUseCase
+                .calculateTeamPerformance(roster, athletes) +
+            existingTeam.teamAppreciation;
+        final team = LeagueTeam(
+          userWalletID: userWalletID,
+          teamAppreciation: teamAppreciation,
+          roster: roster,
+        );
+        await _leagueRepository.updateRoster(
+          leagueID: leagueID,
+          team: team,
+        );
+      } else {
         emit(state.copyWith(status: BlocStatus.loading));
 
         final teamAppreciation = _calculateTeamPerformanceUseCase
@@ -189,19 +206,6 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
           roster: roster,
         );
         await _leagueRepository.enrollUser(
-          leagueID: leagueID,
-          team: team,
-        );
-      } else {
-        final teamAppreciation = _calculateTeamPerformanceUseCase
-                .calculateTeamPerformance(roster, athletes) +
-            existingTeam.teamAppreciation;
-        final team = LeagueTeam(
-          userWalletID: userWalletID,
-          teamAppreciation: teamAppreciation,
-          roster: roster,
-        );
-        await _leagueRepository.updateRoster(
           leagueID: leagueID,
           team: team,
         );

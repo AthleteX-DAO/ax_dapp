@@ -137,7 +137,6 @@ class LeagueTeamCards extends StatelessWidget {
                         child: DesktopLeagueDraft(
                           league: league,
                           existingTeam: existingTeam,
-                          isEditing: true,
                         ),
                       ),
                     ),

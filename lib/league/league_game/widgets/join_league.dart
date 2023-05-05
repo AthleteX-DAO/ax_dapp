@@ -69,7 +69,6 @@ class JoinLeague extends StatelessWidget {
                   child: DesktopLeagueDraft(
                     league: league,
                     existingTeam: existingTeam,
-                    isEditing: false,
                   ),
                 ),
               ),
