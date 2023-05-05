@@ -1,21 +1,35 @@
+import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
+import 'package:ax_dapp/league/league_draft/views/desktop_league_draft.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
+import 'package:ax_dapp/league/models/league.dart';
+import 'package:ax_dapp/league/models/league_team.dart';
+import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
+import 'package:ax_dapp/league/repository/league_repository.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
+import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class LeagueTeamCards extends StatelessWidget {
   const LeagueTeamCards({
     super.key,
     required this.userTeam,
     required this.rosters,
+    required this.league,
   });
 
   final UserTeam userTeam;
   final List<MapEntry<int, List<String>>> rosters;
+  final League league;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +38,10 @@ class LeagueTeamCards extends StatelessWidget {
         context.select((WalletBloc bloc) => bloc.state.walletAddress);
     final athletes =
         context.select((LeagueGameBloc bloc) => bloc.state.athletes);
+    final leagueTeams =
+        context.select((LeagueGameBloc bloc) => bloc.state.leagueTeams);
+    final timerStatus =
+        context.select((LeagueGameBloc bloc) => bloc.state.timerStatus);
     var formattedWalletAddress = '';
     var iconSize = 16.0;
     var textSize = 16.0;
@@ -92,7 +110,63 @@ class LeagueTeamCards extends StatelessWidget {
                 border: Border.all(color: Colors.amber[400]!),
               ),
               child: TextButton(
-                onPressed: () {},
+                onPressed: league.isLocked && timerStatus.hasStarted
+                    ? () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Colors.transparent,
+                            content: Text(
+                              'Cannot Edit Teams At This Time!',
+                              style: TextStyle(
+                                color: Colors.amber,
+                                fontFamily: 'OpenSans',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    : () {
+                        final existingTeam = leagueTeams.firstWhere(
+                          (team) => team.userWalletID == walletAddress,
+                          orElse: () => LeagueTeam.empty,
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) => BlocProvider(
+                              create: (context) => LeagueDraftBloc(
+                                athletes: athletes,
+                                leagueRepository:
+                                    context.read<LeagueRepository>(),
+                                getTotalTokenBalanceUseCase:
+                                    GetTotalTokenBalanceUseCase(
+                                  walletRepository:
+                                      context.read<WalletRepository>(),
+                                  tokensRepository:
+                                      context.read<TokensRepository>(),
+                                ),
+                                calculateTeamPerformanceUseCase: context
+                                    .read<CalculateTeamPerformanceUseCase>(),
+                                prizePoolRepository:
+                                    context.read<PrizePoolRepository>(),
+                                streamAppDataChangesUseCase:
+                                    context.read<StreamAppDataChangesUseCase>(),
+                                walletRepository:
+                                    context.read<WalletRepository>(),
+                                isEditing: true,
+                                leagueTeam: existingTeam,
+                              ),
+                              child: DesktopLeagueDraft(
+                                league: league,
+                                existingTeam: existingTeam,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                 child: Text(
                   'Edit Teams',
                   style: TextStyle(

@@ -42,12 +42,10 @@ class JoinLeague extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           if (isWalletConnected) {
-            var existingTeam = LeagueTeam.empty;
-            for (final team in leagueTeams) {
-              if (team.userWalletID == walletAddress) {
-                existingTeam = team;
-              }
-            }
+            final existingTeam = leagueTeams.firstWhere(
+              (team) => team.userWalletID == walletAddress,
+              orElse: () => LeagueTeam.empty,
+            );
             Navigator.push(
               context,
               MaterialPageRoute<void>(
@@ -65,6 +63,8 @@ class JoinLeague extends StatelessWidget {
                     streamAppDataChangesUseCase:
                         context.read<StreamAppDataChangesUseCase>(),
                     walletRepository: context.read<WalletRepository>(),
+                    isEditing: false,
+                    leagueTeam: existingTeam,
                   ),
                   child: DesktopLeagueDraft(
                     league: league,

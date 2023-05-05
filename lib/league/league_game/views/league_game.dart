@@ -152,6 +152,7 @@ class LeagueGame extends StatelessWidget {
                           return LeagueTeamCards(
                             userTeam: userTeam,
                             rosters: rosters,
+                            league: league,
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) =>
