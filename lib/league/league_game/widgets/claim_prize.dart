@@ -14,29 +14,30 @@ class ClaimPrize extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(100),
-          border: Border.all(color: Colors.amber[400]!),
-        ),
-        child: TextButton(
-          onPressed: () {
-            context.read<LeagueGameBloc>().add(
-                  ClaimPrizeEvent(
-                    prizePoolAddress: league.prizePoolAddress,
-                    winnerAddress: league.winner,
-                  ),
-                );
-          },
-          child: const Text(
-            'CLAIM PRIZE',
-            style: TextStyle(
-              color: Colors.amber,
-              fontFamily: 'OpenSans',
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+      child: TextButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+              side: BorderSide(color: Colors.amber[400]!),
             ),
+          ),
+        ),
+        onPressed: () {
+          context.read<LeagueGameBloc>().add(
+                ClaimPrizeEvent(
+                  prizePoolAddress: league.prizePoolAddress,
+                  winnerAddress: league.winner,
+                ),
+              );
+        },
+        child: const Text(
+          'CLAIM PRIZE',
+          style: TextStyle(
+            color: Colors.amber,
+            fontFamily: 'OpenSans',
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

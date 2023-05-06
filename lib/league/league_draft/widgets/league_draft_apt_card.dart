@@ -9,13 +9,11 @@ class APTCard extends StatelessWidget {
     super.key,
     required this.apt,
     required this.teamSize,
-    required this.width,
     required this.height,
   });
 
   final DraftApt apt;
   final int teamSize;
-  final double width;
   final double height;
 
   @override
@@ -26,22 +24,12 @@ class APTCard extends StatelessWidget {
     var textSize = 16.0;
     var bookPriceTextSize = 16.0;
     var showBookPricePercentChange = true;
-    var sportIconWR = .03;
-    var athleteNameWR = .1;
-    var bookValueWR = .05;
-    var bookPercentWR = .05;
-    var moveIconWR = .05;
 
-    if (_width <= 800) {
+    if (_width <= 768) {
       sportIconSize = 20.0;
       statusIconSize = 20.0;
       textSize = 12.0;
       showBookPricePercentChange = false;
-      sportIconWR = .025;
-      athleteNameWR = .125;
-      moveIconWR = .04;
-      bookValueWR = .1;
-      bookPercentWR = .04;
       bookPriceTextSize = 10.0;
     }
 
@@ -59,7 +47,7 @@ class APTCard extends StatelessWidget {
         children: <Widget>[
           FittedBox(
             child: SizedBox(
-              width: width * sportIconWR,
+              width: _width * 0.1,
               child: Icon(
                 getSportIcon(apt.sport),
                 color: Colors.grey[400],
@@ -69,13 +57,12 @@ class APTCard extends StatelessWidget {
           ),
           FittedBox(
             child: SizedBox(
-              width: width * athleteNameWR,
+              width: _width <= 768 ? _width * 0.25 : _width * 0.1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FittedBox(
                     child: SizedBox(
-                      width: width * athleteNameWR,
                       child: Text(
                         apt.name,
                         style: TextStyle(
@@ -89,7 +76,6 @@ class APTCard extends StatelessWidget {
                   ),
                   FittedBox(
                     child: SizedBox(
-                      width: width * athleteNameWR,
                       child: Text(
                         apt.team,
                         style: TextStyle(
@@ -107,7 +93,7 @@ class APTCard extends StatelessWidget {
           ),
           FittedBox(
             child: SizedBox(
-              width: width * bookValueWR,
+              width: _width * 0.1,
               child: Text(
                 '${apt.bookPrice?.toStringAsFixed(2)} AX',
                 style: TextStyle(
@@ -123,7 +109,7 @@ class APTCard extends StatelessWidget {
           if (showBookPricePercentChange)
             FittedBox(
               child: SizedBox(
-                width: width * bookPercentWR,
+                width: _width * 0.05,
                 child: Text(
                   '${apt.bookPricePercent?.toStringAsFixed(2)}%',
                   style: TextStyle(
@@ -138,7 +124,7 @@ class APTCard extends StatelessWidget {
             ),
           FittedBox(
             child: SizedBox(
-              width: width * moveIconWR,
+              width: _width <= 768 ? _width * 0.15 : _width * 0.05,
               child: IconButton(
                 icon: Icon(
                   Icons.add_box_outlined,

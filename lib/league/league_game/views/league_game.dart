@@ -70,7 +70,7 @@ class LeagueGame extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    if (_width <= 800)
+                    if (_width <= 768)
                       Column(
                         children: [
                           SizedBox(
@@ -114,7 +114,7 @@ class LeagueGame extends StatelessWidget {
                             ],
                           ),
                           SizedBox(
-                            width: (constraints.maxWidth > 800)
+                            width: (constraints.maxWidth > 768)
                                 ? constraints.maxWidth * 0.5
                                 : constraints.maxWidth * 0.4,
                             child: LeagueTimerStatus(

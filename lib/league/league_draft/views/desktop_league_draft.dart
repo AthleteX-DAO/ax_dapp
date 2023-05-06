@@ -35,6 +35,8 @@ class DesktopLeagueDraft extends StatelessWidget {
     var textSize = 16.0;
     var leagueHeaderTextSize = 36.0;
     var verticalView = true;
+    var athleteColumnTitle = 'Athlete (Seasonal APT)';
+    var bookValueTitle = 'Book Value / Change';
     const athleteHeadingWR = 0.22;
     const bookValueHeadingWR = 0.1;
     const myTeamHeadingWR = 0.35;
@@ -48,10 +50,12 @@ class DesktopLeagueDraft extends StatelessWidget {
             builder: (BuildContext context, BoxConstraints constraints) {
               final width = constraints.maxWidth;
               final height = constraints.maxHeight;
-              if (width <= 800) {
+              if (width <= 768) {
                 textSize = 12.0;
                 leagueHeaderTextSize = 18.0;
                 verticalView = false;
+                athleteColumnTitle = 'Athlete';
+                bookValueTitle = 'Book Value';
               }
               return Align(
                 child: Container(
@@ -90,26 +94,26 @@ class DesktopLeagueDraft extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF3C3009),
-                              borderRadius: BorderRadius.circular(100),
-                              border: Border.all(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: TextButton(
-                                onPressed: () => {context.goNamed('scout')},
-                                child: Text(
-                                  'Go Buy APTs',
-                                  style: TextStyle(
-                                    color: const Color(0xFFFEC500),
-                                    fontFamily: 'OpenSans',
-                                    fontSize: textSize,
-                                    fontWeight: FontWeight.w400,
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: TextButton(
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                    side: BorderSide(color: Colors.amber[400]!),
                                   ),
+                                ),
+                              ),
+                              onPressed: () => {context.goNamed('scout')},
+                              child: Text(
+                                'Go Buy APTs',
+                                style: TextStyle(
+                                  color: const Color(0xFFFEC500),
+                                  fontFamily: 'OpenSans',
+                                  fontSize: textSize,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
@@ -129,7 +133,7 @@ class DesktopLeagueDraft extends StatelessWidget {
                               child: SizedBox(
                                 width: width * athleteHeadingWR,
                                 child: Text(
-                                  'Athlete (Seasonal APT)',
+                                  athleteColumnTitle,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: textSize),
                                 ),
@@ -139,7 +143,7 @@ class DesktopLeagueDraft extends StatelessWidget {
                               child: SizedBox(
                                 width: width * bookValueHeadingWR,
                                 child: Text(
-                                  'Book Value / Change',
+                                  bookValueTitle,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: textSize),
                                 ),
@@ -196,7 +200,6 @@ class DesktopLeagueDraft extends StatelessWidget {
                                               return APTCard(
                                                 apt: ownedApts[index],
                                                 teamSize: league.teamSize,
-                                                width: width,
                                                 height: height,
                                               );
                                             },
@@ -221,7 +224,6 @@ class DesktopLeagueDraft extends StatelessWidget {
                                       itemBuilder: (context, index) {
                                         return MyTeamCard(
                                           apt: myAptTeam[index],
-                                          width: width,
                                           height: height,
                                         );
                                       },

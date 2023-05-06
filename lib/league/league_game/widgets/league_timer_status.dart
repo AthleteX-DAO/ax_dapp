@@ -28,7 +28,7 @@ class LeagueTimerStatus extends StatelessWidget {
         context.select((LeagueGameBloc bloc) => bloc.state.differenceInSeconds);
     var textSize = 14.0;
     var leagueTitleTextSize = 18.0;
-    if (_width <= 800) {
+    if (_width <= 768) {
       textSize = 12.0;
       leagueTitleTextSize = 14.0;
     }

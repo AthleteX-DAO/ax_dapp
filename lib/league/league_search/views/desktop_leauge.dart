@@ -55,7 +55,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
           _selectedSport = state.selectedSport;
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
-              if (constraints.maxWidth < 800) {
+              if (constraints.maxWidth <= 768) {
                 showToolTipHeader = false;
                 showDateRange = false;
                 textSize = 12.0;
@@ -72,7 +72,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         SizedBox(
-                          width: (constraints.maxWidth > 800)
+                          width: (constraints.maxWidth > 768)
                               ? constraints.maxWidth * 0.5
                               : constraints.maxWidth * 0.4,
                           child: TextFormField(
@@ -121,55 +121,56 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                             },
                           ),
                         ),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(color: Colors.amber[400]!),
-                          ),
-                          child: TextButton(
-                            onPressed: state.selectedChain ==
-                                    EthereumChain.polygonMainnet
-                                ? () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        backgroundColor: Colors.transparent,
-                                        content: Text(
-                                          'Switch To SX Network To Create Leagues!',
-                                          style: TextStyle(
-                                            color: Colors.amber,
-                                            fontFamily: 'OpenSans',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
-                                  }
-                                : () {
-                                    final isWalletDisconnected = context
-                                        .read<WalletBloc>()
-                                        .state
-                                        .isWalletDisconnected;
-                                    if (isWalletDisconnected) {
-                                      context.showWalletWarningToast();
-                                      return;
-                                    }
-                                    showDialog<void>(
-                                      context: context,
-                                      builder: (context) =>
-                                          const LeagueDialog(),
-                                    );
-                                  },
-                            child: const Text(
-                              'Create a League',
-                              style: TextStyle(
-                                color: Colors.amber,
-                                fontFamily: 'OpenSans',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
+                        TextButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
+                                side: BorderSide(color: Colors.amber[400]!),
                               ),
+                            ),
+                          ),
+                          onPressed: state.selectedChain ==
+                                  EthereumChain.polygonMainnet
+                              ? () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor: Colors.transparent,
+                                      content: Text(
+                                        'Switch To SX Network To Create Leagues!',
+                                        style: TextStyle(
+                                          color: Colors.amber,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              : () {
+                                  final isWalletDisconnected = context
+                                      .read<WalletBloc>()
+                                      .state
+                                      .isWalletDisconnected;
+                                  if (isWalletDisconnected) {
+                                    context.showWalletWarningToast();
+                                    return;
+                                  }
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (context) => const LeagueDialog(),
+                                  );
+                                },
+                          child: const Text(
+                            'Create a League',
+                            style: TextStyle(
+                              color: Colors.amber,
+                              fontFamily: 'OpenSans',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),

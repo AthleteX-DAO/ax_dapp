@@ -23,7 +23,7 @@ class LeagueCard extends StatelessWidget {
     var axIconWidth = 30.0;
     var axIconHeight = 30.0;
     var sportIconSize = 30.0;
-    if (_width < 800) {
+    if (_width <= 768) {
       showToolTipIcon = false;
       showDateRange = false;
       textSize = 12.0;

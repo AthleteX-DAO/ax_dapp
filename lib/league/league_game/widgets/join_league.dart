@@ -33,57 +33,58 @@ class JoinLeague extends StatelessWidget {
         context.select((WalletBloc bloc) => bloc.state.walletAddress);
     final athletes =
         context.select((LeagueGameBloc bloc) => bloc.state.athletes);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: Colors.amber[400]!),
+    return TextButton(
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+            side: BorderSide(color: Colors.amber[400]!),
+          ),
+        ),
       ),
-      child: TextButton(
-        onPressed: () {
-          if (isWalletConnected) {
-            final existingTeam = leagueTeams.firstWhere(
-              (team) => team.userWalletID == walletAddress,
-              orElse: () => LeagueTeam.empty,
-            );
-            Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (context) => BlocProvider(
-                  create: (context) => LeagueDraftBloc(
-                    athletes: athletes,
-                    leagueRepository: context.read<LeagueRepository>(),
-                    getTotalTokenBalanceUseCase: GetTotalTokenBalanceUseCase(
-                      walletRepository: context.read<WalletRepository>(),
-                      tokensRepository: context.read<TokensRepository>(),
-                    ),
-                    leagueUseCase: context.read<LeagueUseCase>(),
-                    prizePoolRepository: context.read<PrizePoolRepository>(),
-                    streamAppDataChangesUseCase:
-                        context.read<StreamAppDataChangesUseCase>(),
+      onPressed: () {
+        if (isWalletConnected) {
+          final existingTeam = leagueTeams.firstWhere(
+            (team) => team.userWalletID == walletAddress,
+            orElse: () => LeagueTeam.empty,
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (context) => BlocProvider(
+                create: (context) => LeagueDraftBloc(
+                  athletes: athletes,
+                  leagueRepository: context.read<LeagueRepository>(),
+                  getTotalTokenBalanceUseCase: GetTotalTokenBalanceUseCase(
                     walletRepository: context.read<WalletRepository>(),
-                    isEditing: false,
-                    leagueTeam: existingTeam,
+                    tokensRepository: context.read<TokensRepository>(),
                   ),
-                  child: DesktopLeagueDraft(
-                    league: league,
-                    existingTeam: existingTeam,
-                  ),
+                  leagueUseCase: context.read<LeagueUseCase>(),
+                  prizePoolRepository: context.read<PrizePoolRepository>(),
+                  streamAppDataChangesUseCase:
+                      context.read<StreamAppDataChangesUseCase>(),
+                  walletRepository: context.read<WalletRepository>(),
+                  isEditing: false,
+                  leagueTeam: existingTeam,
+                ),
+                child: DesktopLeagueDraft(
+                  league: league,
+                  existingTeam: existingTeam,
                 ),
               ),
-            );
-          } else {
-            context.showWalletWarningToast();
-          }
-        },
-        child: const Text(
-          'Join League',
-          style: TextStyle(
-            color: Colors.amber,
-            fontFamily: 'OpenSans',
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
+            ),
+          );
+        } else {
+          context.showWalletWarningToast();
+        }
+      },
+      child: const Text(
+        'Join League',
+        style: TextStyle(
+          color: Colors.amber,
+          fontFamily: 'OpenSans',
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );

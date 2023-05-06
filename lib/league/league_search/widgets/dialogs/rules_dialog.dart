@@ -57,7 +57,7 @@ class _LeagueDialog extends State<LeagueDialog> {
     final _height = MediaQuery.of(context).size.height;
 
     var textSize = 16.0;
-    if (_width < 800) textSize = 12.0;
+    if (_width <= 768) textSize = 12.0;
 
     var wid = 450.0;
     var textBoxWid = 250.0;
@@ -540,54 +540,56 @@ class _LeagueDialog extends State<LeagueDialog> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(color: Colors.amber[400]!),
-                      ),
-                      child: TextButton(
-                        onPressed: () => {
-                          if (DateTime.parse(startDateController.text).isAfter(
-                            DateTime.parse(
-                              endDateController.text,
-                            ),
-                          ))
-                            {
-                              context.showWarningToast(
-                                title: 'Error',
-                                description:
-                                    'Cannot have a start date that is after the end date!',
-                              )
-                            }
-                          else
-                            {
-                              bloc.add(
-                                CreateLeague(
-                                  name: leagueNameController.text,
-                                  adminWallet: walletId,
-                                  dateStart: startDateController.text,
-                                  dateEnd: endDateController.text,
-                                  teamSize: int.parse(teamSizeController.text),
-                                  maxTeams:
-                                      int.parse(participantsController.text),
-                                  entryFee: int.parse(entryFeeController.text),
-                                  isPrivate: _privateToggle,
-                                  isLocked: _lockToggle,
-                                  sports: [dropDownValue],
-                                ),
-                              ),
-                              Navigator.pop(context),
-                            }
-                        },
-                        child: const Text(
-                          'Confirm',
-                          style: TextStyle(
-                            color: Colors.amber,
-                            fontFamily: 'OpenSans',
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            side: BorderSide(color: Colors.amber[400]!),
                           ),
+                        ),
+                      ),
+                      onPressed: () => {
+                        if (DateTime.parse(startDateController.text).isAfter(
+                          DateTime.parse(
+                            endDateController.text,
+                          ),
+                        ))
+                          {
+                            context.showWarningToast(
+                              title: 'Error',
+                              description:
+                                  'Cannot have a start date that is after the end date!',
+                            )
+                          }
+                        else
+                          {
+                            bloc.add(
+                              CreateLeague(
+                                name: leagueNameController.text,
+                                adminWallet: walletId,
+                                dateStart: startDateController.text,
+                                dateEnd: endDateController.text,
+                                teamSize: int.parse(teamSizeController.text),
+                                maxTeams:
+                                    int.parse(participantsController.text),
+                                entryFee: int.parse(entryFeeController.text),
+                                isPrivate: _privateToggle,
+                                isLocked: _lockToggle,
+                                sports: [dropDownValue],
+                              ),
+                            ),
+                            Navigator.pop(context),
+                          }
+                      },
+                      child: const Text(
+                        'Confirm',
+                        style: TextStyle(
+                          color: Colors.amber,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),

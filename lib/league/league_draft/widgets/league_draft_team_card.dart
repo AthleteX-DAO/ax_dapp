@@ -8,12 +8,10 @@ class MyTeamCard extends StatelessWidget {
   const MyTeamCard({
     super.key,
     required this.apt,
-    required this.width,
     required this.height,
   });
 
   final DraftApt apt;
-  final double width;
   final double height;
 
   @override
@@ -22,17 +20,11 @@ class MyTeamCard extends StatelessWidget {
     var sportIconSize = 30.0;
     var statusIconSize = 30.0;
     var textSize = 16.0;
-    var sportIconWR = .03;
-    var athleteNameWR = .1;
-    var moveIconWR = .05; 
 
-    if (_width <= 800) {
+    if (_width <= 768) {
       sportIconSize = 20.0;
       statusIconSize = 20.0;
-      textSize = 14.0;
-      sportIconWR = .025;
-      athleteNameWR = .2;
-      moveIconWR = .04;
+      textSize = 12.0;
     }
 
     return Container(
@@ -49,7 +41,7 @@ class MyTeamCard extends StatelessWidget {
         children: <Widget>[
           FittedBox(
             child: SizedBox(
-              width: width * sportIconWR,
+              width: _width * 0.1,
               child: Icon(
                 getSportIcon(apt.sport),
                 color: Colors.grey[400],
@@ -59,12 +51,11 @@ class MyTeamCard extends StatelessWidget {
           ),
           FittedBox(
             child: SizedBox(
-              width: width * athleteNameWR,
+              width: _width <= 768 ? _width * 0.25 : _width * 0.2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: width * athleteNameWR,
                     child: Text(
                       apt.name,
                       style: TextStyle(
@@ -76,7 +67,6 @@ class MyTeamCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: width * athleteNameWR,
                     child: Text(
                       apt.team,
                       style: TextStyle(
@@ -93,7 +83,7 @@ class MyTeamCard extends StatelessWidget {
           ),
           FittedBox(
             child: SizedBox(
-              width: width * moveIconWR,
+              width: _width * 0.1,
               child: IconButton(
                 icon: Icon(
                   Icons.remove_circle_outline_outlined,

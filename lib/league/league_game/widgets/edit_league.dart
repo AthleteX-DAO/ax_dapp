@@ -18,50 +18,51 @@ class EditLeague extends StatelessWidget {
     final bloc = context.read<LeagueGameBloc>();
     final timerStatus =
         context.select((LeagueGameBloc bloc) => bloc.state.timerStatus);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: Colors.amber[400]!),
-      ),
-      child: TextButton(
-        onPressed: () {
-          if (timerStatus.hasStarted || timerStatus.hasEnded) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                backgroundColor: Colors.transparent,
-                content: Text(
-                  'Cannot Edit League At This Time Because Either The League Has Started Or Ended',
-                  style: TextStyle(
-                    color: Colors.amber,
-                    fontFamily: 'OpenSans',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                duration: Duration(seconds: 2),
-              ),
-            );
-          } else {
-            showDialog<void>(
-              context: context,
-              builder: (context) => BlocProvider.value(
-                value: bloc,
-                child: EditRulesDialog(
-                  league: league,
-                ),
-              ),
-            );
-          }
-        },
-        child: const Text(
-          'Edit League',
-          style: TextStyle(
-            color: Colors.amber,
-            fontFamily: 'OpenSans',
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
+    return TextButton(
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+            side: BorderSide(color: Colors.amber[400]!),
           ),
+        ),
+      ),
+      onPressed: () {
+        if (timerStatus.hasStarted || timerStatus.hasEnded) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.transparent,
+              content: Text(
+                'Cannot Edit League At This Time Because Either The League Has Started Or Ended',
+                style: TextStyle(
+                  color: Colors.amber,
+                  fontFamily: 'OpenSans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => BlocProvider.value(
+              value: bloc,
+              child: EditRulesDialog(
+                league: league,
+              ),
+            ),
+          );
+        }
+      },
+      child: const Text(
+        'Edit League',
+        style: TextStyle(
+          color: Colors.amber,
+          fontFamily: 'OpenSans',
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );

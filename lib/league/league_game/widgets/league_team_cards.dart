@@ -54,7 +54,7 @@ class LeagueTeamCards extends StatelessWidget {
       );
       formattedWalletAddress = '$walletAddressPrefix...$walletAddressSuffix';
     }
-    if (_width < 800) {
+    if (_width <= 768) {
       iconSize = 12.0;
       textSize = 12.0;
       percentageStatusIcon = 25.0;
@@ -65,7 +65,7 @@ class LeagueTeamCards extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            _width <= 800 ? formattedWalletAddress : userTeam.address,
+            _width <= 768 ? formattedWalletAddress : userTeam.address,
             style: TextStyle(
               color: Colors.grey[400],
               fontFamily: 'OpenSans',
@@ -103,77 +103,78 @@ class LeagueTeamCards extends StatelessWidget {
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(100),
-                border: Border.all(color: Colors.amber[400]!),
+            child: TextButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                    side: BorderSide(color: Colors.amber[400]!),
+                  ),
+                ),
               ),
-              child: TextButton(
-                onPressed: league.isLocked && timerStatus.hasStarted
-                    ? () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            backgroundColor: Colors.transparent,
-                            content: Text(
-                              'Cannot Edit Teams At This Time!',
-                              style: TextStyle(
-                                color: Colors.amber,
-                                fontFamily: 'OpenSans',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
+              onPressed: league.isLocked && timerStatus.hasStarted
+                  ? () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Colors.transparent,
+                          content: Text(
+                            'Cannot Edit Teams At This Time!',
+                            style: TextStyle(
+                              color: Colors.amber,
+                              fontFamily: 'OpenSans',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
                             ),
-                            duration: Duration(seconds: 2),
                           ),
-                        );
-                      }
-                    : () {
-                        final existingTeam = leagueTeams.firstWhere(
-                          (team) => team.userWalletID == walletAddress,
-                          orElse: () => LeagueTeam.empty,
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (context) => BlocProvider(
-                              create: (context) => LeagueDraftBloc(
-                                athletes: athletes,
-                                leagueRepository:
-                                    context.read<LeagueRepository>(),
-                                getTotalTokenBalanceUseCase:
-                                    GetTotalTokenBalanceUseCase(
-                                  walletRepository:
-                                      context.read<WalletRepository>(),
-                                  tokensRepository:
-                                      context.read<TokensRepository>(),
-                                ),
-                                leagueUseCase: context.read<LeagueUseCase>(),
-                                prizePoolRepository:
-                                    context.read<PrizePoolRepository>(),
-                                streamAppDataChangesUseCase:
-                                    context.read<StreamAppDataChangesUseCase>(),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  : () {
+                      final existingTeam = leagueTeams.firstWhere(
+                        (team) => team.userWalletID == walletAddress,
+                        orElse: () => LeagueTeam.empty,
+                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (context) => BlocProvider(
+                            create: (context) => LeagueDraftBloc(
+                              athletes: athletes,
+                              leagueRepository:
+                                  context.read<LeagueRepository>(),
+                              getTotalTokenBalanceUseCase:
+                                  GetTotalTokenBalanceUseCase(
                                 walletRepository:
                                     context.read<WalletRepository>(),
-                                isEditing: true,
-                                leagueTeam: existingTeam,
+                                tokensRepository:
+                                    context.read<TokensRepository>(),
                               ),
-                              child: DesktopLeagueDraft(
-                                league: league,
-                                existingTeam: existingTeam,
-                              ),
+                              leagueUseCase: context.read<LeagueUseCase>(),
+                              prizePoolRepository:
+                                  context.read<PrizePoolRepository>(),
+                              streamAppDataChangesUseCase:
+                                  context.read<StreamAppDataChangesUseCase>(),
+                              walletRepository:
+                                  context.read<WalletRepository>(),
+                              isEditing: true,
+                              leagueTeam: existingTeam,
+                            ),
+                            child: DesktopLeagueDraft(
+                              league: league,
+                              existingTeam: existingTeam,
                             ),
                           ),
-                        );
-                      },
-                child: Text(
-                  'Edit Teams',
-                  style: TextStyle(
-                    color: Colors.amber,
-                    fontFamily: 'OpenSans',
-                    fontSize: textSize,
-                    fontWeight: FontWeight.w400,
-                  ),
+                        ),
+                      );
+                    },
+              child: Text(
+                'Edit Teams',
+                style: TextStyle(
+                  color: Colors.amber,
+                  fontFamily: 'OpenSans',
+                  fontSize: textSize,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
@@ -185,7 +186,7 @@ class LeagueTeamCards extends StatelessWidget {
       textColor: Colors.white,
       iconColor: Colors.white,
       childrenPadding: const EdgeInsets.all(10),
-      children: _width <= 800
+      children: _width <= 768 || rosters.length > 5
           ? rosters.map((athleteName) {
               return Row(
                 children: [
