@@ -37,3 +37,17 @@ class DraftApt extends Equatable {
         bookPricePercent,
       ];
 }
+
+extension DraftAptListX on List<DraftApt> {
+  List<DraftApt> getExistingAptTeam(List<int> rosterIds) {
+    final existingAptTeam =
+        where((apt) => rosterIds.any((element) => element == apt.id)).toList();
+    return existingAptTeam;
+  }
+
+  List<DraftApt> getAvailableOwnedApts(List<int> rosterIds) {
+    final availableOwnedApts =
+        where((apt) => !rosterIds.any((element) => element == apt.id)).toList();
+    return availableOwnedApts;
+  }
+}

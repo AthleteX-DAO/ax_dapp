@@ -2,6 +2,7 @@ import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/league_game/widgets/widgets.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
+import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -148,7 +149,7 @@ class LeagueGame extends StatelessWidget {
                         itemCount: userTeams.length,
                         itemBuilder: (BuildContext context, int index) {
                           final userTeam = userTeams[index];
-                          final rosters = userTeam.roster.entries.toList();
+                          final rosters = userTeam.rosters;
                           return LeagueTeamCards(
                             userTeam: userTeam,
                             rosters: rosters,

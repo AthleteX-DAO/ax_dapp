@@ -11,6 +11,7 @@ import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/league_game/views/league_game.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/views/desktop_leauge.dart';
+import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
@@ -243,8 +244,7 @@ class _MaterialApp extends StatelessWidget {
                   final allLeagues =
                       context.watch<LeagueBloc>().state.allLeagues;
                   if (allLeagues.isEmpty) return const Loader();
-                  final league = allLeagues
-                      .firstWhere((league) => league.leagueID == leagueID);
+                  final league = allLeagues.findLeague(leagueID);
                   Global().pageName = 'league-game';
                   return BlocProvider(
                     create: (context) => LeagueGameBloc(

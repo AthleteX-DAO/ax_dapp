@@ -25,3 +25,15 @@ class LeagueTeam {
 
   Map<String, dynamic> toJson() => _$LeagueTeamToJson(this);
 }
+
+extension LeagueTeamListX on List<LeagueTeam> {
+  LeagueTeam findLeagueTeam(String walletAddress) {
+    final leagueTeam =
+        firstWhere((leagueTeam) => leagueTeam.userWalletID == walletAddress);
+    return leagueTeam;
+  }
+}
+
+extension LeagueTeamX on LeagueTeam {
+  List<int> get rosterIds => roster.keys.toList();
+}

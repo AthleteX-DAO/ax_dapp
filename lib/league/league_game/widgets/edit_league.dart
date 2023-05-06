@@ -1,7 +1,7 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
+import 'package:ax_dapp/league/league_game/widgets/widgets.dart';
 import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/timer_status.dart';
-import 'package:ax_dapp/league/widgets/dialogs/edit_rules_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -122,20 +122,18 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     emit(state.copyWith(status: BlocStatus.loading));
     final leagueTeams = event.leagueTeams;
     final athletes = event.athletes;
-    final userTeams = <UserTeam>[];
-    for (final team in leagueTeams) {
-      final teamPerformance =
-          _leagueUseCase.calculateTeamPerformance(team.roster, athletes);
-      userTeams
-        ..add(
-          UserTeam(
+    final userTeams = leagueTeams
+        .map(
+          (team) => UserTeam(
             address: team.userWalletID,
             roster: team.roster,
-            teamPerformance: teamPerformance + team.teamAppreciation,
+            teamPerformance:
+                _leagueUseCase.calculateTeamPerformance(team.roster, athletes) +
+                    team.teamAppreciation,
           ),
         )
-        ..sort((b, a) => a.teamPerformance.compareTo(b.teamPerformance));
-    }
+        .toList()
+      ..sort((a, b) => b.teamPerformance.compareTo(a.teamPerformance));
     emit(
       state.copyWith(
         userTeams: userTeams,

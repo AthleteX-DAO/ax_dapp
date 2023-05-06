@@ -55,3 +55,13 @@ class League {
 
   Map<String, dynamic> toJson() => _$LeagueToJson(this);
 }
+
+extension LeagueListX on List<League> {
+  League findLeague(String leagueID) {
+    final league = firstWhere(
+      (league) => league.leagueID == leagueID,
+      orElse: () => League.empty,
+    );
+    return league;
+  }
+}

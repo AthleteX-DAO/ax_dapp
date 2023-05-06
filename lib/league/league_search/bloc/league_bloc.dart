@@ -9,7 +9,6 @@ import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 
@@ -74,7 +73,6 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         leagueStartTime: dateStartInt,
         leagueEndTime: dateEndInt,
       );
-      debugPrint('the blocs prize pool address: $prizePoolAddress');
 
       final league = League(
         leagueID: leagueID,

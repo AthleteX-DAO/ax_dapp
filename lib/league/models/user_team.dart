@@ -24,3 +24,7 @@ class UserTeam extends Equatable {
         teamPerformance,
       ];
 }
+
+extension UserTeamX on UserTeam {
+  List<MapEntry<int, List<String>>> get rosters => roster.entries.toList();
+}

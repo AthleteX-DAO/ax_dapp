@@ -11,10 +11,7 @@ class LeagueUseCase {
       final initialPrice = double.parse(entry.value[1]);
       final athleteId = entry.key ~/ 10;
       final aptType = entry.value[0].split(' ').last;
-      final athlete = athletes.firstWhere(
-        (a) => a.id == athleteId,
-        orElse: () => AthleteScoutModel.empty,
-      );
+      final athlete = athletes.findAthlete(athleteId);
 
       double price;
       double percentChange;
@@ -46,10 +43,7 @@ class LeagueUseCase {
     return response
         .where((apt) => athletes.any((element) => element.id == apt.athleteId))
         .map((e) {
-      final athlete = athletes.firstWhere(
-        (athlete) => athlete.id == e.athleteId,
-        orElse: () => AthleteScoutModel.empty,
-      );
+      final athlete = athletes.findAthlete(e.athleteId);
       final bookPrice = e.type == AptType.long
           ? athlete.longTokenBookPrice
           : e.type == AptType.short

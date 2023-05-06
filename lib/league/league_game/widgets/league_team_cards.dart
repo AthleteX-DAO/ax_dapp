@@ -131,10 +131,8 @@ class LeagueTeamCards extends StatelessWidget {
                       );
                     }
                   : () {
-                      final existingTeam = leagueTeams.firstWhere(
-                        (team) => team.userWalletID == walletAddress,
-                        orElse: () => LeagueTeam.empty,
-                      );
+                      final existingTeam =
+                          leagueTeams.findLeagueTeam(walletAddress);
                       Navigator.push(
                         context,
                         MaterialPageRoute<void>(

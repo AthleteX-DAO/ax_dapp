@@ -80,13 +80,9 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
       final response = await _getTotalTokenBalanceUseCase.getOwnedApts();
       final ownedApts = _leagueUseCase.ownedAptToList(response, athletes);
       if (isEditing) {
-        final rosterIds = leagueTeam.roster.keys.toList();
-        final existingAptTeam = ownedApts
-            .where((apt) => rosterIds.any((element) => element == apt.id))
-            .toList();
-        final availableOwnedApts = ownedApts
-            .where((apt) => !rosterIds.any((element) => element == apt.id))
-            .toList();
+        final rosterIds = leagueTeam.rosterIds;
+        final existingAptTeam = ownedApts.getExistingAptTeam(rosterIds);
+        final availableOwnedApts = ownedApts.getExistingAptTeam(rosterIds);
         final existingTeamSize = existingAptTeam.length;
         emit(
           state.copyWith(

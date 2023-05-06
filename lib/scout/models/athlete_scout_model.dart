@@ -108,4 +108,12 @@ extension AthleteScoutModelListX on List<AthleteScoutModel> {
     );
     return athlete.team;
   }
+
+  AthleteScoutModel findAthlete(int athleteId) {
+    final athlete = firstWhere(
+      (a) => a.id == athleteId,
+      orElse: () => AthleteScoutModel.empty,
+    );
+    return athlete;
+  }
 }
