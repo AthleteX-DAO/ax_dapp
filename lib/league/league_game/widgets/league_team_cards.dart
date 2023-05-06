@@ -7,7 +7,7 @@ import 'package:ax_dapp/league/models/timer_status.dart';
 import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
-import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
+import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/get_sports_icon.dart';
@@ -148,8 +148,7 @@ class LeagueTeamCards extends StatelessWidget {
                                   tokensRepository:
                                       context.read<TokensRepository>(),
                                 ),
-                                calculateTeamPerformanceUseCase: context
-                                    .read<CalculateTeamPerformanceUseCase>(),
+                                leagueUseCase: context.read<LeagueUseCase>(),
                                 prizePoolRepository:
                                     context.read<PrizePoolRepository>(),
                                 streamAppDataChangesUseCase:

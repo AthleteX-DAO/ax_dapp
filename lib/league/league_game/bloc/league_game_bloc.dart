@@ -8,7 +8,7 @@ import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
-import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
+import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -29,13 +29,13 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     required this.startDate,
     required this.endDate,
     required StreamAppDataChangesUseCase streamAppDataChanges,
-    required CalculateTeamPerformanceUseCase calculateTeamPerformanceUseCase,
+    required LeagueUseCase leagueUseCase,
     required TimerRepository timerRepository,
     required WalletRepository walletRepository,
   })  : _leagueRepository = leagueRepository,
         _prizePoolRepository = prizePoolRepository,
         _streamAppDataChanges = streamAppDataChanges,
-        _calculateTeamPerformanceUseCase = calculateTeamPerformanceUseCase,
+        _leagueUseCase = leagueUseCase,
         _tickerRepository = timerRepository,
         _walletRepository = walletRepository,
         super(
@@ -62,7 +62,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
   final PrizePoolRepository _prizePoolRepository;
   final GetScoutAthletesDataUseCase repo;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
-  final CalculateTeamPerformanceUseCase _calculateTeamPerformanceUseCase;
+  final LeagueUseCase _leagueUseCase;
   final String startDate;
   final String endDate;
   final TimerRepository _tickerRepository;
@@ -124,8 +124,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     final athletes = event.athletes;
     final userTeams = <UserTeam>[];
     for (final team in leagueTeams) {
-      final teamPerformance = _calculateTeamPerformanceUseCase
-          .calculateTeamPerformance(team.roster, athletes);
+      final teamPerformance =
+          _leagueUseCase.calculateTeamPerformance(team.roster, athletes);
       userTeams
         ..add(
           UserTeam(
@@ -298,8 +298,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     var winnerAppreciation = 0.0;
 
     for (final team in leagueTeams) {
-      final teamPerformance = _calculateTeamPerformanceUseCase
-          .calculateTeamPerformance(team.roster, athletes);
+      final teamPerformance =
+          _leagueUseCase.calculateTeamPerformance(team.roster, athletes);
 
       final newAppreciation = teamPerformance + team.teamAppreciation;
 

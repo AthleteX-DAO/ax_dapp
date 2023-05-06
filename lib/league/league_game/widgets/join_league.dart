@@ -5,7 +5,7 @@ import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
-import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
+import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -57,8 +57,7 @@ class JoinLeague extends StatelessWidget {
                       walletRepository: context.read<WalletRepository>(),
                       tokensRepository: context.read<TokensRepository>(),
                     ),
-                    calculateTeamPerformanceUseCase:
-                        context.read<CalculateTeamPerformanceUseCase>(),
+                    leagueUseCase: context.read<LeagueUseCase>(),
                     prizePoolRepository: context.read<PrizePoolRepository>(),
                     streamAppDataChangesUseCase:
                         context.read<StreamAppDataChangesUseCase>(),

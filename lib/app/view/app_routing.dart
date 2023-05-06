@@ -14,7 +14,7 @@ import 'package:ax_dapp/league/league_search/views/desktop_leauge.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
-import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
+import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -261,8 +261,7 @@ class _MaterialApp extends StatelessWidget {
                           RepositoryProvider.of<NFLRepo>(context),
                         ],
                       ),
-                      calculateTeamPerformanceUseCase:
-                          context.read<CalculateTeamPerformanceUseCase>(),
+                      leagueUseCase: context.read<LeagueUseCase>(),
                       timerRepository: context.read<TimerRepository>(),
                       prizePoolRepository: context.read<PrizePoolRepository>(),
                       walletRepository: context.read<WalletRepository>(),

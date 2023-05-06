@@ -1,7 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';
 
-import 'package:ax_dapp/league/models/prize_pool_factory.dart';
+import 'package:ax_dapp/league/interop/prize_pool_factory.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:ethereum_api/erc20_api.dart';
@@ -51,40 +51,61 @@ class PrizePoolRepository {
         tokenAAmount,
         credentials: controller.credentials,
       );
-    } catch (e) {
-      txnHash = '';
       controller.transactionHash = txnHash;
-      return Future.error(e);
+    } catch (e) {
+      controller.transactionHash = '';
     }
-
-    controller.transactionHash = txnHash;
   }
 
-  Future<void> joinLeague() async {
+  Future<bool> joinLeague() async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
     prizePool =
         Prizepool(address: poolAddress, client: controller.client.value);
-    final txnHash = await prizePool.joinLeague(
-      credentials: controller.credentials,
-    );
-    controller.transactionHash = txnHash;
+    TransactionReceipt? receipt;
+    try {
+      final txnHash = await prizePool.joinLeague(
+        credentials: controller.credentials,
+      );
+      while (receipt == null) {
+        receipt = await controller.client.value.getTransactionReceipt(txnHash);
+        await Future<TransactionReceipt?>.delayed(
+          const Duration(
+            seconds: 1,
+          ),
+        );
+      }
+      if (receipt.status!) {
+        controller.transactionHash = txnHash;
+        return true;
+      } else {
+        controller.transactionHash = '';
+        return false;
+      }
+    } catch (e) {
+      controller.transactionHash = '';
+      return false;
+    }
   }
 
   Future<void> withdrawBeforeLeagueStarts() async {
     final poolAddress = EthereumAddress.fromHex(prizePoolAddress.value);
     prizePool =
         Prizepool(address: poolAddress, client: controller.client.value);
-    final txnHash = await prizePool.withdrawBeforeLeagueStarts(
-      credentials: controller.credentials,
-    );
-    controller.transactionHash = txnHash;
+    try {
+      final txnHash = await prizePool.withdrawBeforeLeagueStarts(
+        credentials: controller.credentials,
+      );
+      controller.transactionHash = txnHash;
+    } catch (e) {
+      controller.transactionHash = '';
+    }
   }
 
-  Future<String> createLeague(
-    int entryFeeAmount,
-    int leagueStartTime,
-    int leagueEndTime,
-  ) async {
+  Future<String> createLeague({
+    required int entryFeeAmount,
+    required int leagueStartTime,
+    required int leagueEndTime,
+  }) async {
     final prizePoolAddress = await promiseToFuture<dynamic>(
       prizePoolFactory.createLeague(
         axTokenAddress,
@@ -101,10 +122,14 @@ class PrizePoolRepository {
     prizePool =
         Prizepool(address: poolAddress, client: controller.client.value);
     final winner = EthereumAddress.fromHex(winnerAddress.value);
-    final txnHash = await prizePool.distributePrize(
-      winner,
-      credentials: controller.credentials,
-    );
-    controller.transactionHash = txnHash;
+    try {
+      final txnHash = await prizePool.distributePrize(
+        winner,
+        credentials: controller.credentials,
+      );
+      controller.transactionHash = txnHash;
+    } catch (e) {
+      controller.transactionHash = '';
+    }
   }
 }

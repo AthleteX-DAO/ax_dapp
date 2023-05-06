@@ -70,9 +70,9 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
       final dateEndInt = DateTime.parse(event.dateEnd).millisecondsSinceEpoch;
 
       final prizePoolAddress = await _prizePoolRepository.createLeague(
-        event.entryFee,
-        dateStartInt,
-        dateEndInt,
+        entryFeeAmount: event.entryFee,
+        leagueStartTime: dateStartInt,
+        leagueEndTime: dateEndInt,
       );
       debugPrint('the blocs prize pool address: $prizePoolAddress');
 

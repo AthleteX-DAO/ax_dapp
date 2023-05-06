@@ -7,7 +7,7 @@ import 'package:ax_dapp/firebase_options.dart';
 import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
-import 'package:ax_dapp/league/usecases/calculate_team_performance_usecase.dart';
+import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -165,7 +165,7 @@ void main() async {
             create: (context) => TrackingRepository(),
           ),
           RepositoryProvider(
-            create: (context) => CalculateTeamPerformanceUseCase(),
+            create: (context) => LeagueUseCase(),
           ),
           RepositoryProvider(
             create: (context) => TimerRepository(),
