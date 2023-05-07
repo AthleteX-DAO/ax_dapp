@@ -28,8 +28,10 @@ class LeagueTeam {
 
 extension LeagueTeamListX on List<LeagueTeam> {
   LeagueTeam findLeagueTeam(String walletAddress) {
-    final leagueTeam =
-        firstWhere((leagueTeam) => leagueTeam.userWalletID == walletAddress);
+    final leagueTeam = firstWhere(
+      (leagueTeam) => leagueTeam.userWalletID == walletAddress,
+      orElse: () => LeagueTeam.empty,
+    );
     return leagueTeam;
   }
 }

@@ -45,32 +45,50 @@ class JoinLeague extends StatelessWidget {
       onPressed: () {
         if (isWalletConnected) {
           final existingTeam = leagueTeams.findLeagueTeam(walletAddress);
-          Navigator.push(
-            context,
-            MaterialPageRoute<void>(
-              builder: (context) => BlocProvider(
-                create: (context) => LeagueDraftBloc(
-                  athletes: athletes,
-                  leagueRepository: context.read<LeagueRepository>(),
-                  getTotalTokenBalanceUseCase: GetTotalTokenBalanceUseCase(
-                    walletRepository: context.read<WalletRepository>(),
-                    tokensRepository: context.read<TokensRepository>(),
+          if (existingTeam.userWalletID == walletAddress) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.transparent,
+                content: Text(
+                  'You Are Already In This League!',
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontFamily: 'OpenSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
                   ),
-                  leagueUseCase: context.read<LeagueUseCase>(),
-                  prizePoolRepository: context.read<PrizePoolRepository>(),
-                  streamAppDataChangesUseCase:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  walletRepository: context.read<WalletRepository>(),
-                  isEditing: false,
-                  leagueTeam: existingTeam,
                 ),
-                child: DesktopLeagueDraft(
-                  league: league,
-                  existingTeam: existingTeam,
+                duration: Duration(seconds: 2),
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => BlocProvider(
+                  create: (context) => LeagueDraftBloc(
+                    athletes: athletes,
+                    leagueRepository: context.read<LeagueRepository>(),
+                    getTotalTokenBalanceUseCase: GetTotalTokenBalanceUseCase(
+                      walletRepository: context.read<WalletRepository>(),
+                      tokensRepository: context.read<TokensRepository>(),
+                    ),
+                    leagueUseCase: context.read<LeagueUseCase>(),
+                    prizePoolRepository: context.read<PrizePoolRepository>(),
+                    streamAppDataChangesUseCase:
+                        context.read<StreamAppDataChangesUseCase>(),
+                    walletRepository: context.read<WalletRepository>(),
+                    isEditing: false,
+                    leagueTeam: existingTeam,
+                  ),
+                  child: DesktopLeagueDraft(
+                    league: league,
+                    existingTeam: existingTeam,
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          }
         } else {
           context.showWalletWarningToast();
         }

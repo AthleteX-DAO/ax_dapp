@@ -82,7 +82,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
       if (isEditing) {
         final rosterIds = leagueTeam.rosterIds;
         final existingAptTeam = ownedApts.getExistingAptTeam(rosterIds);
-        final availableOwnedApts = ownedApts.getExistingAptTeam(rosterIds);
+        final availableOwnedApts = ownedApts.getAvailableOwnedApts(rosterIds);
         final existingTeamSize = existingAptTeam.length;
         emit(
           state.copyWith(
