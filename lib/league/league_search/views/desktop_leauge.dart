@@ -4,6 +4,7 @@ import 'package:ax_dapp/league/league_search/widgets/league_card.dart';
 import 'package:ax_dapp/league/league_search/widgets/league_header_title.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/util/snackbar_warning.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
@@ -135,18 +136,9 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                                   EthereumChain.polygonMainnet
                               ? () {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      backgroundColor: Colors.transparent,
-                                      content: Text(
-                                        'Switch To SX Network To Create Leagues!',
-                                        style: TextStyle(
-                                          color: Colors.amber,
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      duration: Duration(seconds: 2),
+                                    context.showSnackBarWarning(
+                                      warningMessage:
+                                          'Switch To SX Network To Create Leagues!',
                                     ),
                                   );
                                 }

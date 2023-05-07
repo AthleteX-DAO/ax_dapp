@@ -7,6 +7,7 @@ import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
+import 'package:ax_dapp/util/snackbar_warning.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -111,18 +112,8 @@ class LeagueTeamCards extends StatelessWidget {
               onPressed: league.isLocked && timerStatus.hasStarted
                   ? () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          backgroundColor: Colors.transparent,
-                          content: Text(
-                            'Cannot Edit Teams At This Time!',
-                            style: TextStyle(
-                              color: Colors.amber,
-                              fontFamily: 'OpenSans',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          duration: Duration(seconds: 2),
+                        context.showSnackBarWarning(
+                          warningMessage: 'Cannot Edit Teams At This Time!',
                         ),
                       );
                     }

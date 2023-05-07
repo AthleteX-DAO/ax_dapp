@@ -1,5 +1,6 @@
 import 'package:ax_dapp/app/config/app_config.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
+import 'package:ax_dapp/util/snackbar_warning.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,18 +28,9 @@ class Invite extends StatelessWidget {
       onPressed: timerStatus.hasEnded
           ? () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  backgroundColor: Colors.transparent,
-                  content: Text(
-                    'The League Has Ended And Invite Links Are No Longer Available!',
-                    style: TextStyle(
-                      color: Colors.amber,
-                      fontFamily: 'OpenSans',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  duration: Duration(seconds: 2),
+                context.showSnackBarWarning(
+                  warningMessage:
+                      'The League Has Ended And Invite Links Are No Longer Available!',
                 ),
               );
             }
@@ -52,18 +44,8 @@ class Invite extends StatelessWidget {
                 ),
               ).then(
                 (_) => ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    backgroundColor: Colors.transparent,
-                    content: Text(
-                      'Copied Invite Link!',
-                      style: TextStyle(
-                        color: Colors.amber,
-                        fontFamily: 'OpenSans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    duration: Duration(seconds: 2),
+                  context.showSnackBarWarning(
+                    warningMessage: 'Copied Invite Link!',
                   ),
                 ),
               );

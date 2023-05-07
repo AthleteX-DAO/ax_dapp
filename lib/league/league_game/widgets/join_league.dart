@@ -4,6 +4,7 @@ import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
+import 'package:ax_dapp/util/snackbar_warning.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
@@ -45,18 +46,14 @@ class JoinLeague extends StatelessWidget {
           final existingTeam = leagueTeams.findLeagueTeam(walletAddress);
           if (existingTeam.userWalletID == walletAddress) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                backgroundColor: Colors.transparent,
-                content: Text(
-                  'You Are Already In This League!',
-                  style: TextStyle(
-                    color: Colors.amber,
-                    fontFamily: 'OpenSans',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                duration: Duration(seconds: 2),
+              context.showSnackBarWarning(
+                warningMessage: 'You Are Already In This League!',
+              ),
+            );
+          } else if (leagueTeams.length == league.maxTeams) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              context.showSnackBarWarning(
+                warningMessage: 'The League is Full!',
               ),
             );
           } else {

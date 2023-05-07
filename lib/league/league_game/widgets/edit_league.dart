@@ -1,5 +1,6 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/league_game/widgets/widgets.dart';
+import 'package:ax_dapp/util/snackbar_warning.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:league_repository/league_repository.dart';
@@ -29,18 +30,9 @@ class EditLeague extends StatelessWidget {
       onPressed: () {
         if (timerStatus.hasStarted || timerStatus.hasEnded) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              backgroundColor: Colors.transparent,
-              content: Text(
-                'Cannot Edit League At This Time Because Either The League Has Started Or Ended',
-                style: TextStyle(
-                  color: Colors.amber,
-                  fontFamily: 'OpenSans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              duration: Duration(seconds: 2),
+            context.showSnackBarWarning(
+              warningMessage:
+                  'Cannot Edit League At This Time Because Either The League Has Started Or Ended',
             ),
           );
         } else {

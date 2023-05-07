@@ -1,4 +1,5 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
+import 'package:ax_dapp/util/snackbar_warning.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +21,8 @@ class LeaveLeague extends StatelessWidget {
         context.select((LeagueGameBloc bloc) => bloc.state.timerStatus);
     final walletAddress =
         context.select((WalletBloc bloc) => bloc.state.walletAddress);
+    final leagueTeams =
+        context.select((LeagueGameBloc bloc) => bloc.state.leagueTeams);
     return TextButton(
       style: ButtonStyle(
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -30,20 +33,18 @@ class LeaveLeague extends StatelessWidget {
         ),
       ),
       onPressed: () {
+        final existingTeam = leagueTeams.findLeagueTeam(walletAddress);
         if (timerStatus.hasStarted || timerStatus.hasEnded) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              content: Text(
-                'Cannot Leave ${league.name} At This Time Because Either The League Has Started Or Ended',
-                style: const TextStyle(
-                  color: Colors.amber,
-                  fontFamily: 'OpenSans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              duration: const Duration(seconds: 2),
+            context.showSnackBarWarning(
+              warningMessage:
+                  'Cannot Leave ${league.name} At This Time Because Either The League Has Started Or Ended',
+            ),
+          );
+        } else if (existingTeam.userWalletID != walletAddress) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            context.showSnackBarWarning(
+              warningMessage: 'You Are Not Even In This League!',
             ),
           );
         } else {
