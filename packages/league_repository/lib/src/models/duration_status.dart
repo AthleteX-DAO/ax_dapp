@@ -1,11 +1,12 @@
-import 'package:ax_dapp/league/models/timer_status.dart';
-import 'package:equatable/equatable.dart';
 
-/// {@template timerDuration}
+import 'package:equatable/equatable.dart';
+import 'package:league_repository/src/models/models.dart';
+
+/// {@template duration_status}
 /// Holds data related to the duration of a league.
 /// {@endtemplate}
 class DurationStatus extends Equatable {
-  /// {@macro timerDuration}
+  /// {@macro duration_status}
   const DurationStatus({
     required this.days,
     required this.hours,

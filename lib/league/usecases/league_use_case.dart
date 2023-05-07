@@ -1,5 +1,5 @@
-import 'package:ax_dapp/league/models/draft_apt.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
+import 'package:league_repository/league_repository.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class LeagueUseCase {

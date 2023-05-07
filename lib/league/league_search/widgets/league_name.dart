@@ -1,6 +1,6 @@
-import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:league_repository/league_repository.dart';
 
 class LeagueName extends StatelessWidget {
   const LeagueName({

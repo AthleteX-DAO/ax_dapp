@@ -1,5 +1,4 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
-import 'package:ax_dapp/league/models/league.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:league_repository/league_repository.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class EditRulesDialog extends StatefulWidget {

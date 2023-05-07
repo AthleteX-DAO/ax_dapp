@@ -13,11 +13,14 @@ enum TimerStatus {
   initial,
 }
 
-/// [TimerStatus] extensions
+/// [TimerStatus] extensions.
 extension TimerStatusX on TimerStatus {
+  /// Returns `true` if the timer has started.
   bool get hasStarted => this == TimerStatus.started;
 
+  /// Returns `true` if the timer has ended.
   bool get hasEnded => this == TimerStatus.ended;
 
+  /// Returns `true` if the timer has yet to start.
   bool get isPending => this == TimerStatus.pending;
 }

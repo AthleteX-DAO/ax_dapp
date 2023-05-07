@@ -1,8 +1,6 @@
 import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_draft/widgets/league_draft_apt_card.dart';
 import 'package:ax_dapp/league/league_draft/widgets/league_draft_team_card.dart';
-import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -10,6 +8,7 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:league_repository/league_repository.dart';
 
 class DesktopLeagueDraft extends StatelessWidget {
   const DesktopLeagueDraft({

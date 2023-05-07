@@ -1,7 +1,7 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
-import 'package:ax_dapp/league/models/league.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:league_repository/league_repository.dart';
 
 class ClaimPrize extends StatelessWidget {
   const ClaimPrize({

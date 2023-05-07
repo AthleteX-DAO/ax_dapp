@@ -1,15 +1,19 @@
-import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:league_repository/src/models/models.dart';
 import 'package:shared/shared.dart';
 
+/// {@template tokens_repository}
+/// Repository that manages the league domain.
+/// {@endtemplate}
 class LeagueRepository {
+  /// {@macro league_repository}
   LeagueRepository({required FirebaseFirestore fireStore})
       : _fireStore = fireStore;
 
   final FirebaseFirestore _fireStore;
 
+  /// Creates a new [League] from the instance.
   Future<void> createLeague({
     required League league,
   }) async {
@@ -20,6 +24,7 @@ class LeagueRepository {
     }
   }
 
+  /// Streams the current list of [League]s.
   Stream<List<League>> fetchLeagues() =>
       _fireStore.collection('Leagues').snapshots().map(
             (querySnapShot) => querySnapShot.docs
@@ -27,6 +32,7 @@ class LeagueRepository {
                 .toList(),
           );
 
+  /// Deleted a [League] from the [leagueID].
   Future<void> deleteLeague({required String leagueID}) async {
     try {
       final leagueRef = (await _fireStore
@@ -48,6 +54,8 @@ class LeagueRepository {
     }
   }
 
+  /// Updates the current league by its [leagueID].
+  /// Takes in the updated [League].
   Future<void> updateLeague({
     required String leagueID,
     required League league,
@@ -66,6 +74,7 @@ class LeagueRepository {
     }
   }
 
+  /// Retrieves the [LeagueTeam] based on its [leagueID].
   Future<List<LeagueTeam>> fetchLeagueTeams({
     required String leagueID,
   }) async {
@@ -87,6 +96,7 @@ class LeagueRepository {
     }
   }
 
+  /// Streams the current list of [LeagueTeam]s based on the [leagueID].
   Stream<List<LeagueTeam>> getLeagueTeams({required String leagueID}) {
     final leagueRef = _fireStore
         .collection('Leagues')
@@ -100,6 +110,7 @@ class LeagueRepository {
         );
   }
 
+  /// Updates the [LeagueTeam] of the user.
   Future<void> updateRoster({
     required String leagueID,
     required LeagueTeam team,
@@ -125,6 +136,8 @@ class LeagueRepository {
     }
   }
 
+  /// Enrolls a user in a league.
+  /// Adds the users' [LeagueTeam].
   Future<void> enrollUser({
     required String leagueID,
     required LeagueTeam team,
@@ -143,6 +156,7 @@ class LeagueRepository {
     }
   }
 
+  /// Removes a user from the league.
   Future<void> removeUser({
     required String leagueID,
     required String userWallet,
@@ -168,6 +182,7 @@ class LeagueRepository {
     }
   }
 
+  /// Updates the [winnerWallet] of the league once it ends.
   Future<void> updateWinnner({
     required String leagueID,
     required String winnerWallet,

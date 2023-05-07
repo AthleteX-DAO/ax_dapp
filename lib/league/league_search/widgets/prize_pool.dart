@@ -1,6 +1,5 @@
-import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:flutter/material.dart';
+import 'package:league_repository/league_repository.dart';
 
 class PrizePool extends StatelessWidget {
   const PrizePool({

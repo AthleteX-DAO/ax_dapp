@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:ax_dapp/league/models/draft_apt.dart';
-import 'package:ax_dapp/league/models/league_team.dart';
-import 'package:ax_dapp/league/repository/league_repository.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
@@ -10,6 +7,7 @@ import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:league_repository/league_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 

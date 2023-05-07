@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:ax_dapp/league/models/duration_status.dart';
-import 'package:ax_dapp/league/models/timer_status.dart';
+import 'package:league_repository/league_repository.dart';
 import 'package:shared/shared.dart';
 
 class TimerRepository {

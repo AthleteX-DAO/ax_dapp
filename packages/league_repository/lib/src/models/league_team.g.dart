@@ -10,8 +10,10 @@ LeagueTeam _$LeagueTeamFromJson(Map<String, dynamic> json) => LeagueTeam(
       userWalletID: json['userWalletID'] as String,
       teamAppreciation: (json['teamAppreciation'] as num).toDouble(),
       roster: (json['roster'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(int.parse(k),
-            (e as List<dynamic>).map((e) => e as String).toList()),
+        (k, e) => MapEntry(
+          int.parse(k),
+          (e as List<dynamic>).map((e) => e as String).toList(),
+        ),
       ),
     );
 

@@ -1,14 +1,12 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/league_game/widgets/widgets.dart';
-import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/league/models/timer_status.dart';
-import 'package:ax_dapp/league/models/user_team.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:league_repository/league_repository.dart';
 
 class LeagueGame extends StatelessWidget {
   const LeagueGame({

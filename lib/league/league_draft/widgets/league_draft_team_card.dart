@@ -1,8 +1,8 @@
 import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
-import 'package:ax_dapp/league/models/draft_apt.dart';
 import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:league_repository/league_repository.dart';
 
 class MyTeamCard extends StatelessWidget {
   const MyTeamCard({

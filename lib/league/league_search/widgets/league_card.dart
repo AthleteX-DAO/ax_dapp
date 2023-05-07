@@ -1,8 +1,7 @@
 import 'package:ax_dapp/league/league_search/widgets/widgets.dart';
-import 'package:ax_dapp/league/models/league.dart';
-import 'package:ax_dapp/league/models/league_team.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:league_repository/league_repository.dart';
 
 class LeagueCard extends StatelessWidget {
   const LeagueCard({

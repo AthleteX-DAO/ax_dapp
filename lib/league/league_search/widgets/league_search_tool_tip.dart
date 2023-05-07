@@ -1,5 +1,5 @@
-import 'package:ax_dapp/league/models/league.dart';
 import 'package:flutter/material.dart';
+import 'package:league_repository/league_repository.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class LeagueSearchPageToolTip extends StatelessWidget {
