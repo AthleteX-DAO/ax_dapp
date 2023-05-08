@@ -115,7 +115,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     GetGasPriceRequested event,
     Emitter<WalletState> emit,
   ) async {
-    final gasPrice = await _walletRepository.getGasPrice();
+    final gasPriceMetamask = await _walletRepository.getGasPrice();
+    final gasPriceMagic = await _magicRepository.getGasPrices();
+    final gasPrice = gasPriceMagic;
     emit(state.copyWith(gasPrice: gasPrice));
   }
 
@@ -151,13 +153,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     debugPrint(
       'ConnectWalletMagic event emitted!',
     );
-    await _magicRepository.showWallet();
-    final address = Token.empty.address;
+
+    final address = await _magicRepository.connect();
 
     debugPrint('Updating UI with this address: $address');
     emit(
       state.copyWith(
-        walletAddress: address,
+        walletAddress: address.toString(),
       ),
     );
   }
@@ -174,6 +176,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     await _magicRepository.showWallet();
-    emit(state.copyWith());
+    final walletAddress = _magicRepository.;
+    emit(state.copyWith(walletAddress: walletAddress));
   }
 }

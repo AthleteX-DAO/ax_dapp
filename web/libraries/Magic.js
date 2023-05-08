@@ -1,17 +1,14 @@
 var MagicSDK = (function () {
     function MagicSDK(apiKey) {
         this._magicSDK = new Magic('pk_live_A0EFC48FF2C1D624');
-    }
-    
-    MagicSDK.prototype.setup = async function () {
-        this._web3 = new Web3(await this._magicSDK.wallet.getProvider()); // Comment: the Web3 function exists in the DOM
-        console.log(_web3);
+        this._web3 = new Web3(this._magicSDK.rpcProvider); // Comment: the Web3 function exists in the DOM
+        
         this._magicSDK.preload().then(() => console.log('Magic <iframe> loaded.'));
         /// Places the magic ethereum client onto the window object
         window.magicEthereum = this._web3.eth;
+        console.log(Web3);
     }
 
-    // This needs to be deleted (dead function)
     MagicSDK.prototype.connect = async function () {
         console.log("Connecting to Magic");      
         const address = (await this._web3.eth.getAccounts())[0];
@@ -21,9 +18,7 @@ var MagicSDK = (function () {
     }
 
     MagicSDK.prototype.showWallet = async function () {
-        const address = (await magic.wallet.connectWithUI())[0];
-        console.log('\n\n [Magic.js] showWallet Invoked.  the address: ' + address + ' \n\n')
-        await address;
+        await this._magicSDK.wallet.connectWithUI();
     }
 
     MagicSDK.prototype.disconnect = async function () {
@@ -49,5 +44,14 @@ var MagicSDK = (function () {
         const credentials = await this._web3.eth.requestAccount();
         return credentials;
     }
+
+    Magic.prototype.gasPriceInGwei = async function () {
+        console.log("[Magic] Requesting on-chain gas price...")
+
+        const gasPriceInGwei = await this._web3.eth.getGasPrice();
+
+        return gasPriceInGwei;
+    }
+
     return MagicSDK;
 })();

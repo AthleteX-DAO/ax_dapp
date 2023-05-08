@@ -12,8 +12,10 @@ class MagicSDK {
   external dynamic get rpcProvider;
   external Future<dynamic> connect();
   external Future<dynamic> showWallet();
+  external Future<dynamic> sendTransaction();
   external Future<dynamic> disconnect();
   external Future<dynamic> getWalletInfo();
   external Future<dynamic> requestUserInfo();
+  external Future<dynamic> gasPriceInGwei();
   external Future<dynamic> requestAccount();
 }

@@ -2,15 +2,14 @@ import 'dart:html' as html;
 import 'dart:js_util';
 
 import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
-import 'package:ax_dapp/wallet/magic_api_client/magic_credentials.dart';
-import 'package:ax_dapp/wallet/magic_api_client/magic_ethereum.dart';
 import 'package:ax_dapp/wallet/magic_api_client/magic_wallet_api_client.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/config_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared/shared.dart';
-import 'package:web3_browser/web3_browser.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:web3dart/src/crypto/formatting.dart';
 
 /// {@template magic_wallet_api_client}
 /// Web only client that manages the wallet API(i.e. Magic).
@@ -26,7 +25,6 @@ class MagicWalletApiClient implements MagicApiClient {
   ConfigApiClient get _configApiClient => _reactiveApiClient.value;
   @override
   EthereumChain get currentChain => EthereumChain.polygonMainnet;
-  html.Window get _window => html.window;
 
   /// Allows the user to connect to a 'Magic' wallet.
   ///
@@ -36,7 +34,7 @@ class MagicWalletApiClient implements MagicApiClient {
   @override
   Future<dynamic> connect() async {
     try {
-      final address = promiseToFuture<String>(_magicSDK.connect());
+      final address = promiseToFuture<String>(_magicSDK.showWallet());
       return address;
     } catch (_) {}
   }
@@ -147,21 +145,16 @@ class MagicWalletApiClient implements MagicApiClient {
   }
 
   @override
-  Future<double> getGasPrice() {
-    // TODO: implement getGasPrice
-    throw UnimplementedError();
+  Future<double> getGasPrice() async {
+    final wei = await promiseToFuture<String>(_magicSDK.gasPriceInGwei());
+    final rawGasPrice =
+        EtherAmount.fromUnitAndValue(EtherUnit.wei, hexToInt(wei));
+    final gasPriceInGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+    final formattedGasPriceInGwei = gasPriceInGwei.toStringAsFixed(2);
+    return double.parse(formattedGasPriceInGwei);
   }
 
   void updateWalletClient() {
-    // ignore: avoid_dynamic_calls
-
-    final client = _window.magicEthereum;
-
-    debugPrint(
-        'I am now switching out the old client for a new client  \n $client');
-    if (client == null) {
-      debugPrint('[MagicWalletApiClient] the client is null');
-    }
     // _configApiClient.updateWeb3ClientDependency(client);
   }
 
