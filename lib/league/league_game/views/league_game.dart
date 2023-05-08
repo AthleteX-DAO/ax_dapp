@@ -140,6 +140,7 @@ class LeagueGame extends StatelessWidget {
                       ),
                     ),
                     if (state.status == BlocStatus.loading) const Loader(),
+                    const LeagueTeamHeader(),
                     SizedBox(
                       height: constraints.maxHeight * 0.5,
                       child: ListView.separated(
