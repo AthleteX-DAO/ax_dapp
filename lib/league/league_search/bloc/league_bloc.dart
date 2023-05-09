@@ -100,24 +100,13 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     FetchLeagues event,
     Emitter<LeagueState> emit,
   ) async {
-    await emit.onEach<List<League>>(
-      _leagueRepository.fetchLeagues(),
-      onData: (leagues) async {
-        filterOutUnsupportedSportsByChain(leagues);
-        final leagueTeams = await Future.wait(
-          leagues.map((league) async {
-            final leagueTeam = await _leagueRepository.fetchLeagueTeams(
-              leagueID: league.leagueID,
-            );
-            return leagueTeam;
-          }),
-        );
+    await emit.onEach<List<Pair<League, List<LeagueTeam>>>>(
+      _leagueRepository.getLeaguesWithTeams(),
+      onData: (leaguesWithTeams) async {
         emit(
           state.copyWith(
-            allLeagues: leagues,
-            filteredLeagues: leagues,
-            leagueTeams: leagueTeams,
-            filteredLeagueTeams: leagueTeams,
+            leaguesWithTeams: leaguesWithTeams,
+            filteredLeaguesWithTeams: leaguesWithTeams,
             status: BlocStatus.success,
             selectedSport: SupportedSport.all,
           ),
@@ -134,11 +123,11 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     if (event.selectedSport != SupportedSport.all) {
       emit(
         state.copyWith(
-          filteredLeagues: state.allLeagues
+          filteredLeaguesWithTeams: state.leaguesWithTeams
               .where(
-                (league) =>
-                    league.name.toUpperCase().contains(input) &&
-                    event.selectedSport.name == league.sports.first.name,
+                (pair) =>
+                    pair.first.name.toUpperCase().contains(input) &&
+                    event.selectedSport.name == pair.first.sports.first.name,
               )
               .toList(),
         ),
@@ -146,9 +135,9 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     } else {
       emit(
         state.copyWith(
-          filteredLeagues: state.allLeagues
+          filteredLeaguesWithTeams: state.leaguesWithTeams
               .where(
-                (league) => league.name.toUpperCase().contains(
+                (pair) => pair.first.name.toUpperCase().contains(
                       input.toUpperCase(),
                     ),
               )
@@ -163,17 +152,17 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     Emitter<LeagueState> emit,
   ) async {
     if (event.selectedSport != SupportedSport.all) {
-      final filteredList = state.allLeagues
+      final filteredLeaguesWithTeams = state.leaguesWithTeams
           .where(
-            (league) => event.selectedSport.name == league.sports.first.name,
+            (pair) => event.selectedSport.name == pair.first.sports.first.name,
           )
           .toList();
-      filterOutUnsupportedSportsByChain(filteredList);
-      if (filteredList.isNotEmpty) {
+      filterOutUnsupportedSportsByChain(filteredLeaguesWithTeams);
+      if (filteredLeaguesWithTeams.isNotEmpty) {
         emit(
           state.copyWith(
             status: BlocStatus.success,
-            filteredLeagues: filteredList,
+            filteredLeaguesWithTeams: filteredLeaguesWithTeams,
             selectedSport: event.selectedSport,
           ),
         );
@@ -181,19 +170,19 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         emit(
           state.copyWith(
             status: BlocStatus.noData,
-            filteredLeagues: const [],
+            filteredLeaguesWithTeams: const [],
             selectedSport: event.selectedSport,
           ),
         );
       }
     } else {
-      final filteredList = state.allLeagues
-          .where((athlete) => event.selectedSport == SupportedSport.all)
+      final filteredLeaguesWithTeams = state.leaguesWithTeams
+          .where((pair) => event.selectedSport == SupportedSport.all)
           .toList();
       emit(
         state.copyWith(
           status: BlocStatus.success,
-          filteredLeagues: filteredList,
+          filteredLeaguesWithTeams: filteredLeaguesWithTeams,
           selectedSport: SupportedSport.all,
         ),
       );
@@ -217,14 +206,16 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     return generatedLeagueID;
   }
 
-  void filterOutUnsupportedSportsByChain(List<League> leagues) {
+  void filterOutUnsupportedSportsByChain(
+    List<Pair<League, List<LeagueTeam>>> leaguesWithTeams,
+  ) {
     if (state.selectedChain == EthereumChain.sxMainnet ||
         state.selectedChain == EthereumChain.sxTestnet) {
-      leagues
-          .removeWhere((element) => element.sports.first == SupportedSport.MLB);
+      leaguesWithTeams
+          .removeWhere((pair) => pair.first.sports.first == SupportedSport.MLB);
     } else {
-      leagues
-          .removeWhere((element) => element.sports.first == SupportedSport.NFL);
+      leaguesWithTeams
+          .removeWhere((pair) => pair.first.sports.first == SupportedSport.NFL);
     }
   }
 }

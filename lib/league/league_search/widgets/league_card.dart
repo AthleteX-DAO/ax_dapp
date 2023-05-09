@@ -6,12 +6,10 @@ import 'package:league_repository/league_repository.dart';
 class LeagueCard extends StatelessWidget {
   const LeagueCard({
     super.key,
-    required this.league,
-    required this.leagueTeams,
+    required this.leaguePair,
   });
 
-  final League league;
-  final List<LeagueTeam> leagueTeams;
+  final Pair<League, List<LeagueTeam>> leaguePair;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,7 @@ class LeagueCard extends StatelessWidget {
         onPressed: () {
           context.goNamed(
             'league-game',
-            params: {'leagueID': league.leagueID},
+            params: {'leagueID': leaguePair.first.leagueID},
           );
         },
         child: Row(
@@ -44,34 +42,34 @@ class LeagueCard extends StatelessWidget {
           children: <Widget>[
             LeagueName(
               width: _width,
-              league: league,
+              league: leaguePair.first,
               sportIconSize: sportIconSize,
               textSize: textSize,
             ),
             if (showDateRange)
               DateRange(
                 width: _width,
-                league: league,
+                league: leaguePair.first,
                 textSize: textSize,
               ),
             EntryFee(
               width: _width,
               axIconWidth: axIconWidth,
               axIconHeight: axIconHeight,
-              league: league,
+              league: leaguePair.first,
               textSize: textSize,
             ),
             PrizePool(
               width: _width,
               axIconWidth: axIconWidth,
               axIconHeight: axIconHeight,
-              league: league,
+              league: leaguePair.first,
               textSize: textSize,
-              leagueTeams: leagueTeams,
+              leagueTeams: leaguePair.second,
             ),
             if (showToolTipIcon)
               LeagueSearchPageToolTip(
-                league: league,
+                league: leaguePair.first,
                 textSize: textSize,
               ),
           ],

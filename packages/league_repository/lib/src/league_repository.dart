@@ -32,6 +32,27 @@ class LeagueRepository {
                 .toList(),
           );
 
+  /// Stream a list of [Pair]s that holds [League] and a list of [LeagueTeam]s.
+  Stream<List<Pair<League, List<LeagueTeam>>>> getLeaguesWithTeams() {
+    final leaguesStream = fetchLeagues();
+    final teamsStream = leaguesStream.switchMap(
+      (leagues) => Rx.combineLatestList(
+        leagues.map((league) => getLeagueTeams(leagueID: league.leagueID)),
+      ),
+    );
+
+    return Rx.combineLatest2(
+      leaguesStream,
+      teamsStream,
+      (List<League> leagues, List<List<LeagueTeam>> teams) {
+        return [
+          for (var pair in IterableZip([leagues, teams]))
+            Pair(first: pair[0] as League, second: pair[1] as List<LeagueTeam>)
+        ];
+      },
+    );
+  }
+
   /// Deleted a [League] from the [leagueID].
   Future<void> deleteLeague({required String leagueID}) async {
     try {

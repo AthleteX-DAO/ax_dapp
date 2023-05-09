@@ -45,8 +45,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
         },
         builder: (context, state) {
           final bloc = context.read<LeagueBloc>();
-          final filteredLeagues = state.filteredLeagues;
-          final filteredLeagueTeams = state.filteredLeagueTeams;
+          final filteredLeaguesWithTeams = state.filteredLeaguesWithTeams;
           if (_selectedChain != state.selectedChain) {
             _selectedChain = state.selectedChain;
             bloc.add(
@@ -352,11 +351,10 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                       child: ListView.builder(
                         padding: const EdgeInsets.only(top: 10),
                         physics: const BouncingScrollPhysics(),
-                        itemCount: filteredLeagues.length,
+                        itemCount: filteredLeaguesWithTeams.length,
                         itemBuilder: (context, index) {
                           return LeagueCard(
-                            league: filteredLeagues[index],
-                            leagueTeams: filteredLeagueTeams[index],
+                            leaguePair: filteredLeaguesWithTeams[index],
                           );
                         },
                       ),

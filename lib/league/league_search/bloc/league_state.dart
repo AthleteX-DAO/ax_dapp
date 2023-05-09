@@ -11,6 +11,8 @@ class LeagueState extends Equatable {
     this.selectedSport = SupportedSport.all,
     this.filteredLeagueTeams = const [],
     this.leagueTeams = const [],
+    this.leaguesWithTeams = const [],
+    this.filteredLeaguesWithTeams = const [],
   });
 
   final BlocStatus status;
@@ -22,6 +24,8 @@ class LeagueState extends Equatable {
   final SupportedSport selectedSport;
   final List<List<LeagueTeam>> leagueTeams;
   final List<List<LeagueTeam>> filteredLeagueTeams;
+  final List<Pair<League, List<LeagueTeam>>> leaguesWithTeams;
+  final List<Pair<League, List<LeagueTeam>>> filteredLeaguesWithTeams;
 
   LeagueState copyWith({
     BlocStatus? status,
@@ -33,6 +37,8 @@ class LeagueState extends Equatable {
     SupportedSport? selectedSport,
     List<List<LeagueTeam>>? leagueTeams,
     List<List<LeagueTeam>>? filteredLeagueTeams,
+    List<Pair<League, List<LeagueTeam>>>? leaguesWithTeams,
+    List<Pair<League, List<LeagueTeam>>>? filteredLeaguesWithTeams,
   }) {
     return LeagueState(
       status: status ?? this.status,
@@ -44,6 +50,9 @@ class LeagueState extends Equatable {
       selectedSport: selectedSport ?? this.selectedSport,
       leagueTeams: leagueTeams ?? this.leagueTeams,
       filteredLeagueTeams: filteredLeagueTeams ?? this.filteredLeagueTeams,
+      leaguesWithTeams: leaguesWithTeams ?? this.leaguesWithTeams,
+      filteredLeaguesWithTeams:
+          filteredLeaguesWithTeams ?? this.filteredLeaguesWithTeams,
     );
   }
 
@@ -58,5 +67,7 @@ class LeagueState extends Equatable {
         selectedSport,
         leagueTeams,
         filteredLeagueTeams,
+        leaguesWithTeams,
+        filteredLeaguesWithTeams,
       ];
 }
