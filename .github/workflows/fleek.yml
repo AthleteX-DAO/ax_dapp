@@ -1,0 +1,15 @@
+on: [push]
+
+jobs:
+  test-deploy:
+    runs-on: ubuntu-latest
+    name: A job to deploy the AthleteX dApp to IPFS
+    steps:
+      - uses: actions/checkout@v2
+      - name: AthleteX Dapp
+        id: deploy
+        uses: fleekhq/action-deploy@v1
+        with:
+          apiKey: ${{ secrets.FLEEK_API_KEY }}
+      - name: Get the output url
+        run: echo "Deploy url is ${{ steps.deploy.outputs.deployUrl }}"
