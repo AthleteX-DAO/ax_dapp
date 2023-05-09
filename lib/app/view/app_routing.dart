@@ -240,15 +240,17 @@ class _MaterialApp extends StatelessWidget {
                 path: 'league-game/:leagueID',
                 builder: (BuildContext context, GoRouterState state) {
                   final leagueID = state.params['leagueID']!;
-                  final allLeagues =
-                      context.watch<LeagueBloc>().state.allLeagues;
-                  if (allLeagues.isEmpty) return const Loader();
-                  final league = allLeagues.findLeague(leagueID);
+                  final leaguesWithTeams =
+                      context.watch<LeagueBloc>().state.leaguesWithTeams;
+                  if (leaguesWithTeams.isEmpty) return const Loader();
+                  final leagueWithTeam = leaguesWithTeams.firstWhere(
+                    (leaguePair) => leaguePair.first.leagueID == leagueID,
+                  );
                   Global().pageName = 'league-game';
                   return BlocProvider(
                     create: (context) => LeagueGameBloc(
-                      startDate: league.dateStart,
-                      endDate: league.dateEnd,
+                      startDate: leagueWithTeam.first.dateStart,
+                      endDate: leagueWithTeam.first.dateEnd,
                       streamAppDataChanges:
                           context.read<StreamAppDataChangesUseCase>(),
                       leagueRepository: context.read<LeagueRepository>(),
@@ -265,7 +267,10 @@ class _MaterialApp extends StatelessWidget {
                       prizePoolRepository: context.read<PrizePoolRepository>(),
                       walletRepository: context.read<WalletRepository>(),
                     ),
-                    child: LeagueGame(league: league, leagueID: leagueID),
+                    child: LeagueGame(
+                      league: leagueWithTeam.first,
+                      leagueID: leagueID,
+                    ),
                   );
                 },
               ),
