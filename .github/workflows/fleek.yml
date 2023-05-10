@@ -1,14 +1,30 @@
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
 
 jobs:
-  test-deploy:
+  build-prod:
     runs-on: ubuntu-latest
-    name: A job to deploy the AthleteX dApp to IPFS
+    name: Build, create docker image, and push on PR merge
     steps:
       - uses: actions/checkout@v2
       - name: AthleteX Dapp
         id: deploy
         uses: fleekhq/action-deploy@v1
+
+      - name: Get Code
+        uses: actions/checkout@v3
+
+      - name: Builds Flutter
+        steps:
+        - uses: actions/checkout@v3
+        - uses: subosito/flutter-action@v2
+          with:
+            channel: 'stable'
+        - run: flutter pub get
+        - run: flutter build web
 
         with:
           apiKey: ${{ secrets.FLEEK_API_KEY }}
