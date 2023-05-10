@@ -7,8 +7,8 @@ class PredictionModel extends Equatable {
     required this.details,
     required this.address,
     this.resolution,
-    this.longTokenAddress,
-    this.shortTokenAddress,
+    this.yesTokenAddress,
+    this.noTokenAddress,
   });
 
   final String prompt;
@@ -16,8 +16,8 @@ class PredictionModel extends Equatable {
   final bool? resolution;
 
   final String address;
-  final String? longTokenAddress;
-  final String? shortTokenAddress;
+  final String? yesTokenAddress;
+  final String? noTokenAddress;
 
   static const empty = PredictionModel(
     prompt: '',
