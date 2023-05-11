@@ -23,6 +23,7 @@ import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
+import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -40,6 +41,7 @@ import 'package:tokens_repository/tokens_repository.dart';
 import 'package:tracking_repository/tracking_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -147,8 +149,18 @@ class _MaterialApp extends StatelessWidget {
                 path: 'prediction/:id',
                 builder: (BuildContext context, GoRouterState state) {
                   Global().pageName = 'Prediction';
-                  return PredictionPage(
-                    prediction: _toPrediction(state.params['id']!)!,
+                  return BlocProvider(
+                    create: (context) => PredictionPageBloc(
+                      walletRepository: context.read<WalletRepository>(),
+                      tokensRepository: context.read<TokensRepository>(),
+                      eventMarketRepository:
+                          context.read<EventMarketRepository>(),
+                      streamAppDataChangesUseCase:
+                          context.read<StreamAppDataChangesUseCase>(),
+                    ),
+                    child: PredictionPage(
+                      prediction: _toPrediction(state.params['id']!)!,
+                    ),
                   );
                 },
               )

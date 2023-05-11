@@ -21,7 +21,7 @@ class PredictionPageBloc
     required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
-        eventMarketRepository = eventMarketRepository,
+        _eventMarketRepository = eventMarketRepository,
         _streamAppDataChangesUseCase = streamAppDataChangesUseCase,
         super(const PredictionPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -31,7 +31,7 @@ class PredictionPageBloc
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
-  final EventMarketRepository eventMarketRepository;
+  final EventMarketRepository _eventMarketRepository;
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -51,7 +51,7 @@ class PredictionPageBloc
         final appConfig = appData.appConfig;
 
         // Keeps the event contract client values current
-        eventMarketRepository
+        _eventMarketRepository
           ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value
           ..marketAddress.value = state.predictionModel.address
@@ -65,7 +65,7 @@ class PredictionPageBloc
     MintPredictionTokens event,
     Emitter<PredictionPageState> emit,
   ) async {
-    await eventMarketRepository.mint();
+    await _eventMarketRepository.mint();
     emit(state.copyWith(status: BlocStatus.success));
   }
 
@@ -73,7 +73,7 @@ class PredictionPageBloc
     RedeemPredictionTokens event,
     Emitter<PredictionPageState> emit,
   ) async {
-    await eventMarketRepository.redeem();
+    await _eventMarketRepository.redeem();
     emit(state.copyWith(status: BlocStatus.success));
   }
 
@@ -91,7 +91,7 @@ class PredictionPageBloc
   ) async {
     final predictionAddress = event.predictionModel.address;
     final currentPrediction = event.predictionModel;
-    eventMarketRepository.eventMarketAddress = predictionAddress;
+    _eventMarketRepository.eventMarketAddress = predictionAddress;
     emit(
       state.copyWith(
         status: BlocStatus.success,
