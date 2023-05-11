@@ -8,6 +8,8 @@ import 'package:ax_dapp/dialogs/redeem/redeem_dialog.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/sell_dialog.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
+import 'package:ax_dapp/prediction/view/prediction_page.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/scout/models/models.dart';
@@ -314,11 +316,21 @@ class YesButton extends StatelessWidget {
                     width: wid,
                     decoration:
                         boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                    child: TextButton(
-                      onPressed: () async {
-                        print('pressed!');
+                    child: BlocSelector<PredictionPageBloc, PredictionPageState,
+                        String>(
+                      selector: (state) {
+                        return state.predictionModel.address;
                       },
-                      child: const Text('Press Me'),
+                      builder: (context, isPressed) {
+                        final bloc = context.read<PredictionPageBloc>();
+                        return TextButton(
+                          onPressed: () async {
+                            await bloc.eventMarketRepository.buy();
+                          },
+                          child: Text('Buy',
+                              style: textStyle(Colors.black, 20, false, false)),
+                        );
+                      },
                     ),
                   ),
                 );
@@ -381,11 +393,23 @@ class NoButton extends StatelessWidget {
                     width: wid,
                     decoration:
                         boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                    child: TextButton(
-                      onPressed: () async {
-                        print('pressed!');
+                    child: BlocSelector<PredictionPageBloc, PredictionPageState,
+                        String>(
+                      selector: (state) {
+                        return state.predictionModel.address;
                       },
-                      child: const Text('Press Me'),
+                      builder: (context, state) {
+                        final bloc = context.read<PredictionPageBloc>();
+                        return TextButton(
+                          onPressed: () async {
+                            await bloc.eventMarketRepository.mint();
+                          },
+                          child: Text(
+                            'Mint',
+                            style: textStyle(Colors.black, 20, false, false),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 );
@@ -437,11 +461,23 @@ class GenericMintButton extends StatelessWidget {
                   width: wid,
                   decoration:
                       boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                  child: TextButton(
-                    onPressed: () async {
-                      print('pressed!');
+                  child: BlocSelector<PredictionPageBloc, PredictionPageState,
+                      String>(
+                    selector: (state) {
+                      return state.predictionModel.address;
                     },
-                    child: const Text('Press Me'),
+                    builder: (context, isPressed) {
+                      final bloc = context.read<PredictionPageBloc>();
+                      return TextButton(
+                        onPressed: () async {
+                          await bloc.eventMarketRepository.mint();
+                        },
+                        child: Text(
+                          'Mint',
+                          style: textStyle(Colors.black, 20, false, false),
+                        ),
+                      );
+                    },
                   ),
                 ),
               );
@@ -494,11 +530,23 @@ class GenericRedeemButton extends StatelessWidget {
                   width: wid,
                   decoration:
                       boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                  child: TextButton(
-                    onPressed: () async {
-                      print('pressed!');
+                  child: BlocSelector<PredictionPageBloc, PredictionPageState,
+                      String>(
+                    selector: (state) {
+                      return state.predictionModel.address;
                     },
-                    child: const Text('Press Me'),
+                    builder: (context, isPressed) {
+                      final bloc = context.read<PredictionPageBloc>();
+                      return TextButton(
+                        onPressed: () async {
+                          await bloc.eventMarketRepository.redeem();
+                        },
+                        child: Text(
+                          'Redeem',
+                          style: textStyle(Colors.black, 20, false, false),
+                        ),
+                      );
+                    },
                   ),
                 ),
               );

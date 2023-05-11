@@ -86,24 +86,22 @@ class _DesktopPredictState extends State<DesktopPredict> {
                 alignment: Alignment.center,
                 children: [
                   if (state.status == BlocStatus.loading) const Loader(),
-                  if (state.status == BlocStatus.success ||
-                      state.status == BlocStatus.initial)
-                    SizedBox(
-                      height: constraints.maxHeight * 0.8 - 120,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.only(top: 10),
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: currentPredictions.length,
-                        itemBuilder: (context, index) {
-                          /// This builds a list of [ DesktopPrediction ] items
-                          return DesktopPrediction(
-                            predictionModel: currentPredictions[index],
-                            minTeamWidth: minTeamWidth,
-                            minViewWidth: minViewWidth,
-                          );
-                        },
-                      ),
+                  SizedBox(
+                    height: constraints.maxHeight * 0.8 - 120,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(top: 10),
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: currentPredictions.length,
+                      itemBuilder: (context, index) {
+                        /// This builds a list of [ DesktopPrediction ] items
+                        return DesktopPrediction(
+                          predictionModel: currentPredictions[index],
+                          minTeamWidth: minTeamWidth,
+                          minViewWidth: minViewWidth,
+                        );
+                      },
                     ),
+                  ),
                 ],
               ),
             ],

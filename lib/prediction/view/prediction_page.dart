@@ -89,8 +89,8 @@ class PredictionPage extends StatelessWidget {
                         children: [
                           // if (state.status == BlocStatus.loading)
                           //   const Loader(),
-                          if (state.status == BlocStatus.success ||
-                              state.status == BlocStatus.initial)
+                          if (state.status == BlocStatus.initial ||
+                              state.status == BlocStatus.success)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
