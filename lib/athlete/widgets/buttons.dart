@@ -324,8 +324,8 @@ class YesButton extends StatelessWidget {
                       builder: (context, isPressed) {
                         final bloc = context.read<PredictionPageBloc>();
                         return TextButton(
-                          onPressed: () async {
-                            await bloc.eventMarketRepository.buy();
+                          onPressed: () {
+                            bloc.add(BuyPredictionTokens());
                           },
                           child: Text('Buy',
                               style: textStyle(Colors.black, 20, false, false)),
@@ -401,11 +401,11 @@ class NoButton extends StatelessWidget {
                       builder: (context, state) {
                         final bloc = context.read<PredictionPageBloc>();
                         return TextButton(
-                          onPressed: () async {
-                            await bloc.eventMarketRepository.mint();
+                          onPressed: ()  {
+                             bloc.add(SellPredictionTokens());
                           },
                           child: Text(
-                            'Mint',
+                            'Sell',
                             style: textStyle(Colors.black, 20, false, false),
                           ),
                         );
@@ -469,8 +469,8 @@ class GenericMintButton extends StatelessWidget {
                     builder: (context, isPressed) {
                       final bloc = context.read<PredictionPageBloc>();
                       return TextButton(
-                        onPressed: () async {
-                          await bloc.eventMarketRepository.mint();
+                        onPressed: () {
+                           bloc.add(MintPredictionTokens());
                         },
                         child: Text(
                           'Mint',
@@ -538,8 +538,8 @@ class GenericRedeemButton extends StatelessWidget {
                     builder: (context, isPressed) {
                       final bloc = context.read<PredictionPageBloc>();
                       return TextButton(
-                        onPressed: () async {
-                          await bloc.eventMarketRepository.redeem();
+                        onPressed: () {
+                          bloc.add(RedeemPredictionTokens());
                         },
                         child: Text(
                           'Redeem',
