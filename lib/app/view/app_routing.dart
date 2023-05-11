@@ -112,6 +112,7 @@ class _MaterialApp extends StatelessWidget {
             return '/scout';
           }
 
+          // INFO: This section is focused on redirecting users if they are caught in a subpage
           if (state.location.contains('/prediction') &&
               Global().predictionsList.isEmpty) {
             return '/predict';
