@@ -7,8 +7,8 @@ class PredictionModel extends Equatable {
     required this.details,
     required this.address,
     this.resolution,
-    this.yesTokenAddress,
-    this.noTokenAddress,
+    required this.yesTokenAddress,
+    required this.noTokenAddress,
   });
 
   final String prompt;
@@ -16,18 +16,22 @@ class PredictionModel extends Equatable {
   final bool? resolution;
 
   final String address;
-  final String? yesTokenAddress;
-  final String? noTokenAddress;
+  final String yesTokenAddress;
+  final String noTokenAddress;
 
   static const empty = PredictionModel(
     prompt: '',
     details: '',
     address: kEmptyAddress,
+    yesTokenAddress: '',
+    noTokenAddress: '',
   );
   static const generic = PredictionModel(
     prompt: 'Will you win today?',
     details: 'This market will resolve to fuck yea',
     address: kNullAddress,
+    yesTokenAddress: kEmptyAddress,
+    noTokenAddress: kEmptyAddress,
   );
   @override
   List<Object?> get props => [
