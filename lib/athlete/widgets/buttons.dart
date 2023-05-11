@@ -285,7 +285,25 @@ class YesButton extends StatelessWidget {
       decoration: boxDecoration(primaryOrangeColor, 100, 0, primaryWhiteColor),
       child: TextButton(
         onPressed: () {
-          print('yes');
+          final isWalletConnected =
+              context.read<WalletBloc>().state.isWalletConnected;
+          if (isWalletConnected) {
+            showDialog<void>(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                  insetPadding: EdgeInsets.zero,
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Container(),
+                );
+              },
+            );
+          } else {
+            context.showWalletWarningToast();
+          }
         },
         child: Text('Yes', style: textStyle(Colors.black, 20, false, false)),
       ),
@@ -313,7 +331,25 @@ class NoButton extends StatelessWidget {
       decoration: boxDecoration(Colors.black, 100, 0, Colors.white),
       child: TextButton(
         onPressed: () {
-          print('no');
+          final isWalletConnected =
+              context.read<WalletBloc>().state.isWalletConnected;
+          if (isWalletConnected) {
+            showDialog<void>(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                  insetPadding: EdgeInsets.zero,
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Container(),
+                );
+              },
+            );
+          } else {
+            context.showWalletWarningToast();
+          }
         },
         child: Text('No', style: textStyle(Colors.white, 20, false, false)),
       ),
@@ -335,7 +371,19 @@ class GenericMintButton extends StatelessWidget {
       decoration: boxDecoration(primaryOrangeColor, 100, 0, Colors.green),
       child: TextButton(
         onPressed: () {
-          print('Mint');
+          showDialog<void>(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                insetPadding: EdgeInsets.zero,
+                backgroundColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Container(),
+              );
+            },
+          );
         },
         child: Text(
           'Mint',
@@ -360,7 +408,19 @@ class GenericRedeemButton extends StatelessWidget {
       decoration: boxDecoration(Colors.greenAccent, 100, 0, Colors.white10),
       child: TextButton(
         onPressed: () {
-          print('Redeem!');
+          showDialog<void>(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                insetPadding: EdgeInsets.zero,
+                backgroundColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Container(),
+              );
+            },
+          );
         },
         child: Text(
           'Redeem',
