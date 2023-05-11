@@ -1,5 +1,5 @@
 import 'package:ax_dapp/athlete/athlete.dart';
-import 'package:ax_dapp/prediction/widgets/buttons.dart';
+import 'package:ax_dapp/prediction/widgets/buttons/buttons.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
