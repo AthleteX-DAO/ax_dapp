@@ -2,8 +2,6 @@ import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ethereum_api/emp_api.dart';
-import 'package:get/get.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
