@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class LeagueDialog extends StatefulWidget {
@@ -27,10 +28,10 @@ class _LeagueDialog extends State<LeagueDialog> {
   var _privateToggle = false;
   var _lockToggle = false;
   bool vertical = false;
-  final items = [
+  List<SupportedSport> selectedSports = <SupportedSport>[];
+  final supportedSports = [
     SupportedSport.MLB,
     SupportedSport.NFL,
-    SupportedSport.NBA,
   ];
   SupportedSport dropDownValue = SupportedSport.MLB;
 
@@ -67,14 +68,11 @@ class _LeagueDialog extends State<LeagueDialog> {
     }
     if (_width < 385) textBoxWid = _width * 0.45;
 
-    var hgt = 550.0;
-    if (_height < 505) hgt = _height;
-
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-        height: hgt,
+        height: _height <= 768 ? _height * 0.9 : _height * 0.75,
         width: wid,
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -400,22 +398,83 @@ class _LeagueDialog extends State<LeagueDialog> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  DropdownButton<SupportedSport>(
-                    value: dropDownValue,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    items: items.map<DropdownMenuItem<SupportedSport>>(
-                        (SupportedSport item) {
-                      return DropdownMenuItem(
-                        value: item,
-                        child: Text(item.name),
-                      );
-                    }).toList(),
-                    onChanged: (SupportedSport? newValue) {
-                      setState(() {
-                        dropDownValue = newValue!;
-                      });
+                  MultiSelectDialogField(
+                    chipDisplay: MultiSelectChipDisplay<SupportedSport>(
+                      chipColor: Colors.transparent,
+                      textStyle: TextStyle(
+                        color: Colors.amber[400],
+                        fontFamily: 'OpenSans',
+                        fontSize: textSize,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(40)),
+                        border: Border.all(
+                          color: Colors.amber,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                    dialogWidth: _width / 2,
+                    dialogHeight: _height / 2,
+                    items: supportedSports
+                        .map(
+                          (supportedSport) => MultiSelectItem(
+                            supportedSport,
+                            supportedSport.name,
+                          ),
+                        )
+                        .toList(),
+                    itemsTextStyle: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    unselectedColor: Colors.white,
+                    title: Text(
+                      'Sports',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: textSize,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    selectedItemsTextStyle: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: textSize,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    selectedColor: Colors.amber[400],
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: const BorderRadius.all(Radius.circular(40)),
+                      border: Border.all(
+                        color: Colors.amber,
+                        width: 2,
+                      ),
+                    ),
+                    buttonIcon: Icon(
+                      Icons.sports,
+                      color: Colors.amber[400],
+                    ),
+                    buttonText: Text(
+                      'Choose Sports',
+                      style: TextStyle(
+                        color: Colors.amber[400],
+                        fontFamily: 'OpenSans',
+                        fontSize: textSize,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    onConfirm: (results) {
+                      selectedSports = results as List<SupportedSport>;
                     },
-                  )
+                  ),
                 ],
               ),
               Row(
@@ -577,7 +636,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                                 entryFee: int.parse(entryFeeController.text),
                                 isPrivate: _privateToggle,
                                 isLocked: _lockToggle,
-                                sports: [dropDownValue],
+                                sports: selectedSports,
                               ),
                             ),
                             Navigator.pop(context),
