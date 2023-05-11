@@ -26,7 +26,7 @@ class TopNavigationBarWeb extends StatelessWidget {
           SizedBox(
             width: tabBoxSize,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
                   width: 72,
@@ -67,106 +67,6 @@ class TopNavigationBarWeb extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    if (page != 'scout') {
-                      context.goNamed('scout');
-                    }
-                  },
-                  child: Text(
-                    'Scout',
-                    style: textSwapState(
-                      condition: page == 'scout',
-                      tabNotSelected: textStyle(
-                        Colors.white,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: false,
-                      ),
-                      tabSelected: textStyle(
-                        Colors.amber[400]!,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: true,
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (page != 'trade') {
-                      context.goNamed('trade');
-                    }
-                  },
-                  child: Text(
-                    'Trade',
-                    style: textSwapState(
-                      condition: page == 'trade',
-                      tabNotSelected: textStyle(
-                        Colors.white,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: false,
-                      ),
-                      tabSelected: textStyle(
-                        Colors.amber[400]!,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: true,
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (page != 'pool') {
-                      context.goNamed('pool');
-                    }
-                  },
-                  child: Text(
-                    'Pool',
-                    style: textSwapState(
-                      condition: page == 'pool',
-                      tabNotSelected: textStyle(
-                        Colors.white,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: false,
-                      ),
-                      tabSelected: textStyle(
-                        Colors.amber[400]!,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: true,
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (page != 'farm') {
-                      context.goNamed('farm');
-                    }
-                  },
-                  child: Text(
-                    'Farm',
-                    style: textSwapState(
-                      condition: page == 'farm',
-                      tabNotSelected: textStyle(
-                        Colors.white,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: false,
-                      ),
-                      tabSelected: textStyle(
-                        Colors.amber[400]!,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: true,
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
                     launchUrl(Uri.parse('https://snapshot.org/#/athletex.eth'));
                   },
                   child: Text(
@@ -188,3 +88,105 @@ class TopNavigationBarWeb extends StatelessWidget {
     );
   }
 }
+
+/// Hidden Tabs
+                //   TextButton(
+                //   onPressed: () {
+                //     if (page != 'scout') {
+                //       context.goNamed('scout');
+                //     }
+                //   },
+                //   child: Text(
+                //     'Scout',
+                //     style: textSwapState(
+                //       condition: page == 'scout',
+                //       tabNotSelected: textStyle(
+                //         Colors.white,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: false,
+                //       ),
+                //       tabSelected: textStyle(
+                //         Colors.amber[400]!,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: true,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // TextButton(
+                //   onPressed: () {
+                //     if (page != 'trade') {
+                //       context.goNamed('trade');
+                //     }
+                //   },
+                //   child: Text(
+                //     'Trade',
+                //     style: textSwapState(
+                //       condition: page == 'trade',
+                //       tabNotSelected: textStyle(
+                //         Colors.white,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: false,
+                //       ),
+                //       tabSelected: textStyle(
+                //         Colors.amber[400]!,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: true,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // TextButton(
+                //   onPressed: () {
+                //     if (page != 'pool') {
+                //       context.goNamed('pool');
+                //     }
+                //   },
+                //   child: Text(
+                //     'Pool',
+                //     style: textSwapState(
+                //       condition: page == 'pool',
+                //       tabNotSelected: textStyle(
+                //         Colors.white,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: false,
+                //       ),
+                //       tabSelected: textStyle(
+                //         Colors.amber[400]!,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: true,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // TextButton(
+                //   onPressed: () {
+                //     if (page != 'farm') {
+                //       context.goNamed('farm');
+                //     }
+                //   },
+                //   child: Text(
+                //     'Farm',
+                //     style: textSwapState(
+                //       condition: page == 'farm',
+                //       tabNotSelected: textStyle(
+                //         Colors.white,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: false,
+                //       ),
+                //       tabSelected: textStyle(
+                //         Colors.amber[400]!,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: true,
+                //       ),
+                //     ),
+                //   ),
+                // ),
