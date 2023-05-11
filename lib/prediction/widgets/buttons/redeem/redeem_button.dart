@@ -1,4 +1,5 @@
 import 'package:ax_dapp/prediction/widgets/buttons/redeem/bloc/redeem_button_bloc.dart';
+import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,9 @@ class GenericRedeemButton extends StatelessWidget {
     const newAmount = 0;
     final wid = isWeb ? 400.0 : 355.0;
     return BlocProvider(
-      create: (context) => RedeemButtonBloc(),
+      create: (context) => RedeemButtonBloc(
+        eventMarketRepository: context.read<EventMarketRepository>(),
+      ),
       child: BlocConsumer<RedeemButtonBloc, RedeemButtonState>(
         builder: (context, state) {
           final bloc = context.read<RedeemButtonBloc>();
