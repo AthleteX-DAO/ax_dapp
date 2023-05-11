@@ -89,19 +89,18 @@ class PredictionPage extends StatelessWidget {
                         children: [
                           // if (state.status == BlocStatus.loading)
                           //   const Loader(),
-                          if (state.status == BlocStatus.initial ||
-                              state.status == BlocStatus.success)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                GraphSide(
-                                  predictionModel: prediction,
-                                ),
-                                PromptDetails(
-                                  model: prediction,
-                                )
-                              ],
-                            ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GraphSide(
+                                predictionModel: prediction,
+                              ),
+                              PromptDetails(
+                                model: prediction,
+                              )
+                            ],
+                          ),
                         ],
                       ),
                     ),
