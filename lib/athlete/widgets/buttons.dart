@@ -18,6 +18,7 @@ import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -291,13 +292,35 @@ class YesButton extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (context) {
+                final isWeb = kIsWeb &&
+                    (MediaQuery.of(context).orientation ==
+                        Orientation.landscape);
+                const paddingHorizontal = 40.0;
+                const hgt = 450.0;
+                const newAmount = 0;
+                final wid = isWeb ? 400.0 : 355.0;
+
                 return Dialog(
                   insetPadding: EdgeInsets.zero,
                   backgroundColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Container(),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: paddingHorizontal,
+                    ),
+                    height: hgt,
+                    width: wid,
+                    decoration:
+                        boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                    child: TextButton(
+                      onPressed: () async {
+                        print('pressed!');
+                      },
+                      child: const Text('Press Me'),
+                    ),
+                  ),
                 );
               },
             );
@@ -337,13 +360,34 @@ class NoButton extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (context) {
+                final isWeb = kIsWeb &&
+                    (MediaQuery.of(context).orientation ==
+                        Orientation.landscape);
+                const paddingHorizontal = 40.0;
+                const hgt = 450.0;
+                const newAmount = 0;
+                final wid = isWeb ? 400.0 : 355.0;
+
                 return Dialog(
                   insetPadding: EdgeInsets.zero,
                   backgroundColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Container(),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: paddingHorizontal),
+                    height: hgt,
+                    width: wid,
+                    decoration:
+                        boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                    child: TextButton(
+                      onPressed: () async {
+                        print('pressed!');
+                      },
+                      child: const Text('Press Me'),
+                    ),
+                  ),
                 );
               },
             );
@@ -374,13 +418,32 @@ class GenericMintButton extends StatelessWidget {
           showDialog<void>(
             context: context,
             builder: (context) {
+              final isWeb = kIsWeb &&
+                  (MediaQuery.of(context).orientation == Orientation.landscape);
+              const paddingHorizontal = 40.0;
+              const hgt = 450.0;
+              const newAmount = 0;
+              final wid = isWeb ? 400.0 : 355.0;
               return Dialog(
                 insetPadding: EdgeInsets.zero,
                 backgroundColor: Colors.transparent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Container(),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: paddingHorizontal),
+                  height: hgt,
+                  width: wid,
+                  decoration:
+                      boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                  child: TextButton(
+                    onPressed: () async {
+                      print('pressed!');
+                    },
+                    child: const Text('Press Me'),
+                  ),
+                ),
               );
             },
           );
@@ -400,8 +463,15 @@ class GenericRedeemButton extends StatelessWidget {
 
   final double containerWdt;
   final bool isPortraitMode;
+
   @override
   Widget build(BuildContext context) {
+    final isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    const paddingHorizontal = 40.0;
+    const hgt = 450.0;
+    const newAmount = 0;
+    final wid = isWeb ? 400.0 : 355.0;
     return Container(
       width: isPortraitMode ? containerWdt / 3 : 175,
       height: 50,
@@ -417,7 +487,20 @@ class GenericRedeemButton extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Container(),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: paddingHorizontal),
+                  height: hgt,
+                  width: wid,
+                  decoration:
+                      boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                  child: TextButton(
+                    onPressed: () async {
+                      print('pressed!');
+                    },
+                    child: const Text('Press Me'),
+                  ),
+                ),
               );
             },
           );
