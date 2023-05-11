@@ -27,10 +27,14 @@ class SellPredictionTokens extends PredictionPageEvent {
   const SellPredictionTokens();
 }
 
+class LoadingPredictionPage extends PredictionPageEvent {
+  const LoadingPredictionPage();
+}
+
 class PredictionPageLoaded extends PredictionPageEvent {
-  const PredictionPageLoaded({required this.predictionAddress});
-  final String predictionAddress;
+  const PredictionPageLoaded({required this.predictionModel});
+  final PredictionModel predictionModel;
 
   @override
-  List<Object?> get props => [predictionAddress];
+  List<Object?> get props => [predictionModel];
 }

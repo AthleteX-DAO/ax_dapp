@@ -3,6 +3,7 @@ import 'package:ax_dapp/service/controller/predictions/event_market_repository.d
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ethereum_api/emp_api.dart';
+import 'package:get/get.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
@@ -25,6 +26,7 @@ class PredictionPageBloc
         super(const PredictionPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<PredictionPageLoaded>(_onPredictionPageLoaded);
+    on<LoadingPredictionPage>(_onLoadingPredictionPage);
   }
 
   final WalletRepository _walletRepository;
@@ -45,6 +47,15 @@ class PredictionPageBloc
             predictionAddress: kNullAddress,
           ),
         );
+
+        final appConfig = appData.appConfig;
+
+        // Keeps the event contract client values current
+        _eventMarketRepository
+          ..aptFactory = appConfig.reactiveAptFactoryClient.value
+          ..aptRouter = appConfig.reactiveAptRouterClient.value
+          ..eventBasedPredictionMarket =
+              appConfig.reactiveEventMarketsClient.value;
       },
     );
   }
@@ -53,22 +64,45 @@ class PredictionPageBloc
     MintPredictionTokens event,
     Emitter<PredictionPageState> emit,
   ) async {
+    await _eventMarketRepository.mint();
     emit(state.copyWith(status: BlocStatus.success));
-    await _eventMarketRepository.create();
   }
 
   Future<void> _onRedeemPredictionTokens(
     RedeemPredictionTokens event,
     Emitter<PredictionPageState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.success));
     await _eventMarketRepository.redeem();
+    emit(state.copyWith(status: BlocStatus.success));
+  }
+
+  Future<void> _onLoadingPredictionPage(
+    LoadingPredictionPage event,
+    Emitter<PredictionPageState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+    emit(state.copyWith(status: BlocStatus.success));
   }
 
   Future<void> _onPredictionPageLoaded(
     PredictionPageLoaded event,
     Emitter<PredictionPageState> emit,
   ) async {
-    _eventMarketRepository.eventMarketAddress = event.predictionAddress;
+    final predictionAddress = event.predictionModel.address;
+    final currentPrediction = event.predictionModel;
+    _eventMarketRepository.eventMarketAddress = predictionAddress;
+    emit(
+      state.copyWith(
+        status: BlocStatus.success,
+        predictionModel: currentPrediction,
+      ),
+    );
   }
 }
+
+
+//        // Sets the event market to currently selected prediction question
+        // _eventMarketRepository.marketAddress.value =
+        //     state.predictionModel.address;
+        // _eventMarketRepository.address1.value =
+        //     state.predictionModel.yesTokenAddress;

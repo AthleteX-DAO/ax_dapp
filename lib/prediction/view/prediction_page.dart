@@ -1,16 +1,13 @@
-import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
+import 'package:ax_dapp/prediction/widgets/graph_side.dart';
 import 'package:ax_dapp/prediction/widgets/prompt_details.dart';
-import 'package:ax_dapp/prediction/widgets/desktop_prediction_widget.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:flutter/foundation.dart';
+import 'package:ax_dapp/util/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/prediction/widgets/graph_side.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -37,6 +34,7 @@ class PredictionPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: TopNavigationBarWeb(page: global.pageName),
@@ -63,27 +61,47 @@ class PredictionPage extends StatelessWidget {
           ),
           child: BlocListener<PredictionPageBloc, PredictionPageState>(
             listener: (context, state) {
-              if (state.status == BlocStatus.loading) {}
+              final bloc = context.read<PredictionPageBloc>();
+              if (state.status == BlocStatus.error) {
+                bloc.add(const LoadingPredictionPage());
+              }
+
+              if (state.status == BlocStatus.success) {
+                bloc.add(
+                  PredictionPageLoaded(
+                    predictionModel: prediction,
+                  ),
+                );
+              }
             },
             child: BlocBuilder<PredictionPageBloc, PredictionPageState>(
               buildWhen: (previous, current) =>
-                  current.status == BlocStatus.initial,
-              builder: (_, state) {
+                  current.status == BlocStatus.success,
+              builder: (context, state) {
                 return SizedBox(
                   height: 660,
                   width: MediaQuery.of(context).size.width / 2,
                   child: Center(
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.9,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      child: Stack(
+                        alignment: Alignment.center,
                         children: [
-                          GraphSide(
-                            predictionModel: state.predictionModel,
-                          ),
-                          PromptDetails(
-                            model: state.predictionModel,
-                          )
+                          // if (state.status == BlocStatus.loading)
+                          //   const Loader(),
+                          if (state.status == BlocStatus.success ||
+                              state.status == BlocStatus.initial)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                GraphSide(
+                                  predictionModel: prediction,
+                                ),
+                                PromptDetails(
+                                  model: prediction,
+                                )
+                              ],
+                            ),
                         ],
                       ),
                     ),

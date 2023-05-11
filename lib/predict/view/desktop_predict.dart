@@ -1,5 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/widgets/desktop_headers.dart';
+import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/widgets/desktop_prediction.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/widgets/loader.dart';
@@ -31,8 +32,12 @@ class _DesktopPredictState extends State<DesktopPredict> {
         BlocBuilder<PredictPageBloc, PredictPageState>(
             builder: (context, state) {
       final bloc = context.read<PredictPageBloc>();
+
       Global().predictionsList = state.predictions;
-      currentPredictions = Global().predictionsList;
+      currentPredictions = state.predictions;
+      if (state.status == BlocStatus.loading) {
+        bloc.add(const LoadPredictionsEvent());
+      }
 
       return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
@@ -79,22 +84,26 @@ class _DesktopPredictState extends State<DesktopPredict> {
               // Body
               Stack(
                 alignment: Alignment.center,
-                children: <Widget>[
-                  // if (state.status == BlocStatus.loading) const Loader(),
-                  SizedBox(
-                    height: constraints.maxHeight * 0.8 - 120,
-                    child: ListView.builder(
+                children: [
+                  if (state.status == BlocStatus.loading) const Loader(),
+                  if (state.status == BlocStatus.success ||
+                      state.status == BlocStatus.initial)
+                    SizedBox(
+                      height: constraints.maxHeight * 0.8 - 120,
+                      child: ListView.builder(
                         padding: const EdgeInsets.only(top: 10),
                         physics: const BouncingScrollPhysics(),
                         itemCount: currentPredictions.length,
                         itemBuilder: (context, index) {
+                          /// This builds a list of [ DesktopPrediction ] items
                           return DesktopPrediction(
                             predictionModel: currentPredictions[index],
                             minTeamWidth: minTeamWidth,
                             minViewWidth: minViewWidth,
                           );
-                        }),
-                  )
+                        },
+                      ),
+                    ),
                 ],
               ),
             ],
