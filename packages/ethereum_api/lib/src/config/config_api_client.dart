@@ -24,15 +24,14 @@ class ConfigApiClient {
         ),
         _gysrGqlClientController = BehaviorSubject<GraphQLClient>.seeded(
           defaultChain.createGysrGraphQLClient(),
-        ),
-        _eventMarketClientController =
-            BehaviorSubject<EventBasedPredictionMarket>.seeded(
-          defaultChain.createEventMarketsClient(),
         ) {
     _aptRouterClientController
         .add(defaultChain.createAptRouterClient(_web3ClientController.value));
     _aptFactoryClientController
         .add(defaultChain.createAptFactoryClient(_web3ClientController.value));
+    _eventMarketClientController.add(
+      defaultChain.createEventMarketsClient(_web3ClientController.value),
+    );
   }
 
   final http.Client _httpClient;
@@ -46,6 +45,8 @@ class ConfigApiClient {
   final BehaviorSubject<Web3Client> _web3ClientController;
   final _aptRouterClientController = BehaviorSubject<APTRouter>();
   final _aptFactoryClientController = BehaviorSubject<APTFactory>();
+  final _eventMarketClientController =
+      BehaviorSubject<EventBasedPredictionMarket>();
 
   final _lspClientController = BehaviorSubject<LongShortPair>();
 
@@ -57,8 +58,6 @@ class ConfigApiClient {
   final BehaviorSubject<GraphQLClient> _gysrGqlClientController;
 
   /// Allows listening to the current event market being loaded
-  final BehaviorSubject<EventBasedPredictionMarket>
-      _eventMarketClientController;
 
   /// Creates and returns the initial [AppConfig] which is used to pass down
   /// reactive dependencies.

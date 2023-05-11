@@ -187,7 +187,8 @@ extension ChainConfigX on EthereumChain {
   EventBasedPredictionMarket createEventMarketsClient(Web3Client client) =>
       EventBasedPredictionMarket(
         address: EthereumAddress.fromHex(
-            const EthereumAddressConfig.event().address(this)),
+          const EthereumAddressConfig.event().address(this),
+        ),
         client: client,
       );
 

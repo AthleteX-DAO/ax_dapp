@@ -46,7 +46,7 @@ class Global extends PropertyChangeNotifier<String> {
 
   List<PredictionModel> get predictionsList => _predictionsList;
   set predictionsList(List<PredictionModel> list) {
-    this._predictionsList = list;
+    _predictionsList = list;
     notifyListeners('predictionsList');
   }
 

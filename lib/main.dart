@@ -71,6 +71,8 @@ void main() async {
 
   final reactiveLspClient = appConfig.reactiveLspClient;
 
+  final reactiveEventMarketsClient = appConfig.reactiveEventMarketsClient;
+
   final gysrApiClient =
       GysrApiClient(reactiveGysrClient: appConfig.reactiveGysrGqlClient);
   final subGraphRepo =
@@ -157,7 +159,10 @@ void main() async {
             create: (context) => TrackingRepository(),
           ),
           RepositoryProvider(
-            create: (context) => EventMarketRepository(),
+            create: (context) => EventMarketRepository(
+              reactiveEventMarketsClient: reactiveEventMarketsClient,
+              tokensRepository: context.read<TokensRepository>(),
+            ),
           ),
         ],
         child: App(configRepository: configRepository),

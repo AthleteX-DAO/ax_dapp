@@ -59,10 +59,10 @@ class EthereumAddressConfig {
 
   /// Configuration for [] client.
   const EthereumAddressConfig.event()
-      : polygonMainnet = kEmptyAddress,
-        goerliTestNet = kEmptyAddress,
+      : polygonMainnet = kNullAddress,
+        goerliTestNet = kNullAddress,
         sportxMainnet = '0x990898a024ecE7E1CA39FbDed9244001d4ec0c6d',
-        sportxTestnet = kEmptyAddress;
+        sportxTestnet = kNullAddress;
 
   /// Configuration for [APTRouter] client.
   const EthereumAddressConfig.dexRouterAddress()
