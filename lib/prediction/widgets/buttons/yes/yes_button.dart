@@ -42,7 +42,12 @@ class YesButton extends StatelessWidget {
                 final isWalletConnected =
                     context.read<WalletBloc>().state.isWalletConnected;
                 if (isWalletConnected) {
-                  bloc.add(const YesButtonPressed());
+                  bloc.add(
+                    YesButtonPressed(
+                      eventMarketAddress: prompt.address,
+                      longTokenAddress: prompt.yesTokenAddress,
+                    ),
+                  );
                 } else {
                   context.showWalletWarningToast();
                 }

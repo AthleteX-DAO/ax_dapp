@@ -12,5 +12,12 @@ class WatchAppDataChangesStarted extends NoButtonEvent {
 }
 
 class NoButtonPressed extends NoButtonEvent {
-  const NoButtonPressed();
+  const NoButtonPressed({
+    required this.eventMarketAddress,
+    required this.shortTokenAddress,
+  });
+
+  final String eventMarketAddress, shortTokenAddress;
+  @override
+  List<Object?> get props => [eventMarketAddress, shortTokenAddress];
 }

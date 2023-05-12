@@ -12,5 +12,12 @@ class WatchAppDataChangesStarted extends RedeemButtonEvent {
 }
 
 class RedeemButtonPressed extends RedeemButtonEvent {
-  const RedeemButtonPressed();
+  const RedeemButtonPressed({
+    required this.eventMarketAddress,
+  });
+
+  final String eventMarketAddress;
+
+  @override
+  List<Object?> get props => [eventMarketAddress];
 }

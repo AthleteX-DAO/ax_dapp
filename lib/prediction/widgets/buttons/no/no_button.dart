@@ -39,6 +39,12 @@ class NoButton extends StatelessWidget {
                 final isWalletConnected =
                     context.read<WalletBloc>().state.isWalletConnected;
                 if (isWalletConnected) {
+                  bloc.add(
+                    NoButtonPressed(
+                      eventMarketAddress: prompt.address,
+                      shortTokenAddress: prompt.yesTokenAddress,
+                    ),
+                  );
                 } else {
                   context.showWalletWarningToast();
                 }

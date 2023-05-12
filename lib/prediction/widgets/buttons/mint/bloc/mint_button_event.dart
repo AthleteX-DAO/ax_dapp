@@ -12,5 +12,12 @@ class WatchAppDataChangesStarted extends MintButtonEvent {
 }
 
 class MintButtonPressed extends MintButtonEvent {
-  const MintButtonPressed();
+  const MintButtonPressed({
+    required this.eventMarketAddress,
+  });
+
+  final String eventMarketAddress;
+
+  @override
+  List<Object?> get props => [eventMarketAddress];
 }

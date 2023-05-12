@@ -12,5 +12,12 @@ class WatchAppDataChangesStarted extends YesButtonEvent {
 }
 
 class YesButtonPressed extends YesButtonEvent {
-  const YesButtonPressed();
+  const YesButtonPressed({
+    required this.eventMarketAddress,
+    required this.longTokenAddress,
+  });
+
+  final String eventMarketAddress, longTokenAddress;
+  @override
+  List<Object?> get props => [eventMarketAddress, longTokenAddress];
 }
