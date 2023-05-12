@@ -1,4 +1,5 @@
 import 'package:ax_dapp/prediction/widgets/buttons/yes/bloc/yes_button_bloc.dart';
+import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,9 @@ class YesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => YesButtonBloc(),
+      create: (context) => YesButtonBloc(
+        eventMarketRepository: context.read<EventMarketRepository>(),
+      ),
       child: BlocConsumer<YesButtonBloc, YesButtonState>(
         builder: (context, state) {
           final bloc = context.read<YesButtonBloc>();

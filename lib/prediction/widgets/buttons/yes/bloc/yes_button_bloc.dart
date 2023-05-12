@@ -8,11 +8,13 @@ part 'yes_button_event.dart';
 part 'yes_button_state.dart';
 
 class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
-  YesButtonBloc() : super(const YesButtonState()) {
+  YesButtonBloc({
+    required this.eventMarketRepository,
+  }) : super(const YesButtonState()) {
     on<YesButtonPressed>(_onYesButtonPressed);
   }
 
-  // final EventMarketRepository _eventMarketRepository;
+  final EventMarketRepository eventMarketRepository;
 
   Future<void> _onYesButtonPressed(
     YesButtonPressed event,
@@ -20,6 +22,7 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
   ) async {
     try {
       print('Yes Button IS PRESSED');
+      await eventMarketRepository.buy();
     } catch (e) {
       // await _eventMarketRepository.Yes();
     }
