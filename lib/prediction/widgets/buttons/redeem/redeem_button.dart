@@ -1,3 +1,4 @@
+import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/prediction/widgets/buttons/redeem/bloc/redeem_button_bloc.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
@@ -6,10 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GenericRedeemButton extends StatelessWidget {
-  const GenericRedeemButton(
-      {super.key, required this.containerWdt, required this.isPortraitMode});
+  const GenericRedeemButton({
+    super.key,
+    required this.containerWdt,
+    required this.isPortraitMode,
+    required this.prompt,
+  });
 
   final double containerWdt;
+  final PredictionModel prompt;
   final bool isPortraitMode;
 
   @override
@@ -34,7 +40,11 @@ class GenericRedeemButton extends StatelessWidget {
                 boxDecoration(Colors.greenAccent, 100, 0, Colors.white10),
             child: TextButton(
               onPressed: () {
-                bloc.add(const RedeemButtonPressed());
+                bloc.add(
+                  RedeemButtonPressed(
+                    eventMarketAddress: prompt.address,
+                  ),
+                );
               },
               child: Text(
                 'Redeem',

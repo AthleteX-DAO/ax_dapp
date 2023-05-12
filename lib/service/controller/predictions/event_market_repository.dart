@@ -5,7 +5,6 @@ import 'package:ethereum_api/apt_router_api.dart';
 import 'package:ethereum_api/event_markets_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:get/get.dart';
-import 'package:http/src/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:web3dart/web3dart.dart';
 
@@ -21,6 +20,7 @@ class EventMarketRepository {
   RxString address2 = ''.obs;
   RxDouble amount1 = 1.0.obs;
   RxDouble createAmt = 0.0.obs;
+  late Web3Client client;
   RxInt decimalA = 1.obs;
   BigInt amountOutMin = BigInt.zero;
   Rx<BigInt> deadline = BigInt.from(
@@ -28,14 +28,19 @@ class EventMarketRepository {
   ).obs;
 
   String get eventMarketAddress => marketAddress.value;
-
   set eventMarketAddress(String newAddress) => marketAddress.value = newAddress;
+
+  Web3Client get eventMarketClient => client;
+  set eventMarketClient(Web3Client newClient) => client = newClient;
 
   Future<void> mint() async {
     print('minting event based prediction market');
     var address = EthereumAddress.fromHex(marketAddress.value);
     final userCredentials = controller.credentials;
-    final intCreate = (createAmt.value * 1e18) as BigInt;
+    final intCreate = BigInt.one;
+
+    eventBasedPredictionMarket =
+        EventBasedPredictionMarket(address: address, client: client);
 
     await eventBasedPredictionMarket.create(
       intCreate,
@@ -44,8 +49,14 @@ class EventMarketRepository {
   }
 
   Future<void> redeem() async {
+    final address = EthereumAddress.fromHex(marketAddress.value);
+
     final userCredentials = controller.credentials;
-    final redeemTokensAmnt = BigInt.from(1);
+    final redeemTokensAmnt = BigInt.one;
+
+    eventBasedPredictionMarket =
+        EventBasedPredictionMarket(address: address, client: client);
+
     await eventBasedPredictionMarket.redeem(
       redeemTokensAmnt,
       credentials: userCredentials,

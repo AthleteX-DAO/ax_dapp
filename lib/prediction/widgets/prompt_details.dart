@@ -161,7 +161,11 @@ class PromptDetails extends StatelessWidget {
             height: 180,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [AdvancedFeatures()],
+              children: [
+                AdvancedFeatures(
+                  model: model,
+                )
+              ],
             ),
           ),
         ],

@@ -18,10 +18,12 @@ class GenericMintButton extends StatelessWidget {
   const GenericMintButton({
     super.key,
     required this.isPortraitMode,
+    required this.prompt,
     required this.containerWdt,
   });
 
   final bool isPortraitMode;
+  final PredictionModel prompt;
   final double containerWdt;
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,11 @@ class GenericMintButton extends StatelessWidget {
             decoration: boxDecoration(primaryOrangeColor, 100, 0, Colors.green),
             child: TextButton(
               onPressed: () {
-                bloc.add(const MintButtonPressed());
+                bloc.add(
+                  MintButtonPressed(
+                    eventMarketAddress: prompt.address,
+                  ),
+                );
               },
               child: Text(
                 'Mint',
