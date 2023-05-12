@@ -10,10 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:web3dart/web3dart.dart';
 
 class EventMarketRepository {
-  EventMarketRepository({
-    required reactiveEventMarketsClient,
-    required tokensRepository,
-  });
+  EventMarketRepository();
 
   Controller controller = Controller();
   late EventBasedPredictionMarket eventBasedPredictionMarket;
@@ -35,8 +32,8 @@ class EventMarketRepository {
   set eventMarketAddress(String newAddress) => marketAddress.value = newAddress;
 
   Future<void> mint() async {
+    print('minting event based prediction market');
     var address = EthereumAddress.fromHex(marketAddress.value);
-
     final userCredentials = controller.credentials;
     final intCreate = (createAmt.value * 1e18) as BigInt;
 

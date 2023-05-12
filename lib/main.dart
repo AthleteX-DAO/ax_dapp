@@ -160,9 +160,9 @@ void main() async {
           ),
           RepositoryProvider(
             create: (context) => EventMarketRepository(
-              reactiveEventMarketsClient: reactiveEventMarketsClient,
-              tokensRepository: context.read<TokensRepository>(),
-            ),
+                // reactiveEventMarketsClient: reactiveEventMarketsClient,
+                // tokensRepository: context.read<TokensRepository>(),
+                ),
           ),
         ],
         child: App(configRepository: configRepository),
