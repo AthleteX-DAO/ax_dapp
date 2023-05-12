@@ -43,19 +43,19 @@ class PromptDetails extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    SizedBox(
-                      width: 100,
-                      height: 20,
-                      child: Text(
-                        'Probability',
-                        style: textStyle(
-                          Colors.grey,
-                          14,
-                          isBold: false,
-                          isUline: false,
-                        ),
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: 100,
+                    //   height: 20,
+                    //   child: Text(
+                    //     'Probability',
+                    //     style: textStyle(
+                    //       Colors.grey,
+                    //       14,
+                    //       isBold: false,
+                    //       isUline: false,
+                    //     ),
+                    //   ),
+                    // ),
                     const Spacer(),
                     Container(
                       alignment: Alignment.bottomLeft,
@@ -87,10 +87,10 @@ class PromptDetails extends StatelessWidget {
                         isUline: false,
                       ),
                     ),
-                    const SizedBox(
-                      width: 100,
-                      child: Text('Odds Unknown'),
-                    ),
+                    // const SizedBox(
+                    //   width: 100,
+                    //   child: Text('Odds Unknown'),
+                    // ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: const SizedBox(
@@ -111,10 +111,10 @@ class PromptDetails extends StatelessWidget {
                         isUline: false,
                       ),
                     ),
-                    const SizedBox(
-                      width: 100,
-                      child: Text('Odds Unknown'),
-                    ),
+                    // const SizedBox(
+                    //   width: 100,
+                    //   child: Text('Odds Unknown'),
+                    // ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: const SizedBox(

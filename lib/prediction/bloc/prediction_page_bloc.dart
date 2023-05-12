@@ -25,6 +25,8 @@ class PredictionPageBloc
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<PredictionPageLoaded>(_onPredictionPageLoaded);
     on<LoadingPredictionPage>(_onLoadingPredictionPage);
+
+    add(const WatchAppDataChangesStarted());
   }
 
   final WalletRepository _walletRepository;
@@ -78,10 +80,7 @@ class PredictionPageBloc
   Future<void> _onLoadingPredictionPage(
     LoadingPredictionPage event,
     Emitter<PredictionPageState> emit,
-  ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
-    emit(state.copyWith(status: BlocStatus.success));
-  }
+  ) async {}
 
   Future<void> _onPredictionPageLoaded(
     PredictionPageLoaded event,
