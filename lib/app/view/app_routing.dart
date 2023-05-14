@@ -82,6 +82,7 @@ class App extends StatelessWidget {
             leagueRepository: context.read<LeagueRepository>(),
             streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
             prizePoolRepository: context.read<PrizePoolRepository>(),
+            leagueUseCase: context.read<LeagueUseCase>(),
           ),
         ),
       ],

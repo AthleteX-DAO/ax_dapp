@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:league_repository/league_repository.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -67,5 +69,22 @@ class LeagueUseCase {
         bookPricePercent: bookPricePercent,
       );
     }).toList();
+  }
+
+  String generateLeagueID(int length) {
+    const predefinedCharacters =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    final random = Random();
+    final generatedLeagueID = String.fromCharCodes(
+      Iterable.generate(
+        length,
+        (_) => predefinedCharacters.codeUnitAt(
+          random.nextInt(
+            predefinedCharacters.length,
+          ),
+        ),
+      ),
+    );
+    return generatedLeagueID;
   }
 }

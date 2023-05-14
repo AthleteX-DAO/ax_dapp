@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
+import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -17,9 +17,11 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     required LeagueRepository leagueRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required PrizePoolRepository prizePoolRepository,
+    required LeagueUseCase leagueUseCase,
   })  : _leagueRepository = leagueRepository,
         _prizePoolRepository = prizePoolRepository,
         _streamAppDataChanges = streamAppDataChanges,
+        _leagueUseCase = leagueUseCase,
         super(const LeagueState()) {
     on<CreateLeague>(_onCreateLeague);
     on<FetchLeagues>(_onFetchLeagues);
@@ -34,6 +36,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
   final LeagueRepository _leagueRepository;
   final PrizePoolRepository _prizePoolRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
+  final LeagueUseCase _leagueUseCase;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -59,7 +62,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     Emitter<LeagueState> emit,
   ) async {
     try {
-      final leagueID = generateLeagueID(15);
+      final leagueID = _leagueUseCase.generateLeagueID(15);
 
       final dateStartInt =
           DateTime.parse(event.dateStart).millisecondsSinceEpoch;
@@ -187,23 +190,6 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         ),
       );
     }
-  }
-
-  String generateLeagueID(int length) {
-    const predefinedCharacters =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    final random = Random();
-    final generatedLeagueID = String.fromCharCodes(
-      Iterable.generate(
-        length,
-        (_) => predefinedCharacters.codeUnitAt(
-          random.nextInt(
-            predefinedCharacters.length,
-          ),
-        ),
-      ),
-    );
-    return generatedLeagueID;
   }
 
   void filterOutUnsupportedSportsByChain(

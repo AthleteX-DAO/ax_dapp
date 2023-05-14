@@ -611,10 +611,12 @@ class _LeagueDialog extends State<LeagueDialog> {
                       ),
                       onPressed: () => {
                         if (DateTime.parse(startDateController.text).isAfter(
-                          DateTime.parse(
-                            endDateController.text,
-                          ),
-                        ))
+                              DateTime.parse(
+                                endDateController.text,
+                              ),
+                            ) ||
+                            DateTime.parse(startDateController.text) ==
+                                DateTime.parse(endDateController.text))
                           {
                             context.showWarningToast(
                               title: 'Error',
