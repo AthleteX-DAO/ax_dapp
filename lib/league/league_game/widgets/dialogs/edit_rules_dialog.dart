@@ -414,6 +414,7 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                     ),
                   ),
                   MultiSelectDialogField(
+                    initialValue: widget.league.sports,
                     chipDisplay: MultiSelectChipDisplay<SupportedSport>(
                       chipColor: Colors.transparent,
                       textStyle: TextStyle(
@@ -654,7 +655,9 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                                 entryFee: widget.league.entryFee,
                                 isPrivate: _privateToggle,
                                 isLocked: _lockToggle,
-                                sports: selectedSports,
+                                sports: selectedSports.isEmpty
+                                    ? widget.league.sports
+                                    : selectedSports,
                                 prizePoolAddress:
                                     widget.league.prizePoolAddress,
                               ),
