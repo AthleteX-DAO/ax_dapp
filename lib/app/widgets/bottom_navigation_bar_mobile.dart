@@ -68,6 +68,15 @@ class BottomNavigationBarMobile extends StatelessWidget {
           ),
           label: 'Farm',
         ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/barn.png',
+            height: 24,
+            width: 24,
+            color: iconColor(4),
+          ),
+          label: 'Predict',
+        ),
       ],
       currentIndex: selectedIndex,
       selectedItemColor: Colors.white,
@@ -85,6 +94,9 @@ class BottomNavigationBarMobile extends StatelessWidget {
             break;
           case 3:
             context.goNamed('farm');
+            break;
+          case 4:
+            context.goNamed('predict');
             break;
         }
       },

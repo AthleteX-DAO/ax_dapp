@@ -7,6 +7,7 @@ import 'package:ax_dapp/service/controller/predictions/event_market_repository.d
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/widgets/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -41,7 +42,10 @@ class PredictionPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      bottomNavigationBar: const BottomNavigationBarWeb(),
+      bottomNavigationBar: kIsWeb &&
+              (MediaQuery.of(context).orientation == Orientation.landscape)
+          ? const BottomNavigationBarWeb()
+          : BottomNavigationBarMobile(selectedIndex: global.selectedIndex),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
