@@ -11,19 +11,18 @@ part 'mint_button_state.dart';
 
 class MintButtonBloc extends Bloc<MintButtonEvent, MintButtonState> {
   MintButtonBloc({
-    required EventMarketRepository eventMarketRepository,
+    required this.eventMarketRepository,
     required WalletRepository walletRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
   })  : _streamAppDataChanges = streamAppDataChanges,
         _walletRepository = walletRepository,
-        _eventMarketRepository = eventMarketRepository,
         super(const MintButtonState()) {
     on<MintButtonPressed>(_onMintButtonPressed);
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     add(const WatchAppDataChangesStarted());
   }
 
-  final EventMarketRepository _eventMarketRepository;
+  final EventMarketRepository eventMarketRepository;
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
 
@@ -33,9 +32,12 @@ class MintButtonBloc extends Bloc<MintButtonEvent, MintButtonState> {
   ) async {
     try {
       print('Mint button is PRESSED');
-      await _eventMarketRepository.mint();
+      eventMarketRepository.eventMarketAddress = event.eventMarketAddress;
+      //First is approve, then mint
+      await eventMarketRepository.approve(event.eventMarketAddress, 1);
+      await eventMarketRepository.mint();
     } catch (e) {
-      // await _eventMarketRepository.mint();
+      // await eventMarketRepository.mint();
     }
   }
 
@@ -47,11 +49,11 @@ class MintButtonBloc extends Bloc<MintButtonEvent, MintButtonState> {
       _streamAppDataChanges.appDataChanges,
       onData: (appData) {
         final appConfig = appData.appConfig;
-        _eventMarketRepository.controller.client.value =
+        eventMarketRepository.controller.client.value =
             appConfig.reactiveWeb3Client.value;
-        _eventMarketRepository.controller.credentials =
+        eventMarketRepository.controller.credentials =
             _walletRepository.credentials.value;
-        _eventMarketRepository
+        eventMarketRepository
           ..eventBasedPredictionMarket =
               appConfig.reactiveEventMarketsClient.value
           ..aptFactory = appConfig.reactiveAptFactoryClient.value
