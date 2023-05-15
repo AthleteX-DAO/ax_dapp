@@ -54,9 +54,11 @@ class PredictionPageBloc
         _eventMarketRepository
           ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value
-          ..marketAddress.value = state.predictionModel.address
           ..eventBasedPredictionMarket =
-              appConfig.reactiveEventMarketsClient.value;
+              appConfig.reactiveEventMarketsClient.value
+          ..controller.client.value = appConfig.reactiveWeb3Client.value
+          ..controller.credentials = _walletRepository.credentials.value
+          ..marketAddress.value = state.predictionModel.address;
       },
     );
   }

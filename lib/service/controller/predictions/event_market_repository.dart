@@ -20,7 +20,6 @@ class EventMarketRepository {
   RxString address2 = ''.obs;
   RxDouble amount1 = 1.0.obs;
   RxDouble createAmt = 0.0.obs;
-  late Web3Client client;
   RxInt decimalA = 1.obs;
   BigInt amountOutMin = BigInt.zero;
   Rx<BigInt> deadline = BigInt.from(
@@ -30,17 +29,16 @@ class EventMarketRepository {
   String get eventMarketAddress => marketAddress.value;
   set eventMarketAddress(String newAddress) => marketAddress.value = newAddress;
 
-  Web3Client get eventMarketClient => client;
-  set eventMarketClient(Web3Client newClient) => client = newClient;
-
   Future<void> mint() async {
     print('minting event based prediction market');
     var address = EthereumAddress.fromHex(marketAddress.value);
     final userCredentials = controller.credentials;
     final intCreate = BigInt.one;
 
-    eventBasedPredictionMarket =
-        EventBasedPredictionMarket(address: address, client: client);
+    eventBasedPredictionMarket = EventBasedPredictionMarket(
+      address: address,
+      client: controller.client.value,
+    );
 
     await eventBasedPredictionMarket.create(
       intCreate,
@@ -54,8 +52,10 @@ class EventMarketRepository {
     final userCredentials = controller.credentials;
     final redeemTokensAmnt = BigInt.one;
 
-    eventBasedPredictionMarket =
-        EventBasedPredictionMarket(address: address, client: client);
+    eventBasedPredictionMarket = EventBasedPredictionMarket(
+      address: address,
+      client: controller.client.value,
+    );
 
     await eventBasedPredictionMarket.redeem(
       redeemTokensAmnt,
