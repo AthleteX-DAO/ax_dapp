@@ -105,6 +105,8 @@ class TokensRepository {
         circulatingSupply: coinData.marketData?.circulatingSupply,
       );
     } catch (e) {
+      /// TODO: Replace empty marketdata with uniswap DEX market data
+
       return AxMarketData.empty;
     }
   }
