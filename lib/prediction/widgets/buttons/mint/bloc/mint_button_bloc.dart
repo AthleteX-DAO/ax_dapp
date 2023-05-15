@@ -32,6 +32,7 @@ class MintButtonBloc extends Bloc<MintButtonEvent, MintButtonState> {
     Emitter<MintButtonState> emit,
   ) async {
     try {
+      print('Mint button is PRESSED');
       await _eventMarketRepository.mint();
     } catch (e) {
       // await _eventMarketRepository.mint();

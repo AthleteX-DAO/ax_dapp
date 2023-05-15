@@ -75,6 +75,7 @@ class PredictionPageBloc
     RedeemPredictionTokens event,
     Emitter<PredictionPageState> emit,
   ) async {
+    print('redeem button is PRESSED');
     await _eventMarketRepository.redeem();
     emit(state.copyWith(status: BlocStatus.success));
   }
