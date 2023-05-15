@@ -18,7 +18,7 @@ class RedeemButtonBloc extends Bloc<RedeemButtonEvent, RedeemButtonState> {
     Emitter<RedeemButtonState> emit,
   ) async {
     try {
-      eventMarketRepository..eventMarketAddress = event.eventMarketAddress;
+      eventMarketRepository.eventMarketAddress = event.eventMarketAddress;
       // ..eventMarketClient = Web3Client();
       await eventMarketRepository.redeem();
     } catch (e) {}
