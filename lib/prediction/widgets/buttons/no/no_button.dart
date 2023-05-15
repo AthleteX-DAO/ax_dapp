@@ -1,14 +1,11 @@
+import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/prediction/widgets/buttons/no/bloc/no_button_bloc.dart';
+import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
+import 'package:ax_dapp/util/athlete_page_format_helper.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ax_dapp/util/athlete_page_format_helper.dart';
-import 'package:ax_dapp/util/colors.dart';
-import 'package:ax_dapp/util/util.dart';
-import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
-import 'package:ax_dapp/prediction/view/prediction_page.dart';
 
 class NoButton extends StatelessWidget {
   const NoButton({
@@ -24,7 +21,9 @@ class NoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NoButtonBloc(),
+      create: (context) => NoButtonBloc(
+        eventMarketRepository: context.read<EventMarketRepository>(),
+      ),
       child: BlocConsumer<NoButtonBloc, NoButtonState>(
         builder: (context, state) {
           final bloc = context.read<NoButtonBloc>();
@@ -42,7 +41,7 @@ class NoButton extends StatelessWidget {
                   bloc.add(
                     NoButtonPressed(
                       eventMarketAddress: prompt.address,
-                      shortTokenAddress: prompt.yesTokenAddress,
+                      shortTokenAddress: prompt.noTokenAddress,
                     ),
                   );
                 } else {

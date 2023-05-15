@@ -22,6 +22,10 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
   ) async {
     try {
       print('Yes Button IS PRESSED');
+      eventMarketRepository.address1.value = event.longTokenAddress;
+
+      eventMarketRepository.address2.value =
+          '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
       await eventMarketRepository.buy();
     } catch (e) {
       // await _eventMarketRepository.Yes();
