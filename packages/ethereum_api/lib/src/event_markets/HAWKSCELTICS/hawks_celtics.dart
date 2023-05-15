@@ -1,1 +1,0 @@
-export './HAWKSCELTICS.g.dart';
