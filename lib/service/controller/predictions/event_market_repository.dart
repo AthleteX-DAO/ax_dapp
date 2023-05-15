@@ -2,6 +2,7 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:ethereum_api/apt_factory_api.dart';
 import 'package:ethereum_api/apt_router_api.dart';
+import 'package:ethereum_api/erc20_api.dart';
 import 'package:ethereum_api/event_markets_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:get/get.dart';
@@ -33,7 +34,7 @@ class EventMarketRepository {
     print('minting event based prediction market');
     var address = EthereumAddress.fromHex(marketAddress.value);
     final userCredentials = controller.credentials;
-    final intCreate = BigInt.one;
+    final intCreate = BigInt.from(1 * 1e18);
 
     eventBasedPredictionMarket = EventBasedPredictionMarket(
       address: address,
@@ -50,7 +51,7 @@ class EventMarketRepository {
     final address = EthereumAddress.fromHex(marketAddress.value);
 
     final userCredentials = controller.credentials;
-    final redeemTokensAmnt = BigInt.one;
+    final redeemTokensAmnt = BigInt.from(1 * 1e18);
 
     eventBasedPredictionMarket = EventBasedPredictionMarket(
       address: address,
@@ -66,8 +67,16 @@ class EventMarketRepository {
   Future<void> approve(String axtAddress, double amount) async {
     const axt = Token.ax(EthereumChain.sxMainnet);
     final address = EthereumAddress.fromHex(axt.address);
-
+    final eventMarket = EthereumAddress.fromHex(marketAddress.value);
     final _amount = normalizeInput(amount);
+
+    final AthleteX = ERC20(address: address, client: controller.client.value);
+
+    await AthleteX.approve(
+      eventMarket,
+      _amount,
+      credentials: controller.credentials,
+    );
   }
 
   Future<void> buy() async {
