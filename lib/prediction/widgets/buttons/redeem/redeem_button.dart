@@ -36,7 +36,7 @@ class GenericRedeemButton extends StatelessWidget {
           return Container(
             width: isPortraitMode ? containerWdt / 3 : 175,
             height: 50,
-            decoration: boxDecoration(Colors.black, 100, 0, Colors.white10),
+            decoration: boxDecoration(Colors.black, 100, 0, Colors.white),
             child: TextButton(
               onPressed: () {
                 bloc.add(
@@ -47,7 +47,7 @@ class GenericRedeemButton extends StatelessWidget {
               },
               child: Text(
                 'Redeem',
-                style: textStyle(Colors.black, 20, false, false),
+                style: textStyle(Colors.white, 20, false, false),
               ),
             ),
           );
