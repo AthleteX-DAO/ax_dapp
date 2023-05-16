@@ -70,7 +70,7 @@ class BottomNavigationBarMobile extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Image.asset(
-            'assets/images/barn.png',
+            'assets/images/coins.png',
             height: 24,
             width: 24,
             color: iconColor(4),
