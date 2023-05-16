@@ -17,7 +17,9 @@ class GraphSide extends StatelessWidget {
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-    final wid = _width * 0.4;
+    var wid = _width * 0.4;
+    if (_width < 1160) wid = _width * 0.95;
+
     final hei = _height / 3;
     const indexUnselectedStackBackgroundColor = Colors.transparent;
     final _zoomPanBehavior = ZoomPanBehavior(
@@ -25,9 +27,13 @@ class GraphSide extends StatelessWidget {
       enablePanning: true,
       enablePinching: true,
     );
-    return SizedBox(
+    return Container(
       height: _height / 1.5,
       width: wid,
+      constraints: const BoxConstraints(
+        minHeight: 650,
+        maxHeight: 850,
+      ),
       child: Column(
         children: [
           PromptPageTitle(
@@ -44,3 +50,23 @@ class GraphSide extends StatelessWidget {
     );
   }
 }
+
+
+
+// SizedBox(
+//       height: _height / 1.5,
+//       width: wid,
+//       child: Column(
+//         children: [
+//           PromptPageTitle(
+//             wid: wid,
+//             prompt: predictionModel.prompt,
+//           ),
+//           PromptPageDetails(
+//             wid: wid,
+//             height: hei,
+//             promptDetails: predictionModel.details,
+//           ),
+//         ],
+//       ),
+//     )

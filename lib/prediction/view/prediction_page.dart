@@ -25,6 +25,11 @@ class PredictionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final paramPrompt = prediction.prompt;
 
+    // Sizing prerequisites for mobile
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+    double _containerWdt, _containerHgt;
+
     if (global.pageName != 'prediction') {
       context.goNamed(
         global.pageName,
@@ -82,32 +87,67 @@ class PredictionPage extends StatelessWidget {
               buildWhen: (previous, current) =>
                   current.status == BlocStatus.success,
               builder: (context, state) {
-                return SizedBox(
-                  height: 660,
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          // if (state.status == BlocStatus.loading)
-                          //   const Loader(),
+                /// Building Prediction Page
+                /// normal mode
+                if (_width > 1160 && _height > 660) {
+                  _containerHgt = _height;
+                  _containerWdt = _width;
+                  return SizedBox(
+                    height: _containerHgt,
+                    width: _containerWdt,
+                    child: Center(
+                      child: SizedBox(
+                        width: _width * 0.9,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            GraphSide(
+                              predictionModel: prediction,
+                            ),
+                            PromptDetails(
+                              model: prediction,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                // stacked scroll (portrait mode)
+                _containerHgt =
+                    (_height * 0.90) - AppBar().preferredSize.height;
+                _containerWdt = _width * 0.95;
+                return Container(
+                  margin:
+                      EdgeInsets.only(top: AppBar().preferredSize.height + 10),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    clipBehavior: Clip.hardEdge,
+                    children: [
+                      SizedBox(
+                        height: _containerHgt,
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.only(bottom: 50),
+                          child: Column(
                             children: [
-                              GraphSide(
-                                predictionModel: prediction,
+                              SizedBox(
+                                width: _containerWdt,
+                                child: GraphSide(
+                                  predictionModel: prediction,
+                                ),
                               ),
-                              PromptDetails(
-                                model: prediction,
+                              SizedBox(
+                                width: _containerWdt,
+                                child: PromptDetails(
+                                  model: prediction,
+                                ),
                               )
                             ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 );
               },
