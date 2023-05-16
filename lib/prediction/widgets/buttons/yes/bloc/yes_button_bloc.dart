@@ -1,4 +1,5 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,11 +10,13 @@ part 'yes_button_state.dart';
 
 class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
   YesButtonBloc({
+    required this.repo,
     required this.eventMarketRepository,
   }) : super(const YesButtonState()) {
     on<YesButtonPressed>(_onYesButtonPressed);
   }
 
+  final GetBuyInfoUseCase repo;
   final EventMarketRepository eventMarketRepository;
 
   Future<void> _onYesButtonPressed(
@@ -30,5 +33,15 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
     } catch (e) {
       // await _eventMarketRepository.Yes();
     }
+  }
+
+  Future<void> _onFetchBuyInfoRequested(
+    YesButtonPressed event,
+    Emitter<YesButtonState> emit,
+  ) async {
+    final aptAddress = event.longTokenAddress;
+    final response = await repo.fetchAptBuyInfo(aptAddress: aptAddress);
+
+    final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
   }
 }

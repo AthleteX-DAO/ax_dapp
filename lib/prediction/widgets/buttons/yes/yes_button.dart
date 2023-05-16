@@ -1,5 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/prediction/widgets/buttons/yes/bloc/yes_button_bloc.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
@@ -23,6 +24,9 @@ class YesButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => YesButtonBloc(
+        repo: RepositoryProvider.of<GetBuyInfoUseCase>(
+          context,
+        ),
         eventMarketRepository: context.read<EventMarketRepository>(),
       ),
       child: BlocConsumer<YesButtonBloc, YesButtonState>(

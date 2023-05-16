@@ -1,3 +1,4 @@
+import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,11 +9,13 @@ part 'no_button_state.dart';
 
 class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
   NoButtonBloc({
+    required this.repo,
     required this.eventMarketRepository,
   }) : super(const NoButtonState()) {
     on<NoButtonPressed>(_onNoButtonPressed);
   }
 
+  final GetBuyInfoUseCase repo;
   final EventMarketRepository eventMarketRepository;
 
   Future<void> _onNoButtonPressed(
@@ -28,5 +31,15 @@ class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
     } catch (e) {
       // await _eventMarketRepository.No();
     }
+  }
+
+  Future<void> _onFetchBuyInfoRequested(
+    NoButtonPressed event,
+    Emitter<NoButtonState> emit,
+  ) async {
+    final aptAddress = event.shortTokenAddress;
+    final response = await repo.fetchAptBuyInfo(aptAddress: aptAddress);
+
+    final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
   }
 }
