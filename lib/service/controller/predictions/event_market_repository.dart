@@ -65,6 +65,7 @@ class EventMarketRepository {
   }
 
   Future<void> approve(String axtAddress, double amount) async {
+    // Defaults to sx chain's mainnet
     const axt = Token.ax(EthereumChain.sxMainnet);
     final address = EthereumAddress.fromHex(axt.address);
     final eventMarket = EthereumAddress.fromHex(marketAddress.value);
