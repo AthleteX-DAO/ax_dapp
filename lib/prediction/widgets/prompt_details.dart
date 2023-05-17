@@ -157,17 +157,17 @@ class PromptDetails extends StatelessWidget {
           ),
 
           // Advanced Features
-          SizedBox(
-            height: 180,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AdvancedFeatures(
-                  model: model,
-                )
-              ],
-            ),
-          ),
+          // SizedBox(
+          //   height: 180,
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       AdvancedFeatures(
+          //         model: model,
+          //       )
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
