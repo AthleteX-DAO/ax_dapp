@@ -1,4 +1,6 @@
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
+import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
+import 'package:ax_dapp/service/blockchain_models/apt_sell_info.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +15,8 @@ class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
     required this.eventMarketRepository,
   }) : super(const NoButtonState()) {
     on<NoButtonPressed>(_onNoButtonPressed);
+    on<BuyButtonPressed>(_onBuyButtonPressed);
+    on<SellButtonPressed>(_onSellButtonPressed);
   }
 
   final GetBuyInfoUseCase repo;
@@ -41,5 +45,44 @@ class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
     final response = await repo.fetchAptBuyInfo(aptAddress: aptAddress);
 
     final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
+    emit(
+      state.copyWith(
+        aptBuyInfo: pairInfo as AptBuyInfo,
+      ),
+    );
+  }
+
+  Future<void> _onBuyButtonPressed(
+    BuyButtonPressed event,
+    Emitter<NoButtonState> emit,
+  ) async {
+    eventMarketRepository.address1.value =
+        '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
+    eventMarketRepository.address2.value = event.shortTokenAddress;
+    eventMarketRepository.amount1.value = 0.1 * 1e18;
+
+    const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
+    const amount = 100.0;
+
+    await eventMarketRepository
+        .approve(contractAddress, amount)
+        .then((value) async => {await eventMarketRepository.buy()});
+  }
+
+  Future<void> _onSellButtonPressed(
+    SellButtonPressed event,
+    Emitter<NoButtonState> emit,
+  ) async {
+    eventMarketRepository.address1.value = event.shortTokenAddress;
+
+    eventMarketRepository.address2.value =
+        '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
+
+    const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
+    const amount = 100.0;
+
+    await eventMarketRepository
+        .approve(contractAddress, amount)
+        .then((value) async => {await eventMarketRepository.sell()});
   }
 }
