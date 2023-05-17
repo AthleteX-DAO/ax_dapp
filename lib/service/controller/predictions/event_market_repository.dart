@@ -19,7 +19,7 @@ class EventMarketRepository {
   RxString marketAddress = ''.obs;
   RxString address1 = ''.obs;
   RxString address2 = ''.obs;
-  RxDouble amount1 = 1.0.obs;
+  RxDouble amount1 = 100.0.obs;
   RxDouble createAmt = 0.0.obs;
   RxInt decimalA = 1.obs;
   BigInt amountOutMin = BigInt.zero;
@@ -64,17 +64,17 @@ class EventMarketRepository {
     );
   }
 
-  Future<void> approve(String axtAddress, double amount) async {
+  Future<void> approve(String contractAddress, double amount) async {
     // Defaults to sx chain's mainnet
     const axt = Token.ax(EthereumChain.sxMainnet);
     final address = EthereumAddress.fromHex(axt.address);
-    final eventMarket = EthereumAddress.fromHex(marketAddress.value);
+    final contractToApprove = EthereumAddress.fromHex(contractAddress);
     final _amount = normalizeInput(amount);
 
-    final AthleteX = ERC20(address: address, client: controller.client.value);
+    final athleteX = ERC20(address: address, client: controller.client.value);
 
-    await AthleteX.approve(
-      eventMarket,
+    await athleteX.approve(
+      contractToApprove,
       _amount,
       credentials: controller.credentials,
     );
