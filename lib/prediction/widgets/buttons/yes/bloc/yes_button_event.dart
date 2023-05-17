@@ -22,16 +22,15 @@ class YesButtonPressed extends YesButtonEvent {
   List<Object?> get props => [eventMarketAddress, longTokenAddress];
 }
 
-class SwapEvent extends YesButtonEvent {
-  const SwapEvent({
-    required this.tokenTo,
-    required this.tokenFrom,
+class FetchSwapInfoRequested extends YesButtonEvent {
+  const FetchSwapInfoRequested({
+    required this.longTokenAddress,
   });
 
-  final String tokenTo, tokenFrom;
+  final String longTokenAddress;
 
   @override
-  List<Object?> get props => [tokenTo, tokenFrom];
+  List<Object?> get props => [longTokenAddress];
 }
 
 class BuyButtonPressed extends YesButtonEvent {

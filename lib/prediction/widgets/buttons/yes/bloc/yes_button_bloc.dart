@@ -1,12 +1,9 @@
-import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_sell_info.dart';
 import 'package:ax_dapp/service/blockchain_models/swap_info.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
 
 part 'yes_button_event.dart';
@@ -18,6 +15,7 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
     required this.eventMarketRepository,
   }) : super(const YesButtonState()) {
     on<YesButtonPressed>(_onYesButtonPressed);
+    on<FetchSwapInfoRequested>(_onFetchSwapInfoRequested);
     on<BuyButtonPressed>(_onBuyButtonPressed);
     on<SellButtonPressed>(_onSellButtonPressed);
   }
@@ -40,16 +38,26 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
   }
 
   Future<void> _onFetchSwapInfoRequested(
-    SwapEvent event,
+    FetchSwapInfoRequested event,
     Emitter<YesButtonState> emit,
   ) async {
     final response = await repo.fetchSwapInfo(
-      tokenFrom: event.tokenFrom,
-      tokenTo: event.tokenTo,
+      tokenFrom: event.longTokenAddress,
+      tokenTo: event.longTokenAddress,
     );
 
     final pairInfo = response.getLeft().toNullable()!.swapInfo;
-    emit(state.copyWith(swapInfo: pairInfo as SwapInfo));
+    emit(
+      state.copyWith(
+        swapInfo: SwapInfo(
+          toPrice: pairInfo.toPrice,
+          minimumReceived: pairInfo.minimumReceived,
+          priceImpact: pairInfo.priceImpact,
+          receiveAmount: pairInfo.receiveAmount,
+          totalFee: pairInfo.totalFee,
+        ),
+      ),
+    );
   }
 
   Future<void> _onBuyButtonPressed(
@@ -57,14 +65,15 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
     Emitter<YesButtonState> emit,
   ) async {
     eventMarketRepository.address1.value =
-        '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
-    eventMarketRepository.address2.value = event.longTokenAddress;
-    eventMarketRepository.amount1.value = 1 * 1e18;
+        '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909'; //AthleteX Token
+    eventMarketRepository.address2.value =
+        event.longTokenAddress; //Buying this token
+    eventMarketRepository.amount1.value = 1 * 1e18; //approval amount
     const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
     const amount = 100.0;
     await eventMarketRepository
         .approve(contractAddress, amount)
-        .then((value) async => {await eventMarketRepository.buy()});
+        .then((value) => {eventMarketRepository.buy()});
   }
 
   Future<void> _onSellButtonPressed(

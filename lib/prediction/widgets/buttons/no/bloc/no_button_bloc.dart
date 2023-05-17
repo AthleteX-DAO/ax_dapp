@@ -3,7 +3,6 @@ import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_sell_info.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
 
 part 'no_button_event.dart';
@@ -15,6 +14,7 @@ class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
     required this.eventMarketRepository,
   }) : super(const NoButtonState()) {
     on<NoButtonPressed>(_onNoButtonPressed);
+    on<FetchBuyInfoRequested>(_onFetchBuyInfoRequested);
     on<BuyButtonPressed>(_onBuyButtonPressed);
     on<SellButtonPressed>(_onSellButtonPressed);
   }
@@ -38,7 +38,7 @@ class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
   }
 
   Future<void> _onFetchBuyInfoRequested(
-    NoButtonPressed event,
+    FetchBuyInfoRequested event,
     Emitter<NoButtonState> emit,
   ) async {
     final aptAddress = event.shortTokenAddress;
@@ -47,7 +47,13 @@ class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
     final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
     emit(
       state.copyWith(
-        aptBuyInfo: pairInfo as AptBuyInfo,
+        aptBuyInfo: AptBuyInfo(
+          axPerAptPrice: pairInfo.toPrice,
+          minimumReceived: pairInfo.minimumReceived,
+          priceImpact: pairInfo.priceImpact,
+          receiveAmount: pairInfo.receiveAmount,
+          totalFee: pairInfo.totalFee,
+        ),
       ),
     );
   }
@@ -57,16 +63,18 @@ class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
     Emitter<NoButtonState> emit,
   ) async {
     eventMarketRepository.address1.value =
-        '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
-    eventMarketRepository.address2.value = event.shortTokenAddress;
-    eventMarketRepository.amount1.value = 0.1 * 1e18;
+        '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909'; //AthleteX Token
+    eventMarketRepository.address2.value =
+        event.shortTokenAddress; //buying this token
+    eventMarketRepository.amount1.value = 1 * 1e18;
 
+    // DEX contract address
     const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
     const amount = 100.0;
 
     await eventMarketRepository
         .approve(contractAddress, amount)
-        .then((value) async => {await eventMarketRepository.buy()});
+        .then((value) => eventMarketRepository.buy());
   }
 
   Future<void> _onSellButtonPressed(
@@ -83,6 +91,6 @@ class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
 
     await eventMarketRepository
         .approve(contractAddress, amount)
-        .then((value) async => {await eventMarketRepository.sell()});
+        .then((value) => eventMarketRepository.sell());
   }
 }

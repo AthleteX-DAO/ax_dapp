@@ -22,6 +22,13 @@ class NoButtonPressed extends NoButtonEvent {
   List<Object?> get props => [eventMarketAddress, shortTokenAddress];
 }
 
+class FetchBuyInfoRequested extends NoButtonEvent {
+  const FetchBuyInfoRequested({required this.shortTokenAddress});
+  final String shortTokenAddress;
+  @override
+  List<Object?> get props => [shortTokenAddress];
+}
+
 class BuyButtonPressed extends NoButtonEvent {
   const BuyButtonPressed({
     required this.eventMarketAddress,

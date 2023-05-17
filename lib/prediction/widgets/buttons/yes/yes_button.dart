@@ -52,6 +52,12 @@ class YesButton extends StatelessWidget {
                 boxDecoration(primaryOrangeColor, 100, 0, primaryWhiteColor),
             child: TextButton(
               onPressed: () {
+                bloc.add(
+                  FetchSwapInfoRequested(
+                    longTokenAddress: prompt.yesTokenAddress,
+                  ),
+                );
+
                 final isWalletConnected =
                     context.read<WalletBloc>().state.isWalletConnected;
                 if (isWalletConnected) {
@@ -121,12 +127,9 @@ class YesButton extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        const Flexible(
-                                          child: Text('Cost| '),
-                                        ),
                                         Flexible(
                                           child: Text(
-                                            'Buy: ${state.aptBuyInfo.axPerAptPrice} AX',
+                                            'Buy: ${state.swapInfo.receiveAmount} AX',
                                           ),
                                         ),
                                         // Flexible(

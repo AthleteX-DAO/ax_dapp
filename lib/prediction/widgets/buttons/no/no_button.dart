@@ -51,6 +51,12 @@ class NoButton extends StatelessWidget {
             decoration: boxDecoration(Colors.black, 100, 0, Colors.white),
             child: TextButton(
               onPressed: () {
+                bloc.add(
+                  FetchBuyInfoRequested(
+                    shortTokenAddress: prompt.noTokenAddress,
+                  ),
+                );
+
                 final isWalletConnected =
                     context.read<WalletBloc>().state.isWalletConnected;
                 if (isWalletConnected) {
@@ -82,7 +88,7 @@ class NoButton extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Buy / Sell NO Prediction',
+                                      'Buy NO Prediction',
                                       style: textStyle(
                                         Colors.white,
                                         20,
