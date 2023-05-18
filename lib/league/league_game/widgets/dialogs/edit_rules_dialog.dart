@@ -28,8 +28,8 @@ class _EditRulesDialog extends State<EditRulesDialog> {
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController teamSizeController = TextEditingController();
   final TextEditingController participantsController = TextEditingController();
-  final List<bool> _private = <bool>[true, false];
-  final List<bool> _lock = <bool>[true, false];
+  late List<bool> _private;
+  late List<bool> _lock;
 
   bool vertical = false;
   List<SupportedSport> selectedSports = <SupportedSport>[];
@@ -51,6 +51,8 @@ class _EditRulesDialog extends State<EditRulesDialog> {
     dropDownValue = widget.league.sports.first;
     _privateToggle = widget.league.isPrivate;
     _lockToggle = widget.league.isLocked;
+    _private = widget.league.isPrivate ? [false, true] : [true, false];
+    _lock = widget.league.isLocked ? [false, true] : [true, false];
     super.initState();
   }
 
