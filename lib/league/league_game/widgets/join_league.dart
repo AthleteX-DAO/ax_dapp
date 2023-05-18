@@ -75,6 +75,7 @@ class JoinLeague extends StatelessWidget {
                     walletRepository: context.read<WalletRepository>(),
                     isEditing: false,
                     leagueTeam: existingTeam,
+                    league: league,
                   ),
                   child: DesktopLeagueDraft(
                     league: league,

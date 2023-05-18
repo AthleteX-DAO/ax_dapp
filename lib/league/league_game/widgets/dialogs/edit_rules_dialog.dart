@@ -32,7 +32,7 @@ class _EditRulesDialog extends State<EditRulesDialog> {
   late List<bool> _lock;
 
   bool vertical = false;
-  List<SupportedSport> selectedSports = <SupportedSport>[];
+  late List<SupportedSport> selectedSports;
   final supportedSports = [
     SupportedSport.MLB,
     SupportedSport.NFL,
@@ -53,6 +53,7 @@ class _EditRulesDialog extends State<EditRulesDialog> {
     _lockToggle = widget.league.isLocked;
     _private = widget.league.isPrivate ? [false, true] : [true, false];
     _lock = widget.league.isLocked ? [false, true] : [true, false];
+    selectedSports = widget.league.sports;
     super.initState();
   }
 
@@ -637,9 +638,16 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                                 DateTime.parse(endDateController.text))
                           {
                             context.showWarningToast(
-                              title: 'Error',
+                              title: 'Date Range Error',
                               description:
                                   'Cannot have a start date that is after the end date!',
+                            )
+                          }
+                        else if (selectedSports.isEmpty)
+                          {
+                            context.showWarningToast(
+                              title: 'Selected Sports Error',
+                              description: 'Select At Least One Sport!',
                             )
                           }
                         else

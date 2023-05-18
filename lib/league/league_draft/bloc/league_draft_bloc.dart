@@ -25,13 +25,14 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
     required this.isEditing,
     required this.athletes,
     required this.leagueTeam,
+    required this.league,
   })  : _leagueRepository = leagueRepository,
         _prizePoolRepository = prizePoolRepository,
         _getTotalTokenBalanceUseCase = getTotalTokenBalanceUseCase,
         _leagueUseCase = leagueUseCase,
         _streamAppDataChangesUseCase = streamAppDataChangesUseCase,
         _walletRepository = walletRepository,
-        super(const LeagueDraftState()) {
+        super(LeagueDraftState(league: league)) {
     on<FetchAptsOwnedEvent>(_onFetchAptsOwnedEvent);
     on<AddAptToTeam>(_onAddAptToTeam);
     on<RemoveAptFromTeam>(_onRemoveAptFromTeam);
@@ -50,6 +51,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
   final List<AthleteScoutModel> athletes;
   final bool isEditing;
   final LeagueTeam leagueTeam;
+  final League league;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted event,
@@ -77,10 +79,14 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
       emit(state.copyWith(status: BlocStatus.loading));
       final response = await _getTotalTokenBalanceUseCase.getOwnedApts();
       final ownedApts = _leagueUseCase.ownedAptToList(response, athletes);
+      final filteredOwnedApts = ownedApts
+          .where((apt) => state.league.sports.contains(apt.sport))
+          .toList();
       if (isEditing) {
         final rosterIds = leagueTeam.rosterIds;
-        final existingAptTeam = ownedApts.getExistingAptTeam(rosterIds);
-        final availableOwnedApts = ownedApts.getAvailableOwnedApts(rosterIds);
+        final existingAptTeam = filteredOwnedApts.getExistingAptTeam(rosterIds);
+        final availableOwnedApts =
+            filteredOwnedApts.getAvailableOwnedApts(rosterIds);
         final existingTeamSize = existingAptTeam.length;
         emit(
           state.copyWith(
@@ -93,7 +99,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
       } else {
         emit(
           state.copyWith(
-            ownedApts: ownedApts,
+            ownedApts: filteredOwnedApts,
             status: BlocStatus.success,
           ),
         );

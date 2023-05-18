@@ -619,9 +619,16 @@ class _LeagueDialog extends State<LeagueDialog> {
                                 DateTime.parse(endDateController.text))
                           {
                             context.showWarningToast(
-                              title: 'Error',
+                              title: 'Date Range Error',
                               description:
                                   'Cannot have a start date that is after the end date!',
+                            )
+                          }
+                        else if (selectedSports.isEmpty)
+                          {
+                            context.showWarningToast(
+                              title: 'Selected Sports Error',
+                              description: 'Select At Least One Sport!',
                             )
                           }
                         else

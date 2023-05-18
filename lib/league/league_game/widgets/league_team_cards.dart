@@ -144,6 +144,7 @@ class LeagueTeamCards extends StatelessWidget {
                                   context.read<WalletRepository>(),
                               isEditing: true,
                               leagueTeam: existingTeam,
+                              league: league,
                             ),
                             child: DesktopLeagueDraft(
                               league: league,
