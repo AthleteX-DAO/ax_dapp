@@ -62,6 +62,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     Emitter<LeagueState> emit,
   ) async {
     try {
+      emit(state.copyWith(status: BlocStatus.transactionProcessing));
       final leagueID = _leagueUseCase.generateLeagueID(15);
 
       final dateStartInt =

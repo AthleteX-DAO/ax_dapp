@@ -1,9 +1,9 @@
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/widgets/dialogs/rules_dialog.dart';
-import 'package:ax_dapp/league/league_search/widgets/league_card.dart';
-import 'package:ax_dapp/league/league_search/widgets/league_header_title.dart';
+import 'package:ax_dapp/league/league_search/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/snackbar_warning.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -120,6 +120,11 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                               );
                             },
                           ),
+                        ),
+                        Visibility(
+                          visible:
+                              state.status == BlocStatus.transactionProcessing,
+                          child: const CreateLeagueProgressIndicator(),
                         ),
                         TextButton(
                           style: ButtonStyle(

@@ -9,4 +9,5 @@ enum BlocStatus {
   invalidText,
   scoutsLoaded,
   leaguesLoaded,
+  transactionProcessing,
 }
