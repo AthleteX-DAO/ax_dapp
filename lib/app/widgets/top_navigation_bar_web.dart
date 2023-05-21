@@ -140,31 +140,32 @@ class TopNavigationBarWeb extends StatelessWidget {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    if (page != 'league') {
-                      context.goNamed('league');
-                    }
-                  },
-                  child: Text(
-                    'League',
-                    style: textSwapState(
-                      condition: page == 'league',
-                      tabNotSelected: textStyle(
-                        Colors.white,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: false,
-                      ),
-                      tabSelected: textStyle(
-                        Colors.amber[400]!,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: true,
-                      ),
-                    ),
-                  ),
-                ),
+                // TODO(Ryan): enable the UI once the feature is ready
+                // TextButton(
+                //   onPressed: () {
+                //     if (page != 'league') {
+                //       context.goNamed('league');
+                //     }
+                //   },
+                //   child: Text(
+                //     'League',
+                //     style: textSwapState(
+                //       condition: page == 'league',
+                //       tabNotSelected: textStyle(
+                //         Colors.white,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: false,
+                //       ),
+                //       tabSelected: textStyle(
+                //         Colors.amber[400]!,
+                //         tabTextSize,
+                //         isBold: true,
+                //         isUline: true,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 TextButton(
                   onPressed: () {
                     launchUrl(Uri.parse('https://snapshot.org/#/athletex.eth'));

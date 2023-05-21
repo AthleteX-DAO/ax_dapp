@@ -69,14 +69,15 @@ class BottomNavigationBarMobile extends StatelessWidget {
           ),
           label: 'Farm',
         ),
-        BottomNavigationBarItem(
-          icon: FaIcon(
-            FontAwesomeIcons.trophy,
-            size: 24,
-            color: iconColor(4),
-          ),
-          label: 'League',
-        ),
+        // TODO(Ryan): enable the UI once the feature is ready
+        // BottomNavigationBarItem(
+        //   icon: FaIcon(
+        //     FontAwesomeIcons.trophy,
+        //     size: 24,
+        //     color: iconColor(4),
+        //   ),
+        //   label: 'League',
+        // ),
       ],
       currentIndex: selectedIndex,
       selectedItemColor: Colors.white,
