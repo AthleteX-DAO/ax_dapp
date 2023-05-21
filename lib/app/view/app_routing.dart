@@ -7,6 +7,13 @@ import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/landing_page/landing_page.dart';
+import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
+import 'package:ax_dapp/league/league_game/views/league_game.dart';
+import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
+import 'package:ax_dapp/league/league_search/views/desktop_league.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
+import 'package:ax_dapp/league/repository/timer_repository.dart';
+import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -25,6 +32,7 @@ import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/gysr_api.dart';
@@ -32,6 +40,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:league_repository/league_repository.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:tracking_repository/tracking_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
@@ -67,7 +76,15 @@ class App extends StatelessWidget {
           create: (context) => TrackingCubit(
             context.read<TrackingRepository>(),
           )..setup(),
-        )
+        ),
+        BlocProvider(
+          create: (context) => LeagueBloc(
+            leagueRepository: context.read<LeagueRepository>(),
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+            prizePoolRepository: context.read<PrizePoolRepository>(),
+            leagueUseCase: context.read<LeagueUseCase>(),
+          ),
+        ),
       ],
       child: const _MaterialApp(),
     );
@@ -211,6 +228,55 @@ class _MaterialApp extends StatelessWidget {
               );
             },
           ),
+          GoRoute(
+            name: 'league',
+            path: '/league',
+            builder: (BuildContext context, GoRouterState state) {
+              Global().pageName = 'league';
+              return const DesktopLeague();
+            },
+            routes: [
+              GoRoute(
+                name: 'league-game',
+                path: 'league-game/:leagueID',
+                builder: (BuildContext context, GoRouterState state) {
+                  final leagueID = state.params['leagueID']!;
+                  final leaguesWithTeams =
+                      context.watch<LeagueBloc>().state.leaguesWithTeams;
+                  if (leaguesWithTeams.isEmpty) return const Loader();
+                  final leagueWithTeam = leaguesWithTeams.firstWhere(
+                    (leaguePair) => leaguePair.first.leagueID == leagueID,
+                  );
+                  Global().pageName = 'league-game';
+                  return BlocProvider(
+                    create: (context) => LeagueGameBloc(
+                      startDate: leagueWithTeam.first.dateStart,
+                      endDate: leagueWithTeam.first.dateEnd,
+                      streamAppDataChanges:
+                          context.read<StreamAppDataChangesUseCase>(),
+                      leagueRepository: context.read<LeagueRepository>(),
+                      repo: GetScoutAthletesDataUseCase(
+                        tokensRepository: context.read<TokensRepository>(),
+                        graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+                        sportsRepos: [
+                          RepositoryProvider.of<MLBRepo>(context),
+                          RepositoryProvider.of<NFLRepo>(context),
+                        ],
+                      ),
+                      leagueUseCase: context.read<LeagueUseCase>(),
+                      timerRepository: context.read<TimerRepository>(),
+                      prizePoolRepository: context.read<PrizePoolRepository>(),
+                      walletRepository: context.read<WalletRepository>(),
+                    ),
+                    child: LeagueGame(
+                      league: leagueWithTeam.first,
+                      leagueID: leagueID,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ],
         errorPageBuilder: (context, state) => MaterialPage(
           key: UniqueKey(),
@@ -244,6 +310,7 @@ class _MaterialApp extends StatelessWidget {
         location.contains('athlete') ||
         location.contains('trade') ||
         location.contains('pool') ||
-        location.contains('farm');
+        location.contains('farm') ||
+        location.contains('league');
   }
 }

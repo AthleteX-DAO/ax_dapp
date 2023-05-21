@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomNavigationBarMobile extends StatelessWidget {
@@ -68,6 +69,15 @@ class BottomNavigationBarMobile extends StatelessWidget {
           ),
           label: 'Farm',
         ),
+        // TODO(Ryan): enable the UI once the feature is ready
+        // BottomNavigationBarItem(
+        //   icon: FaIcon(
+        //     FontAwesomeIcons.trophy,
+        //     size: 24,
+        //     color: iconColor(4),
+        //   ),
+        //   label: 'League',
+        // ),
       ],
       currentIndex: selectedIndex,
       selectedItemColor: Colors.white,
@@ -85,6 +95,9 @@ class BottomNavigationBarMobile extends StatelessWidget {
             break;
           case 3:
             context.goNamed('farm');
+            break;
+          case 4:
+            context.goNamed('league');
             break;
         }
       },
