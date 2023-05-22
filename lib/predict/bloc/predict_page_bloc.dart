@@ -59,12 +59,12 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
 
   final List<PredictionModel> questions = [
     const PredictionModel(
-      prompt: 'Boston Celtics vs Miami Heat: Game 1',
+      prompt: 'Los Angeles Lakers vs. Denver Nuggets: Game 4',
       details:
-          'In the upcoming NBA game, scheduled for May 17 at 7:30 PM ET: If the Boston Celtics win, the market will resolve to “Celtics”.  If the Miami Heat win, the market will resolve to “Heat”.  If the game is not completed by May 20, 2023 (11:59:59 PM ET), the market will resolve 50-50.',
-      address: '0x7a248a47e230FDde3a77b9047E02356c7222fd61',
-      yesTokenAddress: '0x829C81426E4C6Ad1dAfaeF9e930ff87E27dd57AF',
-      noTokenAddress: '0x7319A87887cD91e23d66DdA526Bbc4d9644a1A19',
+          'In the upcoming NBA game, scheduled for May 22 at 8:30 PM ET: If the Los Angles Lakers win, the market will resolve to “Lakers”.  If the Denver Nuggets win, the market will resolve to “Nuggets”.  If the game is not completed by May 26, 2023 (11:59:59 PM ET), the market will resolve 50-50.',
+      address: '0xC29F9Db3C4A771fC266431bb0D70308B762F8770',
+      yesTokenAddress: '',
+      noTokenAddress: '',
     ),
   ];
 

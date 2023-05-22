@@ -88,7 +88,7 @@ class NoButton extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Buy NO Prediction',
+                                      'Buy Nuggets Prediction',
                                       style: textStyle(
                                         Colors.white,
                                         20,

@@ -102,7 +102,7 @@ class PredictionPageBloc
 }
 
 
-//        // Sets the event market to currently selected prediction question
+        // Sets the event market to currently selected prediction question
         // eventMarketRepository.marketAddress.value =
         //     state.predictionModel.address;
         // eventMarketRepository.address1.value =

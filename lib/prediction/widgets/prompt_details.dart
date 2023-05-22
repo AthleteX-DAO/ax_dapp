@@ -79,7 +79,7 @@ class PromptDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'YES Market Price',
+                      'Lakers Market Price',
                       style: textStyle(
                         greyTextColor,
                         20,
@@ -103,7 +103,7 @@ class PromptDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'NO Market Price',
+                      'Nuggets Market Price',
                       style: textStyle(
                         greyTextColor,
                         20,

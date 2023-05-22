@@ -89,7 +89,7 @@ class YesButton extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Buy YES Prediction',
+                                      'Buy Lakers Prediction',
                                       style: textStyle(
                                         Colors.white,
                                         20,
