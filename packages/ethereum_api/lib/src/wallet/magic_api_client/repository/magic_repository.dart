@@ -1,8 +1,8 @@
-import 'package:ax_dapp/wallet/magic_api_client/web.dart';
+import 'package:ethereum_api/src/wallet/magic_api_client/web.dart';
+import 'package:ethereum_api/wallet_api.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_web3/flutter_web3.dart';
 import 'package:shared/shared.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 class MagicRepository {
   MagicRepository({

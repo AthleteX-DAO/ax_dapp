@@ -29,12 +29,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
     on<GetGasPriceRequested>(_onGetGasPriceRequested);
     on<WalletFailed>(_onWalletFailed);
+
+    // Magic Wallet
     on<ConnectWalletMagic>(_onConnectWalletMagic);
     on<DisconnectWalletMagic>(_onDisconnectWalletMagic);
-    on<ShowMagicWallet>(_onShowMagicWallet);
-
     add(const WatchWalletChangesStarted());
     add(const WatchMagicWalletChangesStarted());
+
+    // Native Wallet
+    on<ConnectNativeWallet>(_onConnectNativeWallet);
+
     add(const WatchAxtChangesStarted());
   }
 
@@ -51,6 +55,18 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       emit(state.copyWith(walletAddress: walletAddress));
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
+    }
+  }
+
+  Future<void> _onConnectNativeWallet(
+    ConnectNativeWallet event,
+    Emitter<WalletState> emit,
+  ) async {
+    try {
+      final walletAddress = await _walletRepository.connectWallet();
+      emit(state.copyWith(walletAddress: walletAddress));
+    } on WalletFailure catch (e) {
+      add(WalletFailed(e));
     }
   }
 
@@ -115,9 +131,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     GetGasPriceRequested event,
     Emitter<WalletState> emit,
   ) async {
-    final gasPriceMetamask = await _walletRepository.getGasPrice();
-    final gasPriceMagic = await _magicRepository.getGasPrices();
-    final gasPrice = gasPriceMagic;
+    final gasPrice = await _walletRepository.getGasPrice();
     emit(state.copyWith(gasPrice: gasPrice));
   }
 
@@ -169,14 +183,5 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     await _magicRepository.disconnect();
-  }
-
-  Future<void> _onShowMagicWallet(
-    ShowMagicWallet event,
-    Emitter<WalletState> emit,
-  ) async {
-    await _magicRepository.showWallet();
-    final walletAddress = _magicRepository.;
-    emit(state.copyWith(walletAddress: walletAddress));
   }
 }
