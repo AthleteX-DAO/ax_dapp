@@ -65,12 +65,15 @@ void main() async {
   final configRepository = ConfigRepository(configApiClient: configApiClient);
   final appConfig = configRepository.initializeAppConfig();
 
+  /// Section -- Wallet Clients setup
+
   final reactiveWeb3Client = appConfig.reactiveWeb3Client;
   final walletApiClient =
       EthereumWalletApiClient(reactiveWeb3Client: reactiveWeb3Client);
   final magicWalletApiClient = MagicWalletApiClient(
     magicSDK: magic,
   );
+
   final tokensApiClient = TokensApiClient(
     defaultChain: defaultChain,
     reactiveWeb3Client: reactiveWeb3Client,
