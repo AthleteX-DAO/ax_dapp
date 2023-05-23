@@ -15,6 +15,8 @@ class WalletRepository {
   /// {@macro wallet_repository}
   WalletRepository(
     this._walletApiClient,
+    this._nativeWalletApiClient,
+    this._magicWalletApiClient,
     this._cache, {
     required this.defaultChain,
   }) {
@@ -40,6 +42,8 @@ class WalletRepository {
   }
 
   final WalletApiClient _walletApiClient;
+  final NativeWalletApiClient _nativeWalletApiClient;
+  final MagicWalletApiClient _magicWalletApiClient;
   final CacheClient _cache;
   final _walletChangeController = BehaviorSubject<Wallet>();
 
@@ -108,6 +112,64 @@ class WalletRepository {
       );
       return walletAddress;
     } catch (_) {
+      await prefs.setBool(searchForWalletKey, false);
+      return kNullAddress;
+    }
+  }
+
+  /// Allows the user to connect to a `Magic` wallet.
+  ///
+  /// Returns the hexadecimal representation of the wallet address.
+  ///
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
+  Future<String> connectMagicWallet() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    try {
+      await prefs.setBool(searchForWalletKey, true);
+      _magicWalletApiClient.addChainChangedListener();
+
+      final credentials = await _magicWalletApiClient.getWalletCredentials();
+      _cacheWalletCredentials(credentials);
+      final walletAddress = credentials.value.address.hex;
+
+      _walletChangeController.add(
+        Wallet(
+          status: WalletStatus.fromChain(currentChain),
+          address: walletAddress,
+          chain: currentChain,
+        ),
+      );
+
+      return walletAddress;
+    } catch (e) {
+      await prefs.setBool(searchForWalletKey, false);
+      return kNullAddress;
+    }
+  }
+
+  /// Allows the user to connect to a `Native` wallet
+  ///
+  /// Returns the hexadecimal representation of the wallet address
+  ///
+  /// Throws:
+
+  Future<String> connectNativeWallet() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    try {
+      await prefs.setBool(searchForWalletKey, true);
+      _nativeWalletApiClient.addChainChangedListener();
+      final credentials = await _nativeWalletApiClient.getWalletCredentials();
+      _cacheWalletCredentials(credentials);
+      final walletAddress = credentials.value.address.hex;
+
+      return walletAddress;
+    } catch (e) {
       await prefs.setBool(searchForWalletKey, false);
       return kNullAddress;
     }

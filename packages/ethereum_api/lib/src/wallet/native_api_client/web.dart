@@ -11,6 +11,13 @@ import 'package:web3_browser/web3_browser.dart' as web3_browser;
 /// {@endtemplate}
 
 class NativeWalletApiClient implements WalletApiClient {
+  NativeWalletApiClient({
+    required ValueStream<Web3Client> reactiveWeb3Client,
+  }) : _reactiveWeb3Client = reactiveWeb3Client;
+
+  final ValueStream<Web3Client> _reactiveWeb3Client;
+  Web3Client get _web3Client => _reactiveWeb3Client.value;
+
   @override
   Future<void> addChain(EthereumChain chain) {
     // TODO: implement addChain

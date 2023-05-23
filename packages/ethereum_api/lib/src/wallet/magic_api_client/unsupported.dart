@@ -1,5 +1,8 @@
 import 'package:ethereum_api/src/wallet/magic_api_client/magic_wallet_api_client.dart';
+import 'package:ethereum_api/src/wallet/magic_api_client/javascript_calls/magic.dart';
+
 import 'package:ethereum_api/tokens_api.dart';
+import 'package:shared/shared.dart';
 import 'package:web3dart/src/credentials/credentials.dart';
 
 /// {@template unsupported_magic_wallet_api_client}
@@ -7,6 +10,10 @@ import 'package:web3dart/src/credentials/credentials.dart';
 /// {@endtemplate}
 class MagicWalletApiClient implements MagicApiClient {
   /// {@macro unsupported_magic_wallet_api_client}
+  MagicWalletApiClient({
+    required MagicSDK magicSDK,
+    required ValueStream<Web3Client> reactiveWeb3Client,
+  });
 
   @override
   EthereumChain get currentChain => throw UnsupportedError(

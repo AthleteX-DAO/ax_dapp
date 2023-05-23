@@ -14,10 +14,14 @@ class MagicWalletApiClient implements WalletApiClient {
   /// {@macro magic_wallet_api_client}
   MagicWalletApiClient({
     required MagicSDK magicSDK,
-  }) : _magicSDK = magicSDK;
+    required ValueStream<Web3Client> reactiveWeb3Client,
+  })  : _magicSDK = magicSDK,
+        _reactiveWeb3Client = reactiveWeb3Client;
 
   final MagicSDK _magicSDK;
   final _reactiveApiClient = BehaviorSubject<ConfigApiClient>();
+  final ValueStream<Web3Client> _reactiveWeb3Client;
+  Web3Client get _web3Client => _reactiveWeb3Client.value;
   ConfigApiClient get _configApiClient => _reactiveApiClient.value;
   @override
   EthereumChain get currentChain => EthereumChain.polygonMainnet;

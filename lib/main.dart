@@ -20,9 +20,6 @@ import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
-import 'package:ax_dapp/wallet/javascript_calls/magic.dart';
-import 'package:ax_dapp/wallet/magic_api_client/web.dart';
-import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
@@ -72,7 +69,11 @@ void main() async {
       EthereumWalletApiClient(reactiveWeb3Client: reactiveWeb3Client);
   final magicWalletApiClient = MagicWalletApiClient(
     magicSDK: magic,
+    reactiveWeb3Client: reactiveWeb3Client,
   );
+
+  final nativeWalletApiClient =
+      NativeWalletApiClient(reactiveWeb3Client: reactiveWeb3Client);
 
   final tokensApiClient = TokensApiClient(
     defaultChain: defaultChain,
@@ -96,11 +97,6 @@ void main() async {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
-            create: (_) => MagicRepository(
-              magicWalletApiClient: magicWalletApiClient,
-            ),
-          ),
-          RepositoryProvider(
             create: (_) => LongShortPairRepository(),
           ),
           RepositoryProvider(
@@ -122,6 +118,8 @@ void main() async {
           RepositoryProvider(
             create: (_) => WalletRepository(
               walletApiClient,
+              nativeWalletApiClient,
+              magicWalletApiClient,
               cache,
               defaultChain: defaultChain,
             ),

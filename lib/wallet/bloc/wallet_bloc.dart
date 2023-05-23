@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:ax_dapp/wallet/models/models.dart';
-import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -15,10 +14,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   WalletBloc({
     required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
-    required MagicRepository magicRepository,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
-        _magicRepository = magicRepository,
         super(WalletState.fromWallet(walletRepository.currentWallet)) {
     on<ConnectWalletRequested>(_onConnectWalletRequested);
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
@@ -44,7 +41,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
-  final MagicRepository _magicRepository;
 
   Future<void> _onConnectWalletRequested(
     ConnectWalletRequested _,
@@ -63,7 +59,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     try {
-      final walletAddress = await _walletRepository.connectWallet();
+      final walletAddress = await _walletRepository.connectNativeWallet();
       emit(state.copyWith(walletAddress: walletAddress));
     } on WalletFailure catch (e) {
       add(WalletFailed(e));
@@ -152,7 +148,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     await emit.forEach<Wallet>(
-      _magicRepository.walletChanges,
+      _walletRepository.walletChanges,
       onData: (wallet) => state.copyWithWallet(
         wallet,
       ),
@@ -168,12 +164,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       'ConnectWalletMagic event emitted!',
     );
 
-    final address = await _magicRepository.connect();
+    final address = await _walletRepository.connectMagicWallet();
 
     debugPrint('Updating UI with this address: $address');
     emit(
       state.copyWith(
-        walletAddress: address.toString(),
+        walletAddress: address,
       ),
     );
   }
@@ -182,6 +178,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     DisconnectWalletMagic event,
     Emitter<WalletState> emit,
   ) async {
-    await _magicRepository.disconnect();
+    await _walletRepository.disconnectWallet();
   }
 }

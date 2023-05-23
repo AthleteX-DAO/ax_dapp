@@ -25,7 +25,6 @@ import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
-import 'package:ax_dapp/wallet/repository/magic_repository.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/gysr_api.dart';
@@ -62,7 +61,6 @@ class App extends StatelessWidget {
           create: (_) => WalletBloc(
             walletRepository: context.read<WalletRepository>(),
             tokensRepository: context.read<TokensRepository>(),
-            magicRepository: context.read<MagicRepository>(),
           ),
         ),
         BlocProvider(
