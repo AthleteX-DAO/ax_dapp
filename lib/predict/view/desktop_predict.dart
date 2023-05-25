@@ -35,7 +35,8 @@ class _DesktopPredictState extends State<DesktopPredict> {
 
       Global().predictionsList = state.predictions;
       currentPredictions = state.predictions;
-      if (state.status == BlocStatus.loading) {
+      if (state.status == BlocStatus.loading ||
+          state.status == BlocStatus.initial) {
         bloc.add(const LoadPredictionsEvent());
       }
 

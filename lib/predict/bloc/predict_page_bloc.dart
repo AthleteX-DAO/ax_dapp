@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:http/http.dart' as http;
 
 part 'predict_page_event.dart';
 part 'predict_page_state.dart';
@@ -57,15 +60,71 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
   //   ),
   // ];
 
+  Future<void> fetchProposals() async {
+    final url = Uri.parse('https://hub.snapshot.org/graphql');
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({
+      'query': '''
+        query Proposals {
+          proposals(where: {space_in: ["athletex.eth"]}) {
+            id
+            title
+            body
+          }
+        }
+      '''
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
+    print('axps: incoming result\n${response}');
+
+    if (response.statusCode != 200) {
+      print('axps: Request failed with status: ${response.statusCode}');
+      return;
+    }
+
+    final result = jsonDecode(response.body);
+    print('axps: result\n$result');
+
+    final proposalsData = result['data']['proposals'];
+    final proposalList =
+        List<Map<String, dynamic>>.from(proposalsData as Iterable<dynamic>);
+
+    final titleBodyList = proposalList
+        .map((proposal) => {
+              'id': proposal['id'] as String,
+              'title': proposal['title'] as String,
+              'body': proposal['body'] as String,
+            })
+        .toList();
+
+    // Print the title and body pairs
+    for (final item in titleBodyList) {
+      final id = item['id'] as String;
+      final title = item['title'] as String;
+      final body = item['body'] as String;
+      questions.add(
+        PredictionModel(
+          id: id,
+          prompt: title,
+          details: body,
+          address: '',
+          yesTokenAddress: '',
+          noTokenAddress: '',
+        ),
+      );
+    }
+  }
+
   final List<PredictionModel> questions = [
-    const PredictionModel(
-      prompt: 'Los Angeles Lakers vs. Denver Nuggets: Game 4',
-      details:
-          'In the upcoming NBA game, scheduled for May 22 at 8:30 PM ET: If the Los Angles Lakers win, the market will resolve to “Lakers”.  If the Denver Nuggets win, the market will resolve to “Nuggets”.  If the game is not completed by May 26, 2023 (11:59:59 PM ET), the market will resolve 50-50.',
-      address: '0xC29F9Db3C4A771fC266431bb0D70308B762F8770',
-      yesTokenAddress: '',
-      noTokenAddress: '',
-    ),
+    // const PredictionModel(
+    //   prompt: 'Los Angeles Lakers vs. Denver Nuggets: Game 4',
+    //   details:
+    //       'In the upcoming NBA game, scheduled for May 22 at 8:30 PM ET: If the Los Angles Lakers win, the market will resolve to “Lakers”.  If the Denver Nuggets win, the market will resolve to “Nuggets”.  If the game is not completed by May 26, 2023 (11:59:59 PM ET), the market will resolve 50-50.',
+    //   address: '0xC29F9Db3C4A771fC266431bb0D70308B762F8770',
+    //   yesTokenAddress: '',
+    //   noTokenAddress: '',
+    // ),
   ];
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -93,6 +152,10 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     emit(
       state.copyWith(predictions: [], status: BlocStatus.loading),
     );
+
+    if (questions.isEmpty) {
+      await fetchProposals();
+    }
 
     if (questions.isNotEmpty) {
       emit(

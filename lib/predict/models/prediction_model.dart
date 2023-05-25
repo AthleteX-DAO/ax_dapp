@@ -3,6 +3,7 @@ import 'package:shared/shared.dart';
 
 class PredictionModel extends Equatable {
   const PredictionModel({
+    required this.id,
     required this.prompt,
     required this.details,
     required this.address,
@@ -11,6 +12,7 @@ class PredictionModel extends Equatable {
     required this.noTokenAddress,
   });
 
+  final String id;
   final String prompt;
   final String details;
   final bool? resolution;
@@ -20,6 +22,7 @@ class PredictionModel extends Equatable {
   final String noTokenAddress;
 
   static const empty = PredictionModel(
+    id: '',
     prompt: '',
     details: '',
     address: kEmptyAddress,
@@ -27,8 +30,9 @@ class PredictionModel extends Equatable {
     noTokenAddress: '',
   );
   static const generic = PredictionModel(
+    id: '',
     prompt: 'Will you win today?',
-    details: 'This market will resolve to fuck yea',
+    details: 'This market will resolve to fo sure yea',
     address: kNullAddress,
     yesTokenAddress: kEmptyAddress,
     noTokenAddress: kEmptyAddress,
