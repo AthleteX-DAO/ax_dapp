@@ -4,6 +4,7 @@ import 'package:ethereum_api/config_api.dart';
 import 'package:ethereum_api/src/wallet/magic_api_client/javascript_calls/magic.dart';
 import 'package:ethereum_api/src/wallet/wallet_api_client/wallet_api_client.dart';
 import 'package:ethereum_api/tokens_api.dart';
+import 'package:ethereum_api/wallet_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared/shared.dart';
 
@@ -152,13 +153,16 @@ class MagicWalletApiClient implements WalletApiClient {
     return double.parse(formattedGasPriceInGwei);
   }
 
-  void updateWalletClient() {
-    // _configApiClient.updateWeb3ClientDependency(client);
-  }
-
   @override
-  Future<WalletCredentials> getWalletCredentials() {
+  Future<WalletCredentials> getWalletCredentials() async {
     // TODO: implement getWalletCredentials
-    throw UnimplementedError();
+    try {
+      final credentials = await promiseToFuture<CredentialsWithKnownAddress>(
+        _magicSDK.requestAccount(),
+      );
+      return WalletCredentials(credentials);
+    } catch (error, stackTrace) {
+      throw WalletFailure.fromError(error, stackTrace);
+    }
   }
 }
