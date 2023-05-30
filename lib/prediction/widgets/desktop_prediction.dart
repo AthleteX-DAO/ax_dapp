@@ -1,7 +1,4 @@
-import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/predict/widgets/Probability.dart';
-import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/widgets/buttons/buttons.dart';
 import 'package:ax_dapp/prediction/widgets/prompt_details.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +25,7 @@ class DesktopPrediction extends StatelessWidget {
         onPressed: () {
           context.goNamed(
             'prediction',
-            params: {'id': predictionModel.prompt},
+            params: {'id': predictionModel.id},
           );
         },
         child: Row(

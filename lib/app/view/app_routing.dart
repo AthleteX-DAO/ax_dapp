@@ -31,6 +31,7 @@ import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart';
@@ -291,8 +292,10 @@ class _MaterialApp extends StatelessWidget {
   }
 
   PredictionModel? _toPrediction(String id) {
-    for (final predictions in Global().predictionsList) {
-      if (predictions.prompt == id) return predictions;
+    for (final prediction in Global().predictionsList) {
+      if (prediction.id == id) {
+        return prediction;
+      }
     }
     return null;
   }

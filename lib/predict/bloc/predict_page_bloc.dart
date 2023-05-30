@@ -1,7 +1,11 @@
+// ignore_for_file: cast_nullable_to_non_nullable
+
 import 'dart:convert';
 
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
@@ -76,51 +80,94 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     });
 
     final response = await http.post(url, headers: headers, body: body);
-    print('axps: incoming result\n${response}');
 
     if (response.statusCode != 200) {
-      print('axps: Request failed with status: ${response.statusCode}');
       return;
     }
 
     final result = jsonDecode(response.body);
-    print('axps: result\n$result');
 
     final proposalsData = result['data']['proposals'];
     final proposalList =
         List<Map<String, dynamic>>.from(proposalsData as Iterable<dynamic>);
 
-    final titleBodyList = proposalList
-        .map((proposal) => {
-              'id': proposal['id'] as String,
-              'title': proposal['title'] as String,
-              'body': proposal['body'] as String,
-            })
+    final proposalMap = proposalList
+        .map(
+          (proposal) => {
+            'id': proposal['id'] as String,
+            'title': proposal['title'] as String,
+            'body': proposal['body'] as String,
+          },
+        )
         .toList();
 
     // Print the title and body pairs
-    for (final item in titleBodyList) {
-      final id = item['id'] as String;
-      final title = item['title'] as String;
-      final body = item['body'] as String;
-      questions.add(
-        PredictionModel(
-          id: id,
-          prompt: title,
-          details: body,
-          address: '',
-          yesTokenAddress: '',
-          noTokenAddress: '',
-        ),
-      );
+    // clear the original list w/out addrs
+    savedIds.clear();
+    for (final prediction in questions) {
+      if (prediction.yesTokenAddress.isEmpty ||
+          prediction.noTokenAddress.isEmpty) {
+        questions.remove(prediction);
+      } else {
+        savedIds.add(prediction.id);
+      }
+    }
+    // add to list excluding alread saved elems
+    for (final proposal in proposalMap) {
+      final id = proposal['id'] as String;
+      if (savedIds.contains(id)) {
+        continue;
+      }
+      savedIds.add(id);
+      final title = proposal['title'] as String;
+      final body = proposal['body'] as String;
+      // check if element has addrs
+      //if address hasn't been set yet
+      await FirebaseFirestore.instance
+          .collection('EventMarket')
+          .doc(id)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          // ignore: cast_nullable_to_non_nullable
+          final data = documentSnapshot.data() as Map<String, dynamic>;
+          final yesAddr = data['YesAddress'].toString();
+          final noAddr = data['NoAddress'].toString();
+          questions.add(
+            PredictionModel(
+              id: id,
+              prompt: title,
+              details: body,
+              address: '',
+              yesTokenAddress: yesAddr,
+              noTokenAddress: noAddr,
+            ),
+          );
+        } else {
+          questions.add(
+            PredictionModel(
+              id: id,
+              prompt: title,
+              details: body,
+              address: '',
+              yesTokenAddress: '',
+              noTokenAddress: '',
+            ),
+          );
+        }
+      }).catchError((error) {
+        print('axps: Error: $error');
+      });
     }
   }
+
+  final savedIds = <String>[];
 
   final List<PredictionModel> questions = [
     // const PredictionModel(
     //   prompt: 'Los Angeles Lakers vs. Denver Nuggets: Game 4',
     //   details:
-    //       'In the upcoming NBA game, scheduled for May 22 at 8:30 PM ET: If the Los Angles Lakers win, the market will resolve to “Lakers”.  If the Denver Nuggets win, the market will resolve to “Nuggets”.  If the game is not completed by May 26, 2023 (11:59:59 PM ET), the market will resolve 50-50.',
+    //       'In the upcoming NBA game, scheduled for May 22 at 8:30 PM ET: If the Los An es Lakers win, the market will resolve to “Lakers”.  If the Denver Nuggets win, the market will resolve to “Nuggets”.  If the game is not completed by May 26, 2023 (11:59:59 PM ET), the market will resolve 50-50.',
     //   address: '0xC29F9Db3C4A771fC266431bb0D70308B762F8770',
     //   yesTokenAddress: '',
     //   noTokenAddress: '',

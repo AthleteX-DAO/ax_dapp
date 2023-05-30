@@ -25,7 +25,7 @@ dependencies:
   badges: ^2.0.3
   cache:
     path: packages/cache
-  cloud_firestore: ^4.3.1
+  cloud_firestore: ^4.8.0
   config_repository:
     path: packages/config_repository
   cupertino_icons: ^1.0.5

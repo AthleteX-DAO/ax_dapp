@@ -23,7 +23,7 @@ class PredictionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final paramPrompt = prediction.prompt;
+    final paramId = prediction.id;
 
     // Sizing prerequisites for mobile
     final _width = MediaQuery.of(context).size.width;
@@ -33,7 +33,7 @@ class PredictionPage extends StatelessWidget {
     if (global.pageName != 'prediction') {
       context.goNamed(
         global.pageName,
-        params: {'id': paramPrompt},
+        params: {'id': paramId},
       );
     }
 
