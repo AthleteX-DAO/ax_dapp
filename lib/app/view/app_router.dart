@@ -31,6 +31,7 @@ import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,17 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
   final GoRouter _router = GoRouter(
+    redirect: (context, state) async {
+      // ignore: use_build_context_synchronously
+      if (await context.read<WalletRepository>().searchForWallet() ?? false) {
+        // ignore: use_build_context_synchronously
+        context.read<WalletBloc>().add(const ConnectWalletRequested());
+      }
+      if (state.location.contains('/athlete') && Global().athleteList.isEmpty) {
+        return '/scout';
+      }
+      return null;
+    },
     navigatorKey: _rootNavigatorKey,
     routes: [
       ShellRoute(
