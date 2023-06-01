@@ -2,7 +2,6 @@ import 'package:ax_dapp/dialogs/promo/connected_wallet_promo_dialog.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/connect_metamask_dialog.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/wrong_network_dialog.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

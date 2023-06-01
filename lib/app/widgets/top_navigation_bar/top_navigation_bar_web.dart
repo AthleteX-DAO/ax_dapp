@@ -90,7 +90,10 @@ class TopNavigationBarWeb extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         launchUrl(
-                            Uri.parse('https://snapshot.org/#/athletex.eth'));
+                          Uri.parse(
+                            'https://snapshot.org/#/athletex.eth',
+                          ),
+                        );
                       },
                       child: Text(
                         'Vote',

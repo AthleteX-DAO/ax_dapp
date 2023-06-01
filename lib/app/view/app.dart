@@ -1,5 +1,5 @@
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
-import 'package:ax_dapp/app/view/app_routing.dart';
+import 'package:ax_dapp/app/view/entry_app.dart';
 import 'package:ax_dapp/app/widgets/bottom_navigation_bar/bloc/bottom_navigation_bar_bloc.dart';
 import 'package:ax_dapp/app/widgets/top_navigation_bar/bloc/top_navigation_bar_bloc.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
