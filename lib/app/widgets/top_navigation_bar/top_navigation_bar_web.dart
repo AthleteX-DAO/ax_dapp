@@ -1,5 +1,5 @@
-import 'package:ax_dapp/app/widgets/bloc/top_navigation_bar_bloc.dart';
-import 'package:ax_dapp/app/widgets/top_navigation_bar_item.dart';
+import 'package:ax_dapp/app/widgets/top_navigation_bar/bloc/top_navigation_bar_bloc.dart';
+import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
