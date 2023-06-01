@@ -132,6 +132,7 @@ class WalletDialog extends StatelessWidget {
                     ),
                   ],
                 ),
+                //TOOD(Kevin): re-enable when native wallet is ready
                 // Visibility(
                 //   visible: !kIsWeb,
                 //   child: Container(
