@@ -1,5 +1,6 @@
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/app_routing.dart';
+import 'package:ax_dapp/app/widgets/bloc/top_navigation_bar_bloc.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
@@ -53,6 +54,9 @@ class App extends StatelessWidget {
             leagueUseCase: context.read<LeagueUseCase>(),
           ),
         ),
+        BlocProvider(
+          create: (context) => TopNavigationBarBloc(),
+        )
       ],
       child: const EntryApp(),
     );
