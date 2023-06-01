@@ -102,66 +102,23 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
         .toList();
 
     // Print the title and body pairs
-    // clear the original list w/out addrs
-    savedIds.clear();
-    for (final prediction in questions) {
-      if (prediction.yesTokenAddress.isEmpty ||
-          prediction.noTokenAddress.isEmpty) {
-        questions.remove(prediction);
-      } else {
-        savedIds.add(prediction.id);
-      }
-    }
-    // add to list excluding alread saved elems
+    questions.clear();
     for (final proposal in proposalMap) {
       final id = proposal['id'] as String;
-      if (savedIds.contains(id)) {
-        continue;
-      }
-      savedIds.add(id);
       final title = proposal['title'] as String;
       final body = proposal['body'] as String;
-      // check if element has addrs
-      //if address hasn't been set yet
-      await FirebaseFirestore.instance
-          .collection('EventMarket')
-          .doc(id)
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
-        if (documentSnapshot.exists) {
-          // ignore: cast_nullable_to_non_nullable
-          final data = documentSnapshot.data() as Map<String, dynamic>;
-          final yesAddr = data['YesAddress'].toString();
-          final noAddr = data['NoAddress'].toString();
-          questions.add(
-            PredictionModel(
-              id: id,
-              prompt: title,
-              details: body,
-              address: '',
-              yesTokenAddress: yesAddr,
-              noTokenAddress: noAddr,
-            ),
-          );
-        } else {
-          questions.add(
-            PredictionModel(
-              id: id,
-              prompt: title,
-              details: body,
-              address: '',
-              yesTokenAddress: '',
-              noTokenAddress: '',
-            ),
-          );
-        }
-      }).catchError((error) {
-        print('axps: Error: $error');
-      });
+      questions.add(
+        PredictionModel(
+          id: id,
+          prompt: title,
+          details: body,
+          address: '',
+          yesTokenAddress: '',
+          noTokenAddress: '',
+        ),
+      );
     }
   }
-
-  final savedIds = <String>[];
 
   final List<PredictionModel> questions = [
     // const PredictionModel(

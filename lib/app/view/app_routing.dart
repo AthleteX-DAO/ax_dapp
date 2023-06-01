@@ -149,7 +149,7 @@ class _MaterialApp extends StatelessWidget {
                 name: 'prediction',
                 path: 'prediction/:id',
                 builder: (BuildContext context, GoRouterState state) {
-                  Global().pageName = 'Prediction';
+                  Global().pageName = 'prediction';
                   return BlocProvider(
                     create: (context) => PredictionPageBloc(
                       walletRepository: context.read<WalletRepository>(),

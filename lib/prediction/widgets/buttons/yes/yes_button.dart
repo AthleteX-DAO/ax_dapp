@@ -3,6 +3,7 @@ import 'package:ax_dapp/prediction/widgets/buttons/yes/bloc/yes_button_bloc.dart
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -10,6 +11,7 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class YesButton extends StatelessWidget {
   const YesButton({
@@ -31,6 +33,8 @@ class YesButton extends StatelessWidget {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
+    final invalidAddr = GoRouter.of(context).location.contains('prediction') &&
+        prompt.yesTokenAddress.isEmpty;
     var hgt = 300.0;
     if (_height < 305) hgt = _height;
 
@@ -48,10 +52,31 @@ class YesButton extends StatelessWidget {
             width: isPortraitMode ? containerWdt / 3 : 175,
             height: 50,
             // if portrait mode, use 1/3 of container width
-            decoration:
-                boxDecoration(primaryOrangeColor, 100, 0, primaryWhiteColor),
+            decoration: invalidAddr
+                ? boxDecoration(
+                    secondaryGreyColor,
+                    100,
+                    0,
+                    primaryWhiteColor,
+                  )
+                : boxDecoration(
+                    primaryOrangeColor,
+                    100,
+                    0,
+                    primaryWhiteColor,
+                  ),
             child: TextButton(
               onPressed: () {
+                if (invalidAddr) {
+                  return;
+                }
+                // invalidAddr
+                //     ? context.showWarningToast(
+                //         title: 'No Yes-Address',
+                //         description:
+                //             'You cannot vote when there is no address attatched',
+                //       )
+                //     : bloc.add(
                 bloc.add(
                   FetchSwapInfoRequested(
                     longTokenAddress: prompt.yesTokenAddress,

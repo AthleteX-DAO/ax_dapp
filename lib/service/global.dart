@@ -50,6 +50,25 @@ class Global extends PropertyChangeNotifier<String> {
     notifyListeners('predictionsList');
   }
 
+  void updatePrediction(String id, String yesAddr, String noAddr) {
+    for (final prediction in predictionsList) {
+      if (prediction.id == id) {
+        predictionsList
+          ..remove(prediction)
+          ..add(
+            PredictionModel(
+              id: id,
+              prompt: prediction.prompt,
+              details: prediction.details,
+              address: prediction.address,
+              yesTokenAddress: yesAddr,
+              noTokenAddress: noAddr,
+            ),
+          );
+      }
+    }
+  }
+
   Scaffold buildPage(BuildContext context, Widget page) {
     return Scaffold(
       extendBodyBehindAppBar: true,

@@ -9,6 +9,7 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class NoButton extends StatelessWidget {
   const NoButton({
@@ -30,6 +31,8 @@ class NoButton extends StatelessWidget {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
+    final invalidAddr = GoRouter.of(context).location.contains('prediction') &&
+        prompt.yesTokenAddress.isEmpty;
     var hgt = 300.0;
     if (_height < 305) hgt = _height;
 
@@ -48,9 +51,31 @@ class NoButton extends StatelessWidget {
             width: isPortraitMode ? containerWdt / 3 : 175,
             height: 50,
             // if portrait mode, use 1/3 of container width
-            decoration: boxDecoration(Colors.black, 100, 0, Colors.white),
+            decoration: invalidAddr
+                ? boxDecoration(
+                    secondaryGreyColor,
+                    100,
+                    0,
+                    primaryWhiteColor,
+                  )
+                : boxDecoration(
+                    Colors.black,
+                    100,
+                    0,
+                    Colors.white,
+                  ),
             child: TextButton(
               onPressed: () {
+                if (invalidAddr) {
+                  return;
+                }
+                // invalidAddr
+                //     ? context.showWarningToast(
+                //         title: 'No No-Address',
+                //         description:
+                //             'You cannot vote when there is no address attatched',
+                //       )
+                //     : bloc.add(
                 bloc.add(
                   FetchBuyInfoRequested(
                     shortTokenAddress: prompt.noTokenAddress,
@@ -241,8 +266,20 @@ class NoButton extends StatelessWidget {
                   context.showWalletWarningToast();
                 }
               },
-              child:
-                  Text('No', style: textStyle(Colors.white, 20, false, false)),
+              child: Text('No',
+                  style: invalidAddr
+                      ? textStyle(
+                          Colors.black,
+                          20,
+                          false,
+                          false,
+                        )
+                      : textStyle(
+                          Colors.white,
+                          20,
+                          false,
+                          false,
+                        )),
             ),
           );
         },
