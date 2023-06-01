@@ -246,7 +246,14 @@ class AppRouter {
         ],
       ),
     ],
+    errorPageBuilder: (context, state) => MaterialPage(
+      key: UniqueKey(),
+      child: Scaffold(
+        body: Center(child: Text(state.error.toString())),
+      ),
+    ),
   );
+
   GoRouter get router => _router;
 }
 
