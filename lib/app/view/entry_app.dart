@@ -1,4 +1,4 @@
-import 'package:ax_dapp/app/view/app_router.dart';
+import 'package:ax_dapp/app/view/view.dart';
 import 'package:ax_dapp/chat_wrapper/chat_wrapper.dart';
 import 'package:ax_dapp/debug/views/debug_app_wrapper.dart';
 import 'package:flutter/foundation.dart';

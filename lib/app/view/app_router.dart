@@ -1,6 +1,6 @@
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
-import 'package:ax_dapp/app/widgets/widgets.dart';
+import 'package:ax_dapp/app/view/app_scaffold.dart';
 import 'package:ax_dapp/athlete/view/athlete_page.dart';
 import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
@@ -33,7 +33,6 @@ import 'package:ax_dapp/trade/desktop_trade.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ethereum_api/gysr_api.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -70,37 +69,7 @@ class AppRouter {
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
-          return Scaffold(
-            extendBodyBehindAppBar: true,
-            extendBody: true,
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              title: kIsWeb &&
-                      (MediaQuery.of(context).orientation ==
-                          Orientation.landscape)
-                  ? const TopNavigationBarWeb()
-                  : const TopNavigationBarMobile(),
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-            ),
-            bottomNavigationBar: kIsWeb &&
-                    (MediaQuery.of(context).orientation ==
-                        Orientation.landscape)
-                ? const BottomNavigationBarWeb()
-                : const BottomNavigationBarMobile(),
-            body: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/blurredBackground.png'),
-                  fit: BoxFit.fill,
-                ),
-              ),
-              child: child,
-            ),
-          );
+          return AppScaffold(child: child);
         },
         routes: [
           GoRoute(
