@@ -14,5 +14,3 @@ class SelectItemEvent extends BottomNavigationBarEvent {
   @override
   List<Object> get props => [itemIndex];
 }
-
-class LoadSelectedItemEvent extends BottomNavigationBarEvent {}

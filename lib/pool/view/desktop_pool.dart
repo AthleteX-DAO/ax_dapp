@@ -1,4 +1,5 @@
 import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
+import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
@@ -49,14 +50,18 @@ class _DesktopPoolState extends State<DesktopPool> {
     if (_width >= 600 && _width < 1024) layoutHeight = _height * 0.8;
     final layoutWidth = isWeb ? _width * 0.8 : _width * 0.9;
     final toggleWidth = isWeb ? 260.0 : layoutWidth;
+    context
+        .read<TopNavigationBarBloc>()
+        .add(const SelectButtonEvent(buttonName: 'pool'));
+    context
+        .read<BottomNavigationBarBloc>()
+        .add(const SelectItemEvent(itemIndex: 2));
 
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       child: Container(
         width: layoutWidth,
         height: _height - AppBar().preferredSize.height - 10,
-        // Top margin of Pool section is equal to height + 1 of AppBar on
-        // mobile only
         margin: EdgeInsets.only(top: AppBar().preferredSize.height + 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

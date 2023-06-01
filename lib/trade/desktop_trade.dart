@@ -1,3 +1,4 @@
+import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -43,6 +44,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
     final wid = isWeb ? 550.0 : _width;
     final tokenContainerWid = wid * 0.95;
     final amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
+    context
+        .read<TopNavigationBarBloc>()
+        .add(const SelectButtonEvent(buttonName: 'trade'));
+    context
+        .read<BottomNavigationBarBloc>()
+        .add(const SelectItemEvent(itemIndex: 1));
 
     return BlocListener<WalletBloc, WalletState>(
       listener: (context, state) {

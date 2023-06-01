@@ -14,5 +14,3 @@ class SelectButtonEvent extends TopNavigationBarEvent {
   @override
   List<Object> get props => [buttonName];
 }
-
-class LoadSelectedButton extends TopNavigationBarEvent {}

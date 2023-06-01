@@ -1,3 +1,4 @@
+import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
@@ -30,6 +31,12 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
   @override
   Widget build(BuildContext context) {
+    context
+        .read<TopNavigationBarBloc>()
+        .add(const SelectButtonEvent(buttonName: 'farm'));
+    context
+        .read<BottomNavigationBarBloc>()
+        .add(const SelectItemEvent(itemIndex: 3));
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return LayoutBuilder(

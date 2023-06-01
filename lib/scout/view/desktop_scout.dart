@@ -36,8 +36,6 @@ class _DesktopScoutState extends State<DesktopScout> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
     myController.dispose();
     input = '';
     super.dispose();
@@ -51,7 +49,6 @@ class _DesktopScoutState extends State<DesktopScout> {
   @override
   Widget build(BuildContext context) {
     const sportFilterTxSz = 14.0;
-    // breaks the code, will come back to it later(probably)
 
     return BlocBuilder<ScoutPageBloc, ScoutPageState>(
       buildWhen: (previous, current) {
