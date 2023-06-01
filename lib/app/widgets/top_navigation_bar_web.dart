@@ -5,9 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TopNavigationBarWeb extends StatelessWidget {
-  const TopNavigationBarWeb({super.key, required this.page});
-
-  final String page;
+  const TopNavigationBarWeb({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,101 +40,57 @@ class TopNavigationBarWeb extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    if (page != 'scout') {
-                      context.goNamed('scout');
-                    }
+                    context.goNamed('scout');
                   },
                   child: Text(
                     'Scout',
-                    style: textSwapState(
-                      condition: page == 'scout',
-                      tabNotSelected: textStyle(
-                        Colors.white,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: false,
-                      ),
-                      tabSelected: textStyle(
-                        Colors.amber[400]!,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: true,
-                      ),
+                    style: textStyle(
+                      Colors.white,
+                      tabTextSize,
+                      isBold: true,
+                      isUline: false,
                     ),
                   ),
                 ),
                 TextButton(
                   onPressed: () {
-                    if (page != 'trade') {
-                      context.goNamed('trade');
-                    }
+                    context.goNamed('trade');
                   },
                   child: Text(
                     'Trade',
-                    style: textSwapState(
-                      condition: page == 'trade',
-                      tabNotSelected: textStyle(
-                        Colors.white,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: false,
-                      ),
-                      tabSelected: textStyle(
-                        Colors.amber[400]!,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: true,
-                      ),
+                    style: textStyle(
+                      Colors.white,
+                      tabTextSize,
+                      isBold: true,
+                      isUline: false,
                     ),
                   ),
                 ),
                 TextButton(
                   onPressed: () {
-                    if (page != 'pool') {
-                      context.goNamed('pool');
-                    }
+                    context.goNamed('pool');
                   },
                   child: Text(
                     'Pool',
-                    style: textSwapState(
-                      condition: page == 'pool',
-                      tabNotSelected: textStyle(
-                        Colors.white,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: false,
-                      ),
-                      tabSelected: textStyle(
-                        Colors.amber[400]!,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: true,
-                      ),
+                    style: textStyle(
+                      Colors.white,
+                      tabTextSize,
+                      isBold: true,
+                      isUline: false,
                     ),
                   ),
                 ),
                 TextButton(
                   onPressed: () {
-                    if (page != 'farm') {
-                      context.goNamed('farm');
-                    }
+                    context.goNamed('farm');
                   },
                   child: Text(
                     'Farm',
-                    style: textSwapState(
-                      condition: page == 'farm',
-                      tabNotSelected: textStyle(
-                        Colors.white,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: false,
-                      ),
-                      tabSelected: textStyle(
-                        Colors.amber[400]!,
-                        tabTextSize,
-                        isBold: true,
-                        isUline: true,
-                      ),
+                    style: textStyle(
+                      Colors.white,
+                      tabTextSize,
+                      isBold: true,
+                      isUline: false,
                     ),
                   ),
                 ),

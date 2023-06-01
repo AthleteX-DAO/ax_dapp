@@ -41,35 +41,35 @@ class Global extends PropertyChangeNotifier<String> {
     notifyListeners('selectedIndex');
   }
 
-  Scaffold buildPage(BuildContext context, Widget page) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: kIsWeb &&
-                (MediaQuery.of(context).orientation == Orientation.landscape)
-            ? TopNavigationBarWeb(page: pageName)
-            : const TopNavigationBarMobile(),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      bottomNavigationBar: kIsWeb &&
-              (MediaQuery.of(context).orientation == Orientation.landscape)
-          ? const BottomNavigationBarWeb()
-          : BottomNavigationBarMobile(selectedIndex: selectedIndex),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/blurredBackground.png'),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: page,
-      ),
-    );
-  }
+  // Scaffold buildPage(BuildContext context, Widget page) {
+  //   return Scaffold(
+  //     extendBodyBehindAppBar: true,
+  //     extendBody: true,
+  //     resizeToAvoidBottomInset: false,
+  //     appBar: AppBar(
+  //       automaticallyImplyLeading: false,
+  //       title: kIsWeb &&
+  //               (MediaQuery.of(context).orientation == Orientation.landscape)
+  //           ? TopNavigationBarWeb(page: pageName)
+  //           : const TopNavigationBarMobile(),
+  //       backgroundColor: Colors.transparent,
+  //       elevation: 0,
+  //     ),
+  //     bottomNavigationBar: kIsWeb &&
+  //             (MediaQuery.of(context).orientation == Orientation.landscape)
+  //         ? const BottomNavigationBarWeb()
+  //         : BottomNavigationBarMobile(selectedIndex: selectedIndex),
+  //     body: Container(
+  //       width: MediaQuery.of(context).size.width,
+  //       height: MediaQuery.of(context).size.height,
+  //       decoration: const BoxDecoration(
+  //         image: DecorationImage(
+  //           image: AssetImage('assets/images/blurredBackground.png'),
+  //           fit: BoxFit.fill,
+  //         ),
+  //       ),
+  //       child: page,
+  //     ),
+  //   );
+  // }
 }

@@ -47,70 +47,43 @@ class _AthletePageState extends State<AthletePage> {
       context.goNamed(global.pageName);
     }
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: kIsWeb &&
-                (MediaQuery.of(context).orientation == Orientation.landscape)
-            ? TopNavigationBarWeb(page: global.pageName)
-            : const TopNavigationBarMobile(),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      bottomNavigationBar: kIsWeb &&
-              (MediaQuery.of(context).orientation == Orientation.landscape)
-          ? const BottomNavigationBarWeb()
-          : BottomNavigationBarMobile(selectedIndex: global.selectedIndex),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/blurredBackground.png'),
-            fit: BoxFit.fill,
-          ),
+    return BlocProvider(
+      create: (context) => AthletePageBloc(
+        walletRepository: context.read<WalletRepository>(),
+        tokensRepository: context.read<TokensRepository>(),
+        mlbRepo: RepositoryProvider.of<MLBRepo>(context),
+        nflRepo: RepositoryProvider.of<NFLRepo>(context),
+        athlete: athlete,
+        getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
+          tokensRepository: context.read<TokensRepository>(),
+          graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+          sportsRepos: [
+            RepositoryProvider.of<MLBRepo>(context),
+            RepositoryProvider.of<NFLRepo>(context),
+          ],
         ),
-        child: BlocProvider(
-          create: (context) => AthletePageBloc(
-            walletRepository: context.read<WalletRepository>(),
-            tokensRepository: context.read<TokensRepository>(),
-            mlbRepo: RepositoryProvider.of<MLBRepo>(context),
-            nflRepo: RepositoryProvider.of<NFLRepo>(context),
-            athlete: athlete,
-            getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
-              tokensRepository: context.read<TokensRepository>(),
-              graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-              sportsRepos: [
-                RepositoryProvider.of<MLBRepo>(context),
-                RepositoryProvider.of<NFLRepo>(context),
-              ],
-            ),
-          ),
-          child: BlocListener<AthletePageBloc, AthletePageState>(
-            listener: (context, state) {
-              if (state.failure is DisconnectedWalletFailure) {
-                context.showWalletWarningToast();
-              }
-              if (state.failure is InvalidAthleteFailure) {
-                context.showWarningToast(
-                  title: 'Error',
-                  description: 'Cannot add athlete to wallet',
-                );
-              }
-            },
-            child: BlocBuilder<AthletePageBloc, AthletePageState>(
-              buildWhen: (previous, current) => previous.stats != current.stats,
-              builder: (_, state) {
-                final chartStats = state.stats;
-                return AthletePageWebView(
-                  athlete: athlete,
-                  chartStats: chartStats,
-                );
-              },
-            ),
-          ),
+      ),
+      child: BlocListener<AthletePageBloc, AthletePageState>(
+        listener: (context, state) {
+          if (state.failure is DisconnectedWalletFailure) {
+            context.showWalletWarningToast();
+          }
+          if (state.failure is InvalidAthleteFailure) {
+            context.showWarningToast(
+              title: 'Error',
+              description: 'Cannot add athlete to wallet',
+            );
+          }
+        },
+        child: BlocBuilder<AthletePageBloc, AthletePageState>(
+          buildWhen: (previous, current) => previous.stats != current.stats,
+          builder: (_, state) {
+            final chartStats = state.stats;
+            return AthletePageWebView(
+              athlete: athlete,
+              chartStats: chartStats,
+            );
+          },
         ),
       ),
     );
