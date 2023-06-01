@@ -1,4 +1,3 @@
-import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/athlete/bloc/athlete_page_bloc.dart';
 import 'package:ax_dapp/athlete/widgets/widgets.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -8,10 +7,8 @@ import 'package:ax_dapp/scout/scout.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/util.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -43,10 +40,6 @@ class _AthletePageState extends State<AthletePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (global.pageName != 'athlete') {
-      context.goNamed(global.pageName);
-    }
-
     return BlocProvider(
       create: (context) => AthletePageBloc(
         walletRepository: context.read<WalletRepository>(),

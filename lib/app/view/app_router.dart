@@ -27,6 +27,7 @@ import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -119,7 +120,9 @@ class AppRouter {
                 name: 'athlete',
                 path: 'athlete/:id',
                 builder: (BuildContext context, GoRouterState state) {
-                  return AthletePage(athlete: AthleteScoutModel.empty);
+                  return AthletePage(
+                    athlete: _findAthleteById(state.params['id']!),
+                  );
                 },
               ),
             ],
@@ -232,6 +235,13 @@ class AppRouter {
       ),
     ],
   );
-
   GoRouter get router => _router;
+}
+
+AthleteScoutModel _findAthleteById(String id) {
+  final athleteList = Global().athleteList;
+  return athleteList.firstWhere(
+    (athlete) => athlete.id.toString() + athlete.name == id,
+    orElse: () => AthleteScoutModel.empty,
+  );
 }
