@@ -1,4 +1,4 @@
-import 'package:ax_dapp/app/widgets/bottom_navigation_bar/bloc/bottom_navigation_bar_bloc.dart';
+import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // TODO(Ryan): re-enable this import for the league feature
