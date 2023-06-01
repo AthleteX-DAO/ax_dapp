@@ -4,7 +4,6 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +21,6 @@ class DesktopPool extends StatefulWidget {
 }
 
 class _DesktopPoolState extends State<DesktopPool> {
-  Global global = Global();
   bool isMylLiquidity = true;
   bool isRemoveLiquidity = true;
   bool isWeb = true;

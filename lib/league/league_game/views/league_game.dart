@@ -1,6 +1,5 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/league_game/widgets/widgets.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -20,7 +19,6 @@ class LeagueGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final global = Global();
     final _width = MediaQuery.of(context).size.width;
     final walletAddress =
         context.select((WalletBloc bloc) => bloc.state.walletAddress);

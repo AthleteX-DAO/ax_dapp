@@ -1,7 +1,6 @@
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/widgets/widgets.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -36,7 +35,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   @override
   Widget build(BuildContext context) {
-    final global = Global();
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final mediaquery = MediaQuery.of(context);

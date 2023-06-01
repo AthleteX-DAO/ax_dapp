@@ -2,7 +2,6 @@ import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -19,7 +18,6 @@ class DesktopFarm extends StatefulWidget {
 }
 
 class _DesktopFarmState extends State<DesktopFarm> {
-  Global global = Global();
   final farmTextController = TextEditingController();
   bool isWeb = true;
   bool isAllFarms = true;

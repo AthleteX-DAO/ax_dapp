@@ -2,7 +2,6 @@ import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/widgets/dialogs/rules_dialog.dart';
 import 'package:ax_dapp/league/league_search/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/snackbar_warning.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
@@ -35,7 +34,6 @@ class _DesktopLeagueState extends State<DesktopLeague> {
     var textSize = 16.0;
     var showToolTipHeader = true;
     var showDateRange = true;
-    final global = Global();
     return BlocBuilder<LeagueBloc, LeagueState>(
       buildWhen: (previous, current) {
         return current.status.name.isNotEmpty ||

@@ -1,7 +1,6 @@
 import 'package:ax_dapp/league/league_draft/bloc/league_draft_bloc.dart';
 import 'package:ax_dapp/league/league_draft/widgets/league_draft_apt_card.dart';
 import 'package:ax_dapp/league/league_draft/widgets/league_draft_team_card.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -30,7 +29,6 @@ class DesktopLeagueDraft extends StatelessWidget {
         context.select((LeagueDraftBloc bloc) => bloc.state.ownedApts);
     final myAptTeam =
         context.select((LeagueDraftBloc bloc) => bloc.state.myAptTeam);
-    final global = Global();
     var textSize = 16.0;
     var leagueHeaderTextSize = 36.0;
     var verticalView = true;
