@@ -1,3 +1,4 @@
+import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/league_search/widgets/dialogs/rules_dialog.dart';
 import 'package:ax_dapp/league/league_search/widgets/widgets.dart';
@@ -31,6 +32,12 @@ class _DesktopLeagueState extends State<DesktopLeague> {
 
   @override
   Widget build(BuildContext context) {
+    context
+        .read<TopNavigationBarBloc>()
+        .add(const SelectButtonEvent(buttonName: 'league'));
+    context
+        .read<BottomNavigationBarBloc>()
+        .add(const SelectItemEvent(itemIndex: 4));
     var textSize = 16.0;
     var showToolTipHeader = true;
     var showDateRange = true;
