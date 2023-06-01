@@ -60,6 +60,13 @@ class AppRouter {
     },
     navigatorKey: _rootNavigatorKey,
     routes: [
+      GoRoute(
+        name: 'landing',
+        path: '/',
+        builder: (BuildContext context, GoRouterState state) {
+          return const LandingPage();
+        },
+      ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
@@ -96,13 +103,6 @@ class AppRouter {
           );
         },
         routes: [
-          GoRoute(
-            name: 'landing',
-            path: '/',
-            builder: (BuildContext context, GoRouterState state) {
-              return const LandingPage();
-            },
-          ),
           GoRoute(
             name: 'scout',
             path: '/scout',
