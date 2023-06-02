@@ -84,7 +84,6 @@ class EditRulesBloc extends Bloc<EditRulesEvent, EditRulesState> {
           isPrivate: state.isPrivate,
           sports: state.sports,
         );
-        print(updatedLeague);
         await _leagueRepository.updateLeague(
           leagueID: state.league.leagueID,
           league: updatedLeague,
