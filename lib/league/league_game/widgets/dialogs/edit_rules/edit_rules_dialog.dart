@@ -3,7 +3,6 @@ import 'package:ax_dapp/league/league_game/widgets/dialogs/edit_rules/widgets/wi
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
 class EditRulesDialog extends StatefulWidget {
   const EditRulesDialog({
@@ -15,22 +14,12 @@ class EditRulesDialog extends StatefulWidget {
 }
 
 class _EditRulesDialog extends State<EditRulesDialog> {
-  late List<SupportedSport> selectedSports;
-  final supportedSports = [
-    SupportedSport.MLB,
-    SupportedSport.NFL,
-  ];
-  late SupportedSport dropDownValue;
-
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
 
     final league = context.read<EditRulesBloc>().state.league;
-
-    dropDownValue = league.sports.first;
-    selectedSports = league.sports;
 
     var textSize = 16.0;
     if (_width <= 768) textSize = 12.0;
