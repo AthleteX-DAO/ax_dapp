@@ -17,6 +17,7 @@ class EditRulesState extends Equatable {
     this.winner = '',
     this.prizePoolAddress = '',
     this.league = League.empty,
+    this.errorMessage = '',
   });
 
   final BlocStatus status;
@@ -34,6 +35,7 @@ class EditRulesState extends Equatable {
   final String winner;
   final String prizePoolAddress;
   final League league;
+  final String errorMessage;
 
   EditRulesState copyWith({
     BlocStatus? status,
@@ -51,6 +53,7 @@ class EditRulesState extends Equatable {
     String? winner,
     String? prizePoolAddress,
     League? league,
+    String? errorMessage,
   }) {
     return EditRulesState(
       status: status ?? this.status,
@@ -68,6 +71,7 @@ class EditRulesState extends Equatable {
       winner: winner ?? this.winner,
       prizePoolAddress: prizePoolAddress ?? this.prizePoolAddress,
       league: league ?? this.league,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
@@ -89,6 +93,7 @@ class EditRulesState extends Equatable {
 
   @override
   List<Object> get props => [
+        status,
         leagueID,
         name,
         adminWallet,
@@ -103,5 +108,6 @@ class EditRulesState extends Equatable {
         winner,
         prizePoolAddress,
         league,
+        errorMessage,
       ];
 }

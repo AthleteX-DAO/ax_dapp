@@ -48,24 +48,49 @@ class EditRulesBloc extends Bloc<EditRulesEvent, EditRulesState> {
     UpdateLeague event,
     Emitter<EditRulesState> emit,
   ) async {
+    final startDate = DateTime.parse(state.dateStart);
+    final endDate = DateTime.parse(state.dateEnd);
     try {
-      final updatedLeague = state.league.copyWith(
-        name: state.name,
-        dateStart: state.dateStart,
-        dateEnd: state.dateEnd,
-        teamSize: state.teamSize,
-        maxTeams: state.maxTeams,
-        entryFee: state.entryFee,
-        isLocked: state.isLocked,
-        isPrivate: state.isPrivate,
-        sports: state.sports,
-      );
-      print(updatedLeague);
-      await _leagueRepository.updateLeague(
-        leagueID: state.league.leagueID,
-        league: updatedLeague,
-      );
-      emit(state.copyWith(status: BlocStatus.success));
+      if (state.name.isEmpty || state.sports.isEmpty) {
+        emit(
+          state.copyWith(
+            errorMessage: 'One or More Fields Are Empty!',
+            status: BlocStatus.error,
+          ),
+        );
+      } else if (startDate.isAfter(endDate) || startDate == endDate) {
+        emit(
+          state.copyWith(
+            errorMessage: 'Invalid Dates!',
+            status: BlocStatus.error,
+          ),
+        );
+      } else if (state.maxTeams <= 1) {
+        emit(
+          state.copyWith(
+            errorMessage: 'Need to Have More Than One Participant!',
+            status: BlocStatus.error,
+          ),
+        );
+      } else {
+        final updatedLeague = state.league.copyWith(
+          name: state.name,
+          dateStart: state.dateStart,
+          dateEnd: state.dateEnd,
+          teamSize: state.teamSize,
+          maxTeams: state.maxTeams,
+          entryFee: state.entryFee,
+          isLocked: state.isLocked,
+          isPrivate: state.isPrivate,
+          sports: state.sports,
+        );
+        print(updatedLeague);
+        await _leagueRepository.updateLeague(
+          leagueID: state.league.leagueID,
+          league: updatedLeague,
+        );
+        emit(state.copyWith(status: BlocStatus.success));
+      }
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
     }
@@ -75,62 +100,107 @@ class EditRulesBloc extends Bloc<EditRulesEvent, EditRulesState> {
     UpdateName event,
     Emitter<EditRulesState> emit,
   ) async {
-    emit(state.copyWith(name: event.name));
+    emit(
+      state.copyWith(
+        name: event.name,
+        status: BlocStatus.success,
+      ),
+    );
   }
 
   FutureOr<void> _onUpdateStartDate(
     UpdateStartDate event,
     Emitter<EditRulesState> emit,
   ) async {
-    emit(state.copyWith(dateStart: event.startDate));
+    emit(
+      state.copyWith(
+        dateStart: event.startDate,
+        status: BlocStatus.success,
+      ),
+    );
   }
 
   FutureOr<void> _onUpdateEndDate(
     UpdateEndDate event,
     Emitter<EditRulesState> emit,
   ) async {
-    emit(state.copyWith(dateEnd: event.endDate));
+    emit(
+      state.copyWith(
+        dateEnd: event.endDate,
+        status: BlocStatus.success,
+      ),
+    );
   }
 
   FutureOr<void> _onUpdateTeamSize(
     UpdateTeamSize event,
     Emitter<EditRulesState> emit,
   ) async {
-    emit(state.copyWith(teamSize: event.teamSize));
+    emit(
+      state.copyWith(
+        teamSize: event.teamSize,
+        status: BlocStatus.success,
+      ),
+    );
   }
 
   FutureOr<void> _onUpdateParticipants(
     UpdateParticipants event,
     Emitter<EditRulesState> emit,
   ) async {
-    emit(state.copyWith(maxTeams: event.participants));
+    emit(
+      state.copyWith(
+        maxTeams: event.participants,
+        status: BlocStatus.success,
+      ),
+    );
   }
 
   FutureOr<void> _onUpdateEntryFee(
     UpdateEntryFee event,
     Emitter<EditRulesState> emit,
   ) async {
-    emit(state.copyWith(entryFee: event.entryFee));
+    emit(
+      state.copyWith(
+        entryFee: event.entryFee,
+        status: BlocStatus.success,
+      ),
+    );
   }
 
   FutureOr<void> _onUpdatePrivateToggle(
     UpdatePrivateToggle event,
     Emitter<EditRulesState> emit,
   ) async {
-    emit(state.copyWith(isPrivate: event.privateToggleValue));
+    emit(
+      state.copyWith(
+        isPrivate: event.privateToggleValue,
+        status: BlocStatus.success,
+      ),
+    );
   }
 
   FutureOr<void> _onUpdateLockToggle(
     UpdateLockToggle event,
     Emitter<EditRulesState> emit,
   ) async {
-    emit(state.copyWith(isLocked: event.lockedToggleValue));
+    emit(
+      state.copyWith(
+        isLocked: event.lockedToggleValue,
+        status: BlocStatus.success,
+      ),
+    );
   }
 
   FutureOr<void> _onUpdateSports(
     UpdateSports event,
     Emitter<EditRulesState> emit,
   ) async {
-    emit(state.copyWith(sports: event.selectedSports));
+    emit(
+      state.copyWith(
+        sports: event.selectedSports,
+        status: BlocStatus.success,
+      ),
+    );
   }
 }
