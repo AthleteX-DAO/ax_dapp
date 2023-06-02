@@ -86,16 +86,16 @@ class TopNavigationBarWeb extends StatelessWidget {
                       },
                     ),
                     // TODO(Ryan): enable the UI once the feature is ready
-                    // TopNavigationBarItem(
-                    //   tabTextSize: tabTextSize,
-                    //   routeName: 'league',
-                    //   buttonName: 'League',
-                    //   isSelected: selectedButton == 'league',
-                    //   onPressed: () {
-                    //     bloc.add(const SelectButtonEvent(buttonName: 'league'));
-                    //     context.goNamed('league');
-                    //   },
-                    // ),
+                    TopNavigationBarItem(
+                      tabTextSize: tabTextSize,
+                      routeName: 'league',
+                      buttonName: 'League',
+                      isSelected: selectedButton == 'league',
+                      onPressed: () {
+                        bloc.add(const SelectButtonEvent(buttonName: 'league'));
+                        context.goNamed('league');
+                      },
+                    ),
                     TextButton(
                       onPressed: () {
                         launchUrl(

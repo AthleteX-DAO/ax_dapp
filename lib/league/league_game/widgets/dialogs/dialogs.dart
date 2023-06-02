@@ -1,1 +1,1 @@
-export 'edit_rules_dialog.dart';
+export 'edit_rules/edit_rules_dialog.dart';

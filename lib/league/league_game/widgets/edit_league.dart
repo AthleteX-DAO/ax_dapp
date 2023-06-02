@@ -1,4 +1,5 @@
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
+import 'package:ax_dapp/league/league_game/widgets/dialogs/edit_rules/bloc/edit_rules_bloc.dart';
 import 'package:ax_dapp/league/league_game/widgets/widgets.dart';
 import 'package:ax_dapp/util/snackbar_warning.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ class EditLeague extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<LeagueGameBloc>();
     final timerStatus =
         context.select((LeagueGameBloc bloc) => bloc.state.timerStatus);
     return TextButton(
@@ -38,11 +38,12 @@ class EditLeague extends StatelessWidget {
         } else {
           showDialog<void>(
             context: context,
-            builder: (context) => BlocProvider.value(
-              value: bloc,
-              child: EditRulesDialog(
+            builder: (context) => BlocProvider(
+              create: (context) => EditRulesBloc(
                 league: league,
+                leagueRepository: context.read<LeagueRepository>(),
               ),
+              child: const EditRulesDialog(),
             ),
           );
         }
