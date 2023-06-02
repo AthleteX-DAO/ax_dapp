@@ -45,7 +45,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
     on<CalculateRemainingDays>(_onCalculateRemainingDays);
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
-    on<EditLeagueEvent>(_onEditLeagueEvent);
     on<FetchLeagueTeamsEvent>(_onFetchLeagueTeamsEvent);
     on<ProcessLeagueWinnerEvent>(_onProcessLeagueWinnerEvent);
 
@@ -216,38 +215,6 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
       _tickerRepository.remainingTime,
       onData: (durationStatus) => state.copyWithTimerDuration(durationStatus),
     );
-  }
-
-  FutureOr<void> _onEditLeagueEvent(
-    EditLeagueEvent event,
-    Emitter<LeagueGameState> emit,
-  ) async {
-    try {
-      final league = League(
-        leagueID: event.leagueID,
-        name: event.name,
-        adminWallet: event.adminWallet,
-        dateStart: event.dateStart,
-        dateEnd: event.dateEnd,
-        teamSize: event.teamSize,
-        maxTeams: event.maxTeams,
-        entryFee: event.entryFee,
-        isPrivate: event.isPrivate,
-        isLocked: event.isLocked,
-        sports: event.sports,
-        winner: '',
-        prizePoolAddress: event.prizePoolAddress,
-      );
-
-      await _leagueRepository.updateLeague(
-        leagueID: event.leagueID,
-        league: league,
-      );
-
-      emit(state.copyWith(status: BlocStatus.success));
-    } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
-    }
   }
 
   void filterOutUnsupportedSportsByChain(List<AthleteScoutModel> filteredList) {

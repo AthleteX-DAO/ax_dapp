@@ -75,22 +75,6 @@ class EditRulesState extends Equatable {
     );
   }
 
-  EditRulesState copyWithLeague(League league) => copyWith(
-        leagueID: league.leagueID,
-        name: league.name,
-        adminWallet: league.adminWallet,
-        dateStart: league.dateStart,
-        dateEnd: league.dateEnd,
-        teamSize: league.teamSize,
-        maxTeams: league.maxTeams,
-        entryFee: league.entryFee,
-        isLocked: league.isLocked,
-        isPrivate: league.isPrivate,
-        sports: league.sports,
-        winner: league.winner,
-        prizePoolAddress: league.prizePoolAddress,
-      );
-
   @override
   List<Object> get props => [
         status,
