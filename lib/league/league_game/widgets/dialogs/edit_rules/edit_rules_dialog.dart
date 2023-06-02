@@ -3,7 +3,6 @@ import 'package:ax_dapp/league/league_game/widgets/dialogs/edit_rules/widgets/wi
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class EditRulesDialog extends StatefulWidget {
@@ -95,101 +94,7 @@ class _EditRulesDialog extends State<EditRulesDialog> {
               TeamSizeField(textSize: textSize, textBoxWid: textBoxWid),
               ParticipantsField(textSize: textSize, textBoxWid: textBoxWid),
               EntryFeeField(textSize: textSize, textBoxWid: textBoxWid),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Sport(s): ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: textSize,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  MultiSelectDialogField(
-                    initialValue: league.sports,
-                    chipDisplay: MultiSelectChipDisplay<SupportedSport>(
-                      chipColor: Colors.transparent,
-                      textStyle: TextStyle(
-                        color: Colors.amber[400],
-                        fontFamily: 'OpenSans',
-                        fontSize: textSize,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(40)),
-                        border: Border.all(
-                          color: Colors.amber,
-                          width: 2,
-                        ),
-                      ),
-                    ),
-                    dialogWidth: _width / 2,
-                    dialogHeight: _height / 2,
-                    items: supportedSports
-                        .map(
-                          (supportedSport) => MultiSelectItem(
-                            supportedSport,
-                            supportedSport.name,
-                          ),
-                        )
-                        .toList(),
-                    itemsTextStyle: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: textSize,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    unselectedColor: Colors.white,
-                    title: Text(
-                      'Sports',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'OpenSans',
-                        fontSize: textSize,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    selectedItemsTextStyle: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: textSize,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    selectedColor: Colors.amber[400],
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(40)),
-                      border: Border.all(
-                        color: Colors.amber,
-                        width: 2,
-                      ),
-                    ),
-                    buttonIcon: Icon(
-                      Icons.sports,
-                      color: Colors.amber[400],
-                    ),
-                    buttonText: Text(
-                      'Choose Sports',
-                      style: TextStyle(
-                        color: Colors.amber[400],
-                        fontFamily: 'OpenSans',
-                        fontSize: textSize,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    onConfirm: (results) {
-                      selectedSports = results as List<SupportedSport>;
-                      context
-                          .read<EditRulesBloc>()
-                          .add(UpdateSports(selectedSports: selectedSports));
-                    },
-                  ),
-                ],
-              ),
+              SportSelection(textSize: textSize),
               PrivateToggle(league: league, textSize: textSize),
               LockToggle(league: league, textSize: textSize),
               Row(
@@ -251,7 +156,8 @@ class _EditRulesDialog extends State<EditRulesDialog> {
                         //     ),
                         //     Navigator.pop(context),
                         //   }
-                        context.read<EditRulesBloc>().add(UpdateLeague())
+                        context.read<EditRulesBloc>().add(UpdateLeague()),
+                        Navigator.pop(context),
                       },
                       child: const Text(
                         'Confirm',
