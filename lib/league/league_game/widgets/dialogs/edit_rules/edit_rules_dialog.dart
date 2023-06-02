@@ -55,31 +55,7 @@ class _EditRulesDialog extends State<EditRulesDialog> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              SizedBox(
-                width: wid,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Edit League',
-                      style: textStyle(
-                        Colors.white,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                ),
-              ),
+              EditLeagueHeader(wid: wid),
               NameField(textSize: textSize, textBoxWid: textBoxWid),
               StartDateField(
                 textSize: textSize,
