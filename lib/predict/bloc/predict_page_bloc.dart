@@ -29,14 +29,14 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
 
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
- 
+
   Future<void> fetchProposals() async {
     final url = Uri.parse('https://hub.snapshot.org/graphql');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'query': '''
         query Proposals {
-          proposals(where: {space_in: ["athletex.eth"]}) {
+          proposals(where: {space_in: ["athletex.eth"], state: "active"}, orderBy: "created", orderDirection: desc) {
             id
             title
             body
