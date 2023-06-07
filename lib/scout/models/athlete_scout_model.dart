@@ -42,6 +42,27 @@ class AthleteScoutModel extends Equatable {
   final double? shortTokenPercentage;
   final double? shortTokenPriceUsd;
 
+  static const empty = AthleteScoutModel(
+    id: 0,
+    name: '',
+    position: '',
+    team: '',
+    longTokenBookPrice: 0,
+    longTokenBookPriceUsd: 0,
+    longTokenBookPricePercent: 0,
+    shortTokenBookPrice: 0,
+    shortTokenBookPriceUsd: 0,
+    shortTokenBookPricePercent: 0,
+    sport: SupportedSport.all,
+    time: '',
+    longTokenPrice: 0,
+    shortTokenPrice: 0,
+    longTokenPercentage: 0,
+    shortTokenPercentage: 0,
+    longTokenPriceUsd: 0,
+    shortTokenPriceUsd: 0,
+  );
+
   @override
   List<Object?> get props => [
         id,
@@ -67,4 +88,32 @@ class AthleteScoutModel extends Equatable {
   @override
   String toString() =>
       'AthleteScoutModel(id: $id, name: $name, sport: ${sport.name})';
+}
+
+extension AthleteScoutModelListX on List<AthleteScoutModel> {
+  SupportedSport getAthleteSport(int athleteID) {
+    final athleteId = athleteID ~/ 10;
+    final athlete = firstWhere(
+      (athlete) => athlete.id == athleteId,
+      orElse: () => AthleteScoutModel.empty,
+    );
+    return athlete.sport;
+  }
+
+  String getAthleteTeam(int athleteID) {
+    final athleteId = athleteID ~/ 10;
+    final athlete = firstWhere(
+      (athlete) => athlete.id == athleteId,
+      orElse: () => AthleteScoutModel.empty,
+    );
+    return athlete.team;
+  }
+
+  AthleteScoutModel findAthlete(int athleteId) {
+    final athlete = firstWhere(
+      (a) => a.id == athleteId,
+      orElse: () => AthleteScoutModel.empty,
+    );
+    return athlete;
+  }
 }

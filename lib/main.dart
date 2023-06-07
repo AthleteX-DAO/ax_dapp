@@ -1,9 +1,12 @@
 import 'dart:async';
 
-import 'package:ax_dapp/app/view/app_routing.dart';
+import 'package:ax_dapp/app/view/app.dart';
 import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/firebase_options.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
+import 'package:ax_dapp/league/repository/timer_repository.dart';
+import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -32,6 +35,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:league_repository/league_repository.dart';
 import 'package:logging/logging.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -40,7 +44,7 @@ import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 void main() async {
-  const defaultChain = EthereumChain.polygonMainnet;
+  const defaultChain = EthereumChain.sxMainnet;
 
   _setupLogging();
   final dio = Dio()..interceptors.add(LoggingInterceptor());
@@ -106,6 +110,11 @@ void main() async {
             create: (_) => SwapRepository(),
           ),
           RepositoryProvider(
+            create: (_) => LeagueRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+          RepositoryProvider(
             create: (_) => LiveChatRepository(
               fireStore: FirebaseFirestore.instance,
             ),
@@ -168,6 +177,15 @@ void main() async {
           ),
           RepositoryProvider(
             create: (context) => TrackingRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => LeagueUseCase(),
+          ),
+          RepositoryProvider(
+            create: (context) => TimerRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => PrizePoolRepository(),
           ),
         ],
         child: App(configRepository: configRepository),

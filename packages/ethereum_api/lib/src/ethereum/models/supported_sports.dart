@@ -14,3 +14,9 @@ enum SupportedSport {
   /// Represents National Basketball Association.
   NBA,
 }
+
+/// [SupportedSport] extensions.
+extension SupportedSportX on SupportedSport {
+  /// Converts the [SupportedSport] to a [String]. Removes the enum type.
+  String convertToSportString() => toString().split('.').last;
+}

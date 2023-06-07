@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/connect_wallet/device_authentication.dart';
-import 'package:ax_dapp/pages/connect_wallet/mobile_ax_wallet_login_page.dart';
 import 'package:ax_dapp/pages/connect_wallet/mobile_create_wallet_page.dart';
 import 'package:flutter/material.dart';
 
@@ -100,14 +98,7 @@ class _MobileLoginPageState extends State<MobileLoginPage> {
                 Colors.transparent,
               ),
               child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => const DeviceAuthentication(),
-                    ),
-                  );
-                },
+                onPressed: () {},
                 child: Text(
                   'Login',
                   style: textStyle(Colors.white, 20, true, false),
@@ -124,14 +115,7 @@ class _MobileLoginPageState extends State<MobileLoginPage> {
                 Colors.transparent,
               ),
               child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => const MobileAxWalletLoginPage(),
-                    ),
-                  );
-                },
+                onPressed: () {},
                 child: Text(
                   'Existing Wallet',
                   style: textStyle(Colors.white, 20, true, false),

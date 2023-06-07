@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/connect_wallet/mobile_wallet_confirm_page.dart';
 import 'package:flutter/material.dart';
 
 class MobileCreateWalletPage extends StatefulWidget {
@@ -127,15 +126,7 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
                 Colors.transparent,
               ),
               child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) =>
-                          const MobileCreateWalletConfirmPage(),
-                    ),
-                  );
-                },
+                onPressed: () {},
                 child: Text(
                   'Continue',
                   style: textStyle(Colors.amber[400]!, 20, true, false),
