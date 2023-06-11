@@ -51,9 +51,12 @@ class NativeWalletApiClient implements WalletApiClient {
   }
 
   @override
-  Future<double> getGasPrice() {
+  Future<double> getGasPrice() async {
     // TODO: implement getGasPrice
-    throw UnimplementedError();
+
+    final gasprice = await _web3Client.getGasPrice() as double;
+
+    return gasprice;
   }
 
   @override
@@ -66,6 +69,7 @@ class NativeWalletApiClient implements WalletApiClient {
   @override
   Future<WalletCredentials> getWalletCredentials() {
     // TODO: implement getWalletCredentials
+
     throw UnimplementedError();
   }
 
