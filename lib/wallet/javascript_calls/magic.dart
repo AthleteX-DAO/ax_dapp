@@ -16,6 +16,6 @@ class MagicSDK {
   external Future<dynamic> disconnect();
   external Future<dynamic> getWalletInfo();
   external Future<dynamic> requestUserInfo();
-  external Future<dynamic> gasPriceInGwei();
+  external Future<dynamic> getGasPrice();
   external Future<dynamic> requestAccount();
 }
