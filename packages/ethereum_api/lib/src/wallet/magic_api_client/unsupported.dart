@@ -13,7 +13,10 @@ class MagicWalletApiClient implements MagicApiClient {
   MagicWalletApiClient({
     required MagicSDK magicSDK,
     required ValueStream<Web3Client> reactiveWeb3Client,
-  });
+  }) : _reactiveWeb3Client = reactiveWeb3Client;
+
+  final ValueStream<Web3Client> _reactiveWeb3Client;
+  Web3Client get _web3Client => _reactiveWeb3Client.value;
 
   @override
   EthereumChain get currentChain => throw UnsupportedError(
@@ -72,58 +75,83 @@ class MagicWalletApiClient implements MagicApiClient {
   @override
   Future<void> addChain(EthereumChain chain) {
     // TODO: implement addChain
-    throw UnimplementedError();
+    throw UnimplementedError(
+      'addChain is not implemented on the current platform',
+    );
   }
 
   @override
   void addChainChangedListener() {
     // TODO: implement addChainChangedListener
+    throw UnsupportedError(
+      'addChainChangedListener is not supported on the current platform',
+    );
   }
 
   @override
-  Future<void> addToken(
-      {required String tokenAddress, required String tokenImageUrl}) {
+  Future<void> addToken({
+    required String tokenAddress,
+    required String tokenImageUrl,
+  }) {
     // TODO: implement addToken
-    throw UnimplementedError();
+    throw UnimplementedError(
+      'addToken is not implemented on the current platform',
+    );
   }
 
   @override
   // TODO: implement chainChanges
-  Stream<EthereumChain> get chainChanges => throw UnimplementedError();
+  Stream<EthereumChain> get chainChanges => throw UnimplementedError(
+        'chainChanges are not implemented on the current platform',
+      );
 
   @override
   Future<BigInt> getDecimals(String tokenAddress) {
     // TODO: implement getDecimals
-    throw UnimplementedError();
+    throw UnimplementedError(
+      'getDecimals is not implemented on the current platform',
+    );
   }
 
   @override
   Future<double> getGasPrice() {
     // TODO: implement getGasPrice
-    throw UnimplementedError();
+    throw UnimplementedError(
+      'getGasPrice is not implemented on the current platform',
+    );
   }
 
   @override
-  Future<BigInt> getRawTokenBalance(
-      {required String tokenAddress, required String walletAddress}) {
+  Future<BigInt> getRawTokenBalance({
+    required String tokenAddress,
+    required String walletAddress,
+  }) {
     // TODO: implement getRawTokenBalance
-    throw UnimplementedError();
+    throw UnimplementedError(
+      'getRawTokenBalance is not implemented on the current platform',
+    );
   }
 
   @override
   void removeChainChangedListener() {
     // TODO: implement removeChainChangedListener
+    throw UnimplementedError(
+      'removechainChangedlistener is not implemented on the current platform',
+    );
   }
 
   @override
   Future<void> switchChain(EthereumChain chain) {
     // TODO: implement switchChain
-    throw UnimplementedError();
+    throw UnimplementedError(
+      'switchChain is not implemented on the current platform',
+    );
   }
 
   @override
   Future<void> syncChain(EthereumChain chain) {
-    // TODO: implement syncChain
-    throw UnimplementedError();
+    throw UnimplementedError(
+      'syncChain is not implemented on the current platform',
+    );
   }
 }
