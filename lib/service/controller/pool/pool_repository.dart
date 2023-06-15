@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/util/truncate_double.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:ethereum_api/apt_factory_api.dart';
 import 'package:ethereum_api/apt_router_api.dart';
@@ -117,7 +118,9 @@ class PoolRepository {
     final lpToken =
         ERC20(address: lpTokenEthAddress, client: controller.client.value);
     final tokenBalance = await getTokenBalanceHandler(lpTokenPairAddress);
-    final lpTokenBalance = normalizeInput(tokenBalance ?? 0);
+    final truncatedTokenBalance =
+        truncateToDecimalPlaces(value: tokenBalance ?? 0, fractionalDigits: 6);
+    final lpTokenBalance = normalizeInput(truncatedTokenBalance);
     final approveAmount =
         (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
     try {
@@ -136,7 +139,9 @@ class PoolRepository {
     Future<double?> Function(String address) getTokenBalanceHandler,
   ) async {
     final tokenBalance = await getTokenBalanceHandler(lpTokenPairAddress);
-    final lpTokenBalance = normalizeInput(tokenBalance ?? 0);
+    final truncatedTokenBalance =
+        truncateToDecimalPlaces(value: tokenBalance ?? 0, fractionalDigits: 6);
+    final lpTokenBalance = normalizeInput(truncatedTokenBalance);
     final liquidity =
         (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
     final amountAMin = BigInt.zero;
