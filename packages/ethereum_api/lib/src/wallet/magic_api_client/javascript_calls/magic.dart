@@ -5,8 +5,11 @@ import 'package:js/js.dart';
 
 @JS()
 
-/// {template} MagicSDK:
+/// {template magicSDK}
+/// Web SDK that managers the javascript relationship with magic
+/// {@endtemplate}
 class MagicSDK {
+  /// {@macro magicSDK}
   external MagicSDK(
     String apiKey,
   );
@@ -23,4 +26,9 @@ class MagicSDK {
   external Future<dynamic> getDecimals(String tokenAddress);
   external Future<dynamic> addToken(String tokenAddress, String tokenUrl);
   external Future<dynamic> requestAccount();
+  external Future<dynamic> personalSign();
+  external Future<dynamic> getTokenBalance(
+    String tokenAddress,
+    String walletAddress,
+  );
 }

@@ -1,11 +1,11 @@
+import 'dart:js_interop';
 import 'dart:js_util';
 
 import 'package:ethereum_api/config_api.dart';
-import 'package:ethereum_api/src/wallet/magic_api_client/javascript_calls/magic.dart';
-import 'package:ethereum_api/src/wallet/wallet_api_client/wallet_api_client.dart';
-import 'package:ethereum_api/tokens_api.dart';
+import 'package:ethereum_api/src/wallet/models/magic_credentials.dart';
 import 'package:ethereum_api/wallet_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_web3/flutter_web3.dart';
 import 'package:shared/shared.dart';
 
 /// {@template magic_wallet_api_client}
@@ -25,41 +25,28 @@ class MagicWalletApiClient implements WalletApiClient {
   Web3Client get _web3Client => _reactiveWeb3Client.value;
   ConfigApiClient get _configApiClient => _reactiveApiClient.value;
   @override
-  EthereumChain get currentChain => EthereumChain.polygonMainnet;
+  EthereumChain get currentChain =>
+      _chainController.valueOrNull ?? EthereumChain.none;
 
-  /// Allows the user to connect to a 'Magic' wallet.
-  ///
-  /// Returns the hexadecimal representation of the wallet address.
-  ///
-  /// Throws:
-  @override
-  Future<dynamic> connect() async {
-    try {
-      final address = promiseToFuture<String>(_magicSDK.showWallet());
-      return address;
-    } catch (_) {}
+  void _checkWalletAvailability() {
+    if (_magicSDK.isUndefinedOrNull) {
+      throw WalletFailure.fromWalletUnavailable();
+    }
   }
+
+  final _chainController = BehaviorSubject<EthereumChain>();
 
   /// Allows the user to retrieve information about their wallet.
   ///
-  /// Throws:
-  @override
-  Future<void> getWalletInfo() async {
+  /// Throws: Exception
+  Future<String> getWalletInfo() async {
     try {
-      await _magicSDK.getWalletInfo();
-    } catch (_) {}
-  }
-
-  /// Allows the user to show their 'Magic' wallet.
-  ///
-  /// Throws:
-  @override
-  Future<dynamic> showWallet() async {
-    try {
-      final address = await promiseToFuture<String>(_magicSDK.showWallet());
-      debugPrint('[MagicApiClient]showWallet invoked.  address: $address');
-      return address;
-    } catch (_) {}
+      final walletType =
+          await promiseToFuture<String>(_magicSDK.getWalletInfo());
+      return walletType;
+    } catch (_) {
+      throw Exception('Unable to getWalletInfo from Magic');
+    }
   }
 
   /// Allows the user to send their information upon request
@@ -67,82 +54,133 @@ class MagicWalletApiClient implements WalletApiClient {
   /// Returns a string representation of the email address
   /// that is associated with the 'Magic' wallet
   ///
-  /// Throws:
-  @override
-  Future<void> requestUserInfo() async {
+  Future<String> requestUserInfo() async {
     try {
-      await _magicSDK.requestUserInfo();
-    } catch (_) {}
+      final email = await promiseToFuture<String>(_magicSDK.requestUserInfo());
+      return email;
+    } catch (error, stacktrace) {
+      throw Exception('Unable to requestUserInfo from Magic');
+    }
   }
 
-  /// Disconnects the user from their 'Magic' wallet.
-  ///
-  /// Throws:
-  @override
+  /// Allows the user to disconnect their wallet from the dApp
   Future<void> disconnect() async {
     try {
-      await _magicSDK.disconnect();
-    } catch (_) {}
+      await promiseToFuture<void>(_magicSDK.disconnect());
+    } catch (_) {
+      throw Exception(
+        "unable to disconnect Magic from dapp.. maybe it's already disconnected",
+      );
+    }
   }
 
-  @override
-  Future<dynamic> requestAccount() async {
+  /// Returns web3dart compatible Magic credentials
+  Future<CredentialsWithKnownAddress> requestAccount() async {
     final addresses =
         await promiseToFuture<List<String>>(_magicSDK.requestAccount());
     final requiredAddress = addresses.single;
-    return requiredAddress;
+    return MagicCredentials(_magicSDK, requiredAddress);
   }
 
+  /// adds a chain to the Magic Wallet
   @override
-  Future<void> addChain(EthereumChain chain) {
-    // TODO: implement addChain
-    throw UnimplementedError();
+  Future<void> addChain(EthereumChain chain) async {
+    throw UnimplementedError(
+      'Magic Wallet does not allow adding chains',
+    );
   }
 
   @override
   void addChainChangedListener() {
-    // TODO: implement addChainChangedListener
-  }
-
-  @override
-  Future<void> addToken(
-      {required String tokenAddress, required String tokenImageUrl}) {
-    // TODO: implement addToken
-    throw UnimplementedError();
-  }
-
-  @override
-  // TODO: implement chainChanges
-  Stream<EthereumChain> get chainChanges => throw UnimplementedError();
-
-  @override
-  Future<BigInt> getDecimals(String tokenAddress) {
-    // TODO: implement getDecimals
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<BigInt> getRawTokenBalance(
-      {required String tokenAddress, required String walletAddress}) {
-    // TODO: implement getRawTokenBalance
-    throw UnimplementedError();
+    throw UnimplementedError(
+      'Magic Wallet does not allow listening to chain changes',
+    );
   }
 
   @override
   void removeChainChangedListener() {
-    // TODO: implement removeChainChangedListener
+    throw UnimplementedError(
+      'Magic Wallet does not allow removing chain changed listeners',
+    );
   }
 
   @override
-  Future<void> switchChain(EthereumChain chain) {
-    // TODO: implement switchChain
-    throw UnimplementedError();
+  Future<void> addToken({
+    required String tokenAddress,
+    required String tokenImageUrl,
+  }) async {
+    try {
+      await promiseToFuture<void>(
+        _magicSDK.addToken(tokenAddress, tokenImageUrl),
+      );
+    } catch (e) {
+      throw Exception(
+        'Unable to addToken to Magic wallet',
+      );
+    }
   }
 
   @override
-  Future<void> syncChain(EthereumChain chain) {
-    // TODO: implement syncChain
-    throw UnimplementedError();
+  Stream<EthereumChain> get chainChanges => _chainController.stream.distinct();
+
+  @override
+  Future<BigInt> getDecimals(String tokenAddress) async {
+    try {
+      final rawDecimals =
+          await promiseToFuture<num>(_magicSDK.getDecimals(tokenAddress));
+      return BigInt.from(rawDecimals);
+    } catch (e) {
+      throw Exception(
+        'Unable to getDecimals of $tokenAddress from Magic wallet',
+      );
+    }
+  }
+
+  @override
+  Future<BigInt> getRawTokenBalance({
+    required String tokenAddress,
+    required String walletAddress,
+  }) async {
+    _checkWalletAvailability();
+
+    try {
+      final rawTokenBalance = promiseToFuture<String>(
+        await _magicSDK.getTokenBalance(tokenAddress, walletAddress) as String,
+      );
+      return rawTokenBalance as BigInt;
+    } catch (e) {
+      throw Exception('Unable to getTokenBalance from Magic wallet');
+    }
+  }
+
+  @override
+  Future<void> switchChain(EthereumChain chain) async {
+    _checkWalletAvailability(); //Checks if a wallet is already connected
+
+    try {
+      await promiseToFuture<void>(_magicSDK.sendTransaction());
+    } catch (e) {
+      throw Exception('Unable to switchChain for Magic wallet');
+    }
+  }
+
+  @override
+  Future<void> syncChain(EthereumChain chain) async {
+    _checkWalletAvailability();
+    try {
+      await _syncChainId();
+    } on EthereumUserRejected catch (exception, stackTrace) {
+      throw WalletFailure.fromOperationRejected(exception, stackTrace);
+    } on EthereumException catch (exception, stackTrace) {
+      throw WalletFailure.fromUnrecognizedChain(exception, stackTrace);
+    } catch (error, stackTrace) {
+      throw WalletFailure.fromError(error, stackTrace);
+    }
+  }
+
+  Future<void> _syncChainId() async {
+    final chainId = await promiseToFuture<int>(_magicSDK.getChainId());
+    _chainController.add(EthereumChain.fromChainId(chainId));
   }
 
   @override
@@ -155,11 +193,8 @@ class MagicWalletApiClient implements WalletApiClient {
 
   @override
   Future<WalletCredentials> getWalletCredentials() async {
-    // TODO: implement getWalletCredentials
     try {
-      final credentials = await promiseToFuture<CredentialsWithKnownAddress>(
-        _magicSDK.requestAccount(),
-      );
+      final credentials = await requestAccount();
       return WalletCredentials(credentials);
     } catch (error, stackTrace) {
       throw WalletFailure.fromError(error, stackTrace);
