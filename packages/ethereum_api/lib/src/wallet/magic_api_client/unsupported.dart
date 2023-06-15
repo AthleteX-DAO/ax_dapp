@@ -1,9 +1,9 @@
-import 'package:ethereum_api/src/wallet/magic_api_client/magic_wallet_api_client.dart';
-import 'package:ethereum_api/src/wallet/magic_api_client/javascript_calls/magic.dart';
+import 'dart:js_interop';
 
+import 'package:ethereum_api/src/wallet/magic_api_client/javascript_calls/magic.dart';
+import 'package:ethereum_api/src/wallet/magic_api_client/magic_wallet_api_client.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:shared/shared.dart';
-import 'package:web3dart/src/credentials/credentials.dart';
 
 /// {@template unsupported_magic_wallet_api_client}
 /// Unsupported implementation of [MagicWalletApiClient]
@@ -16,7 +16,11 @@ class MagicWalletApiClient implements MagicApiClient {
   }) : _reactiveWeb3Client = reactiveWeb3Client;
 
   final ValueStream<Web3Client> _reactiveWeb3Client;
-  Web3Client get _web3Client => _reactiveWeb3Client.value;
+  Web3Client get _web3Client => _reactiveWeb3Client.isUndefinedOrNull
+      ? throw Exception(
+          'Unable to retrieve the web3Client',
+        )
+      : _reactiveWeb3Client.value;
 
   @override
   EthereumChain get currentChain => throw UnsupportedError(
