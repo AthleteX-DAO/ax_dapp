@@ -44,7 +44,6 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
               ),
               Text(
                 athlete.sport.name,
-                //toDo add map for the different league
                 style: textStyle(
                   greyTextColor,
                   20,
@@ -500,7 +499,6 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Icon
         SizedBox(
           width: 50,
           child: Icon(
@@ -509,7 +507,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
           ),
         ),
         SizedBox(
-          width: 140,
+          width: _width * 0.1,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -537,8 +535,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
         ),
         if (team)
           SizedBox(
-            // width: 125,
-            width: _width * 0.12 > 125 ? _width * 0.12 : 125,
+            width: _width * 0.1,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,

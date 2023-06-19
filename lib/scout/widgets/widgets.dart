@@ -1,5 +1,5 @@
 export 'buy_text.dart';
-export 'desktop_athlete_contents.dart';
+export 'desktop_athlete_card.dart';
 export 'desktop_book_value.dart';
 export 'desktop_headers.dart';
 export 'desktop_market_value.dart';

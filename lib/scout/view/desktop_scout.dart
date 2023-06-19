@@ -1,5 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars, avoid_positional_boolean_parameters
-
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
@@ -25,14 +23,11 @@ class _DesktopScoutState extends State<DesktopScout> {
   Global global = Global();
   final myController = TextEditingController(text: input);
   static String input = '';
-  //bool athletePage = false;
   static bool isLongToken = true;
   static SupportedSport _selectedSport = SupportedSport.all;
   String allSportsTitle = 'All Sports';
   EthereumChain? _selectedChain;
   List<AthleteScoutModel> filteredAthletes = [];
-  double minTeamWidth = 875;
-  double minViewWidth = 1090;
 
   @override
   void dispose() {
@@ -401,13 +396,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ],
                     ),
                   ),
-                  // List Headers
-                  // BuildListViewHeader
-                  DesktopHeaders(
-                    minTeamWidth: minTeamWidth,
-                    minViewWidth: minViewWidth,
-                  ),
-                  //BuildScoutView body
+                  const DesktopHeaders(),
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -428,11 +417,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                           physics: const BouncingScrollPhysics(),
                           itemCount: filteredAthletes.length,
                           itemBuilder: (context, index) {
-                            return DesktopAthlete(
+                            return DesktopAthleteCard(
                               athlete: filteredAthletes[index],
                               isLongToken: isLongToken,
-                              minTeamWidth: minTeamWidth,
-                              minViewWidth: minViewWidth,
                             );
                           },
                         ),

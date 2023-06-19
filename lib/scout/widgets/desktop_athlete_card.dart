@@ -7,19 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class DesktopAthlete extends StatelessWidget {
-  const DesktopAthlete({
+class DesktopAthleteCard extends StatelessWidget {
+  const DesktopAthleteCard({
     required this.athlete,
     required this.isLongToken,
-    required this.minTeamWidth,
-    required this.minViewWidth,
     super.key,
   });
 
   final AthleteScoutModel athlete;
   final bool isLongToken;
-  final double minTeamWidth;
-  final double minViewWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -40,43 +36,35 @@ class DesktopAthlete extends StatelessWidget {
             params: {'id': athlete.id.toString() + athlete.name},
           );
         },
-        // name, team, market, book, buy, view
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            //name, team, market, book
             Row(
               children: <Widget>[
-                // name, team
                 AthleteDetailsWidget(
                   athlete,
                 ).athleteDetailsCardsForWeb(
-                  _width >= minTeamWidth,
+                  _width >= 875,
                   _width,
                 ),
-                // Market Price / Change
                 DesktopMarketPrice(
                   athlete: athlete,
                   isLongToken: isLongToken,
                 ),
-                // Book Value / Change
                 DesktopBookPrice(
                   athlete: athlete,
                   isLongToken: isLongToken,
                 ),
               ],
             ),
-            // buy, view
             Row(
               children: [
-                // Buy
                 ScoutBuyButton(
                   athlete: athlete,
                   isLongToken: isLongToken,
                 ),
-                // view
-                if (_width >= minViewWidth) ...[
-                  Container(width: 25),
+                if (_width >= 1090) ...[
+                  const SizedBox(width: 25),
                   Container(
                     width: 100,
                     height: 30,
