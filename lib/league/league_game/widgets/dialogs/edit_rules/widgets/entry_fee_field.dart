@@ -5,11 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EntryFeeField extends StatelessWidget {
   const EntryFeeField({
     super.key,
-    required this.textSize,
     required this.textBoxWid,
   });
 
-  final double textSize;
   final double textBoxWid;
 
   @override
@@ -18,12 +16,11 @@ class EntryFeeField extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Entry Fee: ',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: textSize,
             fontWeight: FontWeight.w400,
           ),
         ),

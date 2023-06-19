@@ -7,11 +7,9 @@ class PrivateToggle extends StatefulWidget {
   const PrivateToggle({
     super.key,
     required this.league,
-    required this.textSize,
   });
 
   final League league;
-  final double textSize;
 
   @override
   State<PrivateToggle> createState() => _PrivateToggleState();
@@ -33,12 +31,11 @@ class _PrivateToggleState extends State<PrivateToggle> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Private: ',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -67,13 +64,12 @@ class _PrivateToggleState extends State<PrivateToggle> {
               minWidth: 71,
             ),
             isSelected: _private,
-            children: <Widget>[
+            children: const [
               Text(
                 'No',
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'OpenSans',
-                  fontSize: widget.textSize,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -82,7 +78,6 @@ class _PrivateToggleState extends State<PrivateToggle> {
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'OpenSans',
-                  fontSize: widget.textSize,
                   fontWeight: FontWeight.w400,
                 ),
               ),

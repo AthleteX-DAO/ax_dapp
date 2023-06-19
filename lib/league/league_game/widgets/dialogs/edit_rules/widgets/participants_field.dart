@@ -6,11 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ParticipantsField extends StatefulWidget {
   const ParticipantsField({
     super.key,
-    required this.textSize,
     required this.textBoxWid,
   });
 
-  final double textSize;
   final double textBoxWid;
 
   @override
@@ -32,12 +30,11 @@ class _ParticipantsFieldState extends State<ParticipantsField> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Participants: ',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
         ),
