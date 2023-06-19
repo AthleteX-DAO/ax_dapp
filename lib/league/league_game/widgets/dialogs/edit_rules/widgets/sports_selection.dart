@@ -5,9 +5,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class SportSelection extends StatefulWidget {
-  const SportSelection({super.key, required this.textSize});
-
-  final double textSize;
+  const SportSelection({super.key});
 
   @override
   State<SportSelection> createState() => _SportSelectionState();
@@ -30,12 +28,11 @@ class _SportSelectionState extends State<SportSelection> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Sport(s): ',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -46,7 +43,6 @@ class _SportSelectionState extends State<SportSelection> {
             textStyle: TextStyle(
               color: Colors.amber[400],
               fontFamily: 'OpenSans',
-              fontSize: widget.textSize,
               fontWeight: FontWeight.w400,
             ),
             decoration: BoxDecoration(
@@ -68,26 +64,23 @@ class _SportSelectionState extends State<SportSelection> {
                 ),
               )
               .toList(),
-          itemsTextStyle: TextStyle(
+          itemsTextStyle: const TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
           unselectedColor: Colors.white,
-          title: Text(
+          title: const Text(
             'Sports',
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
-              fontSize: widget.textSize,
               fontWeight: FontWeight.w400,
             ),
           ),
-          selectedItemsTextStyle: TextStyle(
+          selectedItemsTextStyle: const TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
           selectedColor: Colors.amber[400],
@@ -108,7 +101,6 @@ class _SportSelectionState extends State<SportSelection> {
             style: TextStyle(
               color: Colors.amber[400],
               fontFamily: 'OpenSans',
-              fontSize: widget.textSize,
               fontWeight: FontWeight.w400,
             ),
           ),

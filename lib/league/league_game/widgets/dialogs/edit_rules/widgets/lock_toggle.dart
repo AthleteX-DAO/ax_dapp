@@ -7,12 +7,9 @@ class LockToggle extends StatefulWidget {
   const LockToggle({
     super.key,
     required this.league,
-    required this.textSize,
   });
 
   final League league;
-  final double textSize;
-
   @override
   State<LockToggle> createState() => _LockToggleState();
 }
@@ -33,12 +30,11 @@ class _LockToggleState extends State<LockToggle> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Lock: ',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -67,13 +63,12 @@ class _LockToggleState extends State<LockToggle> {
               minWidth: 71,
             ),
             isSelected: _lock,
-            children: <Widget>[
+            children: const [
               Text(
                 'No',
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'OpenSans',
-                  fontSize: widget.textSize,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -82,7 +77,6 @@ class _LockToggleState extends State<LockToggle> {
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'OpenSans',
-                  fontSize: widget.textSize,
                   fontWeight: FontWeight.w400,
                 ),
               ),

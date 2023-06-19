@@ -7,12 +7,10 @@ import 'package:league_repository/league_repository.dart';
 class StartDateField extends StatefulWidget {
   const StartDateField({
     super.key,
-    required this.textSize,
     required this.textBoxWid,
     required this.league,
   });
 
-  final double textSize;
   final double textBoxWid;
   final League league;
 
@@ -40,12 +38,11 @@ class _StartDateFieldState extends State<StartDateField> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Start-Date: ',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
         ),

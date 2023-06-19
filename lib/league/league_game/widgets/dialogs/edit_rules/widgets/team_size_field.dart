@@ -6,11 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class TeamSizeField extends StatefulWidget {
   const TeamSizeField({
     super.key,
-    required this.textSize,
     required this.textBoxWid,
   });
 
-  final double textSize;
   final double textBoxWid;
 
   @override
@@ -32,12 +30,11 @@ class _TeamSizeFieldState extends State<TeamSizeField> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Team Size: ',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
         ),

@@ -21,9 +21,6 @@ class _EditRulesDialog extends State<EditRulesDialog> {
 
     final league = context.read<EditRulesBloc>().state.league;
 
-    var textSize = 16.0;
-    if (_width <= 768) textSize = 12.0;
-
     var wid = 450.0;
     var textBoxWid = 250.0;
     if (_width < 500) {
@@ -45,23 +42,25 @@ class _EditRulesDialog extends State<EditRulesDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               EditLeagueHeader(wid: wid),
-              NameField(textSize: textSize, textBoxWid: textBoxWid),
+              NameField(textBoxWid: textBoxWid),
               StartDateField(
-                textSize: textSize,
                 textBoxWid: textBoxWid,
                 league: league,
               ),
               EndDateField(
-                textSize: textSize,
                 textBoxWid: textBoxWid,
                 league: league,
               ),
-              TeamSizeField(textSize: textSize, textBoxWid: textBoxWid),
-              ParticipantsField(textSize: textSize, textBoxWid: textBoxWid),
-              EntryFeeField(textSize: textSize, textBoxWid: textBoxWid),
-              SportSelection(textSize: textSize),
-              PrivateToggle(league: league, textSize: textSize),
-              LockToggle(league: league, textSize: textSize),
+              TeamSizeField(textBoxWid: textBoxWid),
+              ParticipantsField(textBoxWid: textBoxWid),
+              EntryFeeField(textBoxWid: textBoxWid),
+              const SportSelection(),
+              PrivateToggle(
+                league: league,
+              ),
+              LockToggle(
+                league: league,
+              ),
               const ConfirmEdit()
             ],
           ),

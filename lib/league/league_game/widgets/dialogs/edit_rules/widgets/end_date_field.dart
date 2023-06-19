@@ -7,12 +7,10 @@ import 'package:league_repository/league_repository.dart';
 class EndDateField extends StatefulWidget {
   const EndDateField({
     super.key,
-    required this.textSize,
     required this.textBoxWid,
     required this.league,
   });
 
-  final double textSize;
   final double textBoxWid;
   final League league;
 
@@ -40,12 +38,11 @@ class _EndDateFieldState extends State<EndDateField> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'End-Date: ',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -56,8 +53,8 @@ class _EndDateFieldState extends State<EndDateField> {
             controller: endDateController,
             readOnly: true,
             onTap: () async {
-              final leagueEndDate =
-                  DateTime.parse(widget.league.dateStart).add(const Duration(days: 1));
+              final leagueEndDate = DateTime.parse(widget.league.dateStart)
+                  .add(const Duration(days: 1));
               final endDate = await showDatePicker(
                 context: context,
                 initialDate: leagueEndDate,

@@ -5,11 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class NameField extends StatefulWidget {
   const NameField({
     super.key,
-    required this.textSize,
     required this.textBoxWid,
   });
 
-  final double textSize;
   final double textBoxWid;
 
   @override
@@ -32,12 +30,11 @@ class _NameFieldState extends State<NameField> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Name: ',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
-            fontSize: widget.textSize,
             fontWeight: FontWeight.w400,
           ),
         ),
