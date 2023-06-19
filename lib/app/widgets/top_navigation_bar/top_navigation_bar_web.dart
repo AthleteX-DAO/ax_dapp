@@ -12,25 +12,21 @@ class TopNavigationBarWeb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
-    var tabTextSize = _width * 0.0185;
-    if (tabTextSize < 19) tabTextSize = 19;
-    var tabBoxSize = _width * 0.45;
-    if (tabBoxSize < 350) tabBoxSize = 350;
+    const navigationBarItemTextSize = 25.0;
     return BlocBuilder<TopNavigationBarBloc, TopNavigationBarState>(
       builder: (context, state) {
         final selectedButton =
             (state is ButtonSelectedState) ? state.selectedButton : '';
         final bloc = context.read<TopNavigationBarBloc>();
         return SizedBox(
-          width: _width * .95,
+          width: _width,
           height: 100,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               SizedBox(
-                width: tabBoxSize,
+                width: _width * 0.5,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     SizedBox(
                       width: 72,
@@ -46,7 +42,6 @@ class TopNavigationBarWeb extends StatelessWidget {
                       ),
                     ),
                     TopNavigationBarItem(
-                      tabTextSize: tabTextSize,
                       routeName: 'scout',
                       buttonName: 'Scout',
                       isSelected: selectedButton == 'scout',
@@ -56,7 +51,6 @@ class TopNavigationBarWeb extends StatelessWidget {
                       },
                     ),
                     TopNavigationBarItem(
-                      tabTextSize: tabTextSize,
                       routeName: 'trade',
                       buttonName: 'Trade',
                       isSelected: selectedButton == 'trade',
@@ -66,7 +60,6 @@ class TopNavigationBarWeb extends StatelessWidget {
                       },
                     ),
                     TopNavigationBarItem(
-                      tabTextSize: tabTextSize,
                       routeName: 'pool',
                       buttonName: 'Pool',
                       isSelected: selectedButton == 'pool',
@@ -76,7 +69,6 @@ class TopNavigationBarWeb extends StatelessWidget {
                       },
                     ),
                     TopNavigationBarItem(
-                      tabTextSize: tabTextSize,
                       routeName: 'farm',
                       buttonName: 'Farm',
                       isSelected: selectedButton == 'farm',
@@ -87,7 +79,6 @@ class TopNavigationBarWeb extends StatelessWidget {
                     ),
                     // TODO(Ryan): enable the UI once the feature is ready
                     // TopNavigationBarItem(
-                    //   tabTextSize: tabTextSize,
                     //   routeName: 'league',
                     //   buttonName: 'League',
                     //   isSelected: selectedButton == 'league',
@@ -108,7 +99,7 @@ class TopNavigationBarWeb extends StatelessWidget {
                         'Vote',
                         style: textStyle(
                           Colors.white,
-                          tabTextSize,
+                          navigationBarItemTextSize,
                           isBold: true,
                           isUline: false,
                         ),
