@@ -18,8 +18,7 @@ class DesktopMarketPrice extends StatelessWidget {
     final _width = MediaQuery.of(context).size.width;
 
     return SizedBox(
-      // width: 175,
-      width: _width * 0.18 > 175 ? _width * 0.18 : 175,
+      width: _width * 0.2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +36,7 @@ class DesktopMarketPrice extends StatelessWidget {
                   isUline: false,
                 ),
               ),
-              Container(width: 10),
+              const SizedBox(width: 10),
               Text(
                 isLongToken
                     ? getPercentageDesc(
