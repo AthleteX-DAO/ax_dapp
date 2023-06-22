@@ -587,13 +587,11 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
   @override
   Widget athleteDetailsCardsForMobile(
     bool showIcon,
-    double _width,
-    double athNameBx,
+    double athNameBox,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Icon
         if (showIcon)
           SizedBox(
             width: 50,
@@ -602,9 +600,8 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
               color: Colors.grey[700],
             ),
           ),
-        // Athlete Name
         SizedBox(
-          width: athNameBx,
+          width: athNameBox,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
