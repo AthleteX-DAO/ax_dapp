@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
@@ -16,24 +20,31 @@ class PredictionPageBloc
     required TokensRepository tokensRepository,
     required EventMarketRepository eventMarketRepository,
     required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
+    required PredictionAddressRepository predictionAddressRepository,
+    required this.predictionModelId,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
         _eventMarketRepository = eventMarketRepository,
         _streamAppDataChangesUseCase = streamAppDataChangesUseCase,
+        _predictionAddressRepository = predictionAddressRepository,
         super(const PredictionPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<PredictionPageLoaded>(_onPredictionPageLoaded);
     on<LoadingPredictionPage>(_onLoadingPredictionPage);
     on<MintPredictionTokens>(_onMintPredictionTokens);
     on<RedeemPredictionTokens>(_onRedeemPredictionTokens);
+    on<LoadMarketAddress>(_onLoadMarketAddress);
 
     add(const WatchAppDataChangesStarted());
+    add(LoadMarketAddress());
   }
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
   final EventMarketRepository _eventMarketRepository;
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
+  final PredictionAddressRepository _predictionAddressRepository;
+  final String predictionModelId;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -45,7 +56,8 @@ class PredictionPageBloc
         emit(
           state.copyWith(
             status: BlocStatus.loading,
-            predictionAddress: kNullAddress,
+            yesAddress: kNullAddress,
+            noAddress: kNullAddress,
           ),
         );
         final appConfig = appData.appConfig;
@@ -95,5 +107,32 @@ class PredictionPageBloc
         predictionModel: currentPrediction,
       ),
     );
+  }
+
+  Future<void> _onLoadMarketAddress(
+    LoadMarketAddress event,
+    Emitter<PredictionPageState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+    try {
+      final marketAddresses = await _predictionAddressRepository
+          .fetchMarketAddresses(predictionModelId);
+      emit(
+        state.copyWith(
+          yesAddress: marketAddresses.first,
+          noAddress: marketAddresses.last,
+          status: BlocStatus.success,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(
+        state.copyWith(
+          yesAddress: '',
+          noAddress: '',
+          status: BlocStatus.error,
+        ),
+      );
+    }
   }
 }

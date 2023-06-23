@@ -21,10 +21,8 @@ class PredictionPage extends StatelessWidget {
     return BlocListener<PredictionPageBloc, PredictionPageState>(
       listener: (context, state) {
         final bloc = context.read<PredictionPageBloc>();
-        if (state.status == BlocStatus.error) {
-          bloc.add(const LoadingPredictionPage());
-        }
-
+        final yesAddress = state.yesAddress;
+        final noAddress= state.noAddress;
         if (state.status == BlocStatus.success) {
           bloc.add(
             PredictionPageLoaded(

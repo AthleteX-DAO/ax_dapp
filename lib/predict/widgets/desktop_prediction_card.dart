@@ -24,27 +24,12 @@ class DesktopPredictionCard extends StatelessWidget {
       height: 70,
       child: OutlinedButton(
         onPressed: () {
-          final id = predictionModel.id;
-          FirebaseFirestore.instance
-              .collection('EventMarket')
-              .doc(id)
-              .get()
-              .then((DocumentSnapshot documentSnapshot) {
-            if (documentSnapshot.exists) {
-              // ignore: cast_nullable_to_non_nullable
-              final data = documentSnapshot.data() as Map<String, dynamic>;
-              final yesAddr = data['YesAddress'].toString();
-              final noAddr = data['NoAddress'].toString();
-            }
-            context.goNamed(
-              'prediction',
-              params: {
-                'id': id,
-              },
-            );
-          }).catchError((error) {
-            debugPrint('Error: $error');
-          });
+          context.goNamed(
+            'prediction',
+            params: {
+              'id': predictionModel.id,
+            },
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

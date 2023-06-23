@@ -38,3 +38,5 @@ class PredictionPageLoaded extends PredictionPageEvent {
   @override
   List<Object?> get props => [predictionModel];
 }
+
+class LoadMarketAddress extends PredictionPageEvent {}

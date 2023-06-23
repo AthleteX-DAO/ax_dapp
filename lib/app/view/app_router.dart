@@ -19,6 +19,7 @@ import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
 import 'package:ax_dapp/predict/view/desktop_predict.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
+import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/prediction/view/prediction_page.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -109,6 +110,9 @@ class AppRouter {
                           context.read<EventMarketRepository>(),
                       streamAppDataChangesUseCase:
                           context.read<StreamAppDataChangesUseCase>(),
+                      predictionAddressRepository:
+                          context.read<PredictionAddressRepository>(),
+                      predictionModelId: _toPrediction(state.params['id']!)!.id,
                     ),
                     child: PredictionPage(
                       prediction: _toPrediction(state.params['id']!)!,
@@ -281,10 +285,9 @@ AthleteScoutModel _findAthleteById(String id) {
 }
 
 PredictionModel? _toPrediction(String id) {
-  for (final prediction in Global().predictions) {
-    if (prediction.id == id) {
-      return prediction;
-    }
-  }
-  return null;
+  final predictions = Global().predictions;
+  return predictions.firstWhere(
+    (prediction) => prediction.id == id,
+    orElse: () => PredictionModel.empty,
+  );
 }

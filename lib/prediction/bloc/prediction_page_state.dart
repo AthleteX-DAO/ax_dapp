@@ -4,25 +4,34 @@ class PredictionPageState extends Equatable {
   const PredictionPageState({
     this.status = BlocStatus.initial,
     this.predictionModel = PredictionModel.empty,
-    this.predictionAddress = '',
+    this.yesAddress = '',
+    this.noAddress = '',
   });
 
   final BlocStatus status;
   final PredictionModel predictionModel;
-  final String predictionAddress;
+  final String yesAddress;
+  final String noAddress;
 
   PredictionPageState copyWith({
-    String? predictionAddress,
+    String? yesAddress,
+    String? noAddress,
     PredictionModel? predictionModel,
     BlocStatus? status,
   }) {
     return PredictionPageState(
       predictionModel: predictionModel ?? this.predictionModel,
-      predictionAddress: predictionAddress ?? this.predictionAddress,
+      yesAddress: yesAddress ?? this.yesAddress,
+      noAddress: noAddress ?? this.noAddress,
       status: status ?? this.status,
     );
   }
 
   @override
-  List<Object?> get props => [status, predictionModel, predictionAddress];
+  List<Object?> get props => [
+        status,
+        predictionModel,
+        yesAddress,
+        noAddress,
+      ];
 }
