@@ -1,7 +1,7 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/widgets/desktop_headers.dart';
-import 'package:ax_dapp/predict/widgets/desktop_prediction.dart';
+import 'package:ax_dapp/predict/widgets/desktop_prediction_card.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';

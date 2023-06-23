@@ -1,8 +1,7 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 
-class Probability extends StatelessWidget {
-  const Probability({super.key, 
+class MarketProbability extends StatelessWidget {
+  const MarketProbability({super.key, 
     required this.prompt,
   });
 
