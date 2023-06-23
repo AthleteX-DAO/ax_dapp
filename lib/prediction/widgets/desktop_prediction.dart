@@ -36,7 +36,6 @@ class DesktopPrediction extends StatelessWidget {
               final data = documentSnapshot.data() as Map<String, dynamic>;
               final yesAddr = data['YesAddress'].toString();
               final noAddr = data['NoAddress'].toString();
-              Global().updatePrediction(id, yesAddr, noAddr);
             }
             context.goNamed(
               'prediction',

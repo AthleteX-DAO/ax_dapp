@@ -30,7 +30,6 @@ abstract class AthleteDetailsWidget {
 
   Widget athleteDetailsCardsForMobile(
     bool showIcon,
-    double _width,
     double athNameBx,
   );
 }
@@ -70,7 +69,6 @@ class NoStatsShownWidget implements AthleteDetailsWidget {
   @override
   Widget athleteDetailsCardsForMobile(
     bool showIcon,
-    double _width,
     double athNameBx,
   ) {
     return const Center(

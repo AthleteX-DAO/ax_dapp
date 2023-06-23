@@ -4,18 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class StartTradingButton extends StatelessWidget {
-  const StartTradingButton({
-    super.key,
-    required this.isWeb,
-    required this.tradingTextSize,
-  });
-
-  final bool isWeb;
-  final double tradingTextSize;
+  const StartTradingButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return isWeb
+    const startTradingTextSize = 20.0;
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+    return _width >= 768
         ? TextButton(
             style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -24,17 +20,22 @@ class StartTradingButton extends StatelessWidget {
                   side: BorderSide(color: Colors.amber[400]!),
                 ),
               ),
+              minimumSize: MaterialStateProperty.all<Size>(
+                Size(_width / 5, _height * 0.075),
+              ),
+              maximumSize: MaterialStateProperty.all<Size>(
+                Size(_width / 4, _height * 0.085),
+              ),
             ),
             onPressed: () {
               context.read<TrackingCubit>().onPressedStartTrading();
               context.goNamed('predict');
-              // navigateToV1App(context);
             },
             child: Text(
               'Start Trading',
               style: TextStyle(
                 color: Colors.amber[400],
-                fontSize: tradingTextSize,
+                fontSize: startTradingTextSize,
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.w400,
               ),
@@ -51,6 +52,12 @@ class StartTradingButton extends StatelessWidget {
                   side: const BorderSide(color: Colors.transparent),
                 ),
               ),
+              minimumSize: MaterialStateProperty.all<Size>(
+                Size(_width / 3, _height * 0.05),
+              ),
+              maximumSize: MaterialStateProperty.all<Size>(
+                Size(_width / 2, _height * 0.06),
+              ),
             ),
             onPressed: () {
               context.read<TrackingCubit>().onPressedStartTrading();
@@ -60,7 +67,7 @@ class StartTradingButton extends StatelessWidget {
               'Start',
               style: TextStyle(
                 color: Colors.amber[400],
-                fontSize: tradingTextSize,
+                fontSize: startTradingTextSize,
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.w400,
               ),

@@ -44,7 +44,6 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
               ),
               Text(
                 athlete.sport.name,
-                //toDo add map for the different league
                 style: textStyle(
                   greyTextColor,
                   20,
@@ -235,18 +234,18 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'InPl',
-                        style: textStyle(
-                          greyTextColor,
-                          15,
-                          isBold: false,
-                          isUline: false,
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   alignment: Alignment.bottomLeft,
+                    //   child: Text(
+                    //     'InPl',
+                    //     style: textStyle(
+                    //       greyTextColor,
+                    //       15,
+                    //       isBold: false,
+                    //       isUline: false,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -330,18 +329,18 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        athlete.inningsPlayed.toString(),
-                        style: textStyle(
-                          greyTextColor,
-                          15,
-                          isBold: false,
-                          isUline: false,
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   alignment: Alignment.bottomLeft,
+                    //   child: Text(
+                    //     athlete.inningsPlayed.toString(),
+                    //     style: textStyle(
+                    //       greyTextColor,
+                    //       15,
+                    //       isBold: false,
+                    //       isUline: false,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               )
@@ -383,16 +382,16 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isUline: false,
                 ),
               ),
-              Text(
-                athlete.atBats.toString(),
-                //toDo add map for the different league
-                style: textStyle(
-                  greyTextColor,
-                  20,
-                  isBold: false,
-                  isUline: false,
-                ),
-              )
+              // Text(
+              //   athlete.atBats.toString(),
+              //   //toDo add map for the different league
+              //   style: textStyle(
+              //     greyTextColor,
+              //     20,
+              //     isBold: false,
+              //     isUline: false,
+              //   ),
+              // )
             ],
           ),
           Row(
@@ -407,15 +406,15 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isUline: false,
                 ),
               ),
-              Text(
-                athlete.homeRuns.toString(),
-                style: textStyle(
-                  greyTextColor,
-                  20,
-                  isBold: false,
-                  isUline: false,
-                ),
-              )
+              // Text(
+              //   athlete.homeRuns.toString(),
+              //   style: textStyle(
+              //     greyTextColor,
+              //     20,
+              //     isBold: false,
+              //     isUline: false,
+              //   ),
+              // )
             ],
           ),
           Row(
@@ -464,29 +463,29 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
               )
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'InPl',
-                style: textStyle(
-                  greyTextColor,
-                  20,
-                  isBold: false,
-                  isUline: false,
-                ),
-              ),
-              Text(
-                athlete.inningsPlayed.toString(),
-                style: textStyle(
-                  greyTextColor,
-                  20,
-                  isBold: false,
-                  isUline: false,
-                ),
-              )
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       'InPl',
+          //       style: textStyle(
+          //         greyTextColor,
+          //         20,
+          //         isBold: false,
+          //         isUline: false,
+          //       ),
+          //     ),
+          //     Text(
+          //       athlete.inningsPlayed.toString(),
+          //       style: textStyle(
+          //         greyTextColor,
+          //         20,
+          //         isBold: false,
+          //         isUline: false,
+          //       ),
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );
@@ -500,7 +499,6 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Icon
         SizedBox(
           width: 50,
           child: Icon(
@@ -509,7 +507,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
           ),
         ),
         SizedBox(
-          width: 140,
+          width: _width * 0.1,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -537,8 +535,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
         ),
         if (team)
           SizedBox(
-            // width: 125,
-            width: _width * 0.12 > 125 ? _width * 0.12 : 125,
+            width: _width * 0.1,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -571,12 +568,10 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
   @override
   Widget athleteDetailsCardsForMobile(
     bool showIcon,
-    double _width,
-    double athNameBx,
+    double athNameBox,
   ) {
     return Row(
       children: [
-        // Icon
         if (showIcon)
           SizedBox(
             width: 50,
@@ -585,9 +580,8 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
               color: Colors.grey[700],
             ),
           ),
-        // Athlete Name
         SizedBox(
-          width: athNameBx,
+          width: athNameBox,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -596,7 +590,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                 athlete.name,
                 style: textStyle(
                   Colors.white,
-                  18,
+                  16,
                   isBold: false,
                   isUline: false,
                 ),

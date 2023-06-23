@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,18 +7,18 @@ class TermsAndConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWeb =
-        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    final _width = MediaQuery.of(context).size.width;
     var buttonText = '';
-    isWeb ? buttonText = 'Start Trading' : buttonText = 'Start';
+    _width >= 768 ? buttonText = 'Start Trading' : buttonText = 'Start';
+    const textSize = 14.0;
     return RichText(
       text: TextSpan(
         children: <TextSpan>[
           TextSpan(
             text: 'By clicking $buttonText, you agree to the ',
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
-              fontSize: isWeb ? 14 : 12,
+              fontSize: textSize,
               fontFamily: 'OpenSans',
             ),
           ),
@@ -27,7 +26,7 @@ class TermsAndConditions extends StatelessWidget {
             text: ' Terms and Conditions',
             style: TextStyle(
               color: Colors.amber[400],
-              fontSize: isWeb ? 14 : 12,
+              fontSize: textSize,
               fontFamily: 'OpenSans',
             ),
             recognizer: TapGestureRecognizer()

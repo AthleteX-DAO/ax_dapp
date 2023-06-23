@@ -7,4 +7,7 @@ enum BlocStatus {
   noWallet,
   unsupportedChain,
   invalidText,
+  scoutsLoaded,
+  leaguesLoaded,
+  transactionProcessing,
 }

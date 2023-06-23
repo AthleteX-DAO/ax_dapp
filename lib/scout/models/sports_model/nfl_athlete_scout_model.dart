@@ -26,8 +26,6 @@ class NFLAthleteScoutModel extends AthleteScoutModel {
     required this.receivingYards,
     required this.receivingTouchdowns,
     required this.rushingYards,
-    required this.offensiveSnapsPlayed,
-    required this.defensiveSnapsPlayed,
   }) : super(
           longTokenBookPrice: longTokenBookPrice ?? 0.0,
           longTokenBookPriceUsd: longTokenBookPriceUsd ?? 0.0,
@@ -49,8 +47,6 @@ class NFLAthleteScoutModel extends AthleteScoutModel {
   final double receivingYards;
   final double receivingTouchdowns;
   final double rushingYards;
-  final double offensiveSnapsPlayed;
-  final double defensiveSnapsPlayed;
 
   @override
   List<Object?> get props => super.props
@@ -61,7 +57,5 @@ class NFLAthleteScoutModel extends AthleteScoutModel {
       receivingYards,
       receivingTouchdowns,
       rushingYards,
-      offensiveSnapsPlayed,
-      defensiveSnapsPlayed,
     ]);
 }
