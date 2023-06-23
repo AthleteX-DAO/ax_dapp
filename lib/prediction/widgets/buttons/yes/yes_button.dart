@@ -26,8 +26,7 @@ class YesButton extends StatelessWidget {
   final double containerWdt;
   @override
   Widget build(BuildContext context) {
-    double paddingHorizontal = 20;
-
+    const paddingHorizontal = 20.0;
     var isWeb = true;
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
@@ -37,7 +36,6 @@ class YesButton extends StatelessWidget {
         prompt.yesTokenAddress.isEmpty;
     var hgt = 300.0;
     if (_height < 305) hgt = _height;
-
     return BlocProvider(
       create: (context) => YesButtonBloc(
         repo: RepositoryProvider.of<GetSwapInfoUseCase>(
@@ -51,7 +49,6 @@ class YesButton extends StatelessWidget {
           return Container(
             width: isPortraitMode ? containerWdt / 3 : 175,
             height: 50,
-            // if portrait mode, use 1/3 of container width
             decoration: invalidAddr
                 ? boxDecoration(
                     secondaryGreyColor,
@@ -68,21 +65,16 @@ class YesButton extends StatelessWidget {
             child: TextButton(
               onPressed: () {
                 if (invalidAddr) {
-                  return;
+                  context.showWarningToast(
+                    title: 'Invalid Address',
+                    description: 'Addresses not valid!',
+                  );
                 }
-                // invalidAddr
-                //     ? context.showWarningToast(
-                //         title: 'No Yes-Address',
-                //         description:
-                //             'You cannot vote when there is no address attatched',
-                //       )
-                //     : bloc.add(
                 bloc.add(
                   FetchSwapInfoRequested(
                     longTokenAddress: prompt.yesTokenAddress,
                   ),
                 );
-
                 final isWalletConnected =
                     context.read<WalletBloc>().state.isWalletConnected;
                 if (isWalletConnected) {
@@ -92,7 +84,7 @@ class YesButton extends StatelessWidget {
                       return Dialog(
                         backgroundColor: Colors.transparent,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: paddingHorizontal,
                           ),
                           height: hgt,
@@ -106,7 +98,6 @@ class YesButton extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              /// Title
                               SizedBox(
                                 width: wid,
                                 child: Row(
@@ -133,14 +124,10 @@ class YesButton extends StatelessWidget {
                                   ],
                                 ),
                               ),
-
-                              /// Divider
                               Divider(
                                 thickness: 0.35,
                                 color: Colors.grey[400],
                               ),
-
-                              /// Pair Info
                               SizedBox(
                                 width: wid,
                                 height: 125,
@@ -157,11 +144,6 @@ class YesButton extends StatelessWidget {
                                             'Buy: ${state.swapInfo.receiveAmount} AX',
                                           ),
                                         ),
-                                        // Flexible(
-                                        //   child: Text(
-                                        //     'Sell: ${state.aptSellInfo.axPrice} AX',
-                                        //   ),
-                                        // )
                                       ],
                                     ),
                                     Row(
@@ -177,15 +159,12 @@ class YesButton extends StatelessWidget {
                                   ],
                                 ),
                               ),
-
-                              /// Buy / Sell Buttons
                               SizedBox(
                                 width: wid,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    // Buy Button
                                     Container(
                                       height: 30,
                                       width: isPortraitMode
@@ -219,7 +198,6 @@ class YesButton extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-
                                     // Sell Button
                                     // Container(
                                     //   height: 30,

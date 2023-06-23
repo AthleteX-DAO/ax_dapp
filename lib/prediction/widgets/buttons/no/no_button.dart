@@ -24,8 +24,7 @@ class NoButton extends StatelessWidget {
   final double containerWdt;
   @override
   Widget build(BuildContext context) {
-    double paddingHorizontal = 20;
-
+    const paddingHorizontal = 20.0;
     var isWeb = true;
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
@@ -35,7 +34,6 @@ class NoButton extends StatelessWidget {
         prompt.yesTokenAddress.isEmpty;
     var hgt = 300.0;
     if (_height < 305) hgt = _height;
-
     return BlocProvider(
       create: (context) => NoButtonBloc(
         repo: RepositoryProvider.of<GetBuyInfoUseCase>(
@@ -46,11 +44,9 @@ class NoButton extends StatelessWidget {
       child: BlocConsumer<NoButtonBloc, NoButtonState>(
         builder: (context, state) {
           final bloc = context.read<NoButtonBloc>();
-
           return Container(
             width: isPortraitMode ? containerWdt / 3 : 175,
             height: 50,
-            // if portrait mode, use 1/3 of container width
             decoration: invalidAddr
                 ? boxDecoration(
                     secondaryGreyColor,
@@ -67,21 +63,16 @@ class NoButton extends StatelessWidget {
             child: TextButton(
               onPressed: () {
                 if (invalidAddr) {
-                  return;
+                  context.showWarningToast(
+                    title: 'Invalid Address',
+                    description: 'Addresses not valid!',
+                  );
                 }
-                // invalidAddr
-                //     ? context.showWarningToast(
-                //         title: 'No No-Address',
-                //         description:
-                //             'You cannot vote when there is no address attatched',
-                //       )
-                //     : bloc.add(
                 bloc.add(
                   FetchBuyInfoRequested(
                     shortTokenAddress: prompt.noTokenAddress,
                   ),
                 );
-
                 final isWalletConnected =
                     context.read<WalletBloc>().state.isWalletConnected;
                 if (isWalletConnected) {
@@ -91,7 +82,7 @@ class NoButton extends StatelessWidget {
                       return Dialog(
                         backgroundColor: Colors.transparent,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: paddingHorizontal,
                           ),
                           height: hgt,
@@ -105,7 +96,6 @@ class NoButton extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              ///Title
                               SizedBox(
                                 width: wid,
                                 child: Row(
@@ -132,14 +122,10 @@ class NoButton extends StatelessWidget {
                                   ],
                                 ),
                               ),
-
-                              /// Divider
                               Divider(
                                 thickness: 0.35,
                                 color: Colors.grey[400],
                               ),
-
-                              /// Pair Info
                               SizedBox(
                                 width: wid,
                                 height: 125,
@@ -156,11 +142,6 @@ class NoButton extends StatelessWidget {
                                             'Buy: ${state.aptBuyInfo.axPerAptPrice} AX',
                                           ),
                                         ),
-                                        // Flexible(
-                                        //   child: Text(
-                                        //     'Sell: ${state.aptSellInfo.axPrice} AX',
-                                        //   ),
-                                        // )
                                       ],
                                     ),
                                     Row(
@@ -176,15 +157,12 @@ class NoButton extends StatelessWidget {
                                   ],
                                 ),
                               ),
-
-                              /// Buy / Sell Buttons
                               SizedBox(
                                 width: wid,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    // Buy Button
                                     Container(
                                       height: 30,
                                       width: isPortraitMode
@@ -218,7 +196,6 @@ class NoButton extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-
                                     // Sell Button
                                     // Container(
                                     //   height: 30,
@@ -266,20 +243,22 @@ class NoButton extends StatelessWidget {
                   context.showWalletWarningToast();
                 }
               },
-              child: Text('No',
-                  style: invalidAddr
-                      ? textStyle(
-                          Colors.black,
-                          20,
-                          false,
-                          false,
-                        )
-                      : textStyle(
-                          Colors.white,
-                          20,
-                          false,
-                          false,
-                        )),
+              child: Text(
+                'No',
+                style: invalidAddr
+                    ? textStyle(
+                        Colors.black,
+                        20,
+                        false,
+                        false,
+                      )
+                    : textStyle(
+                        Colors.white,
+                        20,
+                        false,
+                        false,
+                      ),
+              ),
             ),
           );
         },

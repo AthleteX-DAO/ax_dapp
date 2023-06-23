@@ -22,7 +22,6 @@ class PromptDetails extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Price Overview
           SizedBox(
             height: 180,
             child: Column(
