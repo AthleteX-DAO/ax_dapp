@@ -1,7 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:equatable/equatable.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
@@ -25,6 +24,8 @@ class PredictionPageBloc
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<PredictionPageLoaded>(_onPredictionPageLoaded);
     on<LoadingPredictionPage>(_onLoadingPredictionPage);
+    on<MintPredictionTokens>(_onMintPredictionTokens);
+    on<RedeemPredictionTokens>(_onRedeemPredictionTokens);
 
     add(const WatchAppDataChangesStarted());
   }
@@ -47,10 +48,7 @@ class PredictionPageBloc
             predictionAddress: kNullAddress,
           ),
         );
-
         final appConfig = appData.appConfig;
-
-        // Keeps the event contract client values current
         _eventMarketRepository
           ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value
@@ -75,7 +73,6 @@ class PredictionPageBloc
     RedeemPredictionTokens event,
     Emitter<PredictionPageState> emit,
   ) async {
-    print('redeem button is PRESSED');
     await _eventMarketRepository.redeem();
     emit(state.copyWith(status: BlocStatus.success));
   }
@@ -100,10 +97,3 @@ class PredictionPageBloc
     );
   }
 }
-
-
-        // Sets the event market to currently selected prediction question
-        // eventMarketRepository.marketAddress.value =
-        //     state.predictionModel.address;
-        // eventMarketRepository.address1.value =
-        //     state.predictionModel.yesTokenAddress;
