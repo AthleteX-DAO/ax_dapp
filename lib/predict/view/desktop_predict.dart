@@ -19,6 +19,7 @@ class DesktopPredict extends StatefulWidget {
 }
 
 class _DesktopPredictState extends State<DesktopPredict> {
+  Global global = Global();
   double minTeamWidth = 875;
   double minViewWidth = 1090;
   @override
@@ -32,7 +33,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
     return BlocBuilder<PredictPageBloc, PredictPageState>(
       builder: (context, state) {
         final bloc = context.read<PredictPageBloc>();
-        Global().predictions = state.predictions;
+        global.predictions = state.predictions;
         final currentPredictions = state.predictions;
         if (state.status == BlocStatus.loading ||
             state.status == BlocStatus.initial) {
