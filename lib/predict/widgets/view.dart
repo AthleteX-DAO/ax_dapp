@@ -1,7 +1,5 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

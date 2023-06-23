@@ -1,4 +1,3 @@
-import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +17,11 @@ class PredictNoButton extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () {
-          print('no');
+          debugPrint('no');
         },
         child: TextButton(
           onPressed: () {
-            print('no');
+            debugPrint('no');
           },
           child: const Text('No'),
         ),

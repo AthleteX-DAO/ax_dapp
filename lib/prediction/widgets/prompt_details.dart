@@ -1,6 +1,4 @@
-import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/predict/widgets/advanced_features.dart';
 import 'package:ax_dapp/prediction/widgets/buttons/buttons.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
@@ -172,14 +170,21 @@ class PromptDetails extends StatelessWidget {
       ),
     );
   }
+}
 
-  // Widget promptButtons() {}
+class PromptDetailsCardForWeb extends StatelessWidget {
+  const PromptDetailsCardForWeb({
+    super.key,
+    required this.predictionModel,
+  });
 
-  Widget promptDetailsCardforWeb() {
+  final PredictionModel predictionModel;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        // Icon
         SizedBox(
           width: 50,
           child: Icon(
@@ -194,7 +199,7 @@ class PromptDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                model.prompt,
+                predictionModel.prompt,
                 style: textStyle(
                   Colors.white,
                   20,

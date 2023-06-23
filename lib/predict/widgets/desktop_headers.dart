@@ -1,5 +1,4 @@
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
 class DesktopHeaders extends StatelessWidget {
@@ -13,9 +12,7 @@ class DesktopHeaders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Set the Width of the object
     final _width = MediaQuery.of(context).size.width;
-
     return Row(
       children: <Widget>[
         const SizedBox(
@@ -35,9 +32,6 @@ class DesktopHeaders extends StatelessWidget {
             ),
           ),
         SizedBox(
-          // width: 175,
-
-          // Text: 'Probability' goes here
           width: _width * 0.18 > 175 ? _width * 0.18 : 175,
           child: Text(
             '',

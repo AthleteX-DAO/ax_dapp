@@ -1,13 +1,12 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/prediction/widgets/buttons/buttons.dart';
 import 'package:ax_dapp/prediction/widgets/prompt_details.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class DesktopPrediction extends StatelessWidget {
-  const DesktopPrediction({
+class DesktopPredictionCard extends StatelessWidget {
+  const DesktopPredictionCard({
     required this.predictionModel,
     required this.minTeamWidth,
     required this.minViewWidth,
@@ -44,22 +43,17 @@ class DesktopPrediction extends StatelessWidget {
               },
             );
           }).catchError((error) {
-            print('Error: $error');
+            debugPrint('Error: $error');
           });
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            // prompt, probability
             Row(
               children: <Widget>[
-                PromptDetails(
-                  model: predictionModel,
-                ).promptDetailsCardforWeb(),
-                // Probability(prompt: _prompt)
+                PromptDetailsCardForWeb(predictionModel: predictionModel),
               ],
             ),
-            // yes, no
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

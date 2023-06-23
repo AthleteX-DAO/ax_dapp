@@ -1,7 +1,5 @@
 import 'package:ax_dapp/predict/widgets/show_details_widget.dart';
-import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/custom_styles.dart';
 
 class PromptPageDetails extends StatelessWidget {
   const PromptPageDetails({

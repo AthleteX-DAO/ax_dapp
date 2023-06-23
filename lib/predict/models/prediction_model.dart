@@ -16,7 +16,6 @@ class PredictionModel extends Equatable {
   final String prompt;
   final String details;
   final bool? resolution;
-
   final String address;
   final String yesTokenAddress;
   final String noTokenAddress;
@@ -29,6 +28,7 @@ class PredictionModel extends Equatable {
     yesTokenAddress: '',
     noTokenAddress: '',
   );
+
   static const generic = PredictionModel(
     id: '',
     prompt: 'Will you win today?',
@@ -37,10 +37,15 @@ class PredictionModel extends Equatable {
     yesTokenAddress: kEmptyAddress,
     noTokenAddress: kEmptyAddress,
   );
+
   @override
   List<Object?> get props => [
+        id,
         prompt,
         details,
+        address,
+        yesTokenAddress,
+        noTokenAddress,
         resolution,
       ];
 

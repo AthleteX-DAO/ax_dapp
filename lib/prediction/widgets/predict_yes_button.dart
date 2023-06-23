@@ -1,4 +1,3 @@
-import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -28,11 +27,11 @@ class PredictYesButton extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () {
-          print('yes');
+          debugPrint('yes');
         },
         child: TextButton(
           onPressed: () {
-            print('yes');
+            debugPrint('yes');
           },
           child: const Text('Yes'),
         ),

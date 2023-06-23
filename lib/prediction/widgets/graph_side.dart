@@ -11,8 +11,6 @@ class GraphSide extends StatelessWidget {
   });
 
   final PredictionModel predictionModel;
-  // final List<GraphData> chartStats;  final double containerWidth;
-
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
@@ -50,23 +48,3 @@ class GraphSide extends StatelessWidget {
     );
   }
 }
-
-
-
-// SizedBox(
-//       height: _height / 1.5,
-//       width: wid,
-//       child: Column(
-//         children: [
-//           PromptPageTitle(
-//             wid: wid,
-//             prompt: predictionModel.prompt,
-//           ),
-//           PromptPageDetails(
-//             wid: wid,
-//             height: hei,
-//             promptDetails: predictionModel.details,
-//           ),
-//         ],
-//       ),
-//     )

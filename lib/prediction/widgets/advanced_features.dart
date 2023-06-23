@@ -1,19 +1,16 @@
-import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/prediction/widgets/buttons/buttons.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-// ignore: must_be_immutable
 class AdvancedFeatures extends StatefulWidget {
-  AdvancedFeatures({
+  const AdvancedFeatures({
     super.key,
     required this.model,
   });
 
-  PredictionModel model;
+  final PredictionModel model;
 
   @override
   State<AdvancedFeatures> createState() => _AdvancedFeaturesState();

@@ -1,16 +1,21 @@
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 
-class ShowDetailsWidget extends StatelessWidget {
-  ShowDetailsWidget({
+class ShowDetailsWidget extends StatefulWidget {
+  const ShowDetailsWidget({
     super.key,
     required this.promptDetails,
   });
 
   final String promptDetails;
 
+  @override
+  State<ShowDetailsWidget> createState() => _ShowDetailsWidgetState();
+}
+
+class _ShowDetailsWidgetState extends State<ShowDetailsWidget> {
   List<bool> isSelected = [false];
+
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
@@ -29,7 +34,7 @@ class ShowDetailsWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  promptDetails,
+                  widget.promptDetails,
                   textAlign: TextAlign.center,
                   style: textStyle(
                     Colors.white,

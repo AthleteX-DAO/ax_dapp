@@ -1,7 +1,7 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/widgets/desktop_headers.dart';
-import 'package:ax_dapp/prediction/widgets/desktop_prediction.dart';
+import 'package:ax_dapp/predict/widgets/desktop_prediction.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -94,7 +94,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
                           physics: const BouncingScrollPhysics(),
                           itemCount: currentPredictions.length,
                           itemBuilder: (context, index) {
-                            return DesktopPrediction(
+                            return DesktopPredictionCard(
                               predictionModel: currentPredictions[index],
                               minTeamWidth: minTeamWidth,
                               minViewWidth: minViewWidth,

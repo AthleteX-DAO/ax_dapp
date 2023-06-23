@@ -14,7 +14,12 @@ class NoButtonState extends Equatable {
   final AptSellInfo aptSellInfo;
 
   @override
-  List<Object?> get props => [status, aptBuyInfo, aptSellInfo];
+  List<Object?> get props => [
+        status,
+        aptBuyInfo,
+        aptSellInfo,
+        errorMessage,
+      ];
 
   NoButtonState copyWith({
     BlocStatus? status,

@@ -16,7 +16,13 @@ class YesButtonState extends Equatable {
   final AptSellInfo aptSellInfo;
 
   @override
-  List<Object?> get props => [status, aptBuyInfo, aptSellInfo];
+  List<Object?> get props => [
+        status,
+        aptBuyInfo,
+        aptSellInfo,
+        swapInfo,
+        errorMessage,
+      ];
 
   YesButtonState copyWith({
     BlocStatus? status,
