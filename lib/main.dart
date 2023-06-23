@@ -9,6 +9,7 @@ import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
+import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -166,7 +167,7 @@ void main() async {
             create: (context) => TrackingRepository(),
           ),
           RepositoryProvider(
-            create: (context) => EventMarketRepository(),         
+            create: (context) => EventMarketRepository(),
           ),
           RepositoryProvider(
             create: (context) => LeagueUseCase(),
@@ -177,6 +178,9 @@ void main() async {
           RepositoryProvider(
             create: (context) => PrizePoolRepository(),
           ),
+          RepositoryProvider(
+            create: (context) => PredictionSnapshotRepository(),
+          )
         ],
         child: App(configRepository: configRepository),
       );

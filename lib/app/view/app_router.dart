@@ -16,6 +16,7 @@ import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
 import 'package:ax_dapp/predict/view/desktop_predict.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/view/prediction_page.dart';
@@ -88,6 +89,9 @@ class AppRouter {
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChangesUseCase:
                       context.read<StreamAppDataChangesUseCase>(),
+                  predictionSnapshotRepository:
+                      context.read<PredictionSnapshotRepository>(),
+                  eventMarketRepository: context.read<EventMarketRepository>(),
                 ),
                 child: const DesktopPredict(),
               );

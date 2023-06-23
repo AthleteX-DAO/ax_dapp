@@ -6,6 +6,7 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/widgets/loader.dart';
+import 'package:ethereum_api/tokens_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,6 +23,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
   Global global = Global();
   double minTeamWidth = 875;
   double minViewWidth = 1090;
+  EthereumChain? _selectedChain;
   @override
   Widget build(BuildContext context) {
     context
@@ -35,9 +37,11 @@ class _DesktopPredictState extends State<DesktopPredict> {
         final bloc = context.read<PredictPageBloc>();
         global.predictions = state.predictions;
         final currentPredictions = state.predictions;
-        if (state.status == BlocStatus.loading ||
-            state.status == BlocStatus.initial) {
-          bloc.add(const LoadPredictionsEvent());
+        if (_selectedChain != state.selectedChain) {
+          _selectedChain = state.selectedChain;
+          bloc.add(
+            const LoadPredictionsEvent(),
+          );
         }
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
