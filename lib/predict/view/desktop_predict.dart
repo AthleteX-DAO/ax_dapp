@@ -1,3 +1,4 @@
+import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/widgets/desktop_headers.dart';
 import 'package:ax_dapp/prediction/widgets/desktop_prediction.dart';
@@ -22,6 +23,12 @@ class _DesktopPredictState extends State<DesktopPredict> {
   double minViewWidth = 1090;
   @override
   Widget build(BuildContext context) {
+    context
+        .read<TopNavigationBarBloc>()
+        .add(const SelectButtonEvent(buttonName: 'predict'));
+    context
+        .read<BottomNavigationBarBloc>()
+        .add(const SelectItemEvent(itemIndex: 0));
     return BlocBuilder<PredictPageBloc, PredictPageState>(
       builder: (context, state) {
         final bloc = context.read<PredictPageBloc>();

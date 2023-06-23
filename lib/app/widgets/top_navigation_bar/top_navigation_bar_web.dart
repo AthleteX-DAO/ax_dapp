@@ -42,6 +42,15 @@ class TopNavigationBarWeb extends StatelessWidget {
                       ),
                     ),
                     TopNavigationBarItem(
+                      routeName: 'predict',
+                      buttonName: 'Predict',
+                      isSelected: selectedButton == 'predict',
+                      onPressed: () {
+                        bloc.add(const SelectButtonEvent(buttonName: 'predict'));
+                        context.goNamed('predict');
+                      },
+                    ),
+                    TopNavigationBarItem(
                       routeName: 'scout',
                       buttonName: 'Scout',
                       isSelected: selectedButton == 'scout',
