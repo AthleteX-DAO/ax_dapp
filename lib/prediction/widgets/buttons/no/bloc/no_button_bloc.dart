@@ -42,18 +42,28 @@ class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
   ) async {
     final aptAddress = event.shortTokenAddress;
     final response = await repo.fetchAptBuyInfo(aptAddress: aptAddress);
-    final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
-    emit(
-      state.copyWith(
-        aptBuyInfo: AptBuyInfo(
-          axPerAptPrice: pairInfo.toPrice,
-          minimumReceived: pairInfo.minimumReceived,
-          priceImpact: pairInfo.priceImpact,
-          receiveAmount: pairInfo.receiveAmount,
-          totalFee: pairInfo.totalFee,
+    final isSuccess = response.isLeft();
+    if (isSuccess) {
+      final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
+      emit(
+        state.copyWith(
+          aptBuyInfo: AptBuyInfo(
+            axPerAptPrice: pairInfo.toPrice,
+            minimumReceived: pairInfo.minimumReceived,
+            priceImpact: pairInfo.priceImpact,
+            receiveAmount: pairInfo.receiveAmount,
+            totalFee: pairInfo.totalFee,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      emit(
+        state.copyWith(
+          aptBuyInfo: AptBuyInfo.empty,
+          status: BlocStatus.error,
+        ),
+      );
+    }
   }
 
   Future<void> _onBuyButtonPressed(

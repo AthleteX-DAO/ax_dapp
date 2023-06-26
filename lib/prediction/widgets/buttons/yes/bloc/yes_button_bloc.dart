@@ -45,18 +45,28 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
       tokenFrom: event.longTokenAddress,
       tokenTo: event.longTokenAddress,
     );
-    final pairInfo = response.getLeft().toNullable()!.swapInfo;
-    emit(
-      state.copyWith(
-        swapInfo: SwapInfo(
-          toPrice: pairInfo.toPrice,
-          minimumReceived: pairInfo.minimumReceived,
-          priceImpact: pairInfo.priceImpact,
-          receiveAmount: pairInfo.receiveAmount,
-          totalFee: pairInfo.totalFee,
+    final isSuccess = response.isLeft();
+    if (isSuccess) {
+      final pairInfo = response.getLeft().toNullable()!.swapInfo;
+      emit(
+        state.copyWith(
+          swapInfo: SwapInfo(
+            toPrice: pairInfo.toPrice,
+            minimumReceived: pairInfo.minimumReceived,
+            priceImpact: pairInfo.priceImpact,
+            receiveAmount: pairInfo.receiveAmount,
+            totalFee: pairInfo.totalFee,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      emit(
+        state.copyWith(
+          swapInfo: SwapInfo.empty,
+          status: BlocStatus.error,
+        ),
+      );
+    }
   }
 
   Future<void> _onBuyButtonPressed(
