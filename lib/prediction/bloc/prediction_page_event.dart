@@ -40,3 +40,5 @@ class PredictionPageLoaded extends PredictionPageEvent {
 }
 
 class LoadMarketAddress extends PredictionPageEvent {}
+
+class ToggleAdvanceFeatures extends PredictionPageEvent {}

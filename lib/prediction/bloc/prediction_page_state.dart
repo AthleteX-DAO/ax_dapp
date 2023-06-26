@@ -6,24 +6,28 @@ class PredictionPageState extends Equatable {
     this.predictionModel = PredictionModel.empty,
     this.yesAddress = '',
     this.noAddress = '',
+    this.isToggled = false,
   });
 
   final BlocStatus status;
   final PredictionModel predictionModel;
   final String yesAddress;
   final String noAddress;
+  final bool isToggled;
 
   PredictionPageState copyWith({
     String? yesAddress,
     String? noAddress,
     PredictionModel? predictionModel,
     BlocStatus? status,
+    bool? isToggled,
   }) {
     return PredictionPageState(
       predictionModel: predictionModel ?? this.predictionModel,
       yesAddress: yesAddress ?? this.yesAddress,
       noAddress: noAddress ?? this.noAddress,
       status: status ?? this.status,
+      isToggled: isToggled ?? this.isToggled,
     );
   }
 
@@ -33,5 +37,6 @@ class PredictionPageState extends Equatable {
         predictionModel,
         yesAddress,
         noAddress,
+        isToggled,
       ];
 }

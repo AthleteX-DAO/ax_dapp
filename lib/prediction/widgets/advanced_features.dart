@@ -1,10 +1,12 @@
 import 'package:ax_dapp/predict/models/models.dart';
+import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/widgets/buttons/buttons.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AdvancedFeatures extends StatefulWidget {
+class AdvancedFeatures extends StatelessWidget {
   const AdvancedFeatures({
     super.key,
     required this.model,
@@ -13,16 +15,9 @@ class AdvancedFeatures extends StatefulWidget {
   final PredictionModel model;
 
   @override
-  State<AdvancedFeatures> createState() => _AdvancedFeaturesState();
-}
-
-class _AdvancedFeaturesState extends State<AdvancedFeatures> {
-  _AdvancedFeaturesState();
-
-  bool switchValue = false;
-
-  @override
   Widget build(BuildContext context) {
+    final isToggled =
+        context.select((PredictionPageBloc bloc) => bloc.state.isToggled);
     return SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,16 +34,16 @@ class _AdvancedFeaturesState extends State<AdvancedFeatures> {
                 ),
               ),
               Switch(
-                value: switchValue,
+                value: isToggled,
                 onChanged: (val) {
-                  setState(() {
-                    switchValue = val;
-                  });
+                  context
+                      .read<PredictionPageBloc>()
+                      .add(ToggleAdvanceFeatures());
                 },
               ),
             ],
           ),
-          if (switchValue)
+          if (isToggled)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -59,12 +54,12 @@ class _AdvancedFeaturesState extends State<AdvancedFeatures> {
                 GenericMintButton(
                   containerWdt: 100,
                   isPortraitMode: false,
-                  prompt: widget.model,
+                  prompt: model,
                 ),
                 GenericRedeemButton(
                   containerWdt: 100,
                   isPortraitMode: false,
-                  prompt: widget.model,
+                  prompt: model,
                 ),
               ],
             )

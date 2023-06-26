@@ -34,6 +34,7 @@ class PredictionPageBloc
     on<MintPredictionTokens>(_onMintPredictionTokens);
     on<RedeemPredictionTokens>(_onRedeemPredictionTokens);
     on<LoadMarketAddress>(_onLoadMarketAddress);
+    on<ToggleAdvanceFeatures>(_onToggleAdvanceFeatured);
 
     add(const WatchAppDataChangesStarted());
     add(LoadMarketAddress());
@@ -134,5 +135,12 @@ class PredictionPageBloc
         ),
       );
     }
+  }
+
+  void _onToggleAdvanceFeatured(
+    ToggleAdvanceFeatures event,
+    Emitter<PredictionPageState> emit,
+  ) {
+    emit(state.copyWith(isToggled: !state.isToggled));
   }
 }
