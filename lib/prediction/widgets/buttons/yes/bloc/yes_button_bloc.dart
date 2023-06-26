@@ -29,12 +29,12 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
   ) async {
     try {
       eventMarketRepository.address1.value = event.longTokenAddress;
-
       eventMarketRepository.address2.value =
           '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
-
       await eventMarketRepository.buy();
-    } catch (e) {}
+    } catch (e) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
   }
 
   Future<void> _onFetchSwapInfoRequested(
@@ -45,7 +45,6 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
       tokenFrom: event.longTokenAddress,
       tokenTo: event.longTokenAddress,
     );
-
     final pairInfo = response.getLeft().toNullable()!.swapInfo;
     emit(
       state.copyWith(
@@ -64,30 +63,37 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
     BuyButtonPressed event,
     Emitter<YesButtonState> emit,
   ) async {
-    eventMarketRepository.address1.value =
-        '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909'; //AthleteX Token
-    eventMarketRepository.address2.value =
-        event.longTokenAddress; //Buying this token
-    eventMarketRepository.amount1.value = 1 * 1e18; //approval amount
-    const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
-    const amount = 100.0;
-    await eventMarketRepository
-        .approve(contractAddress, amount)
-        .then((value) => {eventMarketRepository.buy()});
+    try {
+      eventMarketRepository.address1.value =
+          '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
+      eventMarketRepository.address2.value = event.longTokenAddress;
+      eventMarketRepository.amount1.value = 1 * 1e18;
+      const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
+      const amount = 100.0;
+      await eventMarketRepository
+          .approve(contractAddress, amount)
+          .then((value) => {eventMarketRepository.buy()});
+    } catch (e) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
   }
 
   Future<void> _onSellButtonPressed(
     SellButtonPressed event,
     Emitter<YesButtonState> emit,
   ) async {
-    eventMarketRepository.address1.value = event.longTokenAddress;
-    eventMarketRepository.address2.value =
-        '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
-    eventMarketRepository.amount1.value = 1 * 1e18;
-    const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
-    const amount = 100.0;
-    await eventMarketRepository
-        .approve(contractAddress, amount)
-        .then((value) => {eventMarketRepository.sell()});
+    try {
+      eventMarketRepository.address1.value = event.longTokenAddress;
+      eventMarketRepository.address2.value =
+          '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
+      eventMarketRepository.amount1.value = 1 * 1e18;
+      const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
+      const amount = 100.0;
+      await eventMarketRepository
+          .approve(contractAddress, amount)
+          .then((value) => {eventMarketRepository.sell()});
+    } catch (e) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
   }
 }
