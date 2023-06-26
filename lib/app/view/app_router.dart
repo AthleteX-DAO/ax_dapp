@@ -64,6 +64,9 @@ class AppRouter {
       if (state.location.contains('/athlete') && Global().athleteList.isEmpty) {
         return '/scout';
       }
+      if (state.location.contains('/prediction') && Global().predictions.isEmpty) {
+        return '/predict';
+      }
       return null;
     },
     navigatorKey: _rootNavigatorKey,
