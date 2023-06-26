@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PromptPageTitle extends StatelessWidget {
   const PromptPageTitle({
@@ -20,7 +21,19 @@ class PromptPageTitle extends StatelessWidget {
           height: 100,
           child: Row(
             children: [
-              // Player Name
+              SizedBox(
+                width: 70,
+                child: TextButton(
+                  onPressed: () {
+                    context.goNamed('predict');
+                  },
+                  child: const Icon(
+                    Icons.arrow_back,
+                    size: 50,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
               Text(
                 prompt,
                 style: textStyle(
@@ -30,7 +43,6 @@ class PromptPageTitle extends StatelessWidget {
                   isUline: false,
                 ),
               ),
-              // '|' Symbol
               Container(
                 width: 18,
                 alignment: Alignment.center,
