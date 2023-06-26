@@ -1,4 +1,4 @@
-import 'package:ax_dapp/predict/widgets/show_details_widget.dart';
+import 'package:ax_dapp/prediction/widgets/show_details.dart';
 import 'package:flutter/material.dart';
 
 class PromptPageDetails extends StatelessWidget {
@@ -22,7 +22,7 @@ class PromptPageDetails extends StatelessWidget {
           height: height,
           child: Row(
             children: [
-              ShowDetailsWidget(
+              ShowDetails(
                 promptDetails: promptDetails,
               )
             ],

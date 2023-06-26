@@ -1,8 +1,8 @@
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
-class ShowDetailsWidget extends StatelessWidget {
-  const ShowDetailsWidget({
+class ShowDetails extends StatelessWidget {
+  const ShowDetails({
     super.key,
     required this.promptDetails,
   });
