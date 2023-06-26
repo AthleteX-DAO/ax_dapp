@@ -4,7 +4,6 @@ import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
@@ -118,6 +117,9 @@ class PredictionPageBloc
     try {
       final marketAddresses = await _predictionAddressRepository
           .fetchMarketAddresses(predictionModelId);
+      _eventMarketRepository
+        ..yesMarketAddress = marketAddresses.first
+        ..noMarketAddress = marketAddresses.last;
       emit(
         state.copyWith(
           yesAddress: marketAddresses.first,
@@ -126,7 +128,6 @@ class PredictionPageBloc
         ),
       );
     } catch (e) {
-      debugPrint('$e');
       emit(
         state.copyWith(
           yesAddress: '',

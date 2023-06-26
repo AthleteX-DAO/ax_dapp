@@ -6,7 +6,6 @@ import 'package:ethereum_api/erc20_api.dart';
 import 'package:ethereum_api/event_markets_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:web3dart/web3dart.dart';
 
 class EventMarketRepository {
@@ -19,6 +18,8 @@ class EventMarketRepository {
   RxString marketAddress = ''.obs;
   RxString address1 = ''.obs;
   RxString address2 = ''.obs;
+  RxString yesAddress = ''.obs;
+  RxString noAddress = ''.obs;
   RxDouble amount1 = 100.0.obs;
   RxDouble createAmt = 0.0.obs;
   RxInt decimalA = 1.obs;
@@ -28,11 +29,15 @@ class EventMarketRepository {
   ).obs;
 
   String get eventMarketAddress => marketAddress.value;
+  String get yesMarketAddress => yesAddress.value;
+  String get noMarketAddress => noAddress.value;
+
   set eventMarketAddress(String newAddress) => marketAddress.value = newAddress;
+  set yesMarketAddress(String newYesAddress) => address1.value = newYesAddress;
+  set noMarketAddress(String newNoAddress) => address2.value = newNoAddress;
 
   Future<void> mint() async {
-    print('minting event based prediction market');
-    var address = EthereumAddress.fromHex(marketAddress.value);
+    final address = EthereumAddress.fromHex(marketAddress.value);
     final userCredentials = controller.credentials;
     final intCreate = BigInt.from(1 * 1e18);
 
@@ -65,7 +70,6 @@ class EventMarketRepository {
   }
 
   Future<void> approve(String contractAddress, double amount) async {
-    // Defaults to sx chain's mainnet
     const axt = Token.ax(EthereumChain.sxMainnet);
     final address = EthereumAddress.fromHex(axt.address);
     final contractToApprove = EthereumAddress.fromHex(contractAddress);
@@ -87,10 +91,9 @@ class EventMarketRepository {
 
     final path = <EthereumAddress>[tokenAAddress, tokenBAddress];
     final to = await controller.credentials.extractAddress();
-    var txString = '';
 
     try {
-      txString = await aptRouter.swapExactTokensForTokens(
+      final transactionHash = await aptRouter.swapExactTokensForTokens(
         tokenAAmount,
         amountOutMin,
         path,
@@ -98,10 +101,9 @@ class EventMarketRepository {
         deadline.value,
         credentials: controller.credentials,
       );
-      controller.transactionHash = txString;
+      controller.transactionHash = transactionHash;
     } catch (e) {
-      txString = '';
-      controller.transactionHash = txString;
+      controller.transactionHash = '';
       return Future.error(e);
     }
   }
@@ -113,10 +115,9 @@ class EventMarketRepository {
 
     final path = <EthereumAddress>[tokenAAddress, tokenBAddress];
     final to = await controller.credentials.extractAddress();
-    var txString = '';
 
     try {
-      txString = await aptRouter.swapExactTokensForTokens(
+      final transactionHash = await aptRouter.swapExactTokensForTokens(
         tokenAAmount,
         amountOutMin,
         path,
@@ -124,10 +125,9 @@ class EventMarketRepository {
         deadline.value,
         credentials: controller.credentials,
       );
-      controller.transactionHash = txString;
+      controller.transactionHash = transactionHash;
     } catch (e) {
-      txString = '';
-      controller.transactionHash = txString;
+      controller.transactionHash = '';
       return Future.error(e);
     }
   }
