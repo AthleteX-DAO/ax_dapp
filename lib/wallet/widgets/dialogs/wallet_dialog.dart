@@ -60,7 +60,7 @@ class WalletDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Choose Wallet',
+                      'No KYC | Email Only Sign-on',
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'OpenSans',
@@ -80,59 +80,6 @@ class WalletDialog extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                // MetaMask Button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      width: constraints.maxWidth < 450
-                          ? constraints.maxWidth * 0.62
-                          : constraints.maxWidth * 0.22,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(color: Colors.grey[400]!, width: 2),
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          context
-                              .read<WalletBloc>()
-                              .add(const ConnectWalletRequested());
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              height: 30,
-                              width: 30,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/images/fox.png'),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const Text(
-                              'Metamask',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'OpenSans',
-                                fontSize: 16,
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 20),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
                 // Magic button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -170,7 +117,7 @@ class WalletDialog extends StatelessWidget {
                               ),
                             ),
                             const Text(
-                              'Magic',
+                              'Sign on with email',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'OpenSans',
@@ -184,57 +131,6 @@ class WalletDialog extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ],
-                ),
-                // Native Wallet Button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      width: constraints.maxWidth < 450
-                          ? constraints.maxWidth * 0.62
-                          : constraints.maxWidth * 0.22,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(
-                          color: Colors.grey[400]!,
-                          width: 2,
-                        ),
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          context
-                              .read<WalletBloc>()
-                              .add(const ConnectNativeWallet());
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              height: 30,
-                              width: 30,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(image: AssetImage('')),
-                              ),
-                            ),
-                            const Text(
-                              'Native Wallet',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'OpenSans',
-                                fontSize: 16,
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 20),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
                   ],
                 ),
                 //TOOD(Kevin): re-enable when native wallet is ready
