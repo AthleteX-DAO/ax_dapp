@@ -39,13 +39,13 @@ var MagicSDK = (function () {
         return email;
     }
 
-    Magic.prototype.requestAccount = async function () {
+    MagicSDK.prototype.requestAccount = async function () {
         console.log("Requesting User Credentials");
-        const credentials = await this._web3.eth.requestAccount();
+        const credentials = await this._magicSDK.wallet.connectWithUI();
         return credentials;
     }
 
-    Magic.prototype.getGasPrice = async function () {
+    MagicSDK.prototype.getGasPrice = async function () {
         console.log("[Magic] Requesting on-chain gas price...")
         const gasPriceInGwei = await this._web3.eth.getGasPrice();
         return gasPriceInGwei;
