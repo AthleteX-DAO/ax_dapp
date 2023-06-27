@@ -76,10 +76,18 @@ class MagicWalletApiClient implements WalletApiClient {
 
   /// Returns web3dart compatible Magic credentials
   Future<CredentialsWithKnownAddress> requestAccount() async {
-    final addresses =
-        await promiseToFuture<List<String>>(_magicSDK.requestAccount());
-    final requiredAddress = addresses.single;
-    return MagicCredentials(_magicSDK, requiredAddress);
+    String requiredAddresses;
+    try {
+      final addresses = await promiseToFuture<String>(_magicSDK.connect());
+      requiredAddresses = addresses;
+    } catch (e) {
+      requiredAddresses = kNullAddress;
+      throw Exception(
+        'Unable to request account from magicSDK.  See error for details \n\n $e',
+      );
+    }
+
+    return MagicCredentials(_magicSDK, requiredAddresses);
   }
 
   /// adds a chain to the Magic Wallet
@@ -184,17 +192,16 @@ class MagicWalletApiClient implements WalletApiClient {
   }
 
   @override
-  Future<double> getGasPrice() async {
-    final rawGasPrice = await _magicSDK.getGasPrice() as EtherAmount;
-    final gasPriceInGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
-    final formattedGasPriceInGwei = gasPriceInGwei.toStringAsFixed(2);
-    return double.parse(formattedGasPriceInGwei);
+  Future<BigInt> getGasPrice() async {
+    final rawGasPrice = await promiseToFuture<BigInt>(_magicSDK.getGasPrice());
+    return rawGasPrice;
   }
 
   @override
   Future<WalletCredentials> getWalletCredentials() async {
     try {
       final credentials = await requestAccount();
+      debugPrint('grabbing wallet credentials!');
       return WalletCredentials(credentials);
     } catch (error, stackTrace) {
       throw WalletFailure.fromError(error, stackTrace);
