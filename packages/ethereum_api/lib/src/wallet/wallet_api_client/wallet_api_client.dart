@@ -51,5 +51,5 @@ abstract class WalletApiClient {
   });
 
   /// Returns the amount typically needed to pay for one unit of gas(in gwei).
-  Future<double> getGasPrice();
+  Future<BigInt> getGasPrice();
 }

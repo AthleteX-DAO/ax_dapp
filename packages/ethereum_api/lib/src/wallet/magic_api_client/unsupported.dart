@@ -118,7 +118,7 @@ class MagicWalletApiClient implements MagicApiClient {
   }
 
   @override
-  Future<double> getGasPrice() {
+  Future<BigInt> getGasPrice() {
     // TODO: implement getGasPrice
     throw UnimplementedError(
       'getGasPrice is not implemented on the current platform',

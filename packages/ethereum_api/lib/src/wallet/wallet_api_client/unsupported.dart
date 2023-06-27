@@ -79,7 +79,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   }
 
   @override
-  Future<double> getGasPrice() {
+  Future<BigInt> getGasPrice() {
     throw UnsupportedError('getGasPrice not supported on the current platform');
   }
 

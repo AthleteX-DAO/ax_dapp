@@ -51,12 +51,10 @@ class NativeWalletApiClient implements WalletApiClient {
   }
 
   @override
-  Future<double> getGasPrice() async {
-    // TODO: implement getGasPrice
-
-    final gasprice = await _web3Client.getGasPrice() as double;
-
-    return gasprice;
+  Future<BigInt> getGasPrice() async {
+    final gasprice = await _web3Client.getGasPrice();
+    final rawGasPrice = gasprice.getValueInUnitBI(EtherUnit.wei);
+    return rawGasPrice;
   }
 
   @override
