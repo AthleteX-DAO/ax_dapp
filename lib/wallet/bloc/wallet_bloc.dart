@@ -159,13 +159,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     ConnectWalletMagic event,
     Emitter<WalletState> emit,
   ) async {
-    // This invokes the magicSDK to connect magic to the dapp
-    debugPrint(
-      'ConnectWalletMagic event emitted!',
-    );
-
     final address = await _walletRepository.connectMagicWallet();
-
     debugPrint('Updating UI with this address: $address');
     emit(
       state.copyWith(

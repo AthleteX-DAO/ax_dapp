@@ -132,7 +132,7 @@ class WalletRepository {
     try {
       await prefs.setBool(searchForWalletKey, true);
       _magicWalletApiClient.addChainChangedListener();
-
+      debugPrint('connectMagicWallet: grabbing credentials!');
       final credentials = await _magicWalletApiClient.getWalletCredentials();
       _cacheWalletCredentials(credentials);
       final walletAddress = credentials.value.address.hex;
@@ -259,5 +259,9 @@ class WalletRepository {
   }
 
   /// Returns the amount typically needed to pay for one unit of gas(in gwei).
-  Future<double> getGasPrice() => _walletApiClient.getGasPrice();
+  Future<double> getGasPrice() async {
+    final rawGasPriceInGwei = await _walletApiClient.getGasPrice();
+    final rawGasPrice = rawGasPriceInGwei.toDouble();
+    return rawGasPrice;
+  }
 }
