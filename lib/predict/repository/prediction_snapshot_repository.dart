@@ -13,7 +13,7 @@ class PredictionSnapshotRepository {
       final body = jsonEncode({
         'query': '''
         query Proposals {
-          proposals(where: {space_in: ["athletex.eth"], state: "done"}, orderBy: "created", orderDirection: desc) {
+          proposals(where: {space_in: ["athletex.eth"], state: "active"}, orderBy: "created", orderDirection: desc) {
             id
             title
             body
