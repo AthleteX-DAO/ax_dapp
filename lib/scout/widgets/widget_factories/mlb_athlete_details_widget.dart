@@ -568,12 +568,10 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
   @override
   Widget athleteDetailsCardsForMobile(
     bool showIcon,
-    double _width,
-    double athNameBx,
+    double athNameBox,
   ) {
     return Row(
       children: [
-        // Icon
         if (showIcon)
           SizedBox(
             width: 50,
@@ -582,9 +580,8 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
               color: Colors.grey[700],
             ),
           ),
-        // Athlete Name
         SizedBox(
-          width: athNameBx,
+          width: athNameBox,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -593,7 +590,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                 athlete.name,
                 style: textStyle(
                   Colors.white,
-                  18,
+                  16,
                   isBold: false,
                   isUline: false,
                 ),
