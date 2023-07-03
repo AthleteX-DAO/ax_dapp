@@ -228,7 +228,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     }
   }
 
-  FutureOr<void> _onFetchLeagueTeamsEvent(
+  Future<void> _onFetchLeagueTeamsEvent(
     FetchLeagueTeamsEvent event,
     Emitter<LeagueGameState> emit,
   ) async {
@@ -246,7 +246,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
     );
   }
 
-  FutureOr<void> _onProcessLeagueWinnerEvent(
+  Future<void> _onProcessLeagueWinnerEvent(
     ProcessLeagueWinnerEvent event,
     Emitter<LeagueGameState> emit,
   ) async {
