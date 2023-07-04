@@ -103,7 +103,7 @@ class YesButton extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Buy Lakers Prediction',
+                                      'Buy ${prompt.yesName}',
                                       style: textStyle(
                                         Colors.white,
                                         20,

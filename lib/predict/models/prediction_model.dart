@@ -10,6 +10,8 @@ class PredictionModel extends Equatable {
     this.resolution,
     required this.yesTokenAddress,
     required this.noTokenAddress,
+    required this.yesName,
+    required this.noName,
   });
 
   final String id;
@@ -19,6 +21,8 @@ class PredictionModel extends Equatable {
   final String address;
   final String yesTokenAddress;
   final String noTokenAddress;
+  final String yesName;
+  final String noName;
 
   static const empty = PredictionModel(
     id: '',
@@ -27,15 +31,8 @@ class PredictionModel extends Equatable {
     address: kEmptyAddress,
     yesTokenAddress: '',
     noTokenAddress: '',
-  );
-
-  static const generic = PredictionModel(
-    id: '',
-    prompt: 'Will you win today?',
-    details: 'This market will resolve to fo sure yea',
-    address: kNullAddress,
-    yesTokenAddress: kEmptyAddress,
-    noTokenAddress: kEmptyAddress,
+    yesName: '',
+    noName: '',
   );
 
   @override
@@ -47,6 +44,8 @@ class PredictionModel extends Equatable {
         yesTokenAddress,
         noTokenAddress,
         resolution,
+        yesName,
+        noName,
       ];
 
   @override

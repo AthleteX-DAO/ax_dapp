@@ -15,8 +15,9 @@ class PredictionAddressRepository {
         final documentSnapshotData = documentSnapshot.data();
         final yesAddress = documentSnapshotData?['YesAddress'].toString();
         final noAddress = documentSnapshotData?['NoAddress'].toString();
-        debugPrint('$yesAddress, $noAddress');
-        return [yesAddress!, noAddress!];
+        final yesName = documentSnapshotData?['yesName'].toString();
+        final noName = documentSnapshotData?['noName'].toString();
+        return [yesAddress!, noAddress!, yesName!, noName!];
       }
       return [];
     } on FirebaseException catch (e) {

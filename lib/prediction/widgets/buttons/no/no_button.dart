@@ -103,7 +103,7 @@ class NoButton extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Buy Nuggets Prediction',
+                                      'Buy ${prompt.noName}',
                                       style: textStyle(
                                         Colors.white,
                                         20,

@@ -16,13 +16,11 @@ class PredictionPageBloc
     extends Bloc<PredictionPageEvent, PredictionPageState> {
   PredictionPageBloc({
     required WalletRepository walletRepository,
-    required TokensRepository tokensRepository,
     required EventMarketRepository eventMarketRepository,
     required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
     required PredictionAddressRepository predictionAddressRepository,
     required this.predictionModelId,
   })  : _walletRepository = walletRepository,
-        _tokensRepository = tokensRepository,
         _eventMarketRepository = eventMarketRepository,
         _streamAppDataChangesUseCase = streamAppDataChangesUseCase,
         _predictionAddressRepository = predictionAddressRepository,
@@ -40,7 +38,6 @@ class PredictionPageBloc
   }
 
   final WalletRepository _walletRepository;
-  final TokensRepository _tokensRepository;
   final EventMarketRepository _eventMarketRepository;
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
   final PredictionAddressRepository _predictionAddressRepository;
@@ -118,12 +115,12 @@ class PredictionPageBloc
       final marketAddresses = await _predictionAddressRepository
           .fetchMarketAddresses(predictionModelId);
       _eventMarketRepository
-        ..yesMarketAddress = marketAddresses.first
-        ..noMarketAddress = marketAddresses.last;
+        ..yesMarketAddress = marketAddresses[0]
+        ..noMarketAddress = marketAddresses[1];
       emit(
         state.copyWith(
-          yesAddress: marketAddresses.first,
-          noAddress: marketAddresses.last,
+          yesAddress: marketAddresses[0],
+          noAddress: marketAddresses[1],
           status: BlocStatus.success,
         ),
       );

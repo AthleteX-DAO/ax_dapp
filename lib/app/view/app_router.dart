@@ -16,7 +16,7 @@ import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
 import 'package:ax_dapp/predict/view/desktop_predict.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
@@ -64,7 +64,8 @@ class AppRouter {
       if (state.location.contains('/athlete') && Global().athleteList.isEmpty) {
         return '/scout';
       }
-      if (state.location.contains('/prediction') && Global().predictions.isEmpty) {
+      if (state.location.contains('/prediction') &&
+          Global().predictions.isEmpty) {
         return '/predict';
       }
       return null;
@@ -90,12 +91,11 @@ class AppRouter {
             builder: (BuildContext context, GoRouterState state) {
               return BlocProvider(
                 create: (BuildContext context) => PredictPageBloc(
-                  walletRepository: context.read<WalletRepository>(),
                   streamAppDataChangesUseCase:
                       context.read<StreamAppDataChangesUseCase>(),
-                  predictionSnapshotRepository:
-                      context.read<PredictionSnapshotRepository>(),
                   eventMarketRepository: context.read<EventMarketRepository>(),
+                  getPredictionMarketInfoUseCase:
+                      context.read<GetPredictionMarketInfoUseCase>(),
                 ),
                 child: const DesktopPredict(),
               );
@@ -108,7 +108,6 @@ class AppRouter {
                   return BlocProvider(
                     create: (context) => PredictionPageBloc(
                       walletRepository: context.read<WalletRepository>(),
-                      tokensRepository: context.read<TokensRepository>(),
                       eventMarketRepository:
                           context.read<EventMarketRepository>(),
                       streamAppDataChangesUseCase:
