@@ -117,7 +117,7 @@ class AppRouter {
                       predictionModelId: _toPrediction(state.params['id']!)!.id,
                     ),
                     child: PredictionPage(
-                      prediction: _toPrediction(state.params['id']!)!,
+                      predictionModel: _toPrediction(state.params['id']!)!,
                     ),
                   );
                 },

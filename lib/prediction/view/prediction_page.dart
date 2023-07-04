@@ -2,16 +2,17 @@ import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/widgets/graph_side.dart';
 import 'package:ax_dapp/prediction/widgets/prompt_details.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PredictionPage extends StatelessWidget {
-  PredictionPage({super.key, required this.prediction});
+  const PredictionPage({
+    super.key,
+    required this.predictionModel,
+  });
 
-  final PredictionModel prediction;
-  final Global global = Global();
+  final PredictionModel predictionModel;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class PredictionPage extends StatelessWidget {
         if (state.status == BlocStatus.success) {
           bloc.add(
             PredictionPageLoaded(
-              predictionModel: prediction,
+              predictionModel: predictionModel,
             ),
           );
         }
@@ -44,10 +45,10 @@ class PredictionPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     GraphSide(
-                      predictionModel: prediction,
+                      predictionModel: predictionModel,
                     ),
                     PromptDetails(
-                      model: prediction,
+                      predictionModel: predictionModel,
                     )
                   ],
                 ),
@@ -73,13 +74,13 @@ class PredictionPage extends StatelessWidget {
                       SizedBox(
                         width: _containerWdt,
                         child: GraphSide(
-                          predictionModel: prediction,
+                          predictionModel: predictionModel,
                         ),
                       ),
                       SizedBox(
                         width: _containerWdt,
                         child: PromptDetails(
-                          model: prediction,
+                          predictionModel: predictionModel,
                         ),
                       )
                     ],

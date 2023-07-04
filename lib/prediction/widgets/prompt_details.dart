@@ -5,9 +5,12 @@ import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 
 class PromptDetails extends StatelessWidget {
-  const PromptDetails({super.key, required this.model});
+  const PromptDetails({
+    super.key,
+    required this.predictionModel,
+  });
 
-  final PredictionModel model;
+  final PredictionModel predictionModel;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +79,7 @@ class PromptDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Lakers Market Price',
+                      '${predictionModel.yesName} Price',
                       style: textStyle(
                         greyTextColor,
                         20,
@@ -100,7 +103,7 @@ class PromptDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Nuggets Market Price',
+                      '${predictionModel.noName} Price',
                       style: textStyle(
                         greyTextColor,
                         20,
@@ -138,12 +141,12 @@ class PromptDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     YesButton(
-                      prompt: model,
+                      prompt: predictionModel,
                       isPortraitMode: false,
                       containerWdt: wid,
                     ),
                     NoButton(
-                      prompt: model,
+                      prompt: predictionModel,
                       isPortraitMode: false,
                       containerWdt: wid,
                     )
