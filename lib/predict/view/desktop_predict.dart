@@ -2,6 +2,7 @@ import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/widgets/desktop_headers.dart';
 import 'package:ax_dapp/predict/widgets/desktop_prediction_card.dart';
+import 'package:ax_dapp/predict/widgets/prediction_loading_status.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -87,6 +88,15 @@ class _DesktopPredictState extends State<DesktopPredict> {
                     alignment: Alignment.center,
                     children: [
                       if (state.status == BlocStatus.loading) const Loader(),
+                      if (state.predictions.isEmpty &&
+                          state.status == BlocStatus.success)
+                        const PredictionLoadingStatus(
+                          message: 'No Active Markets At This Time!',
+                        ),
+                      if (state.status == BlocStatus.error)
+                        const PredictionLoadingStatus(
+                          message: 'Failed to Load Markets!',
+                        ),
                       SizedBox(
                         height: constraints.maxHeight * 0.8 - 120,
                         child: ListView.builder(
