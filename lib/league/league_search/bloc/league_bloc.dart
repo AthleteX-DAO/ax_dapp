@@ -119,10 +119,10 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     );
   }
 
-  Future<void> _onSearchLeague(
+  void _onSearchLeague(
     SearchLeague event,
     Emitter<LeagueState> emit,
-  ) async {
+  ) {
     final input = event.input.trim().toUpperCase();
     if (event.selectedSport != SupportedSport.all) {
       emit(
@@ -151,10 +151,10 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     }
   }
 
-  Future<void> _onSelectedSportChanged(
+  void _onSelectedSportChanged(
     SelectedSportChanged event,
     Emitter<LeagueState> emit,
-  ) async {
+  ) {
     if (event.selectedSport != SupportedSport.all) {
       final filteredLeaguesWithTeams = state.leaguesWithTeams
           .where(
