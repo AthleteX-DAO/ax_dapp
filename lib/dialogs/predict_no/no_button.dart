@@ -1,7 +1,7 @@
+import 'package:ax_dapp/dialogs/predict_no/bloc/no_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_no/no_dialog.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/prediction/widgets/buttons/yes/bloc/yes_button_bloc.dart';
-import 'package:ax_dapp/prediction/widgets/buttons/yes/yes_dialog.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
@@ -14,8 +14,8 @@ import 'package:go_router/go_router.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-class YesButton extends StatelessWidget {
-  const YesButton({
+class NoButton extends StatelessWidget {
+  const NoButton({
     super.key,
     required this.prompt,
     required this.isPortraitMode,
@@ -47,10 +47,10 @@ class YesButton extends StatelessWidget {
               primaryWhiteColor,
             )
           : boxDecoration(
-              primaryOrangeColor,
+              Colors.black,
               100,
               0,
-              primaryWhiteColor,
+              Colors.white,
             ),
       child: TextButton(
         onPressed: () {
@@ -66,19 +66,19 @@ class YesButton extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (context) => BlocProvider(
-                create: (context) => YesButtonBloc(
-                  repo: context.read<GetSwapInfoUseCase>(),
+                create: (context) => NoButtonBloc(
+                  repo: context.read<GetBuyInfoUseCase>(),
                   eventMarketRepository: context.read<EventMarketRepository>(),
                   streamAppDataChangesUseCase:
                       context.read<StreamAppDataChangesUseCase>(),
                   walletRepository: context.read<WalletRepository>(),
                 ),
-                child: YesDialog(
+                child: NoDialog(
                   hgt: hgt,
                   wid: wid,
-                  predictionModel: prompt,
                   isPortraitMode: isPortraitMode,
                   containerWdt: containerWdt,
+                  predictionModel: prompt,
                 ),
               ),
             );
@@ -86,7 +86,22 @@ class YesButton extends StatelessWidget {
             context.showWalletWarningToast();
           }
         },
-        child: Text('Yes', style: textStyle(Colors.black, 20, false, false)),
+        child: Text(
+          'No',
+          style: invalidAddr
+              ? textStyle(
+                  Colors.black,
+                  20,
+                  false,
+                  false,
+                )
+              : textStyle(
+                  Colors.white,
+                  20,
+                  false,
+                  false,
+                ),
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
+import 'package:ax_dapp/dialogs/predict_no/no_button.dart';
+import 'package:ax_dapp/dialogs/predict_yes/yes_button.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/prediction/widgets/buttons/buttons.dart';
 import 'package:ax_dapp/prediction/widgets/prompt_details.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

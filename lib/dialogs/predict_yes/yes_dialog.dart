@@ -1,32 +1,31 @@
-import 'package:ax_dapp/predict/models/models.dart';
-import 'package:ax_dapp/prediction/widgets/buttons/no/bloc/no_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_yes/bloc/yes_button_bloc.dart';
+import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class NoDialog extends StatelessWidget {
-  const NoDialog({
+class YesDialog extends StatelessWidget {
+  const YesDialog({
     super.key,
     required this.hgt,
     required this.wid,
+    required this.predictionModel,
     required this.isPortraitMode,
     required this.containerWdt,
-    required this.predictionModel,
   });
 
   final double hgt;
   final double wid;
+  final PredictionModel predictionModel;
   final bool isPortraitMode;
   final double containerWdt;
-  final PredictionModel predictionModel;
 
   @override
   Widget build(BuildContext context) {
     const paddingHorizontal = 20.0;
-
-    return BlocBuilder<NoButtonBloc, NoButtonState>(
+    return BlocBuilder<YesButtonBloc, YesButtonState>(
       builder: (context, state) {
-        final bloc = context.read<NoButtonBloc>();
+        final bloc = context.read<YesButtonBloc>();
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(
@@ -50,7 +49,7 @@ class NoDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Buy ${predictionModel.noName}',
+                        'Buy ${predictionModel.yesName}',
                         style: textStyle(
                           Colors.white,
                           20,
@@ -84,7 +83,7 @@ class NoDialog extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              'Buy: ${state.aptBuyInfo.axPerAptPrice} AX',
+                              'Buy: ${state.swapInfo.receiveAmount} AX',
                             ),
                           ),
                         ],
@@ -119,8 +118,8 @@ class NoDialog extends StatelessWidget {
                             bloc.add(
                               BuyButtonPressed(
                                 eventMarketAddress: predictionModel.address,
-                                shortTokenAddress:
-                                    predictionModel.noTokenAddress,
+                                longTokenAddress:
+                                    predictionModel.yesTokenAddress,
                               ),
                             );
                           },

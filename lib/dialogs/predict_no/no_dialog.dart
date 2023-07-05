@@ -1,31 +1,32 @@
-import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/prediction/widgets/buttons/yes/bloc/yes_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_no/bloc/no_button_bloc.dart';
+import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class YesDialog extends StatelessWidget {
-  const YesDialog({
+class NoDialog extends StatelessWidget {
+  const NoDialog({
     super.key,
     required this.hgt,
     required this.wid,
-    required this.predictionModel,
     required this.isPortraitMode,
     required this.containerWdt,
+    required this.predictionModel,
   });
 
   final double hgt;
   final double wid;
-  final PredictionModel predictionModel;
   final bool isPortraitMode;
   final double containerWdt;
+  final PredictionModel predictionModel;
 
   @override
   Widget build(BuildContext context) {
     const paddingHorizontal = 20.0;
-    return BlocBuilder<YesButtonBloc, YesButtonState>(
+
+    return BlocBuilder<NoButtonBloc, NoButtonState>(
       builder: (context, state) {
-        final bloc = context.read<YesButtonBloc>();
+        final bloc = context.read<NoButtonBloc>();
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(
@@ -49,7 +50,7 @@ class YesDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Buy ${predictionModel.yesName}',
+                        'Buy ${predictionModel.noName}',
                         style: textStyle(
                           Colors.white,
                           20,
@@ -83,7 +84,7 @@ class YesDialog extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              'Buy: ${state.swapInfo.receiveAmount} AX',
+                              'Buy: ${state.aptBuyInfo.axPerAptPrice} AX',
                             ),
                           ),
                         ],
@@ -118,8 +119,8 @@ class YesDialog extends StatelessWidget {
                             bloc.add(
                               BuyButtonPressed(
                                 eventMarketAddress: predictionModel.address,
-                                longTokenAddress:
-                                    predictionModel.yesTokenAddress,
+                                shortTokenAddress:
+                                    predictionModel.noTokenAddress,
                               ),
                             );
                           },

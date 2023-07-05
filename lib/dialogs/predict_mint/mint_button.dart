@@ -1,5 +1,5 @@
+import 'package:ax_dapp/dialogs/predict_mint/bloc/mint_button_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/prediction/widgets/buttons/mint/bloc/mint_button_bloc.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
