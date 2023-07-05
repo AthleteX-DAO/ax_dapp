@@ -1,7 +1,6 @@
-import 'package:ax_dapp/dialogs/predict_mint/mint_button.dart';
-import 'package:ax_dapp/dialogs/predict_redeem/redeem_button.dart';
 import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
+import 'package:ax_dapp/prediction/widgets/buttons.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';

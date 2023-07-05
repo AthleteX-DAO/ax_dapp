@@ -1,6 +1,5 @@
-import 'package:ax_dapp/dialogs/predict_no/no_button.dart';
-import 'package:ax_dapp/dialogs/predict_yes/yes_button.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/prediction/widgets/buttons.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
