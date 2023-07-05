@@ -5,6 +5,8 @@ import 'package:ax_dapp/service/blockchain_models/swap_info.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:shared/shared.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'yes_button_event.dart';
 part 'yes_button_state.dart';
@@ -12,26 +14,52 @@ part 'yes_button_state.dart';
 class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
   YesButtonBloc({
     required this.repo,
-    required this.eventMarketRepository,
-  }) : super(const YesButtonState()) {
+    required EventMarketRepository eventMarketRepository,
+    required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
+    required WalletRepository walletRepository,
+  })  : _streamAppDataChanges = streamAppDataChangesUseCase,
+        _eventMarketRepository = eventMarketRepository,
+        _walletRepository = walletRepository,
+        super(const YesButtonState()) {
     on<YesButtonPressed>(_onYesButtonPressed);
     on<FetchSwapInfoRequested>(_onFetchSwapInfoRequested);
     on<BuyButtonPressed>(_onBuyButtonPressed);
     on<SellButtonPressed>(_onSellButtonPressed);
+    on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
+
+    add(const WatchAppDataChangesStarted());
   }
 
   final GetSwapInfoUseCase repo;
-  final EventMarketRepository eventMarketRepository;
+  final EventMarketRepository _eventMarketRepository;
+  final WalletRepository _walletRepository;
+  final StreamAppDataChangesUseCase _streamAppDataChanges;
+
+  Future<void> _onWatchAppDataChangesStarted(
+    WatchAppDataChangesStarted event,
+    Emitter<YesButtonState> emit,
+  ) async {
+    await emit.onEach<AppData>(
+      _streamAppDataChanges.appDataChanges,
+      onData: (appData) {
+        final appConfig = appData.appConfig;
+        _eventMarketRepository.controller.client.value =
+            appConfig.reactiveWeb3Client.value;
+        _eventMarketRepository.controller.credentials =
+            _walletRepository.credentials.value;
+      },
+    );
+  }
 
   Future<void> _onYesButtonPressed(
     YesButtonPressed event,
     Emitter<YesButtonState> emit,
   ) async {
     try {
-      eventMarketRepository.address1.value = event.longTokenAddress;
-      eventMarketRepository.address2.value =
+      _eventMarketRepository.address1.value = event.longTokenAddress;
+      _eventMarketRepository.address2.value =
           '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
-      await eventMarketRepository.buy();
+      await _eventMarketRepository.buy();
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
     }
@@ -74,15 +102,15 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
     Emitter<YesButtonState> emit,
   ) async {
     try {
-      eventMarketRepository.address1.value =
+      _eventMarketRepository.address1.value =
           '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
-      eventMarketRepository.address2.value = event.longTokenAddress;
-      eventMarketRepository.amount1.value = 1 * 1e18;
+      _eventMarketRepository.address2.value = event.longTokenAddress;
+      _eventMarketRepository.amount1.value = 1 * 1e18;
       const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
       const amount = 100.0;
-      await eventMarketRepository
+      await _eventMarketRepository
           .approve(contractAddress, amount)
-          .then((value) => {eventMarketRepository.buy()});
+          .then((value) => {_eventMarketRepository.buy()});
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
     }
@@ -93,15 +121,15 @@ class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
     Emitter<YesButtonState> emit,
   ) async {
     try {
-      eventMarketRepository.address1.value = event.longTokenAddress;
-      eventMarketRepository.address2.value =
+      _eventMarketRepository.address1.value = event.longTokenAddress;
+      _eventMarketRepository.address2.value =
           '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909';
-      eventMarketRepository.amount1.value = 1 * 1e18;
+      _eventMarketRepository.amount1.value = 1 * 1e18;
       const contractAddress = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A';
       const amount = 100.0;
-      await eventMarketRepository
+      await _eventMarketRepository
           .approve(contractAddress, amount)
-          .then((value) => {eventMarketRepository.sell()});
+          .then((value) => {_eventMarketRepository.sell()});
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
     }
