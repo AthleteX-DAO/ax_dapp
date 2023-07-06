@@ -106,8 +106,6 @@ class _DesktopPredictState extends State<DesktopPredict> {
                           itemBuilder: (context, index) {
                             return DesktopPredictionCard(
                               predictionModel: currentPredictions[index],
-                              minTeamWidth: minTeamWidth,
-                              minViewWidth: minViewWidth,
                             );
                           },
                         ),

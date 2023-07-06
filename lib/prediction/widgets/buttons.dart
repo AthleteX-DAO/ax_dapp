@@ -12,7 +12,6 @@ import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -70,26 +69,16 @@ class NoButton extends StatelessWidget {
   const NoButton({
     super.key,
     required this.prompt,
-    required this.isPortraitMode,
-    required this.containerWdt,
   });
 
   final PredictionModel prompt;
-  final bool isPortraitMode;
-  final double containerWdt;
   @override
   Widget build(BuildContext context) {
-    var isWeb = true;
-    isWeb =
-        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-    final _height = MediaQuery.of(context).size.height;
-    final wid = isWeb ? 400.0 : 355.0;
     final invalidAddr = GoRouter.of(context).location.contains('prediction') &&
         prompt.yesTokenAddress.isEmpty;
-    var hgt = 300.0;
-    if (_height < 305) hgt = _height;
+    final _width = MediaQuery.of(context).size.width;
     return Container(
-      width: isPortraitMode ? containerWdt / 3 : 175,
+      width: _width < 768 ? 100 : 200,
       height: 50,
       decoration: invalidAddr
           ? boxDecoration(
@@ -126,10 +115,10 @@ class NoButton extends StatelessWidget {
                   walletRepository: context.read<WalletRepository>(),
                 ),
                 child: NoDialog(
-                  hgt: hgt,
-                  wid: wid,
-                  isPortraitMode: isPortraitMode,
-                  containerWdt: containerWdt,
+                  hgt: 500,
+                  wid: 500,
+                  isPortraitMode: false,
+                  containerWdt: 200,
                   predictionModel: prompt,
                 ),
               ),
@@ -209,26 +198,16 @@ class YesButton extends StatelessWidget {
   const YesButton({
     super.key,
     required this.prompt,
-    required this.isPortraitMode,
-    required this.containerWdt,
   });
 
   final PredictionModel prompt;
-  final bool isPortraitMode;
-  final double containerWdt;
   @override
   Widget build(BuildContext context) {
-    var isWeb = true;
-    isWeb =
-        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-    final _height = MediaQuery.of(context).size.height;
-    final wid = isWeb ? 400.0 : 355.0;
     final invalidAddr = GoRouter.of(context).location.contains('prediction') &&
         prompt.yesTokenAddress.isEmpty;
-    var hgt = 300.0;
-    if (_height < 305) hgt = _height;
+    final _width = MediaQuery.of(context).size.width;
     return Container(
-      width: isPortraitMode ? containerWdt / 3 : 175,
+      width: _width < 768 ? 100 : 200,
       height: 50,
       decoration: invalidAddr
           ? boxDecoration(
@@ -265,11 +244,11 @@ class YesButton extends StatelessWidget {
                   walletRepository: context.read<WalletRepository>(),
                 ),
                 child: YesDialog(
-                  hgt: hgt,
-                  wid: wid,
+                  hgt: 500,
+                  wid: 500,
                   predictionModel: prompt,
-                  isPortraitMode: isPortraitMode,
-                  containerWdt: containerWdt,
+                  isPortraitMode: false,
+                  containerWdt: 200,
                 ),
               ),
             );

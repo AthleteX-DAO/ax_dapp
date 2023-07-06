@@ -142,13 +142,9 @@ class PromptDetails extends StatelessWidget {
                   children: [
                     YesButton(
                       prompt: predictionModel,
-                      isPortraitMode: false,
-                      containerWdt: wid,
                     ),
                     NoButton(
                       prompt: predictionModel,
-                      isPortraitMode: false,
-                      containerWdt: wid,
                     )
                   ],
                 )
@@ -170,56 +166,6 @@ class PromptDetails extends StatelessWidget {
           // ),
         ],
       ),
-    );
-  }
-}
-
-class PromptDetailsCardForWeb extends StatelessWidget {
-  const PromptDetailsCardForWeb({
-    super.key,
-    required this.predictionModel,
-  });
-
-  final PredictionModel predictionModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        SizedBox(
-          width: 50,
-          child: Icon(
-            Icons.question_answer,
-            color: Colors.grey[700],
-          ),
-        ),
-        SizedBox(
-          width: 610,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                predictionModel.prompt,
-                style: textStyle(
-                  Colors.white,
-                  20,
-                  isBold: false,
-                  isUline: false,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                'Event Prediction',
-                style:
-                    textStyle(Colors.grey, 18, isBold: false, isUline: false),
-                textAlign: TextAlign.left,
-              )
-            ],
-          ),
-        )
-      ],
     );
   }
 }
