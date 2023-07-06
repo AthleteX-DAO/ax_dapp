@@ -22,8 +22,6 @@ class DesktopPredict extends StatefulWidget {
 
 class _DesktopPredictState extends State<DesktopPredict> {
   Global global = Global();
-  double minTeamWidth = 875;
-  double minViewWidth = 1090;
   EthereumChain? _selectedChain;
   @override
   Widget build(BuildContext context) {
@@ -80,10 +78,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
                       ],
                     ),
                   ),
-                  DesktopHeaders(
-                    minTeamWidth: minTeamWidth,
-                    minViewWidth: minViewWidth,
-                  ),
+                  const DesktopHeaders(),
                   Stack(
                     alignment: Alignment.center,
                     children: [
