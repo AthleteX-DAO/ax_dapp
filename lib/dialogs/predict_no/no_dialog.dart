@@ -7,23 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class NoDialog extends StatelessWidget {
   const NoDialog({
     super.key,
-    required this.hgt,
-    required this.wid,
-    required this.isPortraitMode,
-    required this.containerWdt,
     required this.predictionModel,
   });
 
-  final double hgt;
-  final double wid;
-  final bool isPortraitMode;
-  final double containerWdt;
   final PredictionModel predictionModel;
 
   @override
   Widget build(BuildContext context) {
     const paddingHorizontal = 20.0;
-
+    final _width = MediaQuery.of(context).size.width;
     return BlocBuilder<NoButtonBloc, NoButtonState>(
       builder: (context, state) {
         final bloc = context.read<NoButtonBloc>();
@@ -33,8 +25,8 @@ class NoDialog extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               horizontal: paddingHorizontal,
             ),
-            height: hgt,
-            width: wid,
+            height: 300,
+            width: 250,
             decoration: boxDecoration(
               Colors.grey[900]!,
               30,
@@ -45,7 +37,7 @@ class NoDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(
-                  width: wid,
+                  width: _width * 0.5,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -74,7 +66,7 @@ class NoDialog extends StatelessWidget {
                   color: Colors.grey[400],
                 ),
                 SizedBox(
-                  width: wid,
+                  width: _width * 0.5,
                   height: 125,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -100,43 +92,39 @@ class NoDialog extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  width: wid,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        height: 30,
-                        width: isPortraitMode ? containerWdt / 4 : 135,
-                        decoration: boxDecoration(
-                          Colors.amber[400]!,
-                          100,
-                          0,
-                          Colors.white,
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            bloc.add(
-                              BuyButtonPressed(
-                                eventMarketAddress: predictionModel.address,
-                                shortTokenAddress:
-                                    predictionModel.noTokenAddress,
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Buy',
-                            style: textStyle(
-                              Colors.white,
-                              15,
-                              isBold: true,
-                              isUline: false,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: 30,
+                      width: 100,
+                      decoration: boxDecoration(
+                        Colors.amber[400]!,
+                        100,
+                        0,
+                        Colors.white,
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          bloc.add(
+                            BuyButtonPressed(
+                              eventMarketAddress: predictionModel.address,
+                              shortTokenAddress: predictionModel.noTokenAddress,
                             ),
+                          );
+                        },
+                        child: Text(
+                          'Buy',
+                          style: textStyle(
+                            Colors.black,
+                            15,
+                            isBold: true,
+                            isUline: false,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 )
               ],
             ),

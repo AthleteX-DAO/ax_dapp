@@ -115,10 +115,6 @@ class NoButton extends StatelessWidget {
                   walletRepository: context.read<WalletRepository>(),
                 ),
                 child: NoDialog(
-                  hgt: 500,
-                  wid: 500,
-                  isPortraitMode: false,
-                  containerWdt: 200,
                   predictionModel: prompt,
                 ),
               ),
@@ -244,11 +240,7 @@ class YesButton extends StatelessWidget {
                   walletRepository: context.read<WalletRepository>(),
                 ),
                 child: YesDialog(
-                  hgt: 500,
-                  wid: 500,
                   predictionModel: prompt,
-                  isPortraitMode: false,
-                  containerWdt: 200,
                 ),
               ),
             );
