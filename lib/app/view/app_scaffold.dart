@@ -22,10 +22,8 @@ class AppScaffold extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      bottomNavigationBar: kIsWeb &&
-              (MediaQuery.of(context).orientation == Orientation.landscape)
-          ? const BottomNavigationBarWeb()
-          : const BottomNavigationBarMobile(),
+      // TODO(Ryan): Render the bottom navigation bar for mobile
+      bottomNavigationBar: const BottomNavigationBarWeb(),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

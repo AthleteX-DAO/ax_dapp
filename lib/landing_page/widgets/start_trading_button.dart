@@ -29,7 +29,7 @@ class StartTradingButton extends StatelessWidget {
             ),
             onPressed: () {
               context.read<TrackingCubit>().onPressedStartTrading();
-              context.goNamed('scout');
+              context.goNamed('predict');
             },
             child: Text(
               'Start Trading',

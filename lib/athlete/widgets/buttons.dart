@@ -7,6 +7,7 @@ import 'package:ax_dapp/dialogs/redeem/bloc/redeem_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/redeem/redeem_dialog.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/sell_dialog.dart';
+
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/scout/models/models.dart';
@@ -177,7 +178,8 @@ class MintButton extends StatelessWidget {
                     walletRepository: context.read<WalletRepository>(),
                     tokensRepository: context.read<TokensRepository>(),
                   ),
-                  longShortPairRepository: context.read<LongShortPairRepository>(),
+                  longShortPairRepository:
+                      context.read<LongShortPairRepository>(),
                   athleteId: athlete.id,
                   supportedSport: athlete.sport,
                 ),
@@ -235,7 +237,8 @@ class RedeemButton extends StatelessWidget {
                     walletRepository: context.read<WalletRepository>(),
                     tokensRepository: context.read<TokensRepository>(),
                   ),
-                  longShortPairRepository: context.read<LongShortPairRepository>(),
+                  longShortPairRepository:
+                      context.read<LongShortPairRepository>(),
                   athleteId: athlete.id,
                   supportedSport: athlete.sport,
                 ),
