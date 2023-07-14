@@ -9,6 +9,9 @@ import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
+import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
+import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -21,6 +24,7 @@ import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.da
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
+import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:cache/cache.dart';
@@ -179,6 +183,9 @@ void main() async {
             create: (context) => TrackingRepository(),
           ),
           RepositoryProvider(
+            create: (context) => EventMarketRepository(),
+          ),
+          RepositoryProvider(
             create: (context) => LeagueUseCase(),
           ),
           RepositoryProvider(
@@ -186,6 +193,22 @@ void main() async {
           ),
           RepositoryProvider(
             create: (context) => PrizePoolRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => PredictionSnapshotRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => PredictionAddressRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => GetPredictionMarketInfoUseCase(
+              predictionSnapshotRepository:
+                  context.read<PredictionSnapshotRepository>(),
+              predictionAddressRepository:
+                  context.read<PredictionAddressRepository>(),
+            ),
           ),
         ],
         child: App(configRepository: configRepository),

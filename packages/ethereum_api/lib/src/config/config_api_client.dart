@@ -1,6 +1,7 @@
+import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/config/models/models.dart';
-import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
+import 'package:ethereum_api/src/event_markets/event_markets.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:http/http.dart' as http;
@@ -28,6 +29,9 @@ class ConfigApiClient {
         .add(defaultChain.createAptRouterClient(_web3ClientController.value));
     _aptFactoryClientController
         .add(defaultChain.createAptFactoryClient(_web3ClientController.value));
+    _eventMarketClientController.add(
+      defaultChain.createEventMarketsClient(_web3ClientController.value),
+    );
   }
 
   final http.Client _httpClient;
@@ -41,6 +45,8 @@ class ConfigApiClient {
   final BehaviorSubject<Web3Client> _web3ClientController;
   final _aptRouterClientController = BehaviorSubject<APTRouter>();
   final _aptFactoryClientController = BehaviorSubject<APTFactory>();
+  final _eventMarketClientController =
+      BehaviorSubject<EventBasedPredictionMarket>();
 
   final _lspClientController = BehaviorSubject<LongShortPair>();
 
@@ -50,6 +56,8 @@ class ConfigApiClient {
 
   final BehaviorSubject<GraphQLClient> _dexGqlClientController;
   final BehaviorSubject<GraphQLClient> _gysrGqlClientController;
+
+  /// Allows listening to the current event market being loaded
 
   /// Creates and returns the initial [AppConfig] which is used to pass down
   /// reactive dependencies.
@@ -61,6 +69,7 @@ class ConfigApiClient {
       reactiveLspClient: _lspClientController.stream,
       reactiveDexGqlClient: _dexGqlClientController.stream,
       reactiveGysrGqlClient: _gysrGqlClientController.stream,
+      reactiveEventMarketsClient: _eventMarketClientController.stream,
     );
   }
 
@@ -80,6 +89,9 @@ class ConfigApiClient {
     final aptFactoryClient = chain.createAptFactoryClient(web3Client);
     _aptFactoryClientController.add(aptFactoryClient);
 
+    final eventMarketsClient = chain.createEventMarketsClient(web3Client);
+    _eventMarketClientController.add(eventMarketsClient);
+
     final dexGqlClient = chain.createDexGraphQLClient();
     _dexGqlClientController.add(dexGqlClient);
 
@@ -94,6 +106,16 @@ class ConfigApiClient {
     final previousWeb3Client = _web3ClientController.valueOrNull;
     _web3ClientController.add(newClient);
     previousWeb3Client?.dispose();
+  }
+
+  /// Switches the [EventBasedPredictionMarket] client.
+  void switchEventMarketAddress(String eventAddress) {
+    final newClient = EventBasedPredictionMarket(
+      address: EthereumAddress.fromHex(eventAddress),
+      client: _web3ClientController.value,
+    );
+    // add to the stream
+    _eventMarketClientController.add(newClient);
   }
 
   // /// Switches the [LongShortPair] client.

@@ -1,8 +1,7 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// TODO(Ryan): re-enable this import for the league feature
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomNavigationBarMobile extends StatefulWidget {
@@ -26,15 +25,18 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
         context.goNamed('scout');
         break;
       case 1:
-        context.goNamed('trade');
+        context.goNamed('scout');
         break;
       case 2:
-        context.goNamed('pool');
+        context.goNamed('trade');
         break;
       case 3:
-        context.goNamed('farm');
+        context.goNamed('pool');
         break;
       case 4:
+        context.goNamed('farm');
+        break;
+      case 5:
         context.goNamed('league');
         break;
     }
@@ -58,40 +60,47 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
           ),
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.transparent,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/images/search.png',
-                height: 24,
-                width: 24,
-              ),
-              label: 'Scout',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/images/swap.png',
-                height: 24,
-                width: 24,
-              ),
-              label: 'Trade',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/images/coins.png',
-                height: 24,
-                width: 24,
-              ),
-              label: 'Pool',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/images/barn.png',
-                height: 24,
-                width: 24,
-              ),
-              label: 'Farm',
-            ),
+          items: const <BottomNavigationBarItem>[
             // TODO(Ryan): enable the UI once the feature is ready
+            // BottomNavigationBarItem(
+            //   icon: FaIcon(
+            //     FontAwesomeIcons.percent,
+            //     size: 24,
+            //   ),
+            //   label: 'predict',
+            // ),
+            // BottomNavigationBarItem(
+            //   icon: Image.asset(
+            //     'assets/images/search.png',
+            //     height: 24,
+            //     width: 24,
+            //   ),
+            //   label: 'Scout',
+            // ),
+            // BottomNavigationBarItem(
+            //   icon: Image.asset(
+            //     'assets/images/swap.png',
+            //     height: 24,
+            //     width: 24,
+            //   ),
+            //   label: 'Trade',
+            // ),
+            // BottomNavigationBarItem(
+            //   icon: Image.asset(
+            //     'assets/images/coins.png',
+            //     height: 24,
+            //     width: 24,
+            //   ),
+            //   label: 'Pool',
+            // ),
+            // BottomNavigationBarItem(
+            //   icon: Image.asset(
+            //     'assets/images/barn.png',
+            //     height: 24,
+            //     width: 24,
+            //   ),
+            //   label: 'Farm',
+            // ),
             // BottomNavigationBarItem(
             //   icon: FaIcon(
             //     FontAwesomeIcons.trophy,

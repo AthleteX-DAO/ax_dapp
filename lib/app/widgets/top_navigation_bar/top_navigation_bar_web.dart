@@ -42,42 +42,51 @@ class TopNavigationBarWeb extends StatelessWidget {
                       ),
                     ),
                     TopNavigationBarItem(
-                      routeName: 'scout',
-                      buttonName: 'Scout',
-                      isSelected: selectedButton == 'scout',
+                      routeName: 'predict',
+                      buttonName: 'Predict',
+                      isSelected: selectedButton == 'predict',
                       onPressed: () {
-                        bloc.add(const SelectButtonEvent(buttonName: 'scout'));
-                        context.goNamed('scout');
-                      },
-                    ),
-                    TopNavigationBarItem(
-                      routeName: 'trade',
-                      buttonName: 'Trade',
-                      isSelected: selectedButton == 'trade',
-                      onPressed: () {
-                        bloc.add(const SelectButtonEvent(buttonName: 'trade'));
-                        context.goNamed('trade');
-                      },
-                    ),
-                    TopNavigationBarItem(
-                      routeName: 'pool',
-                      buttonName: 'Pool',
-                      isSelected: selectedButton == 'pool',
-                      onPressed: () {
-                        bloc.add(const SelectButtonEvent(buttonName: 'pool'));
-                        context.goNamed('pool');
-                      },
-                    ),
-                    TopNavigationBarItem(
-                      routeName: 'farm',
-                      buttonName: 'Farm',
-                      isSelected: selectedButton == 'farm',
-                      onPressed: () {
-                        bloc.add(const SelectButtonEvent(buttonName: 'farm'));
-                        context.goNamed('farm');
+                        bloc.add(const SelectButtonEvent(buttonName: 'predict'));
+                        context.goNamed('predict');
                       },
                     ),
                     // TODO(Ryan): enable the UI once the feature is ready
+                    // TopNavigationBarItem(
+                    //   routeName: 'scout',
+                    //   buttonName: 'Scout',
+                    //   isSelected: selectedButton == 'scout',
+                    //   onPressed: () {
+                    //     bloc.add(const SelectButtonEvent(buttonName: 'scout'));
+                    //     context.goNamed('scout');
+                    //   },
+                    // ),
+                    // TopNavigationBarItem(
+                    //   routeName: 'trade',
+                    //   buttonName: 'Trade',
+                    //   isSelected: selectedButton == 'trade',
+                    //   onPressed: () {
+                    //     bloc.add(const SelectButtonEvent(buttonName: 'trade'));
+                    //     context.goNamed('trade');
+                    //   },
+                    // ),
+                    // TopNavigationBarItem(
+                    //   routeName: 'pool',
+                    //   buttonName: 'Pool',
+                    //   isSelected: selectedButton == 'pool',
+                    //   onPressed: () {
+                    //     bloc.add(const SelectButtonEvent(buttonName: 'pool'));
+                    //     context.goNamed('pool');
+                    //   },
+                    // ),
+                    // TopNavigationBarItem(
+                    //   routeName: 'farm',
+                    //   buttonName: 'Farm',
+                    //   isSelected: selectedButton == 'farm',
+                    //   onPressed: () {
+                    //     bloc.add(const SelectButtonEvent(buttonName: 'farm'));
+                    //     context.goNamed('farm');
+                    //   },
+                    // ),
                     // TopNavigationBarItem(
                     //   routeName: 'league',
                     //   buttonName: 'League',

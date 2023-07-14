@@ -14,6 +14,13 @@ import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
+import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
+import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
+import 'package:ax_dapp/predict/view/desktop_predict.dart';
+import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
+import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
+import 'package:ax_dapp/prediction/view/prediction_page.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -25,6 +32,7 @@ import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/scout/view/scout_base.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
+import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -32,6 +40,7 @@ import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,6 +64,10 @@ class AppRouter {
       if (state.location.contains('/athlete') && Global().athleteList.isEmpty) {
         return '/scout';
       }
+      if (state.location.contains('/prediction') &&
+          Global().predictions.isEmpty) {
+        return '/predict';
+      }
       return null;
     },
     navigatorKey: _rootNavigatorKey,
@@ -72,6 +85,45 @@ class AppRouter {
           return AppScaffold(child: child);
         },
         routes: [
+          GoRoute(
+            name: 'predict',
+            path: '/predict',
+            builder: (BuildContext context, GoRouterState state) {
+              return BlocProvider(
+                create: (BuildContext context) => PredictPageBloc(
+                  streamAppDataChangesUseCase:
+                      context.read<StreamAppDataChangesUseCase>(),
+                  eventMarketRepository: context.read<EventMarketRepository>(),
+                  getPredictionMarketInfoUseCase:
+                      context.read<GetPredictionMarketInfoUseCase>(),
+                ),
+                child: const DesktopPredict(),
+              );
+            },
+            routes: [
+              GoRoute(
+                name: 'prediction',
+                path: 'prediction/:id',
+                builder: (BuildContext context, GoRouterState state) {
+                  return BlocProvider(
+                    create: (context) => PredictionPageBloc(
+                      walletRepository: context.read<WalletRepository>(),
+                      eventMarketRepository:
+                          context.read<EventMarketRepository>(),
+                      streamAppDataChangesUseCase:
+                          context.read<StreamAppDataChangesUseCase>(),
+                      predictionAddressRepository:
+                          context.read<PredictionAddressRepository>(),
+                      predictionModelId: _toPrediction(state.params['id']!)!.id,
+                    ),
+                    child: PredictionPage(
+                      predictionModel: _toPrediction(state.params['id']!)!,
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
           GoRoute(
             name: 'scout',
             path: '/scout',
@@ -231,5 +283,13 @@ AthleteScoutModel _findAthleteById(String id) {
   return athleteList.firstWhere(
     (athlete) => athlete.id.toString() + athlete.name == id,
     orElse: () => AthleteScoutModel.empty,
+  );
+}
+
+PredictionModel? _toPrediction(String id) {
+  final predictions = Global().predictions;
+  return predictions.firstWhere(
+    (prediction) => prediction.id == id,
+    orElse: () => PredictionModel.empty,
   );
 }

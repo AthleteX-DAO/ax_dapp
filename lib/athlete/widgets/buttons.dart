@@ -13,7 +13,7 @@ import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
-import 'package:ax_dapp/util/athlete_page_format_helper.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -78,7 +78,15 @@ class BuyButton extends StatelessWidget {
             context.showWalletWarningToast();
           }
         },
-        child: Text('Buy', style: textStyle(Colors.black, 20, false, false)),
+        child: Text(
+          'Buy',
+          style: textStyle(
+            Colors.black,
+            20,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
       ),
     );
   }
@@ -139,7 +147,15 @@ class SellButton extends StatelessWidget {
             context.showWalletWarningToast();
           }
         },
-        child: Text('Sell', style: textStyle(Colors.black, 20, false, false)),
+        child: Text(
+          'Sell',
+          style: textStyle(
+            Colors.black,
+            20,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
       ),
     );
   }
@@ -177,7 +193,8 @@ class MintButton extends StatelessWidget {
                     walletRepository: context.read<WalletRepository>(),
                     tokensRepository: context.read<TokensRepository>(),
                   ),
-                  longShortPairRepository: context.read<LongShortPairRepository>(),
+                  longShortPairRepository:
+                      context.read<LongShortPairRepository>(),
                   athleteId: athlete.id,
                   supportedSport: athlete.sport,
                 ),
@@ -190,8 +207,15 @@ class MintButton extends StatelessWidget {
             context.showWalletWarningToast();
           }
         },
-        child:
-            Text('Mint Pair', style: textStyle(Colors.white, 20, false, false)),
+        child: Text(
+          'Mint Pair',
+          style: textStyle(
+            Colors.white,
+            20,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
       ),
     );
   }
@@ -235,7 +259,8 @@ class RedeemButton extends StatelessWidget {
                     walletRepository: context.read<WalletRepository>(),
                     tokensRepository: context.read<TokensRepository>(),
                   ),
-                  longShortPairRepository: context.read<LongShortPairRepository>(),
+                  longShortPairRepository:
+                      context.read<LongShortPairRepository>(),
                   athleteId: athlete.id,
                   supportedSport: athlete.sport,
                 ),
@@ -254,7 +279,12 @@ class RedeemButton extends StatelessWidget {
         },
         child: AutoSizeText(
           'Redeem Pair',
-          style: textStyle(Colors.white, 20, false, false),
+          style: textStyle(
+            Colors.white,
+            20,
+            isBold: false,
+            isUline: false,
+          ),
           maxLines: 1,
         ),
       ),

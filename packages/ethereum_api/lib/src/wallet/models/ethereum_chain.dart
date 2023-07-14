@@ -1,3 +1,4 @@
+import 'package:ethereum_api/event_markets_api.dart';
 import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/config/models/apt_config.dart';
@@ -179,6 +180,14 @@ extension ChainConfigX on EthereumChain {
   APTFactory createAptFactoryClient(Web3Client client) => APTFactory(
         address: EthereumAddress.fromHex(
           const EthereumAddressConfig.dexFactoryAddress().address(this),
+        ),
+        client: client,
+      );
+
+  EventBasedPredictionMarket createEventMarketsClient(Web3Client client) =>
+      EventBasedPredictionMarket(
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.event().address(this),
         ),
         client: client,
       );
