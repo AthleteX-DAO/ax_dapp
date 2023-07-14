@@ -52,13 +52,9 @@ class AdvancedFeatures extends StatelessWidget {
                   color: greyTextColor,
                 ),
                 GenericMintButton(
-                  containerWdt: 100,
-                  isPortraitMode: false,
                   prompt: model,
                 ),
                 GenericRedeemButton(
-                  containerWdt: 100,
-                  isPortraitMode: false,
                   prompt: model,
                 ),
               ],

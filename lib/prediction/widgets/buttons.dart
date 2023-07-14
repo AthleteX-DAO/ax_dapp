@@ -21,18 +21,15 @@ import 'package:wallet_repository/wallet_repository.dart';
 class GenericMintButton extends StatelessWidget {
   const GenericMintButton({
     super.key,
-    required this.isPortraitMode,
     required this.prompt,
-    required this.containerWdt,
   });
 
-  final bool isPortraitMode;
   final PredictionModel prompt;
-  final double containerWdt;
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
     return Container(
-      width: isPortraitMode ? containerWdt / 3 : 175,
+      width: _width < 768 ? 100 : 200,
       height: 50,
       decoration: boxDecoration(primaryOrangeColor, 100, 0, Colors.green),
       child: TextButton(
@@ -149,19 +146,16 @@ class NoButton extends StatelessWidget {
 class GenericRedeemButton extends StatelessWidget {
   const GenericRedeemButton({
     super.key,
-    required this.containerWdt,
-    required this.isPortraitMode,
     required this.prompt,
   });
 
-  final double containerWdt;
   final PredictionModel prompt;
-  final bool isPortraitMode;
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
     return Container(
-      width: isPortraitMode ? containerWdt / 3 : 175,
+      width: _width < 768 ? 100 : 200,
       height: 50,
       decoration: boxDecoration(Colors.black, 100, 0, Colors.white),
       child: TextButton(
