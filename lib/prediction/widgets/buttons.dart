@@ -31,35 +31,37 @@ class GenericMintButton extends StatelessWidget {
   final double containerWdt;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MintButtonBloc(
-        eventMarketRepository: context.read<EventMarketRepository>(),
-        walletRepository: context.read<WalletRepository>(),
-        streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
-      ),
-      child: BlocConsumer<MintButtonBloc, MintButtonState>(
-        builder: (context, state) {
-          final bloc = context.read<MintButtonBloc>();
-          return Container(
-            width: isPortraitMode ? containerWdt / 3 : 175,
-            height: 50,
-            decoration: boxDecoration(primaryOrangeColor, 100, 0, Colors.green),
-            child: TextButton(
-              onPressed: () {
-                bloc.add(
-                  MintButtonPressed(
-                    eventMarketAddress: prompt.address,
-                  ),
-                );
-              },
-              child: Text(
-                'Mint',
-                style: textStyle(Colors.black, 20, false, false),
+    return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
+      height: 50,
+      decoration: boxDecoration(primaryOrangeColor, 100, 0, Colors.green),
+      child: TextButton(
+        onPressed: () {
+          final isWalletConnected =
+              context.read<WalletBloc>().state.isWalletConnected;
+          if (isWalletConnected) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => BlocProvider(
+                create: (context) => MintButtonBloc(
+                  eventMarketRepository: context.read<EventMarketRepository>(),
+                  streamAppDataChangesUseCase:
+                      context.read<StreamAppDataChangesUseCase>(),
+                  walletRepository: context.read<WalletRepository>(),
+                ),
+                child: YesDialog(
+                  predictionModel: prompt,
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            context.showWalletWarningToast();
+          }
         },
-        listener: (context, state) {},
+        child: Text(
+          'Mint',
+          style: textStyle(Colors.black, 20, false, false),
+        ),
       ),
     );
   }
@@ -158,33 +160,37 @@ class GenericRedeemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RedeemButtonBloc(
-        eventMarketRepository: context.read<EventMarketRepository>(),
-      ),
-      child: BlocConsumer<RedeemButtonBloc, RedeemButtonState>(
-        builder: (context, state) {
-          final bloc = context.read<RedeemButtonBloc>();
-          return Container(
-            width: isPortraitMode ? containerWdt / 3 : 175,
-            height: 50,
-            decoration: boxDecoration(Colors.black, 100, 0, Colors.white),
-            child: TextButton(
-              onPressed: () {
-                bloc.add(
-                  RedeemButtonPressed(
-                    eventMarketAddress: prompt.address,
-                  ),
-                );
-              },
-              child: Text(
-                'Redeem',
-                style: textStyle(Colors.white, 20, false, false),
+    return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
+      height: 50,
+      decoration: boxDecoration(Colors.black, 100, 0, Colors.white),
+      child: TextButton(
+        onPressed: () {
+          final isWalletConnected =
+              context.read<WalletBloc>().state.isWalletConnected;
+          if (isWalletConnected) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => BlocProvider(
+                create: (context) => RedeemButtonBloc(
+                  eventMarketRepository: context.read<EventMarketRepository>(),
+                  streamAppDataChangesUseCase:
+                      context.read<StreamAppDataChangesUseCase>(),
+                  walletRepository: context.read<WalletRepository>(),
+                ),
+                child: YesDialog(
+                  predictionModel: prompt,
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            context.showWalletWarningToast();
+          }
         },
-        listener: (context, state) {},
+        child: Text(
+          'Redeem',
+          style: textStyle(Colors.white, 20, false, false),
+        ),
       ),
     );
   }

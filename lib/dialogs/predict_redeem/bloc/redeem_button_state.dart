@@ -9,4 +9,12 @@ class RedeemButtonState extends Equatable {
 
   @override
   List<Object?> get props => [status];
+
+  RedeemButtonState copyWith({
+    BlocStatus? status,
+  }) {
+    return RedeemButtonState(
+      status: status ?? this.status,
+    );
+  }
 }

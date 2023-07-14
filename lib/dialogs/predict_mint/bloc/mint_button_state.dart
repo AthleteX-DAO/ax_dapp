@@ -9,4 +9,12 @@ class MintButtonState extends Equatable {
 
   @override
   List<Object?> get props => [status];
+
+  MintButtonState copyWith({
+    BlocStatus? status,
+  }) {
+    return MintButtonState(
+      status: status ?? this.status,
+    );
+  }
 }
