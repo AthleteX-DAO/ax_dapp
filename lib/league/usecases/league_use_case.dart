@@ -33,7 +33,7 @@ class LeagueUseCase {
       return percentChange;
     }).toList();
 
-    final teamPerformance = percentChanges.reduce((a, b) => a + b);
+    final teamPerformance = percentChanges.fold<double>(0, (a, b) => a + b);
 
     return teamPerformance;
   }
