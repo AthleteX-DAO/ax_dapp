@@ -34,25 +34,17 @@ class PromptPageTitle extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
-                prompt,
-                style: textStyle(
-                  Colors.white,
-                  23,
-                  isBold: false,
-                  isUline: false,
-                ),
-              ),
-              Container(
-                width: 18,
-                alignment: Alignment.center,
-                child: Text(
-                  '|',
-                  style: textStyle(
-                    const Color.fromRGBO(100, 100, 100, 1),
-                    24,
-                    isBold: false,
-                    isUline: false,
+              FittedBox(
+                child: SizedBox(
+                  width: constraints.maxWidth / 2,
+                  child: Text(
+                    prompt,
+                    style: textStyle(
+                      Colors.white,
+                      23,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
               ),
