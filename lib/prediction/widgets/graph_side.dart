@@ -19,12 +19,6 @@ class GraphSide extends StatelessWidget {
     if (_width < 1160) wid = _width * 0.95;
 
     final hei = _height / 3;
-    const indexUnselectedStackBackgroundColor = Colors.transparent;
-    final _zoomPanBehavior = ZoomPanBehavior(
-      enableMouseWheelZooming: true,
-      enablePanning: true,
-      enablePinching: true,
-    );
     return Container(
       height: _height / 1.5,
       width: wid,
