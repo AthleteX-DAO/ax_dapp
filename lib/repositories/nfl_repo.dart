@@ -1,11 +1,8 @@
 import 'package:ax_dapp/repositories/sports_repo.dart';
-import 'package:ax_dapp/service/api/models/player_ids.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
-// ignore: don't_import_implementation_files
-import 'package:ethereum_api/src/config/models/apts/nfl_apt_list.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class NFLRepo extends SportsRepo<NFLAthlete> {
