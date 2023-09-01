@@ -1,6 +1,4 @@
-import 'package:ethereum_api/src/config/models/apt_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
-import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:shared/shared.dart';
 
@@ -15,6 +13,20 @@ class Contract extends Equatable {
     required EthereumChain chain,
   })  : _addressConfig = addressConfig,
         _chain = chain;
+  
+  /// Exchanges the Contracts Router [EthereumAddressConfig]
+  const Contract.exchangeRouter(EthereumChain chain) : this(
+    name: 'AthleteX Router',
+    addressConfig: const EthereumAddressConfig.dexRouterAddress(),
+    chain: chain,
+  );
+
+  /// Exchanges the Contracts Factory [EthereumAddressConfig]
+  const Contract.exchangeFactory(EthereumChain chain) : this(
+    name: 'AthleteX Factory',
+    addressConfig: const EthereumAddressConfig.dexFactoryAddress(),
+    chain: chain,
+  );
 
   /// Represents the [name]
   final String name;
@@ -31,21 +43,13 @@ class Contract extends Equatable {
         _addressConfig,
         _chain,
       ];
-
-  const Contract.exchangeFactory(EthereumChain chain) : this(
-    name: 'AthleteX Factory',
-    addressConfig: const EthereumAddressConfig.dexFactoryAddress(),
-    chain: chain,
-  );
-  const Contract.exchangeRouter(EthereumChain chain) : this(
-    name: 'AthleteX Router',
-    addressConfig: const EthereumAddressConfig.dexRouterAddress(),
-    chain: chain,
-  );
 }
 
+/// []
 extension APTRouterX on Contract {
+  /// Retrieves the current address from the [EthereumAddressConfig]
   String get address => _addressConfig.address(_chain);
 
+  /// Retrieves the current [EthereumChain]
   EthereumChain get chain => _chain;
 }
