@@ -1,8 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ViewButton extends StatelessWidget {
@@ -17,14 +15,11 @@ class ViewButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        final walletAddress =
-            context.read<WalletBloc>().state.formattedWalletAddress;
-
         context.goNamed(
           'prediction',
           params: {
             'prompt': predictionModel.prompt,
-            'details': predictionModel.details
+            'details': predictionModel.details,
           },
         );
       },
@@ -46,7 +41,7 @@ class ViewButton extends StatelessWidget {
               Icons.arrow_right,
               size: 25,
               color: Colors.white,
-            )
+            ),
           ],
         ),
       ),
