@@ -1,5 +1,4 @@
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
-import 'package:ethereum_api/src/event_markets/event_markets.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 
