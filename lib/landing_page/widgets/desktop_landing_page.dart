@@ -1,4 +1,6 @@
 import 'package:ax_dapp/landing_page/widgets/landing_page_widgets.dart';
+import 'package:ax_dapp/landing_page/widgets/login_widget.dart';
+import 'package:ax_dapp/landing_page/widgets/sign_up_button.dart';
 import 'package:flutter/material.dart';
 
 class DesktopLandingPage extends StatelessWidget {
@@ -6,12 +8,13 @@ class DesktopLandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         AthleteXLogo(),
         LandingPageMessage(),
         Spacer(),
-        StartTradingButton(),
+        SignUpButton(),
+        LoginWidget(),
         Spacer(flex: 2),
         TermsAndConditions(),
       ],

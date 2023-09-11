@@ -1,5 +1,6 @@
 import 'package:ax_dapp/landing_page/widgets/athletex_logo.dart';
 import 'package:ax_dapp/landing_page/widgets/landing_page_widgets.dart';
+import 'package:ax_dapp/landing_page/widgets/login_widget.dart';
 import 'package:flutter/material.dart';
 
 class MobileLandingPage extends StatelessWidget {
@@ -7,11 +8,12 @@ class MobileLandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
+      children: [
         AthleteXLogo(),
         StartTradingButton(),
+        LoginWidget(),
         TermsAndConditions()
       ],
     );
