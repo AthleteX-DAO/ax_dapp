@@ -1,1 +1,1 @@
-export 'src/erc4337/EntryPoint.dart';
+export 'src/erc4337/entrypoint.dart';
