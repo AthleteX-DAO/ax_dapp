@@ -60,54 +60,53 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
           ),
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.transparent,
-          items: const <BottomNavigationBarItem>[
-            // TODO(Ryan): enable the UI once the feature is ready
-            // BottomNavigationBarItem(
-            //   icon: FaIcon(
-            //     FontAwesomeIcons.percent,
-            //     size: 24,
-            //   ),
-            //   label: 'predict',
-            // ),
-            // BottomNavigationBarItem(
-            //   icon: Image.asset(
-            //     'assets/images/search.png',
-            //     height: 24,
-            //     width: 24,
-            //   ),
-            //   label: 'Scout',
-            // ),
-            // BottomNavigationBarItem(
-            //   icon: Image.asset(
-            //     'assets/images/swap.png',
-            //     height: 24,
-            //     width: 24,
-            //   ),
-            //   label: 'Trade',
-            // ),
-            // BottomNavigationBarItem(
-            //   icon: Image.asset(
-            //     'assets/images/coins.png',
-            //     height: 24,
-            //     width: 24,
-            //   ),
-            //   label: 'Pool',
-            // ),
-            // BottomNavigationBarItem(
-            //   icon: Image.asset(
-            //     'assets/images/barn.png',
-            //     height: 24,
-            //     width: 24,
-            //   ),
-            //   label: 'Farm',
-            // ),
-            // BottomNavigationBarItem(
-            //   icon: FaIcon(
-            //     FontAwesomeIcons.trophy,
-            //     size: 24,
-            //   ),
-            //   label: 'League',
-            // ),
+          items: <BottomNavigationBarItem>[
+            const BottomNavigationBarItem(
+              icon: Icon(
+                FontAwesomeIcons.percent,
+                size: 24,
+              ),
+              label: 'predict',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/images/search.png',
+                height: 24,
+                width: 24,
+              ),
+              label: 'Markets',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/images/swap.png',
+                height: 24,
+                width: 24,
+              ),
+              label: 'Trade',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/images/coins.png',
+                height: 24,
+                width: 24,
+              ),
+              label: 'Pool',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/images/barn.png',
+                height: 24,
+                width: 24,
+              ),
+              label: 'Farm',
+            ),
+            const BottomNavigationBarItem(
+              icon: FaIcon(
+                FontAwesomeIcons.trophy,
+                size: 24,
+              ),
+              label: 'League',
+            ),
           ],
           currentIndex: selectedIndex,
           selectedItemColor: Colors.white,
