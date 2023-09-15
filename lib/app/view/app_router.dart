@@ -75,9 +75,7 @@ class AppRouter {
       GoRoute(
         name: 'landing',
         path: '/',
-        builder: (BuildContext context, GoRouterState state) {
-          return const LandingPageWrapper();
-        },
+        redirect: (context, state) => '/trade',
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
