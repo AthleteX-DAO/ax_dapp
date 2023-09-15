@@ -90,7 +90,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       children: [
                         // Sport filter
                         Text(
-                          'APT List',
+                          'Live Markets',
                           style: textStyle(
                             Colors.white,
                             18,
