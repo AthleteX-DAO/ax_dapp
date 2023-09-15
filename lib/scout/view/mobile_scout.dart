@@ -103,7 +103,7 @@ class _MobileScoutState extends State<MobileScout> {
                             child: Row(
                               children: [
                                 Text(
-                                  'APT List',
+                                  'Live Markets',
                                   style: textStyle(
                                     Colors.white,
                                     18,
