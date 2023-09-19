@@ -21,20 +21,6 @@ class TrackingCubit extends Cubit<TrackingState> {
   }
 }
 
-extension LandingPageTracking on TrackingCubit {
-  void onPressedStartTrading() {
-    trackingRepository.track(
-      LandingPageEvent.onPressedStartTrading({}),
-    );
-  }
-
-  void onLandingPageView() {
-    trackingRepository.track(
-      LandingPageEvent.onLandingPageView({}),
-    );
-  }
-}
-
 extension ConnectWalletSuccessfulTracking on TrackingCubit {
   void onConnectWalletSuccessful({
     required String publicAddress,
