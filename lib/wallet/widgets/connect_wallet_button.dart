@@ -1,4 +1,4 @@
-import 'package:ax_dapp/wallet/widgets/widgets.dart';
+import 'package:ax_dapp/wallet/widgets/dialogs/wallet_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ConnectWalletButton extends StatelessWidget {
@@ -8,7 +8,7 @@ class ConnectWalletButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     var width = 180.0;
-    var text = 'Connect Wallet';
+    var text = 'Connect ';
     if (_width < 565) {
       width = 110;
       text = 'Connect';
@@ -24,10 +24,7 @@ class ConnectWalletButton extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () {
-          showDialog<void>(
-            context: context,
-            builder: (_) => const WalletDialog(),
-          );
+          Scaffold.of(context).openEndDrawer();
         },
         child: Text(
           text,
