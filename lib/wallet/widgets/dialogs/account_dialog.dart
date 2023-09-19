@@ -39,205 +39,142 @@ class AccountDialog extends StatelessWidget {
     final buttonMessage = explorerUseCase.buttonMessage(chain);
     final explorerUrl = explorerUseCase.explorerUrl(chain);
 
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Container(
-        height: hgt,
-        width: wid,
-        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // title
-              Container(
-                margin: _width < 665
-                    ? const EdgeInsets.symmetric(horizontal: 10)
-                    : EdgeInsets.zero,
-                width: wid - edge,
-                height: 45,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Account',
-                      style: textStyle(
-                        Colors.white,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
+    return Container(
+      height: hgt,
+      width: wid,
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      alignment: Alignment.center,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // title
+            Container(
+              margin: _width < 665
+                  ? const EdgeInsets.symmetric(horizontal: 10)
+                  : EdgeInsets.zero,
+              width: wid - edge,
+              height: 45,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Account',
+                    style: textStyle(
+                      Colors.white,
+                      20,
+                      isBold: false,
+                      isUline: false,
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 26,
-                      ),
-                      onPressed: () => Navigator.pop(context),
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 26,
                     ),
-                  ],
-                ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
               ),
-              // inner box
-              Container(
-                margin: _width < 665
-                    ? const EdgeInsets.symmetric(horizontal: 10)
-                    : EdgeInsets.zero,
-                width: wid - edge,
-                height: 145,
-                decoration: boxDecoration(
-                  Colors.transparent,
-                  14,
-                  .5,
-                  Colors.grey[400]!,
-                ),
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: wid - edge2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 65,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                // crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Connected With Metamask',
-                                    style: textStyle(
-                                      Colors.grey[600]!,
-                                      13,
-                                      isBold: false,
-                                      isUline: false,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.account_balance_wallet,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        formattedWalletAddress,
-                                        style: textStyle(
-                                          Colors.white,
-                                          20,
-                                          isBold: false,
-                                          isUline: false,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 65,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                      right: 5,
-                                      top: 5,
-                                    ),
-                                    width: 75,
-                                    height: 25,
-                                    decoration: boxDecoration(
-                                      Colors.transparent,
-                                      100,
-                                      0,
-                                      Colors.red[900]!,
-                                    ),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        context.read<WalletBloc>().add(
-                                              const DisconnectWalletRequested(),
-                                            );
-                                        Navigator.pop(context);
-                                      },
-                                      child: FittedBox(
-                                        child: SizedBox(
-                                          child: Text(
-                                            'Disconnect',
-                                            style: textStyle(
-                                              Colors.red[900]!,
-                                              10,
-                                              isBold: true,
-                                              isUline: false,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
+            ),
+            // inner box
+            Container(
+              margin: _width < 665
+                  ? const EdgeInsets.symmetric(horizontal: 10)
+                  : EdgeInsets.zero,
+              width: wid - edge,
+              height: 145,
+              decoration: boxDecoration(
+                Colors.transparent,
+                14,
+                .5,
+                Colors.grey[400]!,
+              ),
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: wid - edge2,
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          TextButton(
-                            onPressed: () {
-                              Clipboard.setData(
-                                ClipboardData(
-                                  text: walletAddress,
-                                ),
-                              );
-                            },
-                            child: Row(
+                          SizedBox(
+                            height: 65,
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(
-                                  Icons.filter_none,
-                                  color: Colors.grey,
-                                ),
                                 Text(
-                                  'Copy Address',
+                                  'Connected With Metamask',
                                   style: textStyle(
-                                    Colors.grey[400]!,
-                                    15,
+                                    Colors.grey[600]!,
+                                    13,
                                     isBold: false,
                                     isUline: false,
                                   ),
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.account_balance_wallet,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      formattedWalletAddress,
+                                      style: textStyle(
+                                        Colors.white,
+                                        20,
+                                        isBold: false,
+                                        isUline: false,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              launchUrl(Uri.parse(explorerUrl));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          SizedBox(
+                            height: 65,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(
-                                  Icons.open_in_new,
-                                  color: Colors.grey,
-                                ),
-                                Text(
-                                  buttonMessage,
-                                  style: textStyle(
-                                    Colors.grey[400]!,
-                                    15,
-                                    isBold: false,
-                                    isUline: false,
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    right: 5,
+                                    top: 5,
+                                  ),
+                                  width: 75,
+                                  height: 25,
+                                  decoration: boxDecoration(
+                                    Colors.transparent,
+                                    100,
+                                    0,
+                                    Colors.red[900]!,
+                                  ),
+                                  child: TextButton(
+                                    onPressed: () {
+                                      context.read<WalletBloc>().add(
+                                            const DisconnectWalletRequested(),
+                                          );
+                                      Navigator.pop(context);
+                                    },
+                                    child: FittedBox(
+                                      child: SizedBox(
+                                        child: Text(
+                                          'Disconnect',
+                                          style: textStyle(
+                                            Colors.red[900]!,
+                                            10,
+                                            isBold: true,
+                                            isUline: false,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -245,12 +182,67 @@ class AccountDialog extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Clipboard.setData(
+                              ClipboardData(
+                                text: walletAddress,
+                              ),
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const Icon(
+                                Icons.filter_none,
+                                color: Colors.grey,
+                              ),
+                              Text(
+                                'Copy Address',
+                                style: textStyle(
+                                  Colors.grey[400]!,
+                                  15,
+                                  isBold: false,
+                                  isUline: false,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            launchUrl(Uri.parse(explorerUrl));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const Icon(
+                                Icons.open_in_new,
+                                color: Colors.grey,
+                              ),
+                              Text(
+                                buttonMessage,
+                                style: textStyle(
+                                  Colors.grey[400]!,
+                                  15,
+                                  isBold: false,
+                                  isUline: false,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

@@ -12,10 +12,7 @@ class WalletAccount extends StatelessWidget {
     var showAccountIcon = true;
     if (_width < 650) showAccountIcon = false;
     return TextButton(
-      onPressed: () => showDialog<void>(
-        context: context,
-        builder: (context) => const AccountDialog(),
-      ),
+      onPressed: () => Scaffold.of(context).openEndDrawer(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
