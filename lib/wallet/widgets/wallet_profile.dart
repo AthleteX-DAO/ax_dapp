@@ -1,7 +1,7 @@
 import 'package:ax_dapp/wallet/widgets/wallet_account.dart';
 import 'package:ax_dapp/wallet/widgets/wallet_ax.dart';
 import 'package:ax_dapp/wallet/widgets/wallet_chain.dart';
-import 'package:ax_dapp/wallet/widgets/wallet_matic.dart';
+import 'package:ax_dapp/wallet/widgets/wallet_gas.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
