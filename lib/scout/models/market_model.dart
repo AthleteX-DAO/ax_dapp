@@ -1,13 +1,21 @@
 import 'package:shared/shared.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class MarketModel extends Equatable {
   const MarketModel({
+    required this.id,
+    required this.name,
+    required this.typeOfMarket,
     required this.marketPrice,
     required double recentPrice,
     required this.bookPrice,
   }) : percentage = recentPrice > 0
             ? (marketPrice - recentPrice) * 100 / recentPrice
             : 0.0;
+
+  final int id;
+  final String name;
+  final SupportedMarkets typeOfMarket;
   final double marketPrice;
   final double percentage;
   final double bookPrice;
