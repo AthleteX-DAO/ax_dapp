@@ -16,7 +16,6 @@ export 'package:meta/meta.dart';
 export 'package:rxdart/rxdart.dart';
 export 'package:web3dart/web3dart.dart' hide Wallet;
 export 'package:web_socket_channel/web_socket_channel.dart';
-
 export 'src/failure/failure.dart';
 export 'src/graphql/graphql.dart';
 export 'src/text/text.dart';
