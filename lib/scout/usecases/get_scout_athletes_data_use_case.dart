@@ -270,6 +270,9 @@ class GetScoutAthletesDataUseCase {
           double.parse(allPairs[index1].pairHourData![0].reserve1);
     }
     return MarketModel(
+      id: 0,
+      name: '',
+      typeOfMarket: SupportedMarkets.Athlete,
       marketPrice: marketPrice,
       recentPrice: recentPrice,
       bookPrice: bookPrice * collateralizationMultiplier,

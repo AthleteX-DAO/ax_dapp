@@ -5,6 +5,7 @@ class ScoutPageState extends Equatable {
     this.status = BlocStatus.initial,
     this.athletes = const [],
     this.filteredAthletes = const [],
+    this.selectedMarket = SupportedMarkets.all,
     this.selectedSport = SupportedSport.all,
     this.selectedChain = EthereumChain.polygonMainnet,
     this.axPrice = 0.0,
@@ -12,6 +13,7 @@ class ScoutPageState extends Equatable {
 
   final List<AthleteScoutModel> athletes;
   final List<AthleteScoutModel> filteredAthletes;
+  final SupportedMarkets selectedMarket;
   final SupportedSport selectedSport;
   final BlocStatus status;
   final EthereumChain selectedChain;
@@ -19,6 +21,7 @@ class ScoutPageState extends Equatable {
 
   ScoutPageState copyWith({
     List<AthleteScoutModel>? filteredAthletes,
+    SupportedMarkets? selectedMarket,
     SupportedSport? selectedSport,
     BlocStatus? status,
     List<AthleteScoutModel>? athletes,
@@ -29,6 +32,7 @@ class ScoutPageState extends Equatable {
       athletes: athletes ?? this.athletes,
       filteredAthletes: filteredAthletes ?? this.filteredAthletes,
       status: status ?? this.status,
+      selectedMarket: selectedMarket ?? this.selectedMarket,
       selectedSport: selectedSport ?? this.selectedSport,
       selectedChain: selectedChain ?? this.selectedChain,
       axPrice: axPrice ?? this.axPrice,
@@ -36,6 +40,13 @@ class ScoutPageState extends Equatable {
   }
 
   @override
-  List<Object> get props =>
-      [athletes, filteredAthletes, selectedSport, axPrice, status, selectedChain];
+  List<Object> get props => [
+        athletes,
+        filteredAthletes,
+        selectedMarket,
+        selectedSport,
+        axPrice,
+        status,
+        selectedChain
+      ];
 }
