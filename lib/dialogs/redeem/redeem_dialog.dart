@@ -1,6 +1,6 @@
 import 'package:ax_dapp/dialogs/redeem/bloc/redeem_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/redeem/widgets/widgets.dart';
-import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/markets/crypto_markets/models/models.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
@@ -442,7 +442,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           ),
                           child: TextButton(
                             onPressed: () async {
-                              final result = await bloc.longShortPairRepository.redeem();
+                              final result =
+                                  await bloc.longShortPairRepository.redeem();
                               if (result) {
                                 await showDialog<void>(
                                   context: context,
@@ -464,15 +465,16 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                         inputLongApt: _longInputController.text,
                                         inputShortApt:
                                             _shortInputController.text,
-                                        valueInAx:
-                                            (bloc.longShortPairRepository.redeemAmt *
-                                                    collateralPerPair)
-                                                .toStringAsFixed(6),
+                                        valueInAx: (bloc.longShortPairRepository
+                                                    .redeemAmt *
+                                                collateralPerPair)
+                                            .toStringAsFixed(6),
                                         walletId: walletAddress,
-                                        valueInUSD:
-                                            (bloc.longShortPairRepository.redeemAmt *
-                                                    collateralPerPair) *
-                                                price,
+                                        valueInUSD: (bloc
+                                                    .longShortPairRepository
+                                                    .redeemAmt *
+                                                collateralPerPair) *
+                                            price,
                                       );
                                 });
                               } else {

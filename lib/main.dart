@@ -25,7 +25,7 @@ import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
-import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
+import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

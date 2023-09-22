@@ -22,7 +22,7 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
 
     switch (index) {
       case 0:
-        context.goNamed('scout');
+        context.goNamed('predict');
         break;
       case 1:
         context.goNamed('scout');

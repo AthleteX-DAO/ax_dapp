@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
-import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/markets/crypto_markets/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
