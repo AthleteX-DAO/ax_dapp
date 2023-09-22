@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
-import 'package:ax_dapp/markets/crypto_markets/models/athlete_scout_model.dart';
-import 'package:ax_dapp/markets/crypto_markets/usecases/get_scout_athletes_data_use_case.dart';
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -177,7 +176,8 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
           break;
       }
 
-      final response = await repo.fetchSupportedAthletes(supportedSport);
+      final response = await repo.fetchSupportedAthletes(supportedSport)
+          as List<AthleteScoutModel>;
 
       filterOutUnsupportedSportsByChain(response);
 

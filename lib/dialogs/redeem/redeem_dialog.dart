@@ -1,6 +1,6 @@
 import 'package:ax_dapp/dialogs/redeem/bloc/redeem_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/redeem/widgets/widgets.dart';
-import 'package:ax_dapp/markets/crypto_markets/models/models.dart';
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';

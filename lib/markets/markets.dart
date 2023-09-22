@@ -1,3 +1,4 @@
-export 'athlete_markets/athlete.dart';
-export 'crypto_markets/crypto.dart';
-export 'sports_markets/sport.dart';
+export 'modules/athlete_markets/athlete.dart';
+export 'modules/crypto_markets/crypto.dart';
+export 'modules/sports_markets/sport.dart';
+export 'views/views.dart';

@@ -3,7 +3,7 @@ import 'package:ax_dapp/league/league_draft/views/desktop_league_draft.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
-import 'package:ax_dapp/markets/crypto_markets/models/athlete_scout_model.dart';
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/get_sports_icon.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
