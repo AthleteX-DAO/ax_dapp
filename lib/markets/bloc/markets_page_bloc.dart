@@ -1,3 +1,4 @@
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/markets/modules/crypto_markets/crypto.dart';
 import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -11,8 +12,8 @@ import 'package:wallet_repository/wallet_repository.dart';
 part 'markets_page_event.dart';
 part 'markets_page_state.dart';
 
-class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
-  ScoutPageBloc({
+class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
+  MarketsPageBloc({
     required WalletRepository walletRepository,
     required TokensRepository tokenRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
@@ -21,10 +22,11 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   })  : _walletRepository = walletRepository,
         _tokenRepository = tokenRepository,
         _streamAppDataChanges = streamAppDataChanges,
-        super(const ScoutPageState()) {
+        super(const MarketsPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
     on<SelectedSportChanged>(_onSelectedSportChanged);
+    on<SelectedMarketsChanged>(_onSelectedMarketsChanged);
     on<AthleteSearchChanged>(_onAthleteSearchChanged);
 
     add(const WatchAppDataChangesStarted());
@@ -39,7 +41,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
-    Emitter<ScoutPageState> emit,
+    Emitter<MarketsPageState> emit,
   ) async {
     await emit.onEach<AppData>(
       _streamAppDataChanges.appDataChanges,
@@ -55,6 +57,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
               status: BlocStatus.loading,
               selectedChain: appData.chain,
               athletes: List.empty(),
+              liveSports: List.empty(),
               filteredAthletes: List.empty(),
             ),
           );
@@ -65,7 +68,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
 
   Future<void> _onFetchScoutInfoRequested(
     FetchScoutInfoRequested _,
-    Emitter<ScoutPageState> emit,
+    Emitter<MarketsPageState> emit,
   ) async {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
@@ -117,9 +120,27 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     }
   }
 
+  Future<void> _onSelectedMarketsChanged(
+    SelectedMarketsChanged event,
+    Emitter<MarketsPageState> emit,
+  ) async {
+    try {
+      if (event.selectedMarkets != SupportedMarkets.all) {
+        emit(
+          state.copyWith(
+            status: BlocStatus.success,
+            selectedMarket: event.selectedMarkets,
+          ),
+        );
+      }
+    } catch (_) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
+
   Future<void> _onSelectedSportChanged(
     SelectedSportChanged event,
-    Emitter<ScoutPageState> emit,
+    Emitter<MarketsPageState> emit,
   ) async {
     try {
       while (state.athletes.isEmpty) {
@@ -183,7 +204,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
 
   void _onAthleteSearchChanged(
     AthleteSearchChanged event,
-    Emitter<ScoutPageState> emit,
+    Emitter<MarketsPageState> emit,
   ) {
     final parsedInput = event.searchedName.trim().toUpperCase();
     if (event.selectedSport != SupportedSport.all) {

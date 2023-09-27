@@ -1,4 +1,4 @@
-import 'package:ax_dapp/markets/modules/crypto_markets/crypto.dart';
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -73,7 +73,7 @@ class DesktopAthleteCard extends StatelessWidget {
                       2,
                       Colors.white,
                     ),
-                    child: ViewButton(
+                    child: AthleteViewButton(
                       athlete: athlete,
                     ),
                   )

@@ -1,5 +1,5 @@
+import 'package:ax_dapp/markets/modules/athlete_markets/widgets/widget_factories/athlete_details_widget.dart';
 import 'package:ax_dapp/markets/modules/crypto_markets/models/sports_model/nfl_athlete_scout_model.dart';
-import 'package:ax_dapp/markets/modules/crypto_markets/widgets/widget_factories/athlete_details_widget.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/abbreviation_mappings_helper.dart';
 import 'package:ax_dapp/util/colors.dart';

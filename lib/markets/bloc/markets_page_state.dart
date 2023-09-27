@@ -1,9 +1,10 @@
 part of 'markets_page_bloc.dart';
 
-class ScoutPageState extends Equatable {
-  const ScoutPageState({
+class MarketsPageState extends Equatable {
+  const MarketsPageState({
     this.status = BlocStatus.initial,
     this.athletes = const [],
+    this.liveSports = const [],
     this.filteredAthletes = const [],
     this.selectedMarket = SupportedMarkets.all,
     this.selectedSport = SupportedSport.all,
@@ -12,6 +13,7 @@ class ScoutPageState extends Equatable {
   });
 
   final List<AthleteScoutModel> athletes;
+  final List<SportsMarketsModel> liveSports;
   final List<AthleteScoutModel> filteredAthletes;
   final SupportedMarkets selectedMarket;
   final SupportedSport selectedSport;
@@ -19,8 +21,9 @@ class ScoutPageState extends Equatable {
   final EthereumChain selectedChain;
   final double axPrice;
 
-  ScoutPageState copyWith({
+  MarketsPageState copyWith({
     List<AthleteScoutModel>? filteredAthletes,
+    List<SportsMarketsModel>? liveSports,
     SupportedMarkets? selectedMarket,
     SupportedSport? selectedSport,
     BlocStatus? status,
@@ -28,8 +31,9 @@ class ScoutPageState extends Equatable {
     EthereumChain? selectedChain,
     double? axPrice,
   }) {
-    return ScoutPageState(
+    return MarketsPageState(
       athletes: athletes ?? this.athletes,
+      liveSports: liveSports ?? this.liveSports,
       filteredAthletes: filteredAthletes ?? this.filteredAthletes,
       status: status ?? this.status,
       selectedMarket: selectedMarket ?? this.selectedMarket,
@@ -42,6 +46,7 @@ class ScoutPageState extends Equatable {
   @override
   List<Object> get props => [
         athletes,
+        liveSports,
         filteredAthletes,
         selectedMarket,
         selectedSport,

@@ -1,4 +1,4 @@
-import 'package:ax_dapp/markets/modules/crypto_markets/crypto.dart';
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -8,11 +8,11 @@ import 'package:go_router/go_router.dart';
 
 class ViewButton extends StatelessWidget {
   const ViewButton({
-    required this.athlete,
+    required this.sports,
     super.key,
   });
 
-  final AthleteScoutModel athlete;
+  final SportsMarketsModel sports;
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +21,12 @@ class ViewButton extends StatelessWidget {
         final walletAddress =
             context.read<WalletBloc>().state.formattedWalletAddress;
         context.read<TrackingCubit>().trackAthleteView(
-              athleteName: athlete.name,
+              athleteName: sports.name,
               walletId: walletAddress,
             );
         context.goNamed(
-          'athlete',
-          params: {'id': athlete.id.toString() + athlete.name},
+          'sport',
+          params: {'id': sports.id.toString() + sports.name},
         );
       },
       child: SizedBox(

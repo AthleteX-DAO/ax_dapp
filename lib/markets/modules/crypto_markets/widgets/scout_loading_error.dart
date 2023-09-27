@@ -9,7 +9,7 @@ class ScoutLoadingError extends StatelessWidget {
       height: 70,
       width: 400,
       child: Text(
-        'Athlete List Failed to Load',
+        'Failed to load active Markets',
         style: TextStyle(
           color: Colors.red,
           fontSize: 30,

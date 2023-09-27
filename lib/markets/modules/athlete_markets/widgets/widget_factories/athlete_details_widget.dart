@@ -3,8 +3,6 @@
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/markets/modules/crypto_markets/models/sports_model/mlb_athlete_scout_model.dart';
 import 'package:ax_dapp/markets/modules/crypto_markets/models/sports_model/nfl_athlete_scout_model.dart';
-import 'package:ax_dapp/markets/modules/crypto_markets/widgets/widget_factories/mlb_athlete_details_widget.dart';
-import 'package:ax_dapp/markets/modules/crypto_markets/widgets/widget_factories/nfl_athlete_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 

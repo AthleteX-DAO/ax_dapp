@@ -1,7 +1,7 @@
 import 'package:ax_dapp/markets/modules/athlete_markets/bloc/athlete_page_bloc.dart';
 import 'package:ax_dapp/markets/modules/athlete_markets/widgets/ticker_symbol.dart';
+import 'package:ax_dapp/markets/modules/athlete_markets/widgets/widget_factories/athlete_details_widget.dart';
 import 'package:ax_dapp/markets/modules/crypto_markets/models/athlete_scout_model.dart';
-import 'package:ax_dapp/markets/modules/crypto_markets/widgets/widget_factories/athlete_details_widget.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/percent_helper.dart';

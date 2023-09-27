@@ -123,7 +123,7 @@ class AppRouter {
             path: '/scout',
             builder: (BuildContext context, GoRouterState state) {
               return BlocProvider(
-                create: (BuildContext context) => ScoutPageBloc(
+                create: (BuildContext context) => MarketsPageBloc(
                   tokenRepository: context.read<TokensRepository>(),
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChanges:

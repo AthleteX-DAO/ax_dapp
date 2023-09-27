@@ -1,3 +1,4 @@
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/markets/modules/crypto_markets/crypto.dart';
 import 'package:ax_dapp/markets/modules/crypto_markets/models/athlete_scout_model.dart';
 import 'package:flutter/material.dart';

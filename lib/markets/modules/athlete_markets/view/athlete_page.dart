@@ -1,5 +1,4 @@
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/markets/modules/athlete_markets/bloc/athlete_page_bloc.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
