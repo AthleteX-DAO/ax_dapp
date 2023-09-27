@@ -1,9 +1,7 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/wallet/view/view.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({super.key, required this.child});
@@ -25,7 +23,6 @@ class AppScaffold extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      // TODO(Ryan): Render the bottom navigation bar for mobile
       bottomNavigationBar: kIsWeb &&
               (MediaQuery.of(context).orientation == Orientation.landscape)
           ? const BottomNavigationBarWeb()
