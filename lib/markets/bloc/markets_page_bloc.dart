@@ -1,10 +1,10 @@
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/markets/modules/crypto_markets/crypto.dart';
 import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -64,6 +64,16 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
         }
       },
     );
+  }
+
+  Future<void> _onFetchSportsMarketsRequested() async {
+    try {
+      var supportedMarket = SupportedMarkets.Sports;
+      const baseDataUrl = 'https://api.sx.bet/markets/active';
+      final response = await http.get(baseDataUrl);
+    } catch (e) {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
   }
 
   Future<void> _onFetchScoutInfoRequested(
