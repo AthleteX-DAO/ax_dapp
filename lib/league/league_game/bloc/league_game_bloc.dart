@@ -176,8 +176,7 @@ class LeagueGameBloc extends Bloc<LeagueGameEvent, LeagueGameState> {
           break;
       }
 
-      final response = await repo.fetchSupportedAthletes(supportedSport)
-          as List<AthleteScoutModel>;
+      final response = await repo.fetchSupportedAthletes(supportedSport);
 
       filterOutUnsupportedSportsByChain(response);
 
