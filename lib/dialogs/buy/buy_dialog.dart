@@ -1,7 +1,6 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/widgets/widgets.dart';
-import 'package:ax_dapp/markets/markets.dart';
-
+import 'package:ax_dapp/markets/markets.dart' hide AptTypeSelectionChanged;
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
