@@ -67,6 +67,10 @@ extension EthereumChainLocalizationX on EthereumChain {
         throw UnsupportedError('$this');
       case EthereumChain.polygonMainnet:
         return 'Matic Network';
+      case EthereumChain.optimism:
+        return 'Optimism';
+      case EthereumChain.arbitriumOne:
+        return 'Arbitrium One';
       case EthereumChain.goerliTestNet:
         return 'Goerli Test Network';
       case EthereumChain.sxMainnet:
@@ -87,6 +91,8 @@ extension EthereumChainLocalizationImageX on EthereumChain {
         return 'assets/images/Polygon_Small.png';
       case EthereumChain.goerliTestNet:
         return 'assets/images/geth.png';
+      case EthereumChain.optimism:
+      case EthereumChain.arbitriumOne:
       case EthereumChain.sxMainnet:
         return 'assets/images/SX_Small.png';
       case EthereumChain.sxTestnet:
