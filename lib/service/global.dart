@@ -7,20 +7,26 @@ class Global extends PropertyChangeNotifier<String> {
   factory Global() => _instance;
 
   Global._internal() {
+    _liveSportsMarkets = [];
     _athleteList = [];
     _predictions = [];
   }
   static final Global _instance = Global._internal();
 
   /// Variables
-
+  List<SportsMarketsModel> _liveSportsMarkets = [];
   List<AthleteScoutModel> _athleteList = [];
   List<PredictionModel> _predictions = [];
 
   /// Gettters/Setters
-
+  List<SportsMarketsModel> get liveSportsMarkets => _liveSportsMarkets;
   List<AthleteScoutModel> get athleteList => _athleteList;
   List<PredictionModel> get predictions => _predictions;
+
+  set liveSportsMarkets(List<SportsMarketsModel> mrkts) {
+    _liveSportsMarkets = mrkts;
+    notifyListeners('liveSportsMarkets');
+  }
 
   set athleteList(List<AthleteScoutModel> list) {
     _athleteList = list;
