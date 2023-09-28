@@ -152,6 +152,15 @@ class AppRouter {
                   );
                 },
               ),
+              GoRoute(
+                name: 'sports-markets',
+                path: 'sport/:id',
+                builder: (BuildContext context, GoRouterState state) {
+                  return SportsPage(
+                    sport: _goToSportsMarketById(state.params['id']!),
+                  );
+                },
+              ),
             ],
           ),
           GoRoute(
@@ -270,6 +279,14 @@ class AppRouter {
   );
 
   GoRouter get router => _router;
+}
+
+SportsMarketsModel _goToSportsMarketById(String id) {
+  final liveSports = Global().liveSportsMarkets;
+  return liveSports.firstWhere(
+    (element) => element.id == id,
+    orElse: () => SportsMarketsModel.empty,
+  );
 }
 
 AthleteScoutModel _findAthleteById(String id) {
