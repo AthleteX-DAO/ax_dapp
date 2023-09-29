@@ -17,6 +17,7 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
     required WalletRepository walletRepository,
     required TokensRepository tokenRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
+    required this.sportsRepo,
     required this.repo,
     required this.longShortPairRepository,
   })  : _walletRepository = walletRepository,
@@ -25,6 +26,7 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
         super(const MarketsPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
+    on<FetchSportsMarketsRequested>(_onFetchSportsMarketsRequested);
     on<SelectedSportChanged>(_onSelectedSportChanged);
     on<SelectedMarketsChanged>(_onSelectedMarketsChanged);
     on<AthleteSearchChanged>(_onAthleteSearchChanged);
@@ -37,6 +39,7 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
   final TokensRepository _tokenRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetScoutAthletesDataUseCase repo;
+  final GetSportsMarketsDataUseCase sportsRepo;
   final LongShortPairRepository longShortPairRepository;
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -66,12 +69,31 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
     );
   }
 
-  Future<void> _onFetchSportsMarketsRequested() async {
+  Future<void> _onFetchSportsMarketsRequested(
+    FetchSportsMarketsRequested _,
+    Emitter<MarketsPageState> emit,
+  ) async {
     try {
-      var supportedMarket = SupportedMarkets.Sports;
-      const baseDataUrl = 'https://api.sx.bet/markets/active';
-      final response = await http.get(baseDataUrl);
+      emit(state.copyWith(status: BlocStatus.loading));
+      debugPrint('Fetching Sports Markets info');
+      final response = await sportsRepo.fetchliveMarkets();
+      if (response.isNotEmpty) {
+        emit(
+          state.copyWith(
+            status: BlocStatus.success,
+            liveSports: response,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: BlocStatus.noData,
+            liveSports: List.empty(),
+          ),
+        );
+      }
     } catch (e) {
+      debugPrint('ERROR LOADING SPORTS MARKETS \n $e');
       emit(state.copyWith(status: BlocStatus.error));
     }
   }

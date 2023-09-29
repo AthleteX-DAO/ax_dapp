@@ -33,6 +33,8 @@ class SelectedMarketsChanged extends MarketsPageEvent {
   List<Object?> get props => [selectedMarkets];
 }
 
+class FetchSportsMarketsRequested extends MarketsPageEvent {}
+
 class FetchScoutInfoRequested extends MarketsPageEvent {}
 
 class AthleteSearchChanged extends MarketsPageEvent {
