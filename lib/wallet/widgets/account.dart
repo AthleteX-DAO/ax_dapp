@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AccountDialog extends StatelessWidget {
-  const AccountDialog({super.key});
+class Account extends StatelessWidget {
+  const Account({super.key});
 
   @override
   Widget build(BuildContext context) {

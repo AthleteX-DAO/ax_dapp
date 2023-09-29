@@ -1,8 +1,8 @@
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
+import 'package:ax_dapp/wallet/widgets/account.dart';
 import 'package:ax_dapp/wallet/widgets/login.dart';
 import 'package:ax_dapp/wallet/widgets/sign_up_button.dart';
-import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,7 +43,7 @@ class DrawerView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    AccountDialog(),
+                    Account(),
                   ],
                 );
               } else {
