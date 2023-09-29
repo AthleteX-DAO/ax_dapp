@@ -94,7 +94,6 @@ class AccountDialog extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
@@ -106,7 +105,6 @@ class AccountDialog extends StatelessWidget {
                             height: 65,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              // crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   'Connected With Metamask',
@@ -241,7 +239,7 @@ class AccountDialog extends StatelessWidget {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
