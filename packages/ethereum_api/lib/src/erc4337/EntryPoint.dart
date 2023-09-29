@@ -1,0 +1,1 @@
+export './EntryPoint.g.dart';

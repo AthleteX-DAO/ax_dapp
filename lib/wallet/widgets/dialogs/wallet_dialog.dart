@@ -2,6 +2,7 @@ import 'package:ax_dapp/dialogs/promo/connected_wallet_promo_dialog.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/connect_metamask_dialog.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/wrong_network_dialog.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -133,40 +134,34 @@ class WalletDialog extends StatelessWidget {
                     ),
                   ],
                 ),
-                //TOOD(Kevin): re-enable when native wallet is ready
-                // Visibility(
-                //   visible: !kIsWeb,
-                //   child: Container(
-                //     margin: const EdgeInsets.symmetric(vertical: 4),
-                //     width: constraints.maxWidth < 450
-                //         ? constraints.maxWidth * 0.62
-                //         : constraints.maxWidth * 0.22,
-                //     height: 45,
-                //     decoration: BoxDecoration(
-                //       color: Colors.transparent,
-                //       borderRadius: BorderRadius.circular(100),
-                //       border: Border.all(color: Colors.grey[400]!, width: 2),
-                //     ),
-                //     child: TextButton(
-                //       onPressed: () {
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute<void>(
-                //             builder: (context) => const MobileLoginPage(),
-                //           ),
-                //         );
-                //       },
-                //       child: const Text(
-                //         'Add/Create wallet',
-                //         textAlign: TextAlign.center,
-                //         style: TextStyle(
-                //           color: Colors.white,
-                //           fontFamily: 'OpenSans',
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                Visibility(
+                  visible: !kIsWeb,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 4),
+                    width: constraints.maxWidth < 450
+                        ? constraints.maxWidth * 0.62
+                        : constraints.maxWidth * 0.22,
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(color: Colors.grey[400]!, width: 2),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Account Abstraction Wallet',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

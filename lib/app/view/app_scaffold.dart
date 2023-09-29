@@ -1,4 +1,5 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
+import 'package:ax_dapp/wallet/view/view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,9 @@ class AppScaffold extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        actions: [
+          Container(),
+        ],
         title: kIsWeb &&
                 (MediaQuery.of(context).orientation == Orientation.landscape)
             ? const TopNavigationBarWeb()
@@ -22,10 +26,11 @@ class AppScaffold extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      // TODO(Ryan): Render the bottom navigation bar for mobile
-      bottomNavigationBar: const BottomNavigationBarWeb(),
+      bottomNavigationBar: kIsWeb &&
+              (MediaQuery.of(context).orientation == Orientation.landscape)
+          ? const BottomNavigationBarWeb()
+          : const BottomNavigationBarMobile(),
       body: Container(
-        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -35,6 +40,7 @@ class AppScaffold extends StatelessWidget {
         ),
         child: child,
       ),
+      endDrawer: const DrawerView(),
     );
   }
 }
