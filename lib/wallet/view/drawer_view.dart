@@ -22,8 +22,12 @@ class DrawerView extends StatelessWidget {
                 previous.walletStatus != current.walletStatus ||
                 previous.failure != current.failure,
             listener: (context, state) {
-              if (state.isWalletUnsupported) {}
-
+              if (state.isWalletUnsupported) {
+                context.showWarningToast(
+                  title: 'Wallet Not Supported!',
+                  description: 'This wallet is currently not supported',
+                );
+              }
               if (state.isWalletUnavailable) {
                 context.showWarningToast(
                   title: 'Wallet Unavailable',
