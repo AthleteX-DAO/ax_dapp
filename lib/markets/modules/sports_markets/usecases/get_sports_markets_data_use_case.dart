@@ -1,13 +1,22 @@
 import 'package:ax_dapp/markets/markets.dart';
+import 'package:flutter/widgets.dart';
 
-import 'package:tokens_repository/tokens_repository.dart';
-
-class GetSportsDataUseCase {
-  GetSportsDataUseCase({
-    required TokensRepository tokensRepository,
+class GetSportsMarketsDataUseCase {
+  GetSportsMarketsDataUseCase({
+    required this.sportsMarketsRepository,
   });
 
-  Future<SportsMarketsModel> fetchSportsMarkets() async {
-    final allSportsMarkets = <SportsMarketsModel>[];
+  SportsMarketsRepository sportsMarketsRepository;
+
+  Future<List<SportsMarketsModel>> fetchliveMarkets() async {
+    var allSportsMarkets = <SportsMarketsModel>[];
+
+    final sx = await sportsMarketsRepository.fetchSXMarkets();
+
+    for (final element in sx) {
+      debugPrint('$element');
+      allSportsMarkets.add(element);
+    }
+    return sx;
   }
 }

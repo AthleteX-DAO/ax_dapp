@@ -1,7 +1,10 @@
 import 'package:ax_dapp/markets/markets.dart' hide ViewButton;
 import 'package:ax_dapp/markets/modules/sports_markets/widgets/sports_view_button.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class DesktopSportsCard extends StatelessWidget {
   const DesktopSportsCard({required this.sportsMarketsModel, super.key});
@@ -15,21 +18,28 @@ class DesktopSportsCard extends StatelessWidget {
     return SizedBox(
       height: 70,
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: () {
+          final walletAddress =
+              context.read<WalletBloc>().state.formattedWalletAddress;
+          context.goNamed(
+            'sport',
+            params: {'id': sportsMarketsModel.id.toString()},
+          );
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const Row(
+            Row(
               children: <Widget>[
-                Text('Sport'),
+                SportsDetailsWidget(sportsMarketsModel)
+                    .sportsDetailsCardsForWeb(
+                  _width >= 875,
+                  _width,
+                ),
               ],
             ),
             Row(
               children: [
-                // ScoutBuyButton(
-                //   athlete: athlete,
-                //   isLongToken: isLongToken,
-                // ),
                 if (_width >= 1090) ...[
                   const SizedBox(width: 25),
                   Container(

@@ -33,6 +33,7 @@ class DesktopMarkets extends StatelessWidget {
         global.athleteList = state.athletes;
         liveSports = state.liveSports;
         filteredAthletes = state.filteredAthletes;
+
         if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
           bloc.add(
@@ -50,14 +51,16 @@ class DesktopMarkets extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: const EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 15),
                     child: const Divider(
                       color: Colors.grey,
                     ),
                   ),
                   MarketsFilter(boxConstraints: constraints),
                   //Cause-Effect of the Filters
-                  const DesktopHeaders(),
+                  if (state.status == BlocStatus.success &&
+                      state.selectedMarket == SupportedMarkets.Athlete)
+                    const DesktopHeaders(),
 
                   Stack(
                     alignment: Alignment.center,
@@ -86,7 +89,19 @@ class DesktopMarkets extends StatelessWidget {
                         ),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Crypto)
-                        const Text('Crypto Markets coming soon!')
+                        const Center(
+                          child: SizedBox(
+                            height: 70,
+                            child: Text(
+                              'Crypto Markets coming soon!',
+                              style: TextStyle(
+                                color: Colors.yellow,
+                                fontSize: 30,
+                                fontFamily: 'OpenSans',
+                              ),
+                            ),
+                          ),
+                        )
                     ],
                   ),
                 ],

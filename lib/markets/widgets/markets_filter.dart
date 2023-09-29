@@ -114,11 +114,15 @@ class MarketsFilter extends StatelessWidget {
             onPressed: () {
               myController.clear();
               _selectedMarkets = SupportedMarkets.Sports;
-              bloc.add(
-                const SelectedMarketsChanged(
-                  selectedMarkets: SupportedMarkets.Sports,
-                ),
-              );
+              bloc
+                ..add(
+                  const SelectedMarketsChanged(
+                    selectedMarkets: SupportedMarkets.Sports,
+                  ),
+                )
+                ..add(
+                  FetchSportsMarketsRequested(),
+                );
             },
             child: Text(
               'Sports',
