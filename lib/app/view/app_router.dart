@@ -5,7 +5,6 @@ import 'package:ax_dapp/athlete/view/athlete_page.dart';
 import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
-import 'package:ax_dapp/landing_page/landing_page_wrapper.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/league_game/views/league_game.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
@@ -75,9 +74,7 @@ class AppRouter {
       GoRoute(
         name: 'landing',
         path: '/',
-        builder: (BuildContext context, GoRouterState state) {
-          return const LandingPageWrapper();
-        },
+        redirect: (context, state) => '/trade',
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
@@ -121,7 +118,7 @@ class AppRouter {
                     ),
                   );
                 },
-              )
+              ),
             ],
           ),
           GoRoute(

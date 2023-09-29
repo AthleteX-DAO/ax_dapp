@@ -94,7 +94,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
           const slippageTolerance = 1;
           final tokenFrom = state.tokenFrom;
           final tokenTo = state.tokenTo;
-          // TODO(mretana1999): add autofill feature
 
           void addEventForFromInputValue(String value, TradePageBloc bloc) {
             final _value = value.isEmpty ? '0' : value;
