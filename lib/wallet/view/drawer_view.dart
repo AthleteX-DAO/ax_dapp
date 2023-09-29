@@ -13,7 +13,7 @@ class DrawerView extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Drawer(
-      width: width / 3,
+      width: width < 769 ? width : width / 3,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
