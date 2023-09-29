@@ -27,13 +27,15 @@ class SignUpButton extends StatelessWidget {
           Size(width / 2, height * 0.10),
         ),
       ),
-      child: Text(
-        'Sign Up',
-        style: TextStyle(
-          color: Colors.amber[400],
-          fontSize: 40,
-          fontFamily: 'OpenSans',
-          fontWeight: FontWeight.w400,
+      child: FittedBox(
+        child: Text(
+          'Sign Up',
+          style: TextStyle(
+            color: Colors.amber[400],
+            fontSize: 40,
+            fontFamily: 'OpenSans',
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
       onPressed: () {

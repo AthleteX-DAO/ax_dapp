@@ -47,7 +47,12 @@ class DrawerView extends StatelessWidget {
                   ],
                 );
               } else {
-                return const Column(children: [SignUpButton(), Login()]);
+                return const Column(
+                  children: [
+                    SignUpButton(),
+                    Login(),
+                  ],
+                );
               }
             },
           ),
