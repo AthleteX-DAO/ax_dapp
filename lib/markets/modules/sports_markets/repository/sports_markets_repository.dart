@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ax_dapp/markets/markets.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -19,15 +20,19 @@ class SportsMarketsRepository {
     final response = await http.get(baseDataUrl, headers: headers);
     final json = jsonDecode(response.body);
     final marketsData = json['data']['markets'];
+    debugPrint('Sports Markets Data: $marketsData');
     final liveSXMarketsList =
-        List<Map<dynamic, dynamic>>.from(marketsData as Iterable<dynamic>);
+        List<Map<String, dynamic>>.from(marketsData as Iterable<dynamic>);
 
     final marketsMap = liveSXMarketsList
         .map(
           (e) => {
-            'id': e['sportId'] as String,
+            'id': e['sportId'] as int,
             'name': e['teamOneName'] as String,
-            'recentPrice': e['line'] as int,
+            'outcomeOneName': e['outcomeOneName'] as String,
+            'outcomeTwoName': e['outcomeTwoName'] as String,
+            'marketHash': e['marketHash'] as String,
+            'recentPrice': e['line'] as double,
           },
         )
         .toList();
