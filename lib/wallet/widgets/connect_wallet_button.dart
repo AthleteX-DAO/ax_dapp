@@ -1,4 +1,3 @@
-import 'package:ax_dapp/wallet/widgets/dialogs/wallet_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ConnectWalletButton extends StatelessWidget {

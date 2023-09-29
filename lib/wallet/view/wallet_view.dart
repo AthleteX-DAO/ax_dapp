@@ -44,9 +44,6 @@ class WalletView extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.walletStatus != current.walletStatus,
         builder: (_, state) {
-          if (state.isWalletConnected) {
-            return const AccountBox();
-          }
           return const ConnectWalletButton();
         },
       ),

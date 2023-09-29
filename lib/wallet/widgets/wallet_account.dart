@@ -1,5 +1,4 @@
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:ax_dapp/wallet/widgets/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,7 +42,7 @@ class WalletAccount extends StatelessWidget {
                 ),
               );
             },
-          )
+          ),
         ],
       ),
     );

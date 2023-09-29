@@ -9,7 +9,6 @@ class SignUpButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    const textSize = 20.0;
     return TextButton(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(
