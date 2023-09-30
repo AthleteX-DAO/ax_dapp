@@ -142,6 +142,8 @@ class AppRouter {
                   ),
                   longShortPairRepository:
                       context.read<LongShortPairRepository>(),
+                  sportsMarketsRepository:
+                      context.read<SportsMarketsRepository>(),
                 ),
                 child: const Scout(),
               );

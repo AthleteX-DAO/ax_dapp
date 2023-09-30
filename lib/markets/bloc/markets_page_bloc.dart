@@ -17,6 +17,7 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
     required WalletRepository walletRepository,
     required TokensRepository tokenRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
+    required this.sportsMarketsRepository,
     required this.sportsRepo,
     required this.repo,
     required this.longShortPairRepository,
@@ -41,6 +42,7 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
   final GetScoutAthletesDataUseCase repo;
   final GetSportsMarketsDataUseCase sportsRepo;
   final LongShortPairRepository longShortPairRepository;
+  final SportsMarketsRepository sportsMarketsRepository;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,

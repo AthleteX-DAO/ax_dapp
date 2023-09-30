@@ -198,6 +198,9 @@ void main() async {
                   context.read<PredictionAddressRepository>(),
             ),
           ),
+          RepositoryProvider(
+            create: (context) => SportsMarketsRepository(),
+          ),
         ],
         child: App(configRepository: configRepository),
       );

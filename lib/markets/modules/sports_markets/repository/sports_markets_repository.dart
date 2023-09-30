@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ax_dapp/markets/markets.dart';
+import 'package:ax_dapp/markets/modules/sports_markets/models/sx_markets_models/sx_market.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
@@ -15,34 +16,33 @@ class SportsMarketsRepository {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
       'Access-Control-Allow-Headers':
-          'Content-Type, Authorization, X-Requested-With'
+          'Content-Type, Authorization, X-Requested-With',
     };
     final response = await http.get(baseDataUrl, headers: headers);
-    final json = jsonDecode(response.body);
-    final marketsData = json['data']['markets'];
-    debugPrint('Sports Markets Data: $marketsData');
-    final liveSXMarketsList =
-        List<Map<String, dynamic>>.from(marketsData as Iterable<dynamic>);
+    final data = jsonDecode(response.body);
+    final sxBetMarkets = SXMarket.fromJson(data as Map<String, dynamic>);
 
-    final marketsMap = liveSXMarketsList
-        .map(
-          (e) => {
-            'id': e['sportId'] as int,
-            'name': e['teamOneName'] as String,
-            'outcomeOneName': e['outcomeOneName'] as String,
-            'outcomeTwoName': e['outcomeTwoName'] as String,
-            'marketHash': e['marketHash'] as String,
-            'recentPrice': e['line'] as double,
-          },
-        )
-        .toList();
-    for (final markets in marketsMap) {
-      final id = markets['id'] as int;
-      final name = markets['name'] as String;
+    debugPrint('Sports Markets Data: $sxBetMarkets');
+
+    // final marketsMap = liveSXMarketsList
+    //     .map(
+    //       (e) => {
+    //         'id': e['sportId'] as int,
+    //         'name': e['teamOneName'] as String,
+    //         'outcomeOneName': e['outcomeOneName'] as String,
+    //         'outcomeTwoName': e['outcomeTwoName'] as String,
+    //         'marketHash': e['marketHash'] as String,
+    //         'recentPrice': e['line'] as double,
+    //       },
+    //     )
+    //     .toList();
+    for (final markets in sxBetMarkets.data.markets) {
+      final id = markets.sportId;
+      final name = markets.teamOneName;
       const typeOfMarket = SupportedMarkets.Sports;
       const marketPrice = 0.0;
       const bookPrice = 0.0;
-      final recentPrice = markets['recentPrice'] as double;
+      final recentPrice = markets.line;
       marketsLive.add(
         SportsMarketsModel(
           id: id,
@@ -54,6 +54,7 @@ class SportsMarketsRepository {
         ),
       );
     }
+    debugPrint('$marketsLive');
     return marketsLive;
   }
 
