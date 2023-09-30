@@ -1,11 +1,9 @@
 import 'package:ax_dapp/wallet/widgets/wallet_account.dart';
 import 'package:ax_dapp/wallet/widgets/wallet_ax.dart';
 import 'package:ax_dapp/wallet/widgets/wallet_chain.dart';
-import 'package:ax_dapp/wallet/widgets/wallet_gas.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// Previously known as the "account box".
 class WalletProfile extends StatelessWidget {
   const WalletProfile({super.key});
 
@@ -13,11 +11,9 @@ class WalletProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     var width = 500.0;
-    var showMatic = true;
     var showProfileBox = true;
 
     if (_width < 835) {
-      showMatic = false;
       width = 350;
     }
     if (_width < 825) {
@@ -43,7 +39,6 @@ class WalletProfile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           const WalletChain(),
-          if (showMatic) const WalletMatic(),
           if (showProfileBox) const WalletAx(),
           const WalletAccount(),
         ],

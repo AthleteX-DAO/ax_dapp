@@ -1,6 +1,8 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// TODO(Ryan): Remove ignore message when package is ready to use
+// ignore: unused_import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 

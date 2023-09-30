@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AccountDialog extends StatelessWidget {
-  const AccountDialog({super.key});
+class Account extends StatelessWidget {
+  const Account({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,6 @@ class AccountDialog extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
@@ -106,7 +105,6 @@ class AccountDialog extends StatelessWidget {
                             height: 65,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              // crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   'Connected With Metamask',
@@ -241,7 +239,7 @@ class AccountDialog extends StatelessWidget {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -16,6 +16,9 @@ class AppScaffold extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        actions: [
+          Container(),
+        ],
         title: kIsWeb &&
                 (MediaQuery.of(context).orientation == Orientation.landscape)
             ? const TopNavigationBarWeb()
