@@ -9,7 +9,7 @@ class Market {
     required this.teamTwoName,
     required this.participantOneId,
     required this.participantTwoId,
-    required this.marketType,
+    required this.type,
     required this.gameTime,
     required this.line,
     required this.teamOneScore,
@@ -36,7 +36,7 @@ class Market {
       teamTwoName: json['teamTwoName'] as String,
       participantOneId: json['participantOneId'] as int,
       participantTwoId: json['participantTwoId'] as int,
-      marketType: json['marketType'] as int,
+      type: json['type'] as int,
       gameTime: json['gameTime'] as int,
       line: json['line'] as double,
       teamOneScore: json['teamOneScore'] as int,
@@ -62,7 +62,7 @@ class Market {
   final String teamTwoName;
   final int participantOneId;
   final int participantTwoId;
-  final int marketType;
+  final int type;
   final int gameTime;
   final double line;
   final int teamOneScore;
