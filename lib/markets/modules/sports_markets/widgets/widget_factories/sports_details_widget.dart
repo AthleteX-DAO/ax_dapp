@@ -1,10 +1,10 @@
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ethereum_api/tokens_api.dart';
+import 'sx_bet_sports_details_widgets.dart';
 import 'package:flutter/material.dart';
 
 abstract class SportsDetailsWidget {
   factory SportsDetailsWidget(SportsMarketsModel sportsMarkets) {
-    return NoSportsStatsShownWidget();
+    return SXBetSportsDetailsWidget();
   }
   Widget sportsPageDetails();
   Widget sportsPageKeyStatistics();
