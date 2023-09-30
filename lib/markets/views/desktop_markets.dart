@@ -30,7 +30,9 @@ class DesktopMarkets extends StatelessWidget {
       },
       builder: (context, state) {
         final bloc = context.read<MarketsPageBloc>();
-        global.athleteList = state.athletes;
+        global
+          ..athleteList = state.athletes
+          ..liveSportsMarkets = state.liveSports;
         liveSports = state.liveSports;
         filteredAthletes = state.filteredAthletes;
 
@@ -72,9 +74,6 @@ class DesktopMarkets extends StatelessWidget {
                         FilterMenuError(
                           selectedChain: _selectedChain,
                         ),
-                      if (state.status == BlocStatus.success &&
-                          filteredAthletes.isEmpty)
-                        const NoResultFound(),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Athlete)
                         AthleteMarkets(

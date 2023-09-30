@@ -22,8 +22,8 @@ class DesktopSportsCard extends StatelessWidget {
           final walletAddress =
               context.read<WalletBloc>().state.formattedWalletAddress;
           context.goNamed(
-            'sport',
-            params: {'id': sportsMarketsModel.id.toString()},
+            'sports-markets',
+            params: {'id': sportsMarketsModel.name},
           );
         },
         child: Row(

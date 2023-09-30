@@ -160,10 +160,10 @@ class AppRouter {
               ),
               GoRoute(
                 name: 'sports-markets',
-                path: 'sport/:id',
+                path: 'sport/:name',
                 builder: (BuildContext context, GoRouterState state) {
                   return SportsPage(
-                    sport: _goToSportsMarketById(state.params['id']!),
+                    sport: _goToSportsMarketByName(state.params['name']!),
                   );
                 },
               ),
@@ -287,10 +287,10 @@ class AppRouter {
   GoRouter get router => _router;
 }
 
-SportsMarketsModel _goToSportsMarketById(String id) {
+SportsMarketsModel _goToSportsMarketByName(String name) {
   final liveSports = Global().liveSportsMarkets;
   return liveSports.firstWhere(
-    (element) => element.id == id,
+    (element) => element.name == name,
     orElse: () => SportsMarketsModel.empty,
   );
 }
