@@ -26,19 +26,7 @@ class SportsMarketsRepository {
     final sxBetMarkets = SXMarket.fromJson(data as Map<String, dynamic>);
 
     debugPrint('Sports Markets Data: $sxBetMarkets');
-
-    // final marketsMap = liveSXMarketsList
-    //     .map(
-    //       (e) => {
-    //         'id': e['sportId'] as int,
-    //         'name': e['teamOneName'] as String,
-    //         'outcomeOneName': e['outcomeOneName'] as String,
-    //         'outcomeTwoName': e['outcomeTwoName'] as String,
-    //         'marketHash': e['marketHash'] as String,
-    //         'recentPrice': e['line'] as double,
-    //       },
-    //     )
-    //     .toList();
+    
     for (final markets in sxBetMarkets.data.markets) {
       final id = markets.sportId;
       final name = markets.teamOneName;
