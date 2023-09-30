@@ -20,6 +20,9 @@ class SportsMarketsRepository {
     };
     final response = await http.get(baseDataUrl, headers: headers);
     final data = jsonDecode(response.body);
+    debugPrint(
+      'Sports Markets Response: $response \n\n\n response Data: $data',
+    );
     final sxBetMarkets = SXMarket.fromJson(data as Map<String, dynamic>);
 
     debugPrint('Sports Markets Data: $sxBetMarkets');
