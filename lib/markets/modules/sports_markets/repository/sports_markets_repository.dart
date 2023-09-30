@@ -18,34 +18,40 @@ class SportsMarketsRepository {
       'Access-Control-Allow-Headers':
           'Content-Type, Authorization, X-Requested-With',
     };
-    final response = await http.get(baseDataUrl, headers: headers);
-    final data = jsonDecode(response.body);
-    debugPrint(
-      'Sports Markets Response: $response \n\n\n response Data: $data',
-    );
-    final sxBetMarkets = SXMarket.fromJson(data as Map<String, dynamic>);
-
-    debugPrint('Sports Markets Data: $sxBetMarkets');
-    
-    for (final markets in sxBetMarkets.data.markets) {
-      final id = markets.sportId;
-      final name = markets.teamOneName;
-      const typeOfMarket = SupportedMarkets.Sports;
-      const marketPrice = 0.0;
-      const bookPrice = 0.0;
-      final recentPrice = markets.line;
-      marketsLive.add(
-        SportsMarketsModel(
-          id: id,
-          name: name,
-          typeOfMarket: typeOfMarket,
-          marketPrice: marketPrice,
-          recentPrice: recentPrice,
-          bookPrice: bookPrice,
-        ),
+    try {
+      final response = await http.get(baseDataUrl, headers: headers);
+      final data = jsonDecode(response.body);
+      debugPrint(
+        'Sports Markets Response: $response \n\n\n response Data: $data',
       );
+      final sxBetMarkets = SXMarket.fromJson(data as Map<String, dynamic>);
+
+      debugPrint('Sports Markets Data: $sxBetMarkets');
+
+      for (final markets in sxBetMarkets.data.markets) {
+        final id = markets.sportId;
+        final name = markets.teamOneName;
+        const typeOfMarket = SupportedMarkets.Sports;
+        const marketPrice = 0.0;
+        const bookPrice = 0.0;
+        final recentPrice = markets.line;
+        marketsLive.add(
+          SportsMarketsModel(
+            id: id,
+            name: name,
+            typeOfMarket: typeOfMarket,
+            marketPrice: marketPrice,
+            recentPrice: recentPrice,
+            bookPrice: bookPrice,
+          ),
+        );
+      }
+      debugPrint('$marketsLive');
+    } catch (e) {
+      debugPrint('$e');
+      return [];
     }
-    debugPrint('$marketsLive');
+
     return marketsLive;
   }
 

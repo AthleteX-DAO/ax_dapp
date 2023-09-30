@@ -1,5 +1,4 @@
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:flutter/widgets.dart';
 
 class GetSportsMarketsDataUseCase {
   GetSportsMarketsDataUseCase({
@@ -9,14 +8,12 @@ class GetSportsMarketsDataUseCase {
   SportsMarketsRepository sportsMarketsRepository;
 
   Future<List<SportsMarketsModel>> fetchliveMarkets() async {
-    var allSportsMarkets = <SportsMarketsModel>[];
+    final allSportsMarkets = <SportsMarketsModel>[];
+    final sxMarkets = await sportsMarketsRepository.fetchSXMarkets();
 
-    final sx = await sportsMarketsRepository.fetchSXMarkets();
-
-    for (final element in sx) {
-      debugPrint('$element');
-      allSportsMarkets.add(element);
+    for (final market in sxMarkets) {
+      allSportsMarkets.add(market);
     }
-    return sx;
+    return sxMarkets;
   }
 }
