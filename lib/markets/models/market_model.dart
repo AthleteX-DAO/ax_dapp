@@ -5,26 +5,21 @@ class MarketModel extends Equatable {
   const MarketModel({
     required this.id,
     required this.name,
+    required this.marketHash,
     required this.typeOfMarket,
-    required this.marketPrice,
-    required double recentPrice,
-    required this.bookPrice,
-  }) : percentage = recentPrice > 0
-            ? (marketPrice - recentPrice) * 100 / recentPrice
-            : 0.0;
+  });
 
   final int id;
   final String name;
+  final String marketHash;
   final SupportedMarkets typeOfMarket;
-  final double marketPrice;
-  final double percentage;
-  final double bookPrice;
 
   @override
   List<Object?> get props => [
-        marketPrice,
-        percentage,
-        bookPrice,
+        id,
+        name,
+        marketHash,
+        typeOfMarket,
       ];
 
   // this purpose of this line is to generate some fake data because we don't
