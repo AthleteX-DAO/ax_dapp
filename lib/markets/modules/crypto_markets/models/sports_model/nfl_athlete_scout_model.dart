@@ -14,6 +14,7 @@ class NFLAthleteScoutModel extends AthleteScoutModel {
     required double? shortTokenBookPricePercent,
     required super.sport,
     required super.time,
+    required super.athleteTokenAddress,
     required double? longTokenPrice,
     required double? shortTokenPrice,
     required double? longTokenPercentage,

@@ -6,6 +6,7 @@ class MLBAthleteScoutModel extends AthleteScoutModel {
     required super.name,
     required super.position,
     required super.team,
+    required super.athleteTokenAddress,
     required double super.longTokenBookPrice,
     required double super.longTokenBookPriceUsd,
     required double super.longTokenBookPricePercent,

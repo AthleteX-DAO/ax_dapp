@@ -236,7 +236,7 @@ class GetScoutAthletesDataUseCase {
     }
   }
 
-  MarketModel getMarketModel(
+  TokenMarketModel getMarketModel(
     String strTokenAddr,
     double bookPrice, {
     required Token axt,
@@ -272,10 +272,7 @@ class GetScoutAthletesDataUseCase {
       recentPrice = double.parse(allPairs[index1].pairHourData![0].reserve0) /
           double.parse(allPairs[index1].pairHourData![0].reserve1);
     }
-    return MarketModel(
-      id: 0,
-      name: '',
-      typeOfMarket: SupportedMarkets.Athlete,
+    return TokenMarketModel(
       marketPrice: marketPrice,
       recentPrice: recentPrice,
       bookPrice: bookPrice * collateralizationMultiplier,
@@ -354,6 +351,7 @@ class GetScoutAthletesDataUseCase {
               atBats: mlbAthlete.atBats,
               weightedOnBasePercentage: mlbAthlete.weightedOnBasePercentage,
               errors: mlbAthlete.errors,
+              athleteTokenAddress: aptPair.address,
             );
           }
           break;
@@ -385,6 +383,7 @@ class GetScoutAthletesDataUseCase {
               receivingYards: nflAthlete.receivingYards,
               receivingTouchdowns: nflAthlete.receivingTouchdowns,
               rushingYards: nflAthlete.rushingYards,
+              athleteTokenAddress: aptPair.address,
             );
           }
           break;
@@ -411,6 +410,7 @@ class GetScoutAthletesDataUseCase {
               shortTokenPercentage: shortToken.percentage,
               longTokenPriceUsd: longToken.marketPrice * axPrice,
               shortTokenPriceUsd: shortToken.marketPrice * axPrice,
+              athleteTokenAddress: aptPair.address,
             );
           }
       }

@@ -8,6 +8,7 @@ class AthleteScoutModel extends MarketModel {
     required this.name,
     required this.position,
     required this.team,
+    required this.athleteTokenAddress,
     required this.longTokenBookPrice,
     required this.longTokenBookPriceUsd,
     required this.longTokenBookPricePercent,
@@ -26,9 +27,7 @@ class AthleteScoutModel extends MarketModel {
           id: id,
           name: name,
           typeOfMarket: SupportedMarkets.Athlete,
-          marketPrice: longTokenPrice ?? 0.0,
-          recentPrice: longTokenPrice ?? 0.0,
-          bookPrice: longTokenBookPrice ?? 0.0,
+          marketHash: athleteTokenAddress,
         );
 
   @override
@@ -37,6 +36,7 @@ class AthleteScoutModel extends MarketModel {
   final String name;
   final String position;
   final String team;
+  final String athleteTokenAddress;
   final double? longTokenBookPrice;
   final double? longTokenBookPriceUsd;
   final double? shortTokenBookPrice;
@@ -57,6 +57,7 @@ class AthleteScoutModel extends MarketModel {
     name: '',
     position: '',
     team: '',
+    athleteTokenAddress: '',
     longTokenBookPrice: 0,
     longTokenBookPriceUsd: 0,
     longTokenBookPricePercent: 0,
