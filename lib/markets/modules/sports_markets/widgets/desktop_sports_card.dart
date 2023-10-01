@@ -23,7 +23,7 @@ class DesktopSportsCard extends StatelessWidget {
               context.read<WalletBloc>().state.formattedWalletAddress;
           context.goNamed(
             'sports-markets',
-            params: {'id': sportsMarketsModel.name},
+            params: {'name': sportsMarketsModel.name},
           );
         },
         child: Row(

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 abstract class SportsDetailsWidget {
   factory SportsDetailsWidget(SportsMarketsModel sportsMarkets) {
-    return SXBetSportsDetailsWidget();
+    return SXBetSportsDetailsWidget(sportsMarketsModel: sportsMarkets);
   }
   Widget sportsPageDetails();
   Widget sportsPageKeyStatistics();
