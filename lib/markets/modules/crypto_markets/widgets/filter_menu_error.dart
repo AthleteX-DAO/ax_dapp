@@ -11,17 +11,17 @@ class FilterMenuError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final warningText = selectedChain == EthereumChain.polygonMainnet
-        ? 'Change to SX network for NFL Tokens'
+        ? 'Change to SX network for SX Betting Markets'
         : selectedChain == EthereumChain.sxMainnet
             ? 'Change to Polygon network for MLB Tokens'
-            : 'Athletes not supported yet';
-
-    return SizedBox(
+            : 'Error producing markets, try reloading the dapp';
+    const warningText2 = 'Error producing markets, try reloading the dapp';
+    return const SizedBox(
       height: 80,
       width: 600,
       child: Text(
-        warningText,
-        style: const TextStyle(
+        warningText2,
+        style: TextStyle(
           color: Colors.amber,
           fontSize: 30,
           fontFamily: 'OpenSans',
