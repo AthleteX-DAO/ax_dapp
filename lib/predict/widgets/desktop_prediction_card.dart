@@ -36,7 +36,7 @@ class DesktopPredictionCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                YesButton(
+                LongButton(
                   prompt: predictionModel,
                 ),
                 if (_width >= 1090) ...[

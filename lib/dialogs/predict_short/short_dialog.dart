@@ -1,11 +1,11 @@
-import 'package:ax_dapp/dialogs/predict_no/bloc/no_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_short/bloc/short_button_bloc.dart';
 import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class NoDialog extends StatelessWidget {
-  const NoDialog({
+class ShortDialog extends StatelessWidget {
+  const ShortDialog({
     super.key,
     required this.predictionModel,
   });
@@ -16,9 +16,9 @@ class NoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     const paddingHorizontal = 20.0;
     final _width = MediaQuery.of(context).size.width;
-    return BlocBuilder<NoButtonBloc, NoButtonState>(
+    return BlocBuilder<ShortButtonBloc, ShortButtonState>(
       builder: (context, state) {
-        final bloc = context.read<NoButtonBloc>();
+        final bloc = context.read<ShortButtonBloc>();
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(

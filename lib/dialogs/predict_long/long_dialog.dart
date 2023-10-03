@@ -1,11 +1,11 @@
-import 'package:ax_dapp/dialogs/predict_yes/bloc/yes_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_long/bloc/long_button_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class YesDialog extends StatelessWidget {
-  const YesDialog({
+class LongDialog extends StatelessWidget {
+  const LongDialog({
     super.key,
     required this.predictionModel,
   });
@@ -16,9 +16,9 @@ class YesDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     const paddingHorizontal = 20.0;
     final _width = MediaQuery.of(context).size.width;
-    return BlocBuilder<YesButtonBloc, YesButtonState>(
+    return BlocBuilder<LongButtonBloc, LongButtonState>(
       builder: (context, state) {
-        final bloc = context.read<YesButtonBloc>();
+        final bloc = context.read<LongButtonBloc>();
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(

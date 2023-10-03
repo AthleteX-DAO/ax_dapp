@@ -126,7 +126,7 @@ class PromptDetails extends StatelessWidget {
               ],
             ),
           ),
-          // Yes & No Button
+          // Long & Short Button
 
           SizedBox(
             height: 150,
@@ -140,10 +140,10 @@ class PromptDetails extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    YesButton(
+                    LongButton(
                       prompt: predictionModel,
                     ),
-                    NoButton(
+                    ShortButton(
                       prompt: predictionModel,
                     )
                   ],

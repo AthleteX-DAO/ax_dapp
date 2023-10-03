@@ -1,9 +1,9 @@
+import 'package:ax_dapp/dialogs/predict_long/bloc/long_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_long/long_dialog.dart';
 import 'package:ax_dapp/dialogs/predict_mint/bloc/mint_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_no/bloc/no_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_no/no_dialog.dart';
 import 'package:ax_dapp/dialogs/predict_redeem/bloc/redeem_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_yes/bloc/yes_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_yes/yes_dialog.dart';
+import 'package:ax_dapp/dialogs/predict_short/bloc/short_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_short/short_dialog.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
@@ -46,7 +46,7 @@ class GenericMintButton extends StatelessWidget {
                       context.read<StreamAppDataChangesUseCase>(),
                   walletRepository: context.read<WalletRepository>(),
                 ),
-                child: YesDialog(
+                child: LongDialog(
                   predictionModel: prompt,
                 ),
               ),
@@ -69,8 +69,8 @@ class GenericMintButton extends StatelessWidget {
   }
 }
 
-class NoButton extends StatelessWidget {
-  const NoButton({
+class ShortButton extends StatelessWidget {
+  const ShortButton({
     super.key,
     required this.prompt,
   });
@@ -92,7 +92,7 @@ class NoButton extends StatelessWidget {
               primaryWhiteColor,
             )
           : boxDecoration(
-              Colors.black,
+              primaryGreenColor,
               100,
               0,
               Colors.white,
@@ -111,14 +111,14 @@ class NoButton extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (context) => BlocProvider(
-                create: (context) => NoButtonBloc(
+                create: (context) => ShortButtonBloc(
                   repo: context.read<GetBuyInfoUseCase>(),
                   eventMarketRepository: context.read<EventMarketRepository>(),
                   streamAppDataChangesUseCase:
                       context.read<StreamAppDataChangesUseCase>(),
                   walletRepository: context.read<WalletRepository>(),
                 ),
-                child: NoDialog(
+                child: ShortDialog(
                   predictionModel: prompt,
                 ),
               ),
@@ -128,7 +128,7 @@ class NoButton extends StatelessWidget {
           }
         },
         child: Text(
-          'No',
+          'Short',
           style: invalidAddr
               ? textStyle(
                   Colors.black,
@@ -177,7 +177,7 @@ class GenericRedeemButton extends StatelessWidget {
                       context.read<StreamAppDataChangesUseCase>(),
                   walletRepository: context.read<WalletRepository>(),
                 ),
-                child: YesDialog(
+                child: LongDialog(
                   predictionModel: prompt,
                 ),
               ),
@@ -200,8 +200,8 @@ class GenericRedeemButton extends StatelessWidget {
   }
 }
 
-class YesButton extends StatelessWidget {
-  const YesButton({
+class LongButton extends StatelessWidget {
+  const LongButton({
     super.key,
     required this.prompt,
   });
@@ -223,7 +223,7 @@ class YesButton extends StatelessWidget {
               primaryWhiteColor,
             )
           : boxDecoration(
-              primaryOrangeColor,
+              primaryRedColor,
               100,
               0,
               primaryWhiteColor,
@@ -242,14 +242,14 @@ class YesButton extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (context) => BlocProvider(
-                create: (context) => YesButtonBloc(
+                create: (context) => LongButtonBloc(
                   repo: context.read<GetSwapInfoUseCase>(),
                   eventMarketRepository: context.read<EventMarketRepository>(),
                   streamAppDataChangesUseCase:
                       context.read<StreamAppDataChangesUseCase>(),
                   walletRepository: context.read<WalletRepository>(),
                 ),
-                child: YesDialog(
+                child: LongDialog(
                   predictionModel: prompt,
                 ),
               ),
@@ -259,7 +259,7 @@ class YesButton extends StatelessWidget {
           }
         },
         child: Text(
-          'Yes',
+          'Long',
           style: textStyle(
             Colors.black,
             20,

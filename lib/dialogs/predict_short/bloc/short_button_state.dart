@@ -1,7 +1,7 @@
-part of 'no_button_bloc.dart';
+part of 'short_button_bloc.dart';
 
-class NoButtonState extends Equatable {
-  const NoButtonState({
+class ShortButtonState extends Equatable {
+  const ShortButtonState({
     this.status = BlocStatus.initial,
     this.errorMessage = '',
     this.aptBuyInfo = AptBuyInfo.empty,
@@ -21,13 +21,13 @@ class NoButtonState extends Equatable {
         errorMessage,
       ];
 
-  NoButtonState copyWith({
+  ShortButtonState copyWith({
     BlocStatus? status,
     String? errorMessage,
     AptBuyInfo? aptBuyInfo,
     AptSellInfo? aptSellInfo,
   }) {
-    return NoButtonState(
+    return ShortButtonState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       aptBuyInfo: aptBuyInfo ?? this.aptBuyInfo,

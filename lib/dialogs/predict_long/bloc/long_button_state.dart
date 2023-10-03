@@ -1,7 +1,7 @@
-part of 'yes_button_bloc.dart';
+part of 'long_button_bloc.dart';
 
-class YesButtonState extends Equatable {
-  const YesButtonState({
+class LongButtonState extends Equatable {
+  const LongButtonState({
     this.status = BlocStatus.initial,
     this.errorMessage = '',
     this.swapInfo = SwapInfo.empty,
@@ -24,14 +24,14 @@ class YesButtonState extends Equatable {
         errorMessage,
       ];
 
-  YesButtonState copyWith({
+  LongButtonState copyWith({
     BlocStatus? status,
     String? errorMessage,
     SwapInfo? swapInfo,
     AptBuyInfo? aptBuyInfo,
     AptSellInfo? aptSellInfo,
   }) {
-    return YesButtonState(
+    return LongButtonState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       swapInfo: swapInfo ?? this.swapInfo,
