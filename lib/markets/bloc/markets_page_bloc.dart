@@ -158,15 +158,14 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
     Emitter<MarketsPageState> emit,
   ) async {
     try {
-      if (event.selectedMarkets != SupportedMarkets.all) {
-        emit(
-          state.copyWith(
-            status: BlocStatus.success,
-            selectedMarket: event.selectedMarkets,
-          ),
-        );
-      }
-    } catch (_) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          selectedMarket: event.selectedMarkets,
+        ),
+      );
+    } catch (error) {
+      debugPrint('ERROR SELECTING MARKETS $error');
       emit(state.copyWith(status: BlocStatus.error));
     }
   }
