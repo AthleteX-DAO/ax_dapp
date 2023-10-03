@@ -1,7 +1,11 @@
 import 'package:ax_dapp/markets/markets.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallet_repository/wallet_repository.dart';
+
+import 'sports_page_web_view.dart';
 
 class SportsPage extends StatelessWidget {
   const SportsPage({
@@ -9,21 +13,30 @@ class SportsPage extends StatelessWidget {
     required this.sport,
   });
 
-  final SportsMarketsModel? sport;
+  final SportsMarketsModel sport;
 
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
-
-    return SizedBox(
-      height: 70,
-      child: OutlinedButton(
-        onPressed: () {
-          final walletAddress =
-              context.read<WalletBloc>().state.formattedWalletAddress;
+    return BlocProvider(
+      create: (context) => SportsPageBloc(
+        walletRepository: context.read<WalletRepository>(),
+        sportsMarketsRepository: context.read<SportsMarketsRepository>(),
+      ),
+      child: BlocListener<SportsPageBloc, SportsPageState>(
+        listener: (context, state) {
+          if (state.failure is DisconnectedWalletFailure) {
+            context.showWalletWarningToast();
+          }
+          if (state.failure is InvalidAthleteFailure) {
+            context.showWarningToast(
+              title: 'Error',
+              description: 'Cannot add athlete to wallet',
+            );
+          }
         },
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: SportsPageWebView(
+          sportsMarketsModel: sport,
         ),
       ),
     );
