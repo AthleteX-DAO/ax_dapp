@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/markets/modules/sports_markets/models/sx_markets_models/sx_market.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
@@ -30,19 +29,18 @@ class SportsMarketsRepository {
 
       for (final markets in sxBetMarkets.data.markets) {
         final id = markets.sportId;
-        final name = markets.teamOneName;
+        final name = '${markets.leagueLabel} ${markets.line}';
         const typeOfMarket = SupportedMarkets.Sports;
-        const marketPrice = 0.0;
-        const bookPrice = 0.0;
-        final recentPrice = markets.line;
+        final marketHash = markets.marketHash;
+        final bookPrice = markets.mainLine;
+        final marketLine = markets.line;
         marketsLive.add(
           SportsMarketsModel(
             id: id,
             name: name,
             typeOfMarket: typeOfMarket,
-            marketPrice: marketPrice,
-            recentPrice: recentPrice,
-            bookPrice: bookPrice,
+            marketHash: marketHash,
+            line: marketLine,
           ),
         );
       }
