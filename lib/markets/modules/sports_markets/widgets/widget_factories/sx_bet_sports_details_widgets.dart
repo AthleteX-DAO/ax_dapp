@@ -3,19 +3,56 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
 class SXBetSportsDetailsWidget implements SportsDetailsWidget {
-  const SXBetSportsDetailsWidget(this.sportsMarketsModel);
+  const SXBetSportsDetailsWidget({
+    required this.sportsMarketsModel,
+  });
 
   final SportsMarketsModel sportsMarketsModel;
 
   @override
   Widget sportsDetailsCardsForMobile(bool showIcon, double athNameBx) {
-    // TODO: implement sportsDetailsCardsForMobile
-    throw UnimplementedError();
+    return Row(
+      children: [
+        SizedBox(
+          width: 50,
+          child: Icon(
+            Icons.trending_up_rounded,
+            color: Colors.grey[700],
+          ),
+        ),
+        SizedBox(
+          width: athNameBx,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                sportsMarketsModel.name,
+                style: textStyle(
+                  Colors.white,
+                  16,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                'Line: ${sportsMarketsModel.line}',
+                style: textStyle(
+                  Colors.grey[700]!,
+                  10,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   @override
   Widget sportsDetailsCardsForWeb(bool team, double _width) {
-    // TODO: implement sportsDetailsCardsForWeb
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -26,7 +63,7 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
           ),
         ),
         SizedBox(
-          width: _width * 0.1,
+          width: _width * 0.5,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,15 +77,6 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                   isUline: false,
                 ),
               ),
-              Text(
-                sportsMarketsModel.id as String,
-                style: textStyle(
-                  Colors.grey[700]!,
-                  10,
-                  isBold: false,
-                  isUline: false,
-                ),
-              )
             ],
           ),
         )
