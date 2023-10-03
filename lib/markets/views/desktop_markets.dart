@@ -46,19 +46,22 @@ class DesktopMarkets extends StatelessWidget {
           builder: (BuildContext context, BoxConstraints constraints) {
             return Container(
               margin: const EdgeInsets.only(top: 20),
-              height: constraints.maxHeight * 0.85 + 41,
+              height: constraints.maxHeight * 0.90,
               width: constraints.maxWidth * 0.99,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: const EdgeInsets.only(top: 15),
+                    margin: const EdgeInsets.only(top: 10),
                     child: const Divider(
                       color: Colors.grey,
                     ),
                   ),
-                  MarketsFilter(boxConstraints: constraints),
+                  MarketsFilter(
+                    boxConstraints: constraints,
+                    pageState: state,
+                  ),
                   //Cause-Effect of the Filters
                   if (state.status == BlocStatus.success &&
                       state.selectedMarket == SupportedMarkets.Athlete)
@@ -75,17 +78,36 @@ class DesktopMarkets extends StatelessWidget {
                           selectedChain: _selectedChain,
                         ),
                       if (state.status == BlocStatus.success &&
+                          state.selectedMarket == SupportedMarkets.all)
+                        SizedBox(
+                          height: constraints.maxHeight * 0.8 - 120,
+                          child: const Center(
+                            child: SizedBox(
+                              height: 70,
+                              child: Text(
+                                'Select a market from the tabs above',
+                                style: TextStyle(
+                                  color: Colors.yellow,
+                                  fontSize: 30,
+                                  fontFamily: 'OpenSans',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Athlete)
+                        //Removed athlete listings because no athletes are actually live
                         AthleteMarkets(
                           filteredAthletes: filteredAthletes,
                           boxConstraints: constraints,
-                        ),
+                        ).athleteDesktopMarkets(),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Sports)
                         SportsMarkets(
                           sportsMarkets: liveSports,
                           boxConstraints: constraints,
-                        ),
+                        ).sportsDesktopMarkets(),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Crypto)
                         const Center(
@@ -100,7 +122,16 @@ class DesktopMarkets extends StatelessWidget {
                               ),
                             ),
                           ),
-                        )
+                        ),
+                      // Default view
+                      SizedBox(
+                        height: constraints.maxHeight * 0.8 - 120,
+                        child: const Center(
+                          child: SizedBox(
+                            height: 70,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],
