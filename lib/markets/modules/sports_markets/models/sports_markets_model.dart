@@ -5,26 +5,28 @@ class SportsMarketsModel extends MarketModel {
   const SportsMarketsModel({
     required this.id,
     required this.name,
+    required this.marketHash,
     required super.typeOfMarket,
-    required super.marketPrice,
-    required super.recentPrice,
-    required super.bookPrice,
-  }) : super(id: id, name: name);
+    required this.line,
+  }) : super(id: id, name: name, marketHash: marketHash);
 
   @override
   final int id;
   @override
   final String name;
+  @override
+  final String marketHash;
+
+  final double line;
 
   static const empty = SportsMarketsModel(
     id: 0,
     name: '',
     typeOfMarket: SupportedMarkets.Sports,
-    marketPrice: 0,
-    recentPrice: 0,
-    bookPrice: 0,
+    marketHash: '',
+    line: 0,
   );
 
   @override
-  List<Object?> get props => [id, name, typeOfMarket, marketPrice];
+  List<Object?> get props => [id, name, marketHash, typeOfMarket, line];
 }
