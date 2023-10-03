@@ -31,6 +31,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
   int _marketVsBookPriceIndex = 0;
   EthereumChain? _selectedChain;
   String selectedAthlete = '';
+  List<SportsMarketsModel> liveSports = [];
   List<AthleteScoutModel> filteredAthletes = [];
 
   @override
@@ -57,15 +58,25 @@ class _MobileMarketsState extends State<MobileMarkets> {
       },
       builder: (context, state) {
         final bloc = context.read<MarketsPageBloc>();
-        global.athleteList = state.athletes;
-        filteredAthletes = state.filteredAthletes as List<AthleteScoutModel>;
+        global
+          ..athleteList = state.athletes
+          ..liveSportsMarkets = state.liveSports;
+        filteredAthletes = state.filteredAthletes;
+        liveSports = state.liveSports;
         if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
-          bloc.add(
-            FetchScoutInfoRequested(),
-          );
+          bloc
+            ..add(
+              FetchScoutInfoRequested(),
+            )
+            ..add(
+              const SelectedMarketsChanged(
+                selectedMarkets: SupportedMarkets.Sports,
+              ),
+            );
         }
         _selectedSport = state.selectedSport;
+
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             return SingleChildScrollView(
@@ -101,354 +112,10 @@ class _MobileMarketsState extends State<MobileMarkets> {
                             height: 20,
                             child: Row(
                               children: [
-                                Text(
-                                  'Live Markets',
-                                  style: textStyle(
-                                    Colors.white,
-                                    18,
-                                    isBold: false,
-                                    isUline: false,
-                                  ),
-                                ),
-                                Text(
-                                  '|',
-                                  style: textStyle(
-                                    Colors.white,
-                                    18,
-                                    isBold: false,
-                                    isUline: false,
-                                  ),
-                                ),
-                                // sport filter dropdown
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: PopupMenuButton(
-                                    // dropdown options
-                                    itemBuilder: (context) => [
-                                      PopupMenuItem(
-                                        value: 1,
-                                        child: ListTile(
-                                          title: Align(
-                                            child: Text(
-                                              'All Sports',
-                                              style: textSwapState(
-                                                condition: allSportsTitle ==
-                                                    'All Sports',
-                                                tabNotSelected: textStyle(
-                                                  Colors.white,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: false,
-                                                ),
-                                                tabSelected: textStyle(
-                                                  Colors.amber[400]!,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          myController.clear();
-                                          if (allSportsTitle != 'All Sports') {
-                                            setState(
-                                              () {
-                                                allSportsTitle = 'All Sports';
-                                                _selectedSport =
-                                                    SupportedSport.all;
-                                                context
-                                                    .read<MarketsPageBloc>()
-                                                    .add(
-                                                      const SelectedSportChanged(
-                                                        selectedSport:
-                                                            SupportedSport.all,
-                                                      ),
-                                                    );
-                                              },
-                                            );
-                                          }
-                                        },
-                                      ),
-                                      PopupMenuItem(
-                                        height: 5,
-                                        value: 1,
-                                        child: ListTile(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                  right: 8,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.sports_football,
-                                                  size: sportFilterIconSz,
-                                                ),
-                                              ),
-                                              Text(
-                                                'MLB',
-                                                style: textSwapState(
-                                                  condition:
-                                                      allSportsTitle == 'MLB',
-                                                  tabNotSelected: textStyle(
-                                                    Colors.white,
-                                                    sportFilterTxSz,
-                                                    isBold: false,
-                                                    isUline: false,
-                                                  ),
-                                                  tabSelected: textStyle(
-                                                    Colors.amber[400]!,
-                                                    sportFilterTxSz,
-                                                    isBold: false,
-                                                    isUline: true,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          myController.clear();
-                                          if (allSportsTitle != 'MLB') {
-                                            myController.clear();
-                                            setState(
-                                              () {
-                                                allSportsTitle = 'MLB';
-                                                _selectedSport =
-                                                    SupportedSport.MLB;
-                                              },
-                                            );
-                                            context.read<MarketsPageBloc>().add(
-                                                  const SelectedSportChanged(
-                                                    selectedSport:
-                                                        SupportedSport.MLB,
-                                                  ),
-                                                );
-                                          }
-                                        },
-                                      ),
-                                      PopupMenuItem(
-                                        height: 5,
-                                        value: 2,
-                                        child: ListTile(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                  right: 8,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.sports_football,
-                                                  size: sportFilterIconSz,
-                                                ),
-                                              ),
-                                              Text(
-                                                'NFL',
-                                                style: textSwapState(
-                                                  condition:
-                                                      allSportsTitle == 'NFL',
-                                                  tabNotSelected: textStyle(
-                                                    Colors.white,
-                                                    sportFilterTxSz,
-                                                    isBold: false,
-                                                    isUline: false,
-                                                  ),
-                                                  tabSelected: textStyle(
-                                                    Colors.amber[400]!,
-                                                    sportFilterTxSz,
-                                                    isBold: false,
-                                                    isUline: true,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          myController.clear();
-                                          if (allSportsTitle != 'NFL') {
-                                            myController.clear();
-                                            setState(
-                                              () {
-                                                allSportsTitle = 'NFL';
-                                                _selectedSport =
-                                                    SupportedSport.NFL;
-                                              },
-                                            );
-                                            context.read<MarketsPageBloc>().add(
-                                                  const SelectedSportChanged(
-                                                    selectedSport:
-                                                        SupportedSport.NFL,
-                                                  ),
-                                                );
-                                          }
-                                        },
-                                      ),
-                                      PopupMenuItem(
-                                        height: 5,
-                                        value: 2,
-                                        child: ListTile(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                  right: 8,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.sports_football,
-                                                  size: sportFilterIconSz,
-                                                ),
-                                              ),
-                                              Text(
-                                                'NBA',
-                                                style: textSwapState(
-                                                  condition:
-                                                      allSportsTitle == 'NBA',
-                                                  tabNotSelected: textStyle(
-                                                    Colors.white,
-                                                    sportFilterTxSz,
-                                                    isBold: false,
-                                                    isUline: false,
-                                                  ),
-                                                  tabSelected: textStyle(
-                                                    Colors.amber[400]!,
-                                                    sportFilterTxSz,
-                                                    isBold: false,
-                                                    isUline: true,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          myController.clear();
-                                          if (allSportsTitle != 'NBA') {
-                                            myController.clear();
-                                            setState(
-                                              () {
-                                                allSportsTitle = 'NBA';
-                                                _selectedSport =
-                                                    SupportedSport.NBA;
-                                              },
-                                            );
-                                            context.read<MarketsPageBloc>().add(
-                                                  const SelectedSportChanged(
-                                                    selectedSport:
-                                                        SupportedSport.NBA,
-                                                  ),
-                                                );
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                    offset: const Offset(0, 45),
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                    // dropdown title
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          allSportsTitle,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey,
-                                            fontFamily: 'OpenSans',
-                                          ),
-                                        ),
-                                        const Icon(
-                                          Icons.arrow_drop_down_sharp,
-                                          color: Colors.grey,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                // Long/Short filter
-                                PopupMenuButton(
-                                  itemBuilder: (context) => [
-                                    // Long
-                                    PopupMenuItem(
-                                      value: 1,
-                                      child: const ListTile(
-                                        title: Align(
-                                          child: Text(
-                                            'Long',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                              fontFamily: 'OpenSans',
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        setState(
-                                          () {
-                                            isLongToken = true;
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    // Short
-                                    PopupMenuItem(
-                                      height: 5,
-                                      value: 1,
-                                      child: const ListTile(
-                                        title: Align(
-                                          child: Text(
-                                            'Short',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                              fontFamily: 'OpenSans',
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        setState(
-                                          () {
-                                            isLongToken = false;
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                  offset: const Offset(0, 45),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  // dropdown title
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        isLongToken ? 'Long' : 'Short',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey,
-                                          fontFamily: 'OpenSans',
-                                        ),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_drop_down_sharp,
-                                        color: Colors.grey,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                MarketsFilter(
+                                  boxConstraints: constraints,
+                                  pageState: state,
+                                ).mobile(),
                                 const Spacer(),
                                 // search icon
                                 Center(
@@ -654,21 +321,27 @@ class _MobileMarketsState extends State<MobileMarkets> {
                         if (state.status == BlocStatus.success &&
                             filteredAthletes.isEmpty)
                           const NoResultFound(),
+                        if (state.status == BlocStatus.success &&
+                            state.selectedMarket == SupportedMarkets.Sports)
+                          SportsMarkets(
+                            sportsMarkets: liveSports,
+                            boxConstraints: constraints,
+                          ).sportsMobileMarkets(),
+                        if (state.status == BlocStatus.success &&
+                            state.selectedMarket == SupportedMarkets.Athlete)
+                          AthleteMarkets(
+                            filteredAthletes: filteredAthletes,
+                            boxConstraints: constraints,
+                          ).athleteMobileMarkets(),
+                        // Default Structure
                         SizedBox(
                           height: constraints.maxHeight * 0.8 - 120,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.only(top: 10),
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: filteredAthletes.length,
-                            itemBuilder: (context, index) {
-                              return MobileAthleteContents(
-                                athlete: filteredAthletes[index],
-                                marketVsBookPriceIndex: _marketVsBookPriceIndex,
-                                isLongToken: isLongToken,
-                              );
-                            },
+                          child: const Center(
+                            child: SizedBox(
+                              height: 70,
+                            ),
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ],
