@@ -25,8 +25,8 @@ class ViewButton extends StatelessWidget {
               walletId: walletAddress,
             );
         context.goNamed(
-          'sport',
-          params: {'id': sports.id.toString() + sports.name},
+          'sports-markets',
+          params: {'name': sports.name},
         );
       },
       child: SizedBox(
