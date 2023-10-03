@@ -15,6 +15,41 @@ class AthleteMarkets extends StatelessWidget {
   final List<AthleteScoutModel> athletes;
   final BoxConstraints constraints;
 
+  Widget athleteDesktopMarkets() {
+    return SizedBox(
+      height: constraints.maxHeight * 0.8 - 120,
+      child: ListView.builder(
+        padding: const EdgeInsets.only(top: 10),
+        physics: const BouncingScrollPhysics(),
+        itemCount: athletes.length,
+        itemBuilder: (context, index) {
+          return DesktopAthleteCard(
+            athlete: athletes[index],
+            isLongToken: true,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget athleteMobileMarkets() {
+    return SizedBox(
+      height: constraints.maxHeight * 0.8 - 120,
+      child: ListView.builder(
+        padding: const EdgeInsets.only(top: 10),
+        physics: const BouncingScrollPhysics(),
+        itemCount: athletes.length,
+        itemBuilder: (context, index) {
+          return MobileAthleteContents(
+            athlete: athletes[index],
+            marketVsBookPriceIndex: 0,
+            isLongToken: true,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
