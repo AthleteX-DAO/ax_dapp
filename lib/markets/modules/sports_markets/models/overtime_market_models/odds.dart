@@ -3,8 +3,8 @@ import 'package:ax_dapp/markets/modules/sports_markets/models/overtime_market_mo
 
 class Odds {
   Odds({
-    required this.homeOdds,
-    required this.awayOdds,
+    this.homeOdds = HomeOdds.empty,
+    this.awayOdds = AwayOdds.empty,
   });
 
   factory Odds.fromJson(Map<String, dynamic> json) {
@@ -14,6 +14,6 @@ class Odds {
     );
   }
 
-  final HomeOdds homeOdds;
-  final AwayOdds awayOdds;
+  final HomeOdds? homeOdds;
+  final AwayOdds? awayOdds;
 }

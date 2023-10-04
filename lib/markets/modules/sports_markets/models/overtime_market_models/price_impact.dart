@@ -1,6 +1,5 @@
 class PriceImpact {
-
-  PriceImpact({
+  const PriceImpact({
     required this.homePriceImpact,
     required this.awayPriceImpact,
   });
@@ -11,6 +10,12 @@ class PriceImpact {
       awayPriceImpact: json['awayPriceImpact'] as double,
     );
   }
+
+  static const empty = PriceImpact(
+    homePriceImpact: 0,
+    awayPriceImpact: 0,
+  );
+
   final double homePriceImpact;
   final double awayPriceImpact;
 }

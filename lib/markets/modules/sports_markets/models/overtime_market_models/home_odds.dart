@@ -1,6 +1,5 @@
 class HomeOdds {
-
-  HomeOdds({
+  const HomeOdds({
     required this.american,
     required this.decimal,
     required this.normalizedImplied,
@@ -13,6 +12,13 @@ class HomeOdds {
       normalizedImplied: json['normalizedImplied'] as double,
     );
   }
+
+  static const empty = HomeOdds(
+    american: 0,
+    decimal: 0,
+    normalizedImplied: 0,
+  );
+
   final double american;
   final double decimal;
   final double normalizedImplied;
