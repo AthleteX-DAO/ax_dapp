@@ -15,6 +15,7 @@ class OvertimeMarket {
     required this.awayTeam,
     required this.homeScore,
     required this.awayScore,
+    required this.finalResult,
     required this.isResolved,
     required this.isOpen,
     required this.isCanceled,
@@ -40,6 +41,7 @@ class OvertimeMarket {
       awayTeam: json['awayTeam'] as String,
       homeScore: json['homeScore'] as int,
       awayScore: json['awayScore'] as int,
+      finalResult: json['finalResult'] as int,
       isResolved: json['isResolved'] as bool,
       isOpen: json['isOpen'] as bool,
       isCanceled: json['isCanceled'] as bool,
@@ -65,6 +67,7 @@ class OvertimeMarket {
   final String awayTeam;
   final int homeScore;
   final int awayScore;
+  final int finalResult;
   final bool isResolved;
   final bool isOpen;
   final bool isCanceled;
