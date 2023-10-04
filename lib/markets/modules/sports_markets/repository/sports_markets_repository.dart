@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ax_dapp/markets/markets.dart';
+import 'package:ax_dapp/markets/modules/sports_markets/models/overtime_market_models/overtime_market.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
@@ -53,21 +54,47 @@ class SportsMarketsRepository {
     return marketsLive;
   }
 
-  Future<void> fetchOverTimeMarkets() async {
-    const API_URL = 'https://api.thalesmarket.io'; // base API URL
-    const NETWORK_ID = 10; // optimism network ID
-    const NETWORK = 'optimism'; // optimism network
-    const SPORTS_AMM_CONTRACT_ADDRESS =
-        '0x170a5714112daEfF20E798B6e92e25B86Ea603C1'; // SportsAMM contract address on optimism
-    const MARKET_ADDRESS = '0xb157e64720d3ff251023119a5f6557067763b08a';
+  Future<List<SportsMarketsModel>> fetchOverTimeMarkets({
+    required int chainId,
+  }) async {
+    const baseUrl = 'https://api.thalesmarket.io';
+    final url =
+        Uri.parse('$baseUrl/overtime/networks/$chainId/markets?ungroup=true');
+    final marketsLive = <SportsMarketsModel>[];
+    try {
+      final response = await http.get(url);
+      final data = jsonDecode(response.body) as List<dynamic>;
+      debugPrint(
+        'Sports Markets Response: $response \n\n\n response Data: $data',
+      );
+      final overtimeMarkets = data
+          .map(
+            (market) => OvertimeMarket.fromJson(market as Map<String, dynamic>),
+          )
+          .toList();
+      debugPrint('Sports Markets Data: $overtimeMarkets');
+      for (final market in overtimeMarkets) {
+        final id = int.parse(market.gameId);
+        final name = '${market.homeTeam} ${market.awayTeam}';
+        const typeOfMarket = SupportedMarkets.Sports;
+        final marketHash = market.address;
+        const marketLine = 0.0;
+        marketsLive.add(
+          SportsMarketsModel(
+            id: id,
+            name: name,
+            typeOfMarket: typeOfMarket,
+            marketHash: marketHash,
+            line: marketLine,
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('$e');
+      return [];
+    }
 
-    const POSITION = 0; // select Chelsea position
-    const BUY_IN = 100; // 100 sUSD
-    const SLIPPAGE = 0.02; // slippage 2%
-    final overTimeMarkets = <SportsMarketsModel>[];
-    final dio = Dio();
-    const baseUrl =
-        '$API_URL/overtime/networks/$NETWORK_ID/markets/$MARKET_ADDRESS/quote?position=$POSITION&buyIn=$BUY_IN';
+    return marketsLive;
   }
 
   Future<void> fetchPolyMarketsSports() async {}
