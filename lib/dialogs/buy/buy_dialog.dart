@@ -1,7 +1,6 @@
-import 'package:ax_dapp/athlete/athlete.dart' hide AptTypeSelectionChanged;
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/widgets/widgets.dart';
-import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/markets/markets.dart' hide AptTypeSelectionChanged;
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -57,8 +56,8 @@ class _BuyDialogState extends State<BuyDialog> {
       width: wid * 0.25,
       height: hgt * 0.05,
       decoration: boxDecoration(Colors.transparent, 20, 1, Colors.grey[800]!),
-      child: Row(
-        children: const [
+      child: const Row(
+        children: [
           Expanded(
             child: LongAptButton(),
           ),
@@ -188,7 +187,11 @@ class _BuyDialogState extends State<BuyDialog> {
                     },
                     child: Text(
                       'Learn How to buy AX',
-                      style: TextStyle(color: Colors.amber[400], fontSize: 14, fontFamily: 'OpenSans',),
+                      style: TextStyle(
+                        color: Colors.amber[400],
+                        fontSize: 14,
+                        fontFamily: 'OpenSans',
+                      ),
                     ),
                   ),
                 ),

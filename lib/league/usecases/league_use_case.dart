@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:league_repository/league_repository.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 

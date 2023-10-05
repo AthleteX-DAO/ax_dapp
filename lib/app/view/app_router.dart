@@ -1,7 +1,6 @@
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/app_scaffold.dart';
-import 'package:ax_dapp/athlete/view/athlete_page.dart';
 import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
@@ -12,6 +11,8 @@ import 'package:ax_dapp/league/league_search/views/desktop_league.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
+import 'package:ax_dapp/markets/markets.dart';
+import 'package:ax_dapp/markets/views/markets_base.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
@@ -26,13 +27,9 @@ import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
-import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
-import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
-import 'package:ax_dapp/scout/view/scout_base.dart';
+import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
-import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
@@ -126,11 +123,15 @@ class AppRouter {
             path: '/scout',
             builder: (BuildContext context, GoRouterState state) {
               return BlocProvider(
-                create: (BuildContext context) => ScoutPageBloc(
+                create: (BuildContext context) => MarketsPageBloc(
                   tokenRepository: context.read<TokensRepository>(),
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
+                  sportsRepo: GetSportsMarketsDataUseCase(
+                    sportsMarketsRepository:
+                        context.read<SportsMarketsRepository>(),
+                  ),
                   repo: GetScoutAthletesDataUseCase(
                     tokensRepository: context.read<TokensRepository>(),
                     graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
@@ -141,6 +142,8 @@ class AppRouter {
                   ),
                   longShortPairRepository:
                       context.read<LongShortPairRepository>(),
+                  sportsMarketsRepository:
+                      context.read<SportsMarketsRepository>(),
                 ),
                 child: const Scout(),
               );
@@ -152,6 +155,15 @@ class AppRouter {
                 builder: (BuildContext context, GoRouterState state) {
                   return AthletePage(
                     athlete: _findAthleteById(state.params['id']!),
+                  );
+                },
+              ),
+              GoRoute(
+                name: 'sports-markets',
+                path: 'sport/:name',
+                builder: (BuildContext context, GoRouterState state) {
+                  return SportsPage(
+                    sport: _goToSportsMarketByName(state.params['name']!),
                   );
                 },
               ),
@@ -273,6 +285,14 @@ class AppRouter {
   );
 
   GoRouter get router => _router;
+}
+
+SportsMarketsModel _goToSportsMarketByName(String name) {
+  final liveSports = Global().liveSportsMarkets;
+  return liveSports.firstWhere(
+    (element) => element.name == name,
+    orElse: () => SportsMarketsModel.empty,
+  );
 }
 
 AthleteScoutModel _findAthleteById(String id) {
