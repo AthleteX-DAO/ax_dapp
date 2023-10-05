@@ -1,5 +1,4 @@
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/markets/modules/athlete_markets/bloc/athlete_page_bloc.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:ax_dapp/util/colors.dart';
