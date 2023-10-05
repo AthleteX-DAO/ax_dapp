@@ -20,7 +20,7 @@ class ConnectWalletButton extends StatelessWidget {
         },
         child: FittedBox(
           child: Text(
-            'Connect',
+            'Sign Up / Login',
             style: TextStyle(
               color: Colors.amber[400],
               fontFamily: 'OpenSans',
