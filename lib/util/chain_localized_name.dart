@@ -8,6 +8,10 @@ extension EthereumChainLocalizationX on EthereumChain {
         throw UnsupportedError('$this');
       case EthereumChain.polygonMainnet:
         return 'Polygonscan';
+      case EthereumChain.optimism:
+        return 'Optimism';
+      case EthereumChain.arbitriumOne:
+        return 'ArbitriumOne';
       case EthereumChain.goerliTestNet:
         return 'Goerli';
       case EthereumChain.sxMainnet:

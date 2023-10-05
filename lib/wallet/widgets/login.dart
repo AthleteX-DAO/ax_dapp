@@ -10,31 +10,29 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     const textSize = 20.0;
 
-    return FittedBox(
-      child: RichText(
-        text: TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-              text: 'Already have an account? ',
-              style: TextStyle(
-                color: Colors.amber[400],
-                fontSize: textSize,
-                fontFamily: 'OpenSans',
-              ),
+    return RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: 'Already have an account? ',
+            style: TextStyle(
+              color: Colors.amber[400],
+              fontSize: textSize,
+              fontFamily: 'OpenSans',
             ),
-            TextSpan(
-              text: 'Login',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: textSize,
-              ),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  context.read<WalletBloc>().add(const ConnectWalletRequested());
-                },
+          ),
+          TextSpan(
+            text: 'Login',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: textSize,
             ),
-          ],
-        ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                context.read<WalletBloc>().add(const ConnectWalletRequested());
+              },
+          ),
+        ],
       ),
     );
   }

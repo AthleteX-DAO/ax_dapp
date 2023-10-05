@@ -5,12 +5,7 @@ class ConnectWalletButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
     var width = 180.0;
-    if (_width < 565) {
-      width = 110;
-    }
-
     return Container(
       height: 37.5,
       width: width,
@@ -25,7 +20,7 @@ class ConnectWalletButton extends StatelessWidget {
         },
         child: FittedBox(
           child: Text(
-            'Connect',
+            'Sign Up / Login',
             style: TextStyle(
               color: Colors.amber[400],
               fontFamily: 'OpenSans',

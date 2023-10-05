@@ -1,7 +1,7 @@
-import 'package:ax_dapp/athlete/athlete.dart' hide AptTypeSelectionChanged;
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/widgets/widgets.dart';
-import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/markets/markets.dart' hide AptTypeSelectionChanged;
+
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';

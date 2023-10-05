@@ -68,6 +68,24 @@ enum EthereumChain {
     currency: EthereumCurrency.sx,
     rpcUrls: ['https://rpc.toronto.sx.technology'],
     blockExplorerUrls: ['https://explorer.toronto.sx.technology/'],
+  ),
+
+  /// Optimism Mainnnet
+  optimism(
+    chainId: 10,
+    chainName: 'Optimism',
+    currency: EthereumCurrency.weth,
+    rpcUrls: ['mainnet.optimism.io', 'https://rpc.ankr.com/optimism'],
+    blockExplorerUrls: ['https://explorer.optimism.io'],
+  ),
+
+  /// ArbitriumOne Mainnet
+  arbitriumOne(
+    chainId: 42161,
+    chainName: 'Arbitrium One',
+    currency: EthereumCurrency.weth,
+    rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+    blockExplorerUrls: ['https://arbiscan.io'],
   );
 
   /// {@macro ethereum_chain}
