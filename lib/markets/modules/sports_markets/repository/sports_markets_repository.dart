@@ -89,6 +89,7 @@ class SportsMarketsRepository {
             typeOfMarket: typeOfMarket,
             marketHash: marketHash,
             line: marketLine,
+            mainLine: false,
           ),
         );
       }
