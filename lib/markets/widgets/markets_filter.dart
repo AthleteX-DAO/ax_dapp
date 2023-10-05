@@ -105,39 +105,39 @@ class MarketsFilter extends StatelessWidget {
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () {
-                myController.clear();
-                _selectedMarkets = SupportedMarkets.Sports;
-                bloc
-                  ..add(
-                    const SelectedMarketsChanged(
-                      selectedMarkets: SupportedMarkets.Sports,
-                    ),
-                  )
-                  ..add(
-                    FetchSportsMarketsRequested(),
-                  );
-              },
-              child: Text(
-                'Sports',
-                style: textSwapState(
-                  condition: _selectedMarkets == SupportedMarkets.Sports,
-                  tabNotSelected: textStyle(
-                    Colors.white,
-                    sportFilterTxSz,
-                    isBold: false,
-                    isUline: false,
-                  ),
-                  tabSelected: textStyle(
-                    Colors.amber[400]!,
-                    sportFilterTxSz,
-                    isBold: false,
-                    isUline: true,
-                  ),
-                ),
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () {
+            //     myController.clear();
+            //     _selectedMarkets = SupportedMarkets.Sports;
+            //     bloc
+            //       ..add(
+            //         const SelectedMarketsChanged(
+            //           selectedMarkets: SupportedMarkets.Sports,
+            //         ),
+            //       )
+            //       ..add(
+            //         FetchSportsMarketsRequested(),
+            //       );
+            //   },
+            //   child: Text(
+            //     'Sports',
+            //     style: textSwapState(
+            //       condition: _selectedMarkets == SupportedMarkets.Sports,
+            //       tabNotSelected: textStyle(
+            //         Colors.white,
+            //         sportFilterTxSz,
+            //         isBold: false,
+            //         isUline: false,
+            //       ),
+            //       tabSelected: textStyle(
+            //         Colors.amber[400]!,
+            //         sportFilterTxSz,
+            //         isBold: false,
+            //         isUline: true,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         );
       },
@@ -246,39 +246,39 @@ class MarketsFilter extends StatelessWidget {
               ),
             ),
           ),
-          TextButton(
-            onPressed: () {
-              myController.clear();
-              _selectedMarkets = SupportedMarkets.Sports;
-              bloc
-                ..add(
-                  const SelectedMarketsChanged(
-                    selectedMarkets: SupportedMarkets.Sports,
-                  ),
-                )
-                ..add(
-                  FetchSportsMarketsRequested(),
-                );
-            },
-            child: Text(
-              'Sports',
-              style: textSwapState(
-                condition: _selectedMarkets == SupportedMarkets.Sports,
-                tabNotSelected: textStyle(
-                  Colors.white,
-                  sportFilterTxSz,
-                  isBold: false,
-                  isUline: false,
-                ),
-                tabSelected: textStyle(
-                  Colors.amber[400]!,
-                  sportFilterTxSz,
-                  isBold: false,
-                  isUline: true,
-                ),
-              ),
-            ),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     myController.clear();
+          //     _selectedMarkets = SupportedMarkets.Sports;
+          //     bloc
+          //       ..add(
+          //         const SelectedMarketsChanged(
+          //           selectedMarkets: SupportedMarkets.Sports,
+          //         ),
+          //       )
+          //       ..add(
+          //         FetchSportsMarketsRequested(),
+          //       );
+          //   },
+          //   child: Text(
+          //     'Sports',
+          //     style: textSwapState(
+          //       condition: _selectedMarkets == SupportedMarkets.Sports,
+          //       tabNotSelected: textStyle(
+          //         Colors.white,
+          //         sportFilterTxSz,
+          //         isBold: false,
+          //         isUline: false,
+          //       ),
+          //       tabSelected: textStyle(
+          //         Colors.amber[400]!,
+          //         sportFilterTxSz,
+          //         isBold: false,
+          //         isUline: true,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           TextButton(
             onPressed: () {
               myController.clear();
