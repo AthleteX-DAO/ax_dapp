@@ -27,7 +27,7 @@ class AthletePageLongGraph extends StatelessWidget {
       zoomPanBehavior: _zoomPanBehavior,
       series: [
         FastLineSeries<GraphData, DateTime>(
-          name: 'Book Value',
+          name: 'OverUnder',
           dataSource: chartStats,
           xValueMapper: (
             GraphData data,
@@ -86,7 +86,7 @@ class AthletePageLongGraph extends StatelessWidget {
           width: 0,
         ),
         interval: 100,
-        labelFormat: '{value}AX',
+        labelFormat: '{value}',
         numberFormat: NumberFormat.decimalPattern(),
       ),
     );

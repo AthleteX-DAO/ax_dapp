@@ -36,6 +36,7 @@ class SportsMarketsRepository {
         final marketHash = markets.marketHash;
         final bookPrice = markets.mainLine;
         final marketLine = markets.line;
+        final isMainLine = markets.mainLine;
         marketsLive.add(
           SportsMarketsModel(
             id: id,
@@ -43,6 +44,7 @@ class SportsMarketsRepository {
             typeOfMarket: typeOfMarket,
             marketHash: marketHash,
             line: marketLine,
+            mainLine: isMainLine,
           ),
         );
       }

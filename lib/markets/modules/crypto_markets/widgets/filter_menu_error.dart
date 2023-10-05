@@ -15,14 +15,14 @@ class FilterMenuError extends StatelessWidget {
         : selectedChain == EthereumChain.sxMainnet
             ? 'Change to Polygon network for MLB Tokens'
             : 'Error producing markets, try reloading the dapp';
-    const warningText2 = 'Error producing markets, try reloading the dapp';
+    const warningText2 = 'Failed to active markets';
     return const SizedBox(
       height: 80,
       width: 600,
       child: Text(
         warningText2,
         style: TextStyle(
-          color: Colors.amber,
+          color: Colors.red,
           fontSize: 30,
           fontFamily: 'OpenSans',
         ),

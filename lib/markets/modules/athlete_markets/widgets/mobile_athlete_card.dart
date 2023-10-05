@@ -2,8 +2,8 @@ import 'package:ax_dapp/markets/markets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class MobileAthleteContents extends StatelessWidget {
-  const MobileAthleteContents({
+class MobileAthleteCard extends StatelessWidget {
+  const MobileAthleteCard({
     required this.athlete,
     required this.marketVsBookPriceIndex,
     required this.isLongToken,

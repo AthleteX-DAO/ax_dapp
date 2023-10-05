@@ -31,7 +31,7 @@ class DesktopSportsCard extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                SportsDetailsWidget(sportsMarketsModel)
+                SportsDetailsWidget(context, sportsMarketsModel)
                     .sportsDetailsCardsForWeb(
                   _width >= 875,
                   _width,
@@ -40,6 +40,8 @@ class DesktopSportsCard extends StatelessWidget {
             ),
             Row(
               children: [
+                // Betting Button
+
                 if (_width >= 1090) ...[
                   const SizedBox(width: 25),
                   Container(

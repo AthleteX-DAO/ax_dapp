@@ -82,8 +82,8 @@ class ShortButton extends StatelessWidget {
         prompt.yesTokenAddress.isEmpty;
     final _width = MediaQuery.of(context).size.width;
     return Container(
-      width: _width < 768 ? 100 : 200,
-      height: 50,
+      width: MediaQuery.of(context).size.width * 0.20,
+      height: 36,
       decoration: invalidAddr
           ? boxDecoration(
               secondaryGreyColor,
@@ -213,8 +213,8 @@ class LongButton extends StatelessWidget {
         prompt.yesTokenAddress.isEmpty;
     final _width = MediaQuery.of(context).size.width;
     return Container(
-      width: _width < 768 ? 100 : 200,
-      height: 50,
+      width: MediaQuery.of(context).size.width * 0.20,
+      height: 36,
       decoration: invalidAddr
           ? boxDecoration(
               secondaryGreyColor,

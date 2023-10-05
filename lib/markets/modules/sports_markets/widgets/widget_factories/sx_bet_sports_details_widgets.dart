@@ -114,7 +114,7 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
           width: _width * 0.9,
           alignment: Alignment.center,
           decoration: boxDecoration(
-            primaryOrangeColor.withOpacity(0.6),
+            primaryOrangeColor.withOpacity(0.75),
             30,
             0.5,
             primaryWhiteColor,
@@ -172,25 +172,53 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                   )
                 ],
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [Text(''), Text(''), Text('')],
+                children: [
+                  Text('${sportsMarketsModel}'),
+                  Text('${sportsMarketsModel.line}'),
+                  Text('')
+                ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 128, 96, 0),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        decoration: boxDecoration(
+                          const Color.fromRGBO(
+                            254,
+                            197,
+                            0,
+                            0.2,
                           ),
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.circular(1000),
+                          100,
+                          0,
+                          const Color.fromRGBO(
+                            254,
+                            197,
+                            0,
+                            0.2,
+                          ),
                         ),
-                      )
+                        child: TextButton(
+                          onPressed: () {
+                            // Call textbuttion!
+                          },
+                          child: Text(
+                            'Place Bet',
+                            style: textStyle(
+                              Colors.white70,
+                              25,
+                              isBold: true,
+                              isUline: false,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   )
                 ],

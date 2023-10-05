@@ -45,35 +45,35 @@ class MarketsFilter extends StatelessWidget {
                 isUline: false,
               ),
             ),
-            // TextButton(
-            //   onPressed: () {
-            //     _selectedMarkets = SupportedMarkets.all;
+            TextButton(
+              onPressed: () {
+                _selectedMarkets = SupportedMarkets.all;
 
-            //     context.read<MarketsPageBloc>().add(
-            //           const SelectedMarketsChanged(
-            //             selectedMarkets: SupportedMarkets.all,
-            //           ),
-            //         );
-            //   },
-            //   child: Text(
-            //     'ALL',
-            //     style: textSwapState(
-            //       condition: _selectedMarkets == SupportedMarkets.all,
-            //       tabNotSelected: textStyle(
-            //         Colors.white,
-            //         sportFilterTxSz,
-            //         isBold: false,
-            //         isUline: false,
-            //       ),
-            //       tabSelected: textStyle(
-            //         Colors.amber[400]!,
-            //         sportFilterTxSz,
-            //         isBold: false,
-            //         isUline: true,
-            //       ),
-            //     ),
-            //   ),
-            // ),
+                context.read<MarketsPageBloc>().add(
+                      const SelectedMarketsChanged(
+                        selectedMarkets: SupportedMarkets.all,
+                      ),
+                    );
+              },
+              child: Text(
+                'ALL',
+                style: textSwapState(
+                  condition: _selectedMarkets == SupportedMarkets.all,
+                  tabNotSelected: textStyle(
+                    Colors.white,
+                    sportFilterTxSz,
+                    isBold: false,
+                    isUline: false,
+                  ),
+                  tabSelected: textStyle(
+                    Colors.amber[400]!,
+                    sportFilterTxSz,
+                    isBold: false,
+                    isUline: true,
+                  ),
+                ),
+              ),
+            ),
             TextButton(
               onPressed: () {
                 myController.clear();

@@ -1,8 +1,5 @@
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AthleteMarkets extends StatelessWidget {
   const AthleteMarkets({
@@ -40,7 +37,7 @@ class AthleteMarkets extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemCount: athletes.length,
         itemBuilder: (context, index) {
-          return MobileAthleteContents(
+          return MobileAthleteCard(
             athlete: athletes[index],
             marketVsBookPriceIndex: 0,
             isLongToken: true,
@@ -54,16 +51,18 @@ class AthleteMarkets extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: constraints.maxHeight * 0.8 - 120,
-      child: ListView.builder(
-        padding: const EdgeInsets.only(top: 10),
-        physics: const BouncingScrollPhysics(),
-        itemCount: athletes.length,
-        itemBuilder: (context, index) {
-          return DesktopAthleteCard(
-            athlete: athletes[index],
-            isLongToken: true,
-          );
-        },
+      child: const Center(
+        child: SizedBox(
+          height: 70,
+          child: Text(
+            'Check later for Athlete Markets!',
+            style: TextStyle(
+              color: Colors.yellow,
+              fontSize: 30,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
       ),
     );
   }

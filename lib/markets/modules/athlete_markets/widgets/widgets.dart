@@ -12,7 +12,7 @@ export 'desktop_athlete_card.dart';
 export 'desktop_book_value.dart';
 export 'desktop_market_value.dart';
 export 'graph_side.dart';
-export 'mobile_athlete_contents.dart';
+export 'mobile_athlete_card.dart';
 export 'mobile_market_book_price.dart';
 export 'mobile_market_book_text.dart';
 export 'stats_side.dart';

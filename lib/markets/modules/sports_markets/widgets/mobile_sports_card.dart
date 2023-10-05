@@ -2,8 +2,9 @@ import 'package:ax_dapp/markets/markets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class MobileSportsContents extends StatelessWidget {
-  const MobileSportsContents({
+class MobileSportsCard extends StatelessWidget {
+  const MobileSportsCard({
+    super.key,
     required this.sportsMarketsModel,
   });
 
@@ -30,12 +31,8 @@ class MobileSportsContents extends StatelessWidget {
               children: [
                 Flexible(
                   flex: 2,
-                  child: SportsDetailsWidget(sportsMarketsModel)
-                      .sportsDetailsCardsForMobile(_width > 290, _width * 0.15),
-                ),
-                Flexible(
-                  flex: 2,
-                  child: Text('${sportsMarketsModel.line}'),
+                  child: SportsDetailsWidget(context, sportsMarketsModel)
+                      .sportsDetailsCardsForMobile(_width > 290, _width * 0.60),
                 ),
               ],
             ),

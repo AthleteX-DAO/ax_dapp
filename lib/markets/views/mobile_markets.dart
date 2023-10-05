@@ -71,7 +71,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
             )
             ..add(
               const SelectedMarketsChanged(
-                selectedMarkets: SupportedMarkets.Sports,
+                selectedMarkets: SupportedMarkets.all,
               ),
             );
         }
@@ -209,7 +209,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                                               contentPadding: EdgeInsets.only(
                                                 bottom: 8.5,
                                               ),
-                                              hintText: 'Search an athlete',
+                                              hintText: 'Search a market',
                                               hintStyle: TextStyle(
                                                 color: Color.fromRGBO(
                                                   235,
@@ -276,35 +276,6 @@ class _MobileMarketsState extends State<MobileMarkets> {
                         const SizedBox(
                           width: 20,
                         ),
-                        IndexedStack(
-                          index: _marketVsBookPriceIndex,
-                          children: [
-                            MaterialButton(
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    _marketVsBookPriceIndex = 1;
-                                  },
-                                );
-                              },
-                              child: const MobileMarketBookText(
-                                title: 'Market Price',
-                              ),
-                            ),
-                            MaterialButton(
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    _marketVsBookPriceIndex = 0;
-                                  },
-                                );
-                              },
-                              child: const MobileMarketBookText(
-                                title: 'Book Value',
-                              ),
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                     //BuildScoutView body
@@ -312,15 +283,29 @@ class _MobileMarketsState extends State<MobileMarkets> {
                       alignment: Alignment.center,
                       children: [
                         if (state.status == BlocStatus.loading) const Loader(),
-                        if (state.status == BlocStatus.error)
-                          const ScoutLoadingError(),
+
                         if (state.status == BlocStatus.noData)
                           FilterMenuError(
                             selectedChain: _selectedChain,
                           ),
                         if (state.status == BlocStatus.success &&
-                            filteredAthletes.isEmpty)
-                          const NoResultFound(),
+                            state.selectedMarket == SupportedMarkets.all)
+                          SizedBox(
+                            height: constraints.maxHeight * 0.8 - 120,
+                            child: const Center(
+                              child: SizedBox(
+                                height: 40,
+                                child: Text(
+                                  'Select a Market!',
+                                  style: TextStyle(
+                                    color: Colors.yellow,
+                                    fontSize: 30,
+                                    fontFamily: 'OpenSans',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         if (state.status == BlocStatus.success &&
                             state.selectedMarket == SupportedMarkets.Sports)
                           SportsMarkets(

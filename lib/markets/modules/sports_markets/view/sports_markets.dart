@@ -35,7 +35,7 @@ class SportsMarkets extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10),
         physics: const BouncingScrollPhysics(),
         itemBuilder: (content, index) {
-          return MobileSportsContents(
+          return MobileSportsCard(
             sportsMarketsModel: liveSportsMarkets[index],
           );
         },

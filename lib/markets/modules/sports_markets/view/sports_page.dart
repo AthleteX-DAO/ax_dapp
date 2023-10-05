@@ -28,12 +28,6 @@ class SportsPage extends StatelessWidget {
           if (state.failure is DisconnectedWalletFailure) {
             context.showWalletWarningToast();
           }
-          if (state.failure is InvalidAthleteFailure) {
-            context.showWarningToast(
-              title: 'Error',
-              description: 'Cannot add athlete to wallet',
-            );
-          }
         },
         child: SportsPageWebView(
           sportsMarketsModel: sport,
