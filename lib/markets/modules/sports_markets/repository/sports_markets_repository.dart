@@ -30,7 +30,8 @@ class SportsMarketsRepository {
 
       for (final markets in sxBetMarkets.data.markets) {
         final id = markets.sportId;
-        final name = '${markets.leagueLabel} ${markets.line}';
+        final name =
+            '${markets.leagueLabel}| ${markets.outcomeOneName} & ${markets.outcomeTwoName}';
         const typeOfMarket = SupportedMarkets.Sports;
         final marketHash = markets.marketHash;
         final bookPrice = markets.mainLine;
