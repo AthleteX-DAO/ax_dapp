@@ -1,16 +1,21 @@
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 
 class SXBetSportsDetailsWidget implements SportsDetailsWidget {
   const SXBetSportsDetailsWidget({
     required this.sportsMarketsModel,
+    required this.context,
   });
 
+  final BuildContext context;
   final SportsMarketsModel sportsMarketsModel;
 
   @override
   Widget sportsDetailsCardsForMobile(bool showIcon, double athNameBx) {
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
     return Row(
       children: [
         SizedBox(
@@ -21,7 +26,7 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
           ),
         ),
         SizedBox(
-          width: athNameBx,
+          width: _width < 768 ? _width * 0.6 : 200,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,16 +35,16 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                 sportsMarketsModel.name,
                 style: textStyle(
                   Colors.white,
-                  16,
+                  13,
                   isBold: false,
                   isUline: false,
                 ),
               ),
               Text(
-                'Line: ${sportsMarketsModel.line}',
+                'Sports Market',
                 style: textStyle(
                   Colors.grey[700]!,
-                  10,
+                  13,
                   isBold: false,
                   isUline: false,
                 ),
@@ -53,6 +58,8 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
 
   @override
   Widget sportsDetailsCardsForWeb(bool team, double _width) {
+    final _width = MediaQuery.of(context).size.width;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -77,6 +84,15 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                   isUline: false,
                 ),
               ),
+              Text(
+                'Sports Market',
+                style: textStyle(
+                  Colors.grey[700]!,
+                  13,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
             ],
           ),
         )
@@ -86,22 +102,122 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
 
   @override
   Widget sportsPageDetails() {
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+
+    return LayoutBuilder(
+      builder: (context, constraints) => SafeArea(
+        bottom: false,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          height: _height * 0.85,
+          width: _width * 0.9,
+          alignment: Alignment.center,
+          decoration: boxDecoration(
+            primaryOrangeColor.withOpacity(0.6),
+            30,
+            0.5,
+            primaryWhiteColor,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    sportsMarketsModel.name,
+                    style: textStyle(
+                      Colors.black87,
+                      _height * 0.04,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  )
+                ],
+              ),
+              Divider(
+                thickness: 3,
+                color: primaryWhiteColor,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    'Spread',
+                    style: textStyle(
+                      Colors.black,
+                      25,
+                      isBold: true,
+                      isUline: false,
+                    ),
+                  ),
+                  Text(
+                    'Money Line',
+                    style: textStyle(
+                      Colors.black,
+                      25,
+                      isBold: true,
+                      isUline: false,
+                    ),
+                  ),
+                  Text(
+                    'Total',
+                    style: textStyle(
+                      Colors.black,
+                      25,
+                      isBold: true,
+                      isUline: false,
+                    ),
+                  )
+                ],
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [Text(''), Text(''), Text('')],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 128, 96, 0),
+                          ),
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.circular(1000),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget sportsPageKeyStatistics() {
     return SizedBox(
-      height: 250,
+      height: 150,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Details',
-              style: textStyle(
-                Colors.white,
-                24,
-                isBold: false,
-                isUline: false,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Key Stats',
+                style:
+                    textStyle(Colors.white, 24, isBold: false, isUline: false),
               ),
-            ),
+            ],
           )
         ],
       ),
@@ -109,14 +225,20 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
   }
 
   @override
-  Widget sportsPageKeyStatistics() {
-    // TODO: implement sportsPageKeyStatistics
-    throw UnimplementedError();
-  }
-
-  @override
   Widget sportsPageKeyStatisticsForMobile() {
-    // TODO: implement sportsPageKeyStatisticsForMobile
-    throw UnimplementedError();
+    return SizedBox(
+      height: 150,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Key Stats',
+              style: textStyle(Colors.white, 24, isBold: false, isUline: false),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

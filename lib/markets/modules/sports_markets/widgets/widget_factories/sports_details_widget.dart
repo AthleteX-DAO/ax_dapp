@@ -3,8 +3,14 @@ import 'sx_bet_sports_details_widgets.dart';
 import 'package:flutter/material.dart';
 
 abstract class SportsDetailsWidget {
-  factory SportsDetailsWidget(SportsMarketsModel sportsMarkets) {
-    return SXBetSportsDetailsWidget(sportsMarketsModel: sportsMarkets);
+  factory SportsDetailsWidget(
+    BuildContext context,
+    SportsMarketsModel sportsMarkets,
+  ) {
+    return SXBetSportsDetailsWidget(
+      sportsMarketsModel: sportsMarkets,
+      context: context,
+    );
   }
   Widget sportsPageDetails();
   Widget sportsPageKeyStatistics();
