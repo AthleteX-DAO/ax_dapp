@@ -61,13 +61,14 @@ class EthereumAddressConfig {
         arbitriumOne = kEmptyAddress;
 
   /// Configuration for [Token.longApt] and [Token.shortApt].
-  const EthereumAddressConfig.apt(
-      {required this.polygonMainnet,
-      required this.goerliTestNet,
-      required this.sportxMainnet,
-      required this.sportxTestnet,
-      required this.optimism,
-      required this.arbitriumOne});
+  const EthereumAddressConfig.apt({
+    required this.polygonMainnet,
+    required this.goerliTestNet,
+    required this.sportxMainnet,
+    required this.sportxTestnet,
+    required this.optimism,
+    required this.arbitriumOne,
+  });
 
   /// Configuration for [] client.
   const EthereumAddressConfig.event()
@@ -123,6 +124,29 @@ class EthereumAddressConfig {
         optimism = kEmptyAddress,
         arbitriumOne = kEmptyAddress;
 
+  /// Unkown configuration
+  EthereumAddressConfig.unknown(String address, EthereumChain chain)
+      : polygonMainnet =
+            (chain.chainName == EthereumChain.polygonMainnet.chainName)
+                ? address
+                : kEmptyAddress,
+        goerliTestNet =
+            (chain.chainName == EthereumChain.goerliTestNet.chainName)
+                ? address
+                : kEmptyAddress,
+        sportxMainnet = (chain.chainName == EthereumChain.sxMainnet.chainName)
+            ? address
+            : kEmptyAddress,
+        sportxTestnet = (chain.chainName == EthereumChain.sxTestnet.chainName)
+            ? address
+            : kEmptyAddress,
+        optimism = (chain.chainName == EthereumChain.optimism.chainName)
+            ? address
+            : kEmptyAddress,
+        arbitriumOne = (chain.chainName == EthereumChain.arbitriumOne.chainName)
+            ? address
+            : kEmptyAddress;
+
   /// Represents the object address on the [EthereumChain.polygonMainnet].
   final String polygonMainnet;
 
@@ -165,5 +189,10 @@ extension EthereumAddressConfigX on EthereumAddressConfig {
       case EthereumChain.arbitriumOne:
         return arbitriumOne;
     }
+  }
+
+  ///Returns an unknown
+  EthereumAddressConfig fromHex(EthereumChain chain, String address) {
+    return EthereumAddressConfig.unknown(address, chain);
   }
 }
