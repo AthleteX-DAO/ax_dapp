@@ -7,6 +7,22 @@ abstract class WalletEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class LoginSignUpViewRequested extends WalletEvent {
+  const LoginSignUpViewRequested();
+}
+
+class LoginViewRequested extends WalletEvent {
+  const LoginViewRequested();
+}
+
+class SignUpViewRequested extends WalletEvent {
+  const SignUpViewRequested();
+}
+
+class ProfileViewRequested extends WalletEvent {
+  const ProfileViewRequested();
+}
+
 class ConnectWalletRequested extends WalletEvent {
   const ConnectWalletRequested();
 }

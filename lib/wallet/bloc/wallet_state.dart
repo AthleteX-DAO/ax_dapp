@@ -3,6 +3,7 @@ part of 'wallet_bloc.dart';
 class WalletState extends Equatable {
   const WalletState({
     required this.walletStatus,
+    required this.status,
     required this.walletAddress,
     required this.chain,
     this.axData = AxData.empty,
@@ -10,15 +11,17 @@ class WalletState extends Equatable {
     this.failure = WalletFailure.none,
   });
 
-  WalletState.fromWallet(Wallet wallet)
+  WalletState.fromWallet({WalletViewStatus? status, required Wallet wallet})
       : this(
           walletStatus: wallet.status,
+          status: status ?? WalletViewStatus.none,
           walletAddress: wallet.address,
           chain: wallet.chain,
         );
 
   final WalletStatus walletStatus;
   final String walletAddress;
+  final WalletViewStatus status;
   final EthereumChain chain;
   final AxData axData;
   final double gasPrice;
@@ -36,6 +39,7 @@ class WalletState extends Equatable {
 
   WalletState copyWith({
     WalletStatus? walletStatus,
+    WalletViewStatus? status,
     String? walletAddress,
     EthereumChain? chain,
     AxData? axData,
@@ -44,6 +48,7 @@ class WalletState extends Equatable {
   }) {
     return WalletState(
       walletStatus: walletStatus ?? this.walletStatus,
+      status: status ?? this.status,
       walletAddress: walletAddress ?? this.walletAddress,
       chain: chain ?? this.chain,
       axData: axData ?? this.axData,
@@ -75,6 +80,7 @@ class WalletState extends Equatable {
 extension WalletStateX on WalletState {
   bool get isWalletConnected => walletStatus.isConnected;
   bool get isWalletDisconnected => !isWalletConnected;
+  WalletViewStatus get currentStatus => status.currentStatus();
   bool get isWalletUnsupported => walletStatus.isUnsupported;
   bool get isWalletUnavailable => failure is WalletUnavailableFailure;
   bool get hasFailure => failure != WalletFailure.none;

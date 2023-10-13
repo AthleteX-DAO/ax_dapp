@@ -29,7 +29,7 @@ class Login extends StatelessWidget {
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                context.read<WalletBloc>().add(const ConnectWalletRequested());
+                context.read<WalletBloc>().add(const LoginViewRequested());
               },
           ),
         ],

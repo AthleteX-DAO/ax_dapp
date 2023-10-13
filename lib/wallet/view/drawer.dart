@@ -1,8 +1,10 @@
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/view/signup.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:ax_dapp/wallet/widgets/account.dart';
-import 'package:ax_dapp/wallet/widgets/login.dart';
+import 'package:ax_dapp/wallet/widgets/login_text.dart';
 import 'package:ax_dapp/wallet/widgets/sign_up_button.dart';
+import 'package:ax_dapp/wallet/widgets/terms_and_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,7 +40,7 @@ class DrawerView extends StatelessWidget {
             buildWhen: (previous, current) =>
                 previous.walletStatus != current.walletStatus,
             builder: (context, state) {
-              if (state.isWalletConnected) {
+              if (state.status == WalletViewStatus.profile) {
                 return const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -46,14 +48,27 @@ class DrawerView extends StatelessWidget {
                     Account(),
                   ],
                 );
-              } else {
-                return const Column(
-                  children: [
-                    SignUpButton(),
-                    Login(),
-                  ],
+              }
+
+              if (state.status == WalletViewStatus.login) {
+                return const LoginView();
+              }
+
+              if (state.status == WalletViewStatus.signup) {
+                return const SignUpView();
+              }
+
+              if (state.status == WalletViewStatus.loading) {
+                return const Loader(
+                  dimension: 80,
                 );
               }
+
+              if (state.status == WalletViewStatus.initial) {
+                return const LoginSignup();
+              }
+
+              return const TermsAndConditions();
             },
           ),
         ],

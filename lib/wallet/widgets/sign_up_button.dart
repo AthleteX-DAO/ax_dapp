@@ -39,8 +39,7 @@ class SignUpButton extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        context.read<WalletBloc>().add(const ConnectWalletRequested());
-        Scaffold.of(context).closeEndDrawer();
+        context.read<WalletBloc>().add(const SignUpViewRequested());
       },
     );
   }

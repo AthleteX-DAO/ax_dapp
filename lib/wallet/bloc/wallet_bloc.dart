@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ax_dapp/wallet/models/models.dart';
+import 'package:ax_dapp/wallet/view/login.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -15,11 +16,18 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     required TokensRepository tokensRepository,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
-        super(WalletState.fromWallet(walletRepository.currentWallet)) {
+        super(WalletState.fromWallet(wallet: walletRepository.currentWallet)) {
+    // Connect the web3 wallet
     on<ConnectWalletRequested>(_onConnectWalletRequested);
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
+
+    // WalletView Status
+    on<SignUpViewRequested>(_onSignUpViewRequested);
+    on<LoginViewRequested>(_onLoginViewRequested);
+    on<ProfileViewRequested>(_onProfileViewRequested);
+
+    // Watch for changes
     on<WatchWalletChangesStarted>(_onWatchWalletChangesStarted);
-    on<SwitchChainRequested>(_onSwitchChainRequested);
     on<WatchAxtChangesStarted>(_onWatchAxtChangesStarted);
     on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
     on<GetGasPriceRequested>(_onGetGasPriceRequested);
@@ -31,6 +39,31 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
+
+  Future<void> _onSignUpViewRequested(
+    SignUpViewRequested _,
+    Emitter<WalletState> emit,
+  ) async {
+    emit(state.copyWith(status: WalletViewStatus.loading));
+    add(const ConnectWalletRequested());
+    emit(state.copyWith(status: WalletViewStatus.signup));
+  }
+
+  Future<void> _onLoginViewRequested(
+    LoginViewRequested _,
+    Emitter<WalletState> emit,
+  ) async {
+    emit(state.copyWith(status: WalletViewStatus.loading));
+
+    emit(state.copyWith(status: WalletViewStatus.login));
+  }
+
+  Future<void> _onProfileViewRequested(
+    ProfileViewRequested _,
+    Emitter<WalletState> emit,
+  ) async {
+    emit(state.copyWith(status: WalletViewStatus.profile));
+  }
 
   Future<void> _onConnectWalletRequested(
     ConnectWalletRequested _,
@@ -62,20 +95,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     );
   }
 
-  FutureOr<void> _onSwitchChainRequested(
-    SwitchChainRequested event,
-    Emitter<WalletState> emit,
-  ) async {
-    final chain = event.chain;
-    // user cancelled dropdown
-    if (chain == null) return;
-    try {
-      await _walletRepository.switchChain(chain);
-    } on WalletFailure catch (failure) {
-      add(WalletFailed(failure));
-    }
-  }
-
   Future<void> _onWatchAxtChangesStarted(
     WatchAxtChangesStarted event,
     Emitter<WalletState> emit,
@@ -89,6 +108,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     );
   }
 
+  // Again I think this should be handled elsewhere
   Future<void> _onUpdateAxDataRequested(
     UpdateAxDataRequested event,
     Emitter<WalletState> emit,
@@ -101,6 +121,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(state.copyWith(axData: axData.copyWith(balance: axBalance)));
   }
 
+  // IMO this should be moved to a repository or something that does this consistently
   Future<void> _onGetGasPriceRequested(
     GetGasPriceRequested event,
     Emitter<WalletState> emit,
