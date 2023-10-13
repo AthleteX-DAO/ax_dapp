@@ -12,7 +12,6 @@ import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/markets/views/markets_base.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
@@ -52,11 +51,7 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 class AppRouter {
   final GoRouter _router = GoRouter(
     redirect: (context, state) async {
-      // ignore: use_build_context_synchronously
-      if (await context.read<WalletRepository>().searchForWallet() ?? false) {
-        // ignore: use_build_context_synchronously
-        context.read<WalletBloc>().add(const ConnectWalletRequested());
-      }
+      // These fix redirects a page back to the markest list if a user refreshes
       if (state.location.contains('/athlete') && Global().athleteList.isEmpty) {
         return '/scout';
       }
@@ -64,14 +59,15 @@ class AppRouter {
           Global().predictions.isEmpty) {
         return '/predict';
       }
-      return null;
+
+      return '/';
     },
     navigatorKey: _rootNavigatorKey,
     routes: [
       GoRoute(
         name: 'landing',
         path: '/',
-        redirect: (context, state) => '/trade',
+        redirect: (context, state) => '/scout',
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
