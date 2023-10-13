@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cache/cache.dart';
+import 'package:ethereum_api/tokens_api.dart';
 import 'package:ethereum_api/wallet_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared/shared.dart';
@@ -31,6 +32,7 @@ class WalletRepository {
         );
         walletUpdate = Wallet(
           address: (chain.isSupported) ? cachedWalletAddress : kEmptyAddress,
+          assets: [Token.ax(chain), Token.sx(chain)],
           chain: chain,
           status: WalletStatus.fromChain(chain),
         );
@@ -73,7 +75,7 @@ class WalletRepository {
 
   /// Returns the current [Wallet] synchronously.
   Wallet get currentWallet =>
-      _walletChanges.valueOrNull ?? const Wallet.disconnected();
+      _walletChanges.valueOrNull ?? Wallet.disconnected();
 
   /// Returns the cached [WalletCredentials] for the connected wallet. This
   /// doesn't return `null`, because when called, the wallet is asssumed to be
@@ -102,6 +104,7 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
+          assets: [Token.empty],
           address: walletAddress,
           chain: currentChain,
         ),
