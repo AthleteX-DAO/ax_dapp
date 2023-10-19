@@ -1,4 +1,3 @@
-import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {
