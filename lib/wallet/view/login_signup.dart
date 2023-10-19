@@ -7,9 +7,8 @@ class LoginSignup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Returns The Signup & Login button together
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.baseline,
-      children: const [
+    return const Column(
+      children: [
         SignUpButton(),
         Login(),
       ],

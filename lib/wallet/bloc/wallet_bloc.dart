@@ -22,6 +22,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
 
     // WalletView Status
+    on<LoginSignUpViewRequested>(_onLoginSignUpViewRequested);
     on<SignUpViewRequested>(_onSignUpViewRequested);
     on<LoginViewRequested>(_onLoginViewRequested);
     on<ProfileViewRequested>(_onProfileViewRequested);
@@ -40,6 +41,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
 
+  Future<void> _onLoginSignUpViewRequested(
+    LoginSignUpViewRequested _,
+    Emitter<WalletState> emit,
+  ) async {
+    emit(state.copyWith(status: WalletViewStatus.initial));
+  }
+
   Future<void> _onSignUpViewRequested(
     SignUpViewRequested _,
     Emitter<WalletState> emit,
@@ -54,7 +62,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     emit(state.copyWith(status: WalletViewStatus.loading));
-
     emit(state.copyWith(status: WalletViewStatus.login));
   }
 
