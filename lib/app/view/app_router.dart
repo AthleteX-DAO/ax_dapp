@@ -51,8 +51,8 @@ class AppRouter {
     navigatorKey: _rootNavigatorKey,
     routes: [
       GoRoute(
-        name: 'landing',
-        path: '/landing',
+        name: '/',
+        path: '/',
         redirect: (context, state) => '/scout',
       ),
       ShellRoute(
