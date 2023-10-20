@@ -8,8 +8,9 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [Row(), Row()],
+    return const Padding(
+      padding: const EdgeInsets.all(10),
+      child: Text('SignupView!'),
     );
   }
 }

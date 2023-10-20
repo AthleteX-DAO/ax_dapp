@@ -15,7 +15,6 @@ class DrawerView extends StatelessWidget {
     return Drawer(
       width: width < 769 ? width : width / 3,
       child: BlocBuilder<WalletBloc, WalletState>(
-        buildWhen: (previous, current) => previous.status != current.status,
         builder: (BuildContext context, state) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -28,9 +27,11 @@ class DrawerView extends StatelessWidget {
                     Account(),
                   ],
                 ),
-              if (state.status == WalletViewStatus.none) const LoginView(),
+              if (state.status == WalletViewStatus.login) const LoginView(),
               if (state.status == WalletViewStatus.signup) const SignUpView(),
-              if (state.status == WalletViewStatus.initial) const LoginSignup(),
+              if (state.status == WalletViewStatus.initial ||
+                  state.status == WalletViewStatus.none)
+                const LoginSignup(),
               const TermsAndConditions(),
               if (state.status == WalletViewStatus.loading)
                 const Loader(
