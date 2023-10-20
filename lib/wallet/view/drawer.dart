@@ -19,7 +19,7 @@ class DrawerView extends StatelessWidget {
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              if (state.status == WalletViewStatus.profile)
+              if (state.walletViewStatus == WalletViewStatus.profile)
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -27,18 +27,23 @@ class DrawerView extends StatelessWidget {
                     Account(),
                   ],
                 ),
-              if (state.status == WalletViewStatus.login) const LoginView(),
-              if (state.status == WalletViewStatus.signup) const SignUpView(),
-              if (state.status == WalletViewStatus.initial ||
-                  state.status == WalletViewStatus.none)
+              if (state.walletViewStatus == WalletViewStatus.login)
+                const LoginView(),
+              if (state.walletViewStatus == WalletViewStatus.signup)
+                const SignUpView(),
+              if (state.walletViewStatus == WalletViewStatus.initial ||
+                  state.walletViewStatus == WalletViewStatus.none)
                 const LoginSignup(),
               const TermsAndConditions(),
-              if (state.status == WalletViewStatus.loading)
+              if (state.walletViewStatus == WalletViewStatus.loading)
                 const Loader(
                   dimension: 80,
                 ),
             ],
           );
+        },
+        buildWhen: (previous, current) {
+          return previous.walletViewStatus != current.walletViewStatus;
         },
       ),
     );

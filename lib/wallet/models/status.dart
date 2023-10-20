@@ -1,7 +1,5 @@
 // Models all the possible states of the wallet
 
-import 'package:ax_dapp/wallet/widgets/widgets.dart';
-
 enum WalletViewStatus { initial, loading, login, signup, profile, error, none }
 
 /// [WalletViewStatus] extensions.

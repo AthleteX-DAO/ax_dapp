@@ -8,20 +8,22 @@ class WalletState extends Equatable {
     this.axData = AxData.empty,
     this.gasPrice = 0,
     this.failure = WalletFailure.none,
-    this.status = WalletViewStatus.initial,
+    this.walletViewStatus = WalletViewStatus.initial,
   });
 
-  WalletState.fromWallet({WalletViewStatus? status, required Wallet wallet})
-      : this(
+  WalletState.fromWallet({
+    WalletViewStatus? walletViewStatus,
+    required Wallet wallet,
+  }) : this(
           walletStatus: wallet.status,
-          status: status ?? WalletViewStatus.none,
+          walletViewStatus: walletViewStatus ?? WalletViewStatus.none,
           walletAddress: wallet.address,
           chain: wallet.chain,
         );
 
   final WalletStatus walletStatus;
   final String walletAddress;
-  final WalletViewStatus status;
+  final WalletViewStatus walletViewStatus;
   final EthereumChain chain;
   final AxData axData;
   final double gasPrice;
@@ -31,6 +33,7 @@ class WalletState extends Equatable {
   List<Object> get props => [
         walletStatus,
         walletAddress,
+        walletViewStatus,
         chain,
         gasPrice,
         failure,
@@ -39,7 +42,7 @@ class WalletState extends Equatable {
 
   WalletState copyWith({
     WalletStatus? walletStatus,
-    WalletViewStatus? status,
+    WalletViewStatus? walletViewStatus,
     String? walletAddress,
     EthereumChain? chain,
     AxData? axData,
@@ -48,7 +51,7 @@ class WalletState extends Equatable {
   }) {
     return WalletState(
       walletStatus: walletStatus ?? this.walletStatus,
-      status: status ?? this.status,
+      walletViewStatus: walletViewStatus ?? this.walletViewStatus,
       walletAddress: walletAddress ?? this.walletAddress,
       chain: chain ?? this.chain,
       axData: axData ?? this.axData,
@@ -69,7 +72,7 @@ class WalletState extends Equatable {
       walletStatus,
       walletAddress,
       chain,
-      if (hasFailure) failure
+      if (hasFailure) failure,
     ];
     final stringifiedProps =
         stringifyProps.map((prop) => prop.toString()).join(', ');
@@ -80,7 +83,7 @@ class WalletState extends Equatable {
 extension WalletStateX on WalletState {
   bool get isWalletConnected => walletStatus.isConnected;
   bool get isWalletDisconnected => !isWalletConnected;
-  WalletViewStatus get currentStatus => status.currentStatus();
+  WalletViewStatus get currentStatus => walletViewStatus.currentStatus();
   bool get isWalletUnsupported => walletStatus.isUnsupported;
   bool get isWalletUnavailable => failure is WalletUnavailableFailure;
   bool get hasFailure => failure != WalletFailure.none;

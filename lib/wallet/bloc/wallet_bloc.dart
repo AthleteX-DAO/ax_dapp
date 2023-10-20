@@ -44,31 +44,29 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     LoginSignUpViewRequested _,
     Emitter<WalletState> emit,
   ) async {
-    emit(state.copyWith(status: WalletViewStatus.initial));
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.initial));
   }
 
   Future<void> _onSignUpViewRequested(
     SignUpViewRequested _,
     Emitter<WalletState> emit,
   ) async {
-    emit(state.copyWith(status: WalletViewStatus.loading));
     add(const ConnectWalletRequested());
-    emit(state.copyWith(status: WalletViewStatus.signup));
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.signup));
   }
 
   Future<void> _onLoginViewRequested(
     LoginViewRequested _,
     Emitter<WalletState> emit,
   ) async {
-    emit(state.copyWith(status: WalletViewStatus.loading));
-    emit(state.copyWith(status: WalletViewStatus.login));
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.login));
   }
 
   Future<void> _onProfileViewRequested(
     ProfileViewRequested _,
     Emitter<WalletState> emit,
   ) async {
-    emit(state.copyWith(status: WalletViewStatus.profile));
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
   }
 
   Future<void> _onConnectWalletRequested(
@@ -89,7 +87,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) {
     _walletRepository.disconnectWallet();
-    emit(state.copyWith(walletAddress: kEmptyAddress));
+    emit(
+      state.copyWith(
+        walletAddress: kEmptyAddress,
+        walletViewStatus: WalletViewStatus.initial,
+      ),
+    );
   }
 
   Future<void> _onWatchWalletChangesStarted(
