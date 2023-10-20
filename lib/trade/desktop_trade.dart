@@ -49,7 +49,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
         .add(const SelectButtonEvent(buttonName: 'trade'));
     context
         .read<BottomNavigationBarBloc>()
-        .add(const SelectItemEvent(itemIndex: 1));
+        .add(const SelectItemEvent(itemIndex: 2));
 
     return BlocListener<WalletBloc, WalletState>(
       listener: (context, state) {

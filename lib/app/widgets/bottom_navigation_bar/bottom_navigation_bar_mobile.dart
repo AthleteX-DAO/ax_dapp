@@ -1,4 +1,5 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
+import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // TODO(Ryan): Remove ignore message when package is ready to use
@@ -50,8 +51,9 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
       builder: (context, state) {
         final selectedIndex =
             (state is ItemSelectedState) ? state.selectedItem : 0;
+
         return BottomNavigationBar(
-          showUnselectedLabels: true,
+          showUnselectedLabels: false,
           selectedLabelStyle: const TextStyle(
             fontSize: 10,
             fontFamily: 'OpenSans',
@@ -60,59 +62,51 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
             fontSize: 10,
             fontFamily: 'OpenSans',
           ),
-          type: BottomNavigationBarType.fixed,
+          type: BottomNavigationBarType.shifting,
           backgroundColor: Colors.transparent,
-          items: <BottomNavigationBarItem>[
-            const BottomNavigationBarItem(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
               icon: Icon(
                 FontAwesomeIcons.percent,
                 size: 24,
               ),
-              label: 'predict',
+              label: 'Predict',
+              tooltip: 'Make a prediction',
             ),
             BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/images/search.png',
-                height: 24,
-                width: 24,
-              ),
+              icon: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 24),
               label: 'Markets',
+              tooltip: 'Trade Live Markets',
             ),
             BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/images/swap.png',
-                height: 24,
-                width: 24,
-              ),
-              label: 'Trade',
-            ),
+                icon: FaIcon(
+                  FontAwesomeIcons.arrowRightArrowLeft,
+                  size: 24,
+                ),
+                label: 'Trade',
+                tooltip: 'Swap betwen your favorite coins'),
             BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/images/coins.png',
-                height: 24,
-                width: 24,
-              ),
+              icon: Icon(FontAwesomeIcons.coins),
               label: 'Pool',
+              tooltip: 'Pool Tokens together and Add Liquidity',
             ),
             BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/images/barn.png',
-                height: 24,
-                width: 24,
-              ),
+              icon: Icon(Icons.agriculture_rounded),
               label: 'Farm',
+              tooltip: 'Earn rewards for depositing your money',
             ),
-            const BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: FaIcon(
                 FontAwesomeIcons.trophy,
                 size: 24,
               ),
               label: 'League',
+              tooltip: 'Start a cross-sport fantasy league',
             ),
           ],
           currentIndex: selectedIndex,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey,
+          selectedItemColor: primaryOrangeColor,
+          unselectedItemColor: Colors.white,
           onTap: _onItemTapped,
         );
       },

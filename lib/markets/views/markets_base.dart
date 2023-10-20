@@ -15,7 +15,7 @@ class Scout extends StatelessWidget {
         .add(const SelectButtonEvent(buttonName: 'scout'));
     context
         .read<BottomNavigationBarBloc>()
-        .add(const SelectItemEvent(itemIndex: 0));
+        .add(const SelectItemEvent(itemIndex: 1));
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth >= 715) {
