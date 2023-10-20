@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:ax_dapp/wallet/models/models.dart';
-import 'package:ax_dapp/wallet/view/login.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -78,6 +77,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     try {
       final walletAddress = await _walletRepository.connectWallet();
+      add(const ProfileViewRequested());
       emit(state.copyWith(walletAddress: walletAddress));
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
