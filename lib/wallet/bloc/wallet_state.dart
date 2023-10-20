@@ -3,12 +3,12 @@ part of 'wallet_bloc.dart';
 class WalletState extends Equatable {
   const WalletState({
     required this.walletStatus,
-    required this.status,
     required this.walletAddress,
     required this.chain,
     this.axData = AxData.empty,
     this.gasPrice = 0,
     this.failure = WalletFailure.none,
+    this.status = WalletViewStatus.initial,
   });
 
   WalletState.fromWallet({WalletViewStatus? status, required Wallet wallet})
