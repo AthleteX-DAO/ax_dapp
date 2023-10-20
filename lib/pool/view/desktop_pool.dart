@@ -55,7 +55,7 @@ class _DesktopPoolState extends State<DesktopPool> {
         .add(const SelectButtonEvent(buttonName: 'pool'));
     context
         .read<BottomNavigationBarBloc>()
-        .add(const SelectItemEvent(itemIndex: 2));
+        .add(const SelectItemEvent(itemIndex: 3));
 
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),

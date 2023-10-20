@@ -36,7 +36,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
         .add(const SelectButtonEvent(buttonName: 'farm'));
     context
         .read<BottomNavigationBarBloc>()
-        .add(const SelectItemEvent(itemIndex: 3));
+        .add(const SelectItemEvent(itemIndex: 4));
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return LayoutBuilder(
