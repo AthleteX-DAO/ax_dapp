@@ -3,7 +3,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:ax_dapp/wallet/widgets/widgets.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({
@@ -29,6 +31,8 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     final _auth = FirebaseAuth.instance;
     String email;
     String password;
@@ -69,9 +73,28 @@ class SignUpView extends StatelessWidget {
             const SizedBox(
               height: 24.0,
             ),
-            ElevatedButton(
+            TextButton(
               child: Text('Sign Up'),
-              onPressed: () async {},
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Colors.amber[200]!.withOpacity(0.15),
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide(color: Colors.white),
+                  ),
+                ),
+                minimumSize: MaterialStateProperty.all<Size>(
+                  Size(width / 4, height * 0.09),
+                ),
+                maximumSize: MaterialStateProperty.all<Size>(
+                  Size(width / 2, height * 0.10),
+                ),
+              ),
+              onPressed: () async {
+                context.read<WalletBloc>().add(const ProfileViewRequested());
+              },
             )
           ],
         ),
