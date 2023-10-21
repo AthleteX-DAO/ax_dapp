@@ -51,7 +51,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     SignUpViewRequested _,
     Emitter<WalletState> emit,
   ) async {
-    add(const ConnectWalletRequested());
     emit(state.copyWith(walletViewStatus: WalletViewStatus.signup));
   }
 
