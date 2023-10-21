@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/usecases/explorer_usecase.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class Account extends StatelessWidget {
     if (_width < 405) wid = _width;
     var hgt = 240.0;
     if (_height < 235) hgt = _height;
-
+    var usdcBalance = '';
     var formattedWalletAddress = '';
     if (walletAddress.isNotEmpty) {
       final walletAddressPrefix = walletAddress.substring(0, 7);
@@ -40,9 +41,9 @@ class Account extends StatelessWidget {
     final explorerUrl = explorerUseCase.explorerUrl(chain);
 
     return Container(
-      height: hgt,
+      height: _height * 0.9,
       width: wid,
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      decoration: boxDecoration(lightOrangeColor, 30, 0, Colors.black),
       alignment: Alignment.center,
       child: SingleChildScrollView(
         child: Column(
@@ -59,7 +60,7 @@ class Account extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Account',
+                    'My Account Balance',
                     style: textStyle(
                       Colors.white,
                       20,
@@ -89,12 +90,13 @@ class Account extends StatelessWidget {
                 Colors.transparent,
                 14,
                 .5,
-                Colors.grey[400]!,
+                Colors.black,
               ),
               child: FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(
                       width: wid - edge2,
@@ -107,13 +109,30 @@ class Account extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  'Connected With Metamask',
+                                  'Connected With Web3 Wallet',
                                   style: textStyle(
                                     Colors.grey[600]!,
                                     13,
                                     isBold: false,
                                     isUline: false,
                                   ),
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.attach_money,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      usdcBalance,
+                                      style: textStyle(
+                                        Colors.white,
+                                        20,
+                                        isBold: false,
+                                        isUline: false,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 Row(
                                   children: [
@@ -180,6 +199,29 @@ class Account extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        IconButton(
+                          icon: const Icon(Icons.payments_sharp),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.receipt_rounded),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.arrow_upward_outlined),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.arrow_downward_outlined,
+                          ),
+                          onPressed: () {},
+                        ),
+                      ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
