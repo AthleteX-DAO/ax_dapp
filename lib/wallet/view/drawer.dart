@@ -20,17 +20,11 @@ class DrawerView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               if (state.walletViewStatus == WalletViewStatus.profile)
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Account(),
-                  ],
-                ),
+                const Account(),
               if (state.walletViewStatus == WalletViewStatus.login)
                 const LoginView(),
               if (state.walletViewStatus == WalletViewStatus.signup)
-                const SignUpView(),
+                SignUpView(),
               if (state.walletViewStatus == WalletViewStatus.initial ||
                   state.walletViewStatus == WalletViewStatus.none)
                 const LoginSignup(),
