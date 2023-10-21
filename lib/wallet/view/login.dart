@@ -10,16 +10,17 @@ class LoginView extends StatelessWidget {
     final nameController = TextEditingController();
     final passwordController = TextEditingController();
 
-    return FittedBox(
+    return SingleChildScrollView(
       child: ListView(
         children: <Widget>[
           Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Sign in',
-                style: TextStyle(fontSize: 20),
-              )),
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(10),
+            child: const Text(
+              'Sign in',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
           Container(
             padding: const EdgeInsets.all(10),
             child: TextField(
