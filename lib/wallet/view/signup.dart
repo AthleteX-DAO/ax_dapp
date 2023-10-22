@@ -1,31 +1,30 @@
 import 'package:ax_dapp/util/colors.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({
     super.key,
   });
 
-  final kTextFieldDecoration = const InputDecoration(
-    hintText: 'Enter a value',
-    hintStyle: TextStyle(color: Colors.grey),
-    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  final kTextFieldDecoration = InputDecoration(
+    hintText: '',
+    hintStyle: const TextStyle(color: Colors.white),
+    fillColor: secondaryOrangeColor,
+    contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+    border: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(32)),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-      borderRadius: BorderRadius.all(Radius.circular(32.0)),
+      borderSide: BorderSide(color: primaryOrangeColor),
+      borderRadius: const BorderRadius.all(Radius.circular(32)),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-      borderRadius: BorderRadius.all(Radius.circular(32.0)),
+      borderSide: BorderSide(color: primaryOrangeColor, width: 2),
+      borderRadius: const BorderRadius.all(Radius.circular(32)),
     ),
   );
 
@@ -40,7 +39,7 @@ class SignUpView extends StatelessWidget {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,7 +56,7 @@ class SignUpView extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 8.0,
+              height: 12,
             ),
             TextField(
               obscureText: true,
@@ -71,13 +70,12 @@ class SignUpView extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 24.0,
+              height: 35,
             ),
             TextButton(
-              child: Text('Sign Up'),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
-                  Colors.amber[200]!.withOpacity(0.15),
+                  primaryOrangeColor.withOpacity(0.15),
                 ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -94,8 +92,26 @@ class SignUpView extends StatelessWidget {
               ),
               onPressed: () async {
                 context.read<WalletBloc>().add(const ProfileViewRequested());
+                try {
+                  // TODO: Migrate to BLoC
+                  // final newUser = await _auth.createUserWithEmailAndPassword(
+                  //   email: email,
+                  //   password: password,
+                  // );
+                } catch (e) {}
               },
-            )
+              child: FittedBox(
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    color: Colors.amber[400],
+                    fontSize: 40,
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
