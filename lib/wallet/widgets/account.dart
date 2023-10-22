@@ -42,8 +42,8 @@ class Account extends StatelessWidget {
 
     return Container(
       height: _height * 0.9,
-      width: wid,
-      decoration: boxDecoration(lightOrangeColor, 30, 0, Colors.black),
+      width: _width * 0.9,
+      decoration: boxDecoration(Colors.transparent, 30, 0, Colors.black),
       alignment: Alignment.center,
       child: SingleChildScrollView(
         child: Column(
@@ -60,7 +60,7 @@ class Account extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'My Account Balance',
+                    'My Account Balances',
                     style: textStyle(
                       Colors.white,
                       20,
@@ -85,201 +85,207 @@ class Account extends StatelessWidget {
                   ? const EdgeInsets.symmetric(horizontal: 10)
                   : EdgeInsets.zero,
               width: wid - edge,
-              height: 145,
+              height: _height * 0.8,
               decoration: boxDecoration(
                 Colors.transparent,
                 14,
                 .5,
                 Colors.black,
               ),
-              child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      width: wid - edge2,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: 65,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  'Connected With Web3 Wallet',
-                                  style: textStyle(
-                                    Colors.grey[600]!,
-                                    13,
-                                    isBold: false,
-                                    isUline: false,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: wid - edge2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          height: _height * 0.2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                'Connected With Web3 Wallet',
+                                style: textStyle(
+                                  Colors.grey[600]!,
+                                  13,
+                                  isBold: false,
+                                  isUline: false,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.attach_money,
+                                    color: Colors.white,
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.attach_money,
-                                      color: Colors.white,
+                                  Text(
+                                    usdcBalance,
+                                    style: textStyle(
+                                      Colors.white,
+                                      20,
+                                      isBold: false,
+                                      isUline: false,
                                     ),
-                                    Text(
-                                      usdcBalance,
-                                      style: textStyle(
-                                        Colors.white,
-                                        20,
-                                        isBold: false,
-                                        isUline: false,
-                                      ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.account_balance_wallet,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    formattedWalletAddress,
+                                    style: textStyle(
+                                      Colors.white,
+                                      20,
+                                      isBold: false,
+                                      isUline: false,
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.account_balance_wallet,
-                                      color: Colors.white,
-                                    ),
-                                    Text(
-                                      formattedWalletAddress,
-                                      style: textStyle(
-                                        Colors.white,
-                                        20,
-                                        isBold: false,
-                                        isUline: false,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 65,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                    right: 5,
-                                    top: 5,
-                                  ),
-                                  width: 75,
-                                  height: 25,
-                                  decoration: boxDecoration(
-                                    Colors.transparent,
-                                    100,
-                                    0,
-                                    Colors.red[900]!,
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      context.read<WalletBloc>().add(
-                                            const DisconnectWalletRequested(),
-                                          );
-                                      Navigator.pop(context);
-                                    },
-                                    child: FittedBox(
-                                      child: SizedBox(
-                                        child: Text(
-                                          'Disconnect',
-                                          style: textStyle(
-                                            Colors.red[900]!,
-                                            10,
-                                            isBold: true,
-                                            isUline: false,
-                                          ),
+                        ),
+                        SizedBox(
+                          height: 65,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  right: 5,
+                                  top: 5,
+                                ),
+                                width: 75,
+                                height: 25,
+                                decoration: boxDecoration(
+                                  Colors.transparent,
+                                  100,
+                                  0,
+                                  Colors.red[900]!,
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    context.read<WalletBloc>().add(
+                                          const DisconnectWalletRequested(),
+                                        );
+                                    Navigator.pop(context);
+                                  },
+                                  child: FittedBox(
+                                    child: SizedBox(
+                                      child: Text(
+                                        'Disconnect',
+                                        style: textStyle(
+                                          Colors.red[900]!,
+                                          10,
+                                          isBold: true,
+                                          isUline: false,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //Wallet Addess Functionality (copy & go to explorer)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Clipboard.setData(
+                            ClipboardData(
+                              text: walletAddress,
                             ),
-                          ),
-                        ],
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Icon(
+                              Icons.filter_none,
+                              color: Colors.grey,
+                            ),
+                            Text(
+                              'Copy Address',
+                              style: textStyle(
+                                Colors.grey[400]!,
+                                15,
+                                isBold: false,
+                                isUline: false,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        IconButton(
-                          icon: const Icon(Icons.payments_sharp),
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.receipt_rounded),
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.arrow_upward_outlined),
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.arrow_downward_outlined,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Clipboard.setData(
-                              ClipboardData(
-                                text: walletAddress,
+                      TextButton(
+                        onPressed: () {
+                          launchUrl(Uri.parse(explorerUrl));
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Icon(
+                              Icons.open_in_new,
+                              color: Colors.grey,
+                            ),
+                            Text(
+                              buttonMessage,
+                              style: textStyle(
+                                Colors.grey[400]!,
+                                15,
+                                isBold: false,
+                                isUline: false,
                               ),
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const Icon(
-                                Icons.filter_none,
-                                color: Colors.grey,
-                              ),
-                              Text(
-                                'Copy Address',
-                                style: textStyle(
-                                  Colors.grey[400]!,
-                                  15,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        TextButton(
-                          onPressed: () {
-                            launchUrl(Uri.parse(explorerUrl));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const Icon(
-                                Icons.open_in_new,
-                                color: Colors.grey,
-                              ),
-                              Text(
-                                buttonMessage,
-                                style: textStyle(
-                                  Colors.grey[400]!,
-                                  15,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
-                              ),
-                            ],
-                          ),
+                      ),
+                    ],
+                  ),
+
+                  // Send, Recieve, Top up & view txn history
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.arrow_upward_outlined),
+                        tooltip: 'Send your crypto ',
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.arrow_downward_outlined,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                        tooltip: 'Recieve your crypto',
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.payments_sharp),
+                        tooltip: 'Add to your USDC balance',
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.receipt_rounded),
+                        tooltip: 'View your transaction history',
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+
+                  /// List of Sports Crypto owned by this wallet
+                  const Row(),
+                ],
               ),
             ),
           ],
