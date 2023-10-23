@@ -2,6 +2,9 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/usecases/explorer_usecase.dart';
+import 'package:ax_dapp/wallet/widgets/wallet_assets.dart';
+import 'package:ax_dapp/wallet/widgets/wallet_chain.dart';
+import 'package:ax_dapp/wallet/widgets/wallet_gas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +24,7 @@ class Account extends StatelessWidget {
     const edge = 40.0;
     const edge2 = 60.0;
     if (_width < 405) wid = _width;
-    var hgt = 240.0;
+    var hgt = 240.0; //Maybe delete later
     if (_height < 235) hgt = _height;
     var usdcBalance = '';
     var formattedWalletAddress = '';
@@ -43,7 +46,7 @@ class Account extends StatelessWidget {
     return Container(
       height: _height * 0.9,
       width: _width * 0.9,
-      decoration: boxDecoration(Colors.transparent, 30, 0, Colors.black),
+      decoration: boxDecoration(Colors.transparent, 30, 0, Colors.transparent),
       alignment: Alignment.center,
       child: SingleChildScrollView(
         child: Column(
@@ -90,7 +93,7 @@ class Account extends StatelessWidget {
                 Colors.transparent,
                 14,
                 .5,
-                Colors.black,
+                primaryOrangeColor,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -105,14 +108,18 @@ class Account extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text(
-                                'Connected With Web3 Wallet',
-                                style: textStyle(
-                                  Colors.grey[600]!,
-                                  13,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Your Wallet Details',
+                                    style: textStyle(
+                                      Colors.grey[600]!,
+                                      13,
+                                      isBold: false,
+                                      isUline: false,
+                                    ),
+                                  ),
+                                ],
                               ),
                               Row(
                                 children: [
@@ -132,6 +139,8 @@ class Account extends StatelessWidget {
                                 ],
                               ),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   const Icon(
                                     Icons.account_balance_wallet,
@@ -146,6 +155,7 @@ class Account extends StatelessWidget {
                                       isUline: false,
                                     ),
                                   ),
+                                  const WalletGas(),
                                 ],
                               ),
                             ],
@@ -197,6 +207,9 @@ class Account extends StatelessWidget {
                       ],
                     ),
                   ),
+
+                  //const WalletChain(), This functionality is currently broken
+
                   //Wallet Addess Functionality (copy & go to explorer)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -284,7 +297,15 @@ class Account extends StatelessWidget {
                   ),
 
                   /// List of Sports Crypto owned by this wallet
-                  const Row(),
+                  const Row(children: [
+                    Text('Your Wallet Assets'),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        //Assets will go here
+                      ],
+                    ),
+                  ]),
                 ],
               ),
             ),
