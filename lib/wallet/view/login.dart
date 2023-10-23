@@ -133,7 +133,7 @@ class LoginView extends StatelessWidget {
                       },
                   ),
                   TextSpan(
-                    text: 'with Metamask or other 3rd party wallets',
+                    text: ', with Metamask or another external wallet',
                     style: TextStyle(
                       color: Colors.amber[400],
                       fontSize: 14,
