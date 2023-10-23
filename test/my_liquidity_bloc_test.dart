@@ -25,6 +25,7 @@ void main() {
     status: WalletStatus.connected,
     address: testWalletAddress,
     chain: EthereumChain.polygonMainnet,
+    assets: [],
   );
   final testMyLiquidityItemInfo = <LiquidityPositionInfo>[
     const LiquidityPositionInfo(
