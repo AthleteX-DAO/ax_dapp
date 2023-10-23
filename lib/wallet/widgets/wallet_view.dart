@@ -29,13 +29,7 @@ class WalletView extends StatelessWidget {
             previous.walletStatus != current.walletStatus ||
             previous.failure != current.failure,
         listener: (_, state) {
-          if (state.isWalletUnavailable) {
-            showDialog<void>(
-              context: context,
-              builder: (_) => const ConnectMetaMaskDialog(),
-            );
-          }
-          if (state.isWalletUnsupported) {
+          if (state.isWalletUnsupported || state.isWalletUnavailable) {
             showDialog<void>(
               context: context,
               builder: (_) => const WrongNetworkDialog(),
