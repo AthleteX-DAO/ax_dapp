@@ -14,7 +14,7 @@ class Login extends StatelessWidget {
       text: TextSpan(
         children: <TextSpan>[
           TextSpan(
-            text: 'Already have an account? ',
+            text: 'Already have an account or wallet? ',
             style: TextStyle(
               color: Colors.amber[400],
               fontSize: textSize,

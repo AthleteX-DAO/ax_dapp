@@ -1,6 +1,7 @@
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -42,7 +43,6 @@ class LoginView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             TextField(
               keyboardType: TextInputType.emailAddress,
@@ -75,7 +75,7 @@ class LoginView extends StatelessWidget {
             TextButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
-                  primaryOrangeColor,
+                  primaryOrangeColor.withOpacity(0.15),
                 ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -112,6 +112,36 @@ class LoginView extends StatelessWidget {
 
                 showSpinner = false;
               },
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Connect',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        context
+                            .read<WalletBloc>()
+                            .add(const ConnectWalletRequested());
+                      },
+                  ),
+                  TextSpan(
+                    text: 'with Metamask or other 3rd party wallets',
+                    style: TextStyle(
+                      color: Colors.amber[400],
+                      fontSize: 14,
+                      fontFamily: 'OpenSans',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
