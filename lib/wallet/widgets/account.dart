@@ -298,7 +298,7 @@ class Account extends StatelessWidget {
 
                   /// List of Sports Crypto owned by this wallet
                   const Row(children: [
-                    Text('Your Wallet Assets'),
+                    // Text('Your Wallet Assets'),
                     Stack(
                       alignment: Alignment.center,
                       children: [
