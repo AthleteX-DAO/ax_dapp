@@ -135,7 +135,6 @@ void main() async {
           ),
           RepositoryProvider.value(value: gysrApiClient),
           RepositoryProvider.value(value: subGraphRepo),
-          RepositoryProvider(create: (context) => SportsMarketsRepository()),
           RepositoryProvider(
             create: (context) => MLBRepo(mlbApi),
           ),
