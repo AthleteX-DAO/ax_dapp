@@ -1,5 +1,5 @@
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/markets/modules/crypto_markets/crypto.dart';
+import 'package:ax_dapp/markets/widgets/markets_filter_mobile.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class MobileMarkets extends StatefulWidget {
-  // ignore: prefer_const_constructors_in_immutables
   const MobileMarkets({
     super.key,
   });
@@ -23,12 +22,9 @@ class _MobileMarketsState extends State<MobileMarkets> {
   Global global = Global();
   final myController = TextEditingController(text: input);
   static String input = '';
-  //bool athletePage = false;
-  static bool isLongToken = true;
   static SupportedSport _selectedSport = SupportedSport.all;
   String allSportsTitle = 'All Sports';
   int _widgetIndex = 0;
-  int _marketVsBookPriceIndex = 0;
   EthereumChain? _selectedChain;
   String selectedAthlete = '';
   List<SportsMarketsModel> liveSports = [];
@@ -48,9 +44,6 @@ class _MobileMarketsState extends State<MobileMarkets> {
 
   @override
   Widget build(BuildContext context) {
-    const sportFilterTxSz = 14.0;
-    const sportFilterIconSz = 14.0;
-
     return BlocBuilder<MarketsPageBloc, MarketsPageState>(
       buildWhen: (previous, current) {
         return current.status.name.isNotEmpty ||
@@ -112,10 +105,9 @@ class _MobileMarketsState extends State<MobileMarkets> {
                             height: 20,
                             child: Row(
                               children: [
-                                MarketsFilter(
+                                MarketsFilterMobile(
                                   boxConstraints: constraints,
-                                  pageState: state,
-                                ).mobile(),
+                                ),
                                 const Spacer(),
                                 // search icon
                                 Center(
@@ -223,7 +215,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                                             inputFormatters: [
                                               FilteringTextInputFormatter.allow(
                                                 RegExp('[a-zA-z. ]'),
-                                              )
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -248,10 +240,10 @@ class _MobileMarketsState extends State<MobileMarkets> {
                                       fontFamily: 'OpenSans',
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -326,7 +318,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                               height: 70,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],
