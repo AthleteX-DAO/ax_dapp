@@ -1,8 +1,9 @@
-import 'package:ax_dapp/markets/modules/sports_markets/repository/sports_markets_repository.dart';
+import 'dart:async';
+
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:shared/shared.dart';
 
-import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'sports_page_event.dart';
@@ -11,13 +12,20 @@ part 'sports_page_state.dart';
 class SportsPageBloc extends Bloc<SportsPageEvent, SportsPageState> {
   SportsPageBloc({
     required WalletRepository walletRepository,
-    required SportsMarketsRepository sportsMarketsRepository,
-  })  : _sportsMarketsRepository = sportsMarketsRepository,
+    required GetSportsMarketsDataUseCase getSportsMarketsDataUseCase,
+  })  : _getSportsMarketsDataUseCase = getSportsMarketsDataUseCase,
         _walletRepository = walletRepository,
         super(
           const SportsPageState(),
-        ) {}
+        ) {
+    on<FetchLatestInfo>(_onFetchLatestIntfo);
+  }
 
   final WalletRepository _walletRepository;
-  final SportsMarketsRepository _sportsMarketsRepository;
+  final GetSportsMarketsDataUseCase _getSportsMarketsDataUseCase;
+
+  Future<void> _onFetchLatestIntfo(
+    FetchLatestInfo event,
+    Emitter<SportsPageState> emit,
+  ) async {}
 }

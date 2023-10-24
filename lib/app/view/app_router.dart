@@ -110,10 +110,7 @@ class AppRouter {
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
-                  sportsRepo: GetSportsMarketsDataUseCase(
-                    sportsMarketsRepository:
-                        context.read<SportsMarketsRepository>(),
-                  ),
+                  getSportsMarketsDataUseCase: context.read<GetSportsMarketsDataUseCase>(),
                   repo: GetScoutAthletesDataUseCase(
                     tokensRepository: context.read<TokensRepository>(),
                     graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
@@ -124,8 +121,6 @@ class AppRouter {
                   ),
                   longShortPairRepository:
                       context.read<LongShortPairRepository>(),
-                  sportsMarketsRepository:
-                      context.read<SportsMarketsRepository>(),
                 ),
                 child: const Scout(),
               );

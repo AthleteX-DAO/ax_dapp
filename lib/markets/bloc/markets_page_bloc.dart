@@ -16,8 +16,7 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
     required WalletRepository walletRepository,
     required TokensRepository tokenRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
-    required this.sportsMarketsRepository,
-    required this.sportsRepo,
+    required this.getSportsMarketsDataUseCase,
     required this.repo,
     required this.longShortPairRepository,
   })  : _walletRepository = walletRepository,
@@ -33,15 +32,15 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
 
     add(const WatchAppDataChangesStarted());
     add(FetchScoutInfoRequested());
+    add(FetchSportsMarketsRequested());
   }
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokenRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetScoutAthletesDataUseCase repo;
-  final GetSportsMarketsDataUseCase sportsRepo;
   final LongShortPairRepository longShortPairRepository;
-  final SportsMarketsRepository sportsMarketsRepository;
+  final GetSportsMarketsDataUseCase getSportsMarketsDataUseCase;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -76,8 +75,8 @@ class MarketsPageBloc extends Bloc<MarketsPageEvent, MarketsPageState> {
   ) async {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
-      debugPrint('Fetching Sports Markets info');
-      final response = await sportsRepo.fetchliveMarkets();
+      final response = await getSportsMarketsDataUseCase.fetchliveMarkets();
+      debugPrint('$response');
       if (response.isNotEmpty) {
         emit(
           state.copyWith(
