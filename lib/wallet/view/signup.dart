@@ -1,6 +1,5 @@
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -52,10 +51,10 @@ class _SignUpViewState extends State<SignUpView> {
           children: <Widget>[
             TextField(
               keyboardType: TextInputType.emailAddress,
+              controller: emailController,
               textAlign: TextAlign.center,
               onSubmitted: (value) {
                 emailController.text = value;
-                //Do something with the user input.
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your email',
@@ -69,9 +68,8 @@ class _SignUpViewState extends State<SignUpView> {
               controller: passwordController,
               obscureText: true,
               textAlign: TextAlign.center,
-              onChanged: (value) {
+              onSubmitted: (value) {
                 passwordController.text = value;
-                //Do something with the user input.
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your Password',

@@ -1,6 +1,5 @@
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +55,6 @@ class _LoginViewState extends State<LoginView> {
               textAlign: TextAlign.center,
               onSubmitted: (value) {
                 emailController.text = value;
-                //Do something with the user input.
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your email',
