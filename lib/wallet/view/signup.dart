@@ -12,6 +12,7 @@ class SignUpView extends StatelessWidget {
 
   final kTextFieldDecoration = InputDecoration(
     hintText: '',
+    labelText: '',
     hintStyle: const TextStyle(color: Colors.white),
     fillColor: secondaryOrangeColor,
     contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -32,9 +33,8 @@ class SignUpView extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    final _auth = FirebaseAuth.instance;
-    String email;
-    String password;
+    var emailController = TextEditingController();
+    var passwordController = TextEditingController();
     var showSpinner = false;
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -48,25 +48,28 @@ class SignUpView extends StatelessWidget {
               keyboardType: TextInputType.emailAddress,
               textAlign: TextAlign.center,
               onChanged: (value) {
-                email = value;
+                emailController.text = value;
                 //Do something with the user input.
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your email',
+                labelText: 'Emails',
               ),
             ),
             const SizedBox(
               height: 12,
             ),
             TextField(
+              controller: passwordController,
               obscureText: true,
               textAlign: TextAlign.center,
               onChanged: (value) {
-                password = value;
+                passwordController.text = value;
                 //Do something with the user input.
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your Password',
+                labelText: 'Password',
               ),
             ),
             const SizedBox(
@@ -91,14 +94,12 @@ class SignUpView extends StatelessWidget {
                 ),
               ),
               onPressed: () async {
-                context.read<WalletBloc>().add(const ProfileViewRequested());
-                try {
-                  // TODO: Migrate to BLoC
-                  // final newUser = await _auth.createUserWithEmailAndPassword(
-                  //   email: email,
-                  //   password: password,
-                  // );
-                } catch (e) {}
+                context.read<WalletBloc>().add(
+                      ProfileViewRequestedFromSignUp(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      ),
+                    );
               },
               child: FittedBox(
                 child: Text(

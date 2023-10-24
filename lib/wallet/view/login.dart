@@ -13,6 +13,7 @@ class LoginView extends StatelessWidget {
 
   final kTextFieldDecoration = InputDecoration(
     hintText: '',
+    labelText: '',
     hintStyle: const TextStyle(color: Colors.white),
     fillColor: secondaryOrangeColor,
     contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -31,8 +32,8 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String email;
-    String password;
+    var emailController = TextEditingController();
+    var passwordController = TextEditingController();
     var showSpinner = false;
     final _auth = FirebaseAuth.instance;
     final width = MediaQuery.of(context).size.width;
@@ -46,13 +47,15 @@ class LoginView extends StatelessWidget {
           children: <Widget>[
             TextField(
               keyboardType: TextInputType.emailAddress,
+              controller: emailController,
               textAlign: TextAlign.center,
-              onChanged: (value) {
-                email = value;
+              onSubmitted: (value) {
+                emailController.text = value;
                 //Do something with the user input.
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your email',
+                labelText: 'Email',
               ),
             ),
             const SizedBox(
@@ -60,13 +63,14 @@ class LoginView extends StatelessWidget {
             ),
             TextField(
               obscureText: true,
+              controller: passwordController,
               textAlign: TextAlign.center,
-              onChanged: (value) {
-                password = value;
-                //Do something with the user input.
+              onSubmitted: (value) {
+                passwordController.text = value;
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your password.',
+                labelText: 'Password',
               ),
             ),
             const SizedBox(
@@ -100,15 +104,12 @@ class LoginView extends StatelessWidget {
                 ),
               ),
               onPressed: () async {
-                context.read<WalletBloc>().add(const ProfileViewRequested());
-
-                // TODO: Sign up with email & password
-                // try {
-                //   final user = await _auth.signInWithEmailAndPassword(
-                //       email: email, password: password);
-                // } catch (e) {
-                //   print(e);
-                // }
+                context.read<WalletBloc>().add(
+                      ProfileViewRequestedFromLogin(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      ),
+                    );
 
                 showSpinner = false;
               },
