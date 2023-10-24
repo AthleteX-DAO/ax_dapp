@@ -12,7 +12,6 @@ import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/markets/views/markets_base.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
@@ -128,10 +127,7 @@ class AppRouter {
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
-                  sportsRepo: GetSportsMarketsDataUseCase(
-                    sportsMarketsRepository:
-                        context.read<SportsMarketsRepository>(),
-                  ),
+                  getSportsMarketsDataUseCase: context.read<GetSportsMarketsDataUseCase>(),
                   repo: GetScoutAthletesDataUseCase(
                     tokensRepository: context.read<TokensRepository>(),
                     graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
@@ -142,8 +138,6 @@ class AppRouter {
                   ),
                   longShortPairRepository:
                       context.read<LongShortPairRepository>(),
-                  sportsMarketsRepository:
-                      context.read<SportsMarketsRepository>(),
                 ),
                 child: const Scout(),
               );

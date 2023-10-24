@@ -1,19 +1,24 @@
 import 'package:ax_dapp/markets/markets.dart';
+import 'package:ax_dapp/markets/modules/sports_markets/repository/overtime_markets_repository.dart';
+import 'package:ax_dapp/markets/modules/sports_markets/repository/sx_markets_repository.dart';
 
 class GetSportsMarketsDataUseCase {
   GetSportsMarketsDataUseCase({
-    required this.sportsMarketsRepository,
+    required this.sxMarketsRepository,
+    required this.overTimeMarketsRepository,
   });
 
-  SportsMarketsRepository sportsMarketsRepository;
+  final SXMarketsRepository sxMarketsRepository;
+  final OverTimeMarketsRepository overTimeMarketsRepository;
 
   Future<List<SportsMarketsModel>> fetchliveMarkets() async {
-    final allSportsMarkets = <SportsMarketsModel>[];
-    final sxMarkets = await sportsMarketsRepository.fetchSXMarkets();
-
-    for (final market in sxMarkets) {
-      allSportsMarkets.add(market);
-    }
-    return sxMarkets;
+    final sportsMaketModel = <SportsMarketsModel>[];
+    final sxMarkets = await sxMarketsRepository.fetchSXMarkets();
+    final overTimeMarkets =
+        await overTimeMarketsRepository.fetchOverTimeMarkets(chainId: 10);
+    sportsMaketModel
+      ..addAll(sxMarkets)
+      ..addAll(overTimeMarkets);
+    return sportsMaketModel;
   }
 }

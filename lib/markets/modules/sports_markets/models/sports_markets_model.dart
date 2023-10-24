@@ -1,32 +1,25 @@
-import 'package:ax_dapp/markets/models/models.dart';
+import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
-class SportsMarketsModel extends MarketModel {
-  const SportsMarketsModel(
-      {required this.id,
-      required this.name,
-      required this.marketHash,
-      required super.typeOfMarket,
-      required this.line,
-      required this.mainLine})
-      : super(
-          id: id,
-          name: name,
-          marketHash: marketHash,
-        );
+class SportsMarketsModel extends Equatable {
+  const SportsMarketsModel({
+    required this.id,
+    required this.name,
+    required this.marketHash,
+    required this.typeOfMarket,
+    required this.line,
+    required this.mainLine,
+  });
 
-  @override
-  final int id;
-  @override
+  final String id;
   final String name;
-  @override
+  final SupportedMarkets typeOfMarket;
   final String marketHash;
-
   final double line;
   final bool mainLine;
 
   static const empty = SportsMarketsModel(
-    id: 0,
+    id: '0',
     name: '',
     typeOfMarket: SupportedMarkets.Sports,
     marketHash: '',
@@ -36,4 +29,9 @@ class SportsMarketsModel extends MarketModel {
 
   @override
   List<Object?> get props => [id, name, marketHash, typeOfMarket, line];
+
+  @override
+  String toString() {
+    return '''ID: $id NAME: $name MARKETHASH: $marketHash TYPE OF MARKET: $typeOfMarket LINE: $line MAINLINE: $mainLine''';
+  }
 }

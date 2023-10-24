@@ -7,9 +7,11 @@ class HomeOdds {
 
   factory HomeOdds.fromJson(Map<String, dynamic> json) {
     return HomeOdds(
-      american: json['american'] as double,
-      decimal: json['decimal'] as double,
-      normalizedImplied: json['normalizedImplied'] as double,
+      american: json['american'] == null ? 0.0 : json['american'] as double,
+      decimal: json['decimal'] == null ? 0.0 : json['decimal'] as double,
+      normalizedImplied: json['normalizedImplied'] == null
+          ? 0.0
+          : json['normalizedImplied'] as double,
     );
   }
 
@@ -19,7 +21,7 @@ class HomeOdds {
     normalizedImplied: 0,
   );
 
-  final double american;
-  final double decimal;
-  final double normalizedImplied;
+  final double? american;
+  final double? decimal;
+  final double? normalizedImplied;
 }
