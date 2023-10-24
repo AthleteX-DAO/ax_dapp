@@ -1,6 +1,7 @@
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/app_scaffold.dart';
+import 'package:ax_dapp/athlete_markets/view/athlete_page.dart';
 import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
 import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
@@ -31,6 +32,9 @@ import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/sports_markets/models/sports_markets_model.dart';
+import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
+import 'package:ax_dapp/sports_markets/view/sports_page.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
 import 'package:ax_dapp/util/util.dart';
