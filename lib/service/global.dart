@@ -1,5 +1,6 @@
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/sports_markets/models/sports_markets_model.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 
 // singleton class

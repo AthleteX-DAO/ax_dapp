@@ -1,3 +1,4 @@
+import 'package:ax_dapp/athlete_markets/widgets/athlete_buy_approve_button.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/widgets/widgets.dart';
 import 'package:ax_dapp/markets/markets.dart' hide AptTypeSelectionChanged;
@@ -378,9 +379,9 @@ class _BuyDialogState extends State<BuyDialog> {
                 ),
                 SizedBox(
                   width: wid,
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Flexible(child: AmountToReceive()),
                     ],
                   ),
