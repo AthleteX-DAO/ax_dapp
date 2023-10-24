@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class SignUpView extends StatelessWidget {
-  SignUpView({
+class SignUpView extends StatefulWidget {
+  const SignUpView({
     super.key,
   });
 
+  @override
+  State<SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
   final kTextFieldDecoration = InputDecoration(
     hintText: '',
     labelText: '',
@@ -29,12 +34,13 @@ class SignUpView extends StatelessWidget {
     ),
   );
 
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
     var showSpinner = false;
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -47,7 +53,7 @@ class SignUpView extends StatelessWidget {
             TextField(
               keyboardType: TextInputType.emailAddress,
               textAlign: TextAlign.center,
-              onChanged: (value) {
+              onSubmitted: (value) {
                 emailController.text = value;
                 //Do something with the user input.
               },
@@ -100,6 +106,8 @@ class SignUpView extends StatelessWidget {
                         password: passwordController.text,
                       ),
                     );
+
+                    showSpinner = false;
               },
               child: FittedBox(
                 child: Text(
@@ -117,5 +125,12 @@ class SignUpView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

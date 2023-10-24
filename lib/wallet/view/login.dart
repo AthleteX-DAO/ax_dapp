@@ -6,11 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class LoginView extends StatelessWidget {
-  LoginView({
+class LoginView extends StatefulWidget {
+  const LoginView({
     super.key,
   });
 
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   final kTextFieldDecoration = InputDecoration(
     hintText: '',
     labelText: '',
@@ -30,12 +35,12 @@ class LoginView extends StatelessWidget {
     ),
   );
 
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
     var showSpinner = false;
-    final _auth = FirebaseAuth.instance;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return ModalProgressHUD(
@@ -148,5 +153,12 @@ class LoginView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }
