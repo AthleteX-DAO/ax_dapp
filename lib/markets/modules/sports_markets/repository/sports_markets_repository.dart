@@ -4,7 +4,6 @@ import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/markets/modules/sports_markets/models/overtime_market_models/overtime_market.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class SportsMarketsRepository {
@@ -34,12 +33,11 @@ class SportsMarketsRepository {
             '${markets.leagueLabel}| ${markets.outcomeOneName} & ${markets.outcomeTwoName}';
         const typeOfMarket = SupportedMarkets.Sports;
         final marketHash = markets.marketHash;
-        final bookPrice = markets.mainLine;
         final marketLine = markets.line;
         final isMainLine = markets.mainLine;
         marketsLive.add(
           SportsMarketsModel(
-            id: id,
+            id: id.toString(),
             name: name,
             typeOfMarket: typeOfMarket,
             marketHash: marketHash,
@@ -77,7 +75,7 @@ class SportsMarketsRepository {
           .toList();
       debugPrint('Sports Markets Data: $overtimeMarkets');
       for (final market in overtimeMarkets) {
-        final id = int.parse(market.gameId);
+        final id = market.gameId;
         final name = '${market.homeTeam} ${market.awayTeam}';
         const typeOfMarket = SupportedMarkets.Sports;
         final marketHash = market.address;

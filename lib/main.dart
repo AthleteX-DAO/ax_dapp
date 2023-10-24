@@ -9,7 +9,9 @@ import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
-import 'package:ax_dapp/markets/modules/sports_markets/repository/sports_markets_repository.dart';
+import 'package:ax_dapp/markets/markets.dart';
+import 'package:ax_dapp/markets/modules/sports_markets/repository/overtime_markets_repository.dart';
+import 'package:ax_dapp/markets/modules/sports_markets/repository/sx_markets_repository.dart';
 import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
@@ -199,7 +201,17 @@ void main() async {
             ),
           ),
           RepositoryProvider(
-            create: (context) => SportsMarketsRepository(),
+            create: (context) => OverTimeMarketsRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => SXMarketsRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => GetSportsMarketsDataUseCase(
+              sxMarketsRepository: context.read<SXMarketsRepository>(),
+              overTimeMarketsRepository:
+                  context.read<OverTimeMarketsRepository>(),
+            ),
           ),
         ],
         child: App(configRepository: configRepository),

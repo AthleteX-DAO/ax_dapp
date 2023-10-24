@@ -37,7 +37,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
         .add(const SelectButtonEvent(buttonName: 'league'));
     context
         .read<BottomNavigationBarBloc>()
-        .add(const SelectItemEvent(itemIndex: 4));
+        .add(const SelectItemEvent(itemIndex: 5));
     var textSize = 16.0;
     var showToolTipHeader = true;
     var showDateRange = true;

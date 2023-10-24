@@ -7,15 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
-class DesktopMarkets extends StatelessWidget {
-  DesktopMarkets({
+class DesktopMarkets extends StatefulWidget {
+  const DesktopMarkets({
     super.key,
   });
 
-  Global global = Global();
-  final myController = TextEditingController(text: input);
-  static String input = '';
   static bool isLongToken = true;
+
+  @override
+  State<DesktopMarkets> createState() => _DesktopMarketsState();
+}
+
+class _DesktopMarketsState extends State<DesktopMarkets> {
+  Global global = Global();
   String allSportsTitle = 'All Sports';
   EthereumChain? _selectedChain;
   List<SportsMarketsModel> liveSports = [];
@@ -58,15 +62,12 @@ class DesktopMarkets extends StatelessWidget {
                       color: Colors.grey,
                     ),
                   ),
-                  MarketsFilter(
+                  MarketsFilterDesktop(
                     boxConstraints: constraints,
-                    pageState: state,
                   ),
-                  //Cause-Effect of the Filters
                   if (state.status == BlocStatus.success &&
                       state.selectedMarket == SupportedMarkets.Athlete)
                     const DesktopHeaders(),
-
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -97,7 +98,6 @@ class DesktopMarkets extends StatelessWidget {
                         ),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Athlete)
-                        //Removed athlete listings because no athletes are actually live
                         AthleteMarkets(
                           filteredAthletes: filteredAthletes,
                           boxConstraints: constraints,
@@ -123,7 +123,6 @@ class DesktopMarkets extends StatelessWidget {
                             ),
                           ),
                         ),
-                      // Default view
                       SizedBox(
                         height: constraints.maxHeight * 0.8 - 120,
                         child: const Center(
