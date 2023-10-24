@@ -23,6 +23,34 @@ class ProfileViewRequested extends WalletEvent {
   const ProfileViewRequested();
 }
 
+class MetamaskProfileViewRequested extends ProfileViewRequested {
+  const MetamaskProfileViewRequested();
+}
+
+class ProfileViewRequestedFromSignUp extends ProfileViewRequested {
+  ProfileViewRequestedFromSignUp({
+    required this.email,
+    required this.password,
+  });
+  String? email;
+  String? password;
+
+  @override
+  List<Object?> get props => [email, password];
+}
+
+class ProfileViewRequestedFromLogin extends ProfileViewRequested {
+  ProfileViewRequestedFromLogin({
+    required this.email,
+    required this.password,
+  });
+  String? email;
+  String? password;
+
+  @override
+  List<Object?> get props => [email, password];
+}
+
 class ConnectWalletRequested extends WalletEvent {
   const ConnectWalletRequested();
 }

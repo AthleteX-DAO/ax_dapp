@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:ax_dapp/wallet/models/models.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -25,6 +27,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<SignUpViewRequested>(_onSignUpViewRequested);
     on<LoginViewRequested>(_onLoginViewRequested);
     on<ProfileViewRequested>(_onProfileViewRequested);
+    on<ProfileViewRequestedFromSignUp>(_onProfileViewRequestedFromSignUp);
+    on<ProfileViewRequestedFromLogin>(_onProfileViewRequestedFromLogin);
 
     // Watch for changes
     on<WatchWalletChangesStarted>(_onWatchWalletChangesStarted);
@@ -36,6 +40,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     add(const WatchWalletChangesStarted());
     add(const WatchAxtChangesStarted());
   }
+
+  final _auth = FirebaseAuth.instance;
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
@@ -61,10 +67,46 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.login));
   }
 
+  Future<void> _onProfileViewRequestedFromLogin(
+    ProfileViewRequestedFromLogin _,
+    Emitter<WalletState> emit,
+  ) async {
+    var error;
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
+    var credentials = await _auth.signInWithEmailAndPassword(
+      email: _.email!,
+      password: _.password!,
+    );
+
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
+  }
+
+  Future<void> _onProfileViewRequestedFromSignUp(
+    ProfileViewRequestedFromSignUp _,
+    Emitter<WalletState> emit,
+  ) async {
+    var error;
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
+
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: _.email!,
+        password: _.password!,
+      );
+    } catch (e) {
+      error = e;
+      emit(state.copyWith(failure: WalletFailure.fromUnsuccessfulOperation()));
+    }
+
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
+  }
+
   Future<void> _onProfileViewRequested(
     ProfileViewRequested _,
     Emitter<WalletState> emit,
   ) async {
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
+
     emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
   }
 
@@ -74,7 +116,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     try {
       final walletAddress = await _walletRepository.connectWallet();
-      add(const ProfileViewRequested());
       emit(state.copyWith(walletAddress: walletAddress));
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
@@ -86,6 +127,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) {
     _walletRepository.disconnectWallet();
+    _auth.signOut();
     emit(
       state.copyWith(
         walletAddress: kEmptyAddress,
