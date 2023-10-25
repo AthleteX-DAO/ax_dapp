@@ -13,8 +13,14 @@ class FireBaseAuthRepository {
         email: email,
         password: password,
       );
-    } catch (e) {
-      debugPrint('Cannot create user: $e');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        debugPrint('The password provided is too weak');
+      } else if (e.code == 'email-already-in-use') {
+        debugPrint('The account already exists for that email');
+      } else {
+        debugPrint('$e');
+      }
     }
   }
 
@@ -27,8 +33,14 @@ class FireBaseAuthRepository {
         email: email,
         password: password,
       );
-    } catch (e) {
-      debugPrint('Cannot sign in: $e');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        debugPrint('No user found for that email');
+      } else if (e.code == 'wrong-password') {
+        debugPrint('Wrong password provided for that user');
+      } else {
+        debugPrint('$e');
+      }
     }
   }
 
