@@ -140,6 +140,15 @@ class EthereumWalletApiClient implements WalletApiClient {
     _chainController.add(EthereumChain.fromChainId(chainId));
   }
 
+  @override
+  Future<WalletCredentials> createWalletCredentials() async {
+    final mnemonic = generateMnemonic();
+    validateMnemonic(mnemonic);
+    final hex = mnemonicToSeedHex(mnemonic);
+    final credentials = EthPrivateKey.fromHex(hex);
+    return WalletCredentials(credentials);
+  }
+
   /// Asks the user to select an account and give your application access to it.
   /// Returns the [WalletCredentials] for the connected account.
   ///

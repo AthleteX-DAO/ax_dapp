@@ -44,6 +44,13 @@ class EthereumWalletApiClient implements WalletApiClient {
   }
 
   @override
+  Future<WalletCredentials> createWalletCredentials() {
+    throw UnsupportedError(
+      'createWalletCredentials not supported on the current platform',
+    );
+  }
+
+  @override
   Future<WalletCredentials> getWalletCredentials() {
     throw UnsupportedError(
       'getWalletCredentials not supported on the current platform',

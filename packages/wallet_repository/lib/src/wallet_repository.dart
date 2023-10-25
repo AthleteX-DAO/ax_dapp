@@ -83,6 +83,33 @@ class WalletRepository {
   WalletCredentials get credentials =>
       _cache.read<WalletCredentials>(key: credentialsCacheKey)!;
 
+  /// Allows the user to create their own wallet via signup
+  ///
+  /// Returns the hexadecimal representation of the wallet address.
+  Future<String> createWallet() async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      _walletApiClient.addChainChangedListener();
+      await _walletApiClient.syncChain(defaultChain);
+      final credentials = await _walletApiClient.createWalletCredentials();
+      _cacheWalletCredentials(credentials);
+
+      final walletAddress = credentials.value.address.hex;
+      _walletChangeController.add(
+        Wallet(
+          status: WalletStatus.fromChain(currentChain),
+          assets: [Token.empty],
+          address: walletAddress,
+          chain: currentChain,
+        ),
+      );
+      return walletAddress;
+    } catch (e) {
+      await prefs.setBool(searchForWalletKey, false);
+      return kNullAddress;
+    }
+  }
+
   /// Allows the user to connect to a `MetaMask` wallet.
   ///
   /// Returns the hexadecimal representation of the wallet address.

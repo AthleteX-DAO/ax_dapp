@@ -37,6 +37,11 @@ class EthereumWalletApiClient implements WalletApiClient {
   }
 
   @override
+  Future<WalletCredentials> createWalletCredentials() {
+    throw UnimplementedError('createWalletCredentials');
+  }
+
+  @override
   Future<WalletCredentials> getWalletCredentials() {
     throw UnimplementedError('getWalletCredentials');
   }

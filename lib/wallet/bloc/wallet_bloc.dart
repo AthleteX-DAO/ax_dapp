@@ -97,6 +97,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         email: _.email!,
         password: _.password!,
       );
+      final walletAddress = await _walletRepository.createWallet();
+      emit(state.copyWith(walletAddress: walletAddress));
     } catch (e) {
       emit(state.copyWith(failure: WalletFailure.fromUnsuccessfulOperation()));
     }
