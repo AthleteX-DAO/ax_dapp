@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ax_dapp/wallet/models/models.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -15,8 +15,10 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   WalletBloc({
     required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
+    required FireBaseAuthRepository fireBaseAuthRepository,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
+        _fireBaseAuthRepository = fireBaseAuthRepository,
         super(WalletState.fromWallet(wallet: walletRepository.currentWallet)) {
     // Connect the web3 wallet
     on<ConnectWalletRequested>(_onConnectWalletRequested);
@@ -41,10 +43,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     add(const WatchAxtChangesStarted());
   }
 
-  final _auth = FirebaseAuth.instance;
-
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
+  final FireBaseAuthRepository _fireBaseAuthRepository;
 
   Future<void> _onLoginSignUpViewRequested(
     LoginSignUpViewRequested _,
@@ -75,7 +76,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
 
     try {
-      await _auth.signInWithEmailAndPassword(
+      await _fireBaseAuthRepository.signIn(
         email: _.email!,
         password: _.password!,
       );
@@ -94,7 +95,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
 
     try {
-      await _auth.createUserWithEmailAndPassword(
+      await _fireBaseAuthRepository.createUser(
         email: _.email!,
         password: _.password!,
       );
@@ -132,7 +133,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) {
     _walletRepository.disconnectWallet();
-    _auth.signOut();
+    _fireBaseAuthRepository.signOut();
     emit(
       state.copyWith(
         walletAddress: kEmptyAddress,
