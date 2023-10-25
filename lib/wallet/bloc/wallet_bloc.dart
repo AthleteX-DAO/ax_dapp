@@ -111,7 +111,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
-
+    add(const ConnectWalletRequested());
     emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
   }
 
