@@ -2,8 +2,7 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/usecases/explorer_usecase.dart';
-import 'package:ax_dapp/wallet/widgets/wallet_assets.dart';
-import 'package:ax_dapp/wallet/widgets/wallet_chain.dart';
+
 import 'package:ax_dapp/wallet/widgets/wallet_gas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,15 +17,14 @@ class Account extends StatelessWidget {
     final walletAddress =
         context.select((WalletBloc bloc) => bloc.state.walletAddress);
     final chain = context.select((WalletBloc bloc) => bloc.state.chain);
+    final walletBalance =
+        context.select((WalletBloc bloc) => bloc.state.walletBalance);
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     var wid = 400.0;
     const edge = 40.0;
     const edge2 = 60.0;
     if (_width < 405) wid = _width;
-    var hgt = 240.0; //Maybe delete later
-    if (_height < 235) hgt = _height;
-    var usdcBalance = '';
     var formattedWalletAddress = '';
     if (walletAddress.isNotEmpty) {
       final walletAddressPrefix = walletAddress.substring(0, 7);
@@ -128,7 +126,7 @@ class Account extends StatelessWidget {
                                     color: Colors.white,
                                   ),
                                   Text(
-                                    usdcBalance,
+                                    '$walletBalance',
                                     style: textStyle(
                                       Colors.white,
                                       20,
@@ -140,7 +138,7 @@ class Account extends StatelessWidget {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Icon(
                                     Icons.account_balance_wallet,
@@ -297,15 +295,14 @@ class Account extends StatelessWidget {
                   ),
 
                   /// List of Sports Crypto owned by this wallet
-                  const Row(children: [
-                    // Text('Your Wallet Assets'),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        //Assets will go here
-                      ],
-                    ),
-                  ]),
+                  const Row(
+                    children: [
+                      // Text('Your Wallet Assets'),
+                      Stack(
+                        alignment: Alignment.center,
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

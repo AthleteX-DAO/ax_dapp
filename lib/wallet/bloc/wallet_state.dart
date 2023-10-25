@@ -4,6 +4,7 @@ class WalletState extends Equatable {
   const WalletState({
     required this.walletStatus,
     required this.walletAddress,
+    required this.walletBalance,
     required this.chain,
     this.axData = AxData.empty,
     this.gasPrice = 0,
@@ -17,12 +18,14 @@ class WalletState extends Equatable {
   }) : this(
           walletStatus: wallet.status,
           walletViewStatus: walletViewStatus ?? WalletViewStatus.none,
+          walletBalance: wallet.balance,
           walletAddress: wallet.address,
           chain: wallet.chain,
         );
 
   final WalletStatus walletStatus;
   final String walletAddress;
+  final double walletBalance;
   final WalletViewStatus walletViewStatus;
   final EthereumChain chain;
   final AxData axData;
@@ -44,6 +47,7 @@ class WalletState extends Equatable {
     WalletStatus? walletStatus,
     WalletViewStatus? walletViewStatus,
     String? walletAddress,
+    double? walletBalance,
     EthereumChain? chain,
     AxData? axData,
     double? gasPrice,
@@ -52,6 +56,7 @@ class WalletState extends Equatable {
     return WalletState(
       walletStatus: walletStatus ?? this.walletStatus,
       walletViewStatus: walletViewStatus ?? this.walletViewStatus,
+      walletBalance: walletBalance ?? this.walletBalance,
       walletAddress: walletAddress ?? this.walletAddress,
       chain: chain ?? this.chain,
       axData: axData ?? this.axData,
