@@ -73,10 +73,15 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     var error;
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
-    var credentials = await _auth.signInWithEmailAndPassword(
-      email: _.email!,
-      password: _.password!,
-    );
+
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: _.email!,
+        password: _.password!,
+      );
+    } catch (e) {
+      emit(state.copyWith(failure: WalletFailure.fromUnsuccessfulOperation()));
+    }
 
     emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
   }
