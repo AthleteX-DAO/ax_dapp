@@ -72,7 +72,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     ProfileViewRequestedFromLogin _,
     Emitter<WalletState> emit,
   ) async {
-    var error;
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
 
     try {
@@ -91,7 +90,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     ProfileViewRequestedFromSignUp _,
     Emitter<WalletState> emit,
   ) async {
-    var error;
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
 
     try {
@@ -100,7 +98,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         password: _.password!,
       );
     } catch (e) {
-      error = e;
       emit(state.copyWith(failure: WalletFailure.fromUnsuccessfulOperation()));
     }
 

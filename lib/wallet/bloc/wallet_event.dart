@@ -28,24 +28,24 @@ class MetamaskProfileViewRequested extends ProfileViewRequested {
 }
 
 class ProfileViewRequestedFromSignUp extends ProfileViewRequested {
-  ProfileViewRequestedFromSignUp({
+  const ProfileViewRequestedFromSignUp({
     required this.email,
     required this.password,
   });
-  String? email;
-  String? password;
+  final String? email;
+  final String? password;
 
   @override
   List<Object?> get props => [email, password];
 }
 
 class ProfileViewRequestedFromLogin extends ProfileViewRequested {
-  ProfileViewRequestedFromLogin({
+  const ProfileViewRequestedFromLogin({
     required this.email,
     required this.password,
   });
-  String? email;
-  String? password;
+  final String? email;
+  final String? password;
 
   @override
   List<Object?> get props => [email, password];
