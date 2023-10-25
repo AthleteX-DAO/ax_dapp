@@ -22,9 +22,10 @@ class DrawerView extends StatelessWidget {
             children: <Widget>[
               if (state.walletViewStatus == WalletViewStatus.profile)
                 const Account(),
-              if (state.walletViewStatus == WalletViewStatus.login) LoginView(),
+              if (state.walletViewStatus == WalletViewStatus.login)
+                const LoginView(),
               if (state.walletViewStatus == WalletViewStatus.signup)
-                SignUpView(),
+                const SignUpView(),
               if (state.walletViewStatus == WalletViewStatus.initial ||
                   state.walletViewStatus == WalletViewStatus.none)
                 const LoginSignup(),
