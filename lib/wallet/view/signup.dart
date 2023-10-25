@@ -49,6 +49,17 @@ class _SignUpViewState extends State<SignUpView> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            IconButton(
+              alignment: Alignment.centerLeft,
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: () => context.read<WalletBloc>().add(
+                    const LoginSignUpViewRequested(),
+                  ),
+            ),
             TextField(
               keyboardType: TextInputType.emailAddress,
               controller: emailController,
@@ -105,7 +116,7 @@ class _SignUpViewState extends State<SignUpView> {
                       ),
                     );
 
-                    showSpinner = false;
+                showSpinner = false;
               },
               child: FittedBox(
                 child: Text(
