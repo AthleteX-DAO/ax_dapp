@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'package:encrypt/encrypt.dart';
-import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:encrypt/encrypt.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class FireStoreCredentialsRepository {
