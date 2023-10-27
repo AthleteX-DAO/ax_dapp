@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:ax_dapp/wallet/exceptions/log_in_exception.dart';
+import 'package:ax_dapp/wallet/exceptions/sign_up_exception.dart';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
 import 'package:shared/shared.dart';
@@ -79,11 +81,23 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         email: _.email!,
         password: _.password!,
       );
-    } catch (e) {
-      emit(state.copyWith(failure: WalletFailure.fromUnsuccessfulOperation()));
+      emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
+    } on LogInWithEmailAndPasswordFailure catch (e) {
+      emit(
+        state.copyWith(
+          failure: WalletFailure.fromUnsuccessfulOperation(),
+          errorMessage: e.message,
+          walletViewStatus: WalletViewStatus.login,
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(
+          failure: WalletFailure.fromUnsuccessfulOperation(),
+          walletViewStatus: WalletViewStatus.login,
+        ),
+      );
     }
-
-    emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
   }
 
   Future<void> _onProfileViewRequestedFromSignUp(
@@ -98,12 +112,28 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         password: _.password!,
       );
       final walletAddress = await _walletRepository.createWallet();
-      emit(state.copyWith(walletAddress: walletAddress));
-    } catch (e) {
-      emit(state.copyWith(failure: WalletFailure.fromUnsuccessfulOperation()));
+      emit(
+        state.copyWith(
+          walletAddress: walletAddress,
+          walletViewStatus: WalletViewStatus.profile,
+        ),
+      );
+    } on SignUpWithEmailAndPasswordFailure catch (e) {
+      emit(
+        state.copyWith(
+          failure: WalletFailure.fromUnsuccessfulOperation(),
+          errorMessage: e.message,
+          walletViewStatus: WalletViewStatus.signup,
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(
+          failure: WalletFailure.fromUnsuccessfulOperation(),
+          walletViewStatus: WalletViewStatus.signup,
+        ),
+      );
     }
-
-    emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
   }
 
   Future<void> _onProfileViewRequested(

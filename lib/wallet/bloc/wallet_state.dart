@@ -10,6 +10,7 @@ class WalletState extends Equatable {
     this.gasPrice = 0,
     this.failure = WalletFailure.none,
     this.walletViewStatus = WalletViewStatus.initial,
+    this.errorMessage,
   });
 
   WalletState.fromWallet({
@@ -31,9 +32,10 @@ class WalletState extends Equatable {
   final AxData axData;
   final double gasPrice;
   final WalletFailure failure;
+  final String? errorMessage;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         walletStatus,
         walletAddress,
         walletViewStatus,
@@ -41,6 +43,7 @@ class WalletState extends Equatable {
         gasPrice,
         failure,
         axData,
+        errorMessage,
       ];
 
   WalletState copyWith({
@@ -52,6 +55,7 @@ class WalletState extends Equatable {
     AxData? axData,
     double? gasPrice,
     WalletFailure? failure,
+    String? errorMessage,
   }) {
     return WalletState(
       walletStatus: walletStatus ?? this.walletStatus,
@@ -62,6 +66,7 @@ class WalletState extends Equatable {
       axData: axData ?? this.axData,
       gasPrice: gasPrice ?? this.gasPrice,
       failure: failure ?? this.failure,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
