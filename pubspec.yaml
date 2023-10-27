@@ -29,6 +29,7 @@ dependencies:
   config_repository:
     path: packages/config_repository
   cupertino_icons: ^1.0.5
+  encrypt: ^5.0.3
   equatable: ^2.0.3
   ethereum_api:
     path: packages/ethereum_api
