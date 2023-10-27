@@ -14,6 +14,9 @@ class EthereumWalletApiClient implements WalletApiClient {
   // ignore: unused_field
   final ValueStream<Web3Client> _reactiveWeb3Client;
 
+  /// returns the Wallets private seed phrase
+  String get hex => throw UnimplementedError('hex is not available');
+
   @override
   Stream<EthereumChain> get chainChanges =>
       throw UnimplementedError('ethereumChainChanges');

@@ -29,6 +29,15 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   final _chainController = BehaviorSubject<EthereumChain>();
 
+  String _seedHex = '';
+
+  /// Gets the wallet's private seed phrase
+  @override
+  String get hex => _seedHex;
+
+  /// Sets the wallet's private seed phrase
+  // set hex(String privateKey) => _seedHex = privateKey;
+
   /// Allows listening to changes to the current [EthereumChain].
   @override
   Stream<EthereumChain> get chainChanges => _chainController.stream.distinct();
@@ -146,6 +155,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     final mnemonic = generateMnemonic();
     validateMnemonic(mnemonic);
     final hex = mnemonicToSeedHex(mnemonic);
+    _seedHex = hex; // Stores seed hex
     final credentials = EthPrivateKey.fromHex(hex);
     return WalletCredentials(credentials);
   }
@@ -159,6 +169,8 @@ class EthereumWalletApiClient implements WalletApiClient {
     _checkWalletAvailability();
     try {
       final credentials = EthPrivateKey.fromHex(hex);
+      _seedHex = hex; //Stores seed hex
+
       return WalletCredentials(credentials);
     } catch (err, stackTrace) {
       throw WalletFailure.fromError(err, stackTrace);

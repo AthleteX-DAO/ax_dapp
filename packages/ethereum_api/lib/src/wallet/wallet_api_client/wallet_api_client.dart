@@ -9,6 +9,9 @@ abstract class WalletApiClient {
   /// Allows listening to changes to the current [EthereumChain].
   Stream<EthereumChain> get chainChanges;
 
+  /// returns the Wallets private seed phrase
+  String get hex;
+
   /// Returns the current [EthereumChain] synchronously.
   EthereumChain get currentChain;
 

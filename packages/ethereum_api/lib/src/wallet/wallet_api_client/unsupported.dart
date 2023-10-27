@@ -14,6 +14,8 @@ class EthereumWalletApiClient implements WalletApiClient {
     required ValueStream<Web3Client> reactiveWeb3Client,
   });
 
+  /// returns the Wallets private seed phrase
+  String get hex => throw UnsupportedError('hex is not available');
   @override
   Stream<EthereumChain> get chainChanges => throw UnsupportedError(
         'ethereumChainChanges not supported on the current platform',
