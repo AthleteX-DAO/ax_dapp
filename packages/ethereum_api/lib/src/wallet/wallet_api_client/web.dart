@@ -140,6 +140,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     _chainController.add(EthereumChain.fromChainId(chainId));
   }
 
+  ///
   @override
   Future<WalletCredentials> createWalletCredentials() async {
     final mnemonic = generateMnemonic();
@@ -147,6 +148,21 @@ class EthereumWalletApiClient implements WalletApiClient {
     final hex = mnemonicToSeedHex(mnemonic);
     final credentials = EthPrivateKey.fromHex(hex);
     return WalletCredentials(credentials);
+  }
+
+  /// Takes a [String] representation of a private key, and converts it into an Ethereum Private Key
+  /// Returns the [WalletCredentials] for the imported Wallet
+  /// Throws:
+  /// - [UnknownWalletFailure]
+  @override
+  Future<WalletCredentials> importWalletCredentials(String hex) async {
+    _checkWalletAvailability();
+    try {
+      final credentials = EthPrivateKey.fromHex(hex);
+      return WalletCredentials(credentials);
+    } catch (err, stackTrace) {
+      throw WalletFailure.fromError(err, stackTrace);
+    }
   }
 
   /// Asks the user to select an account and give your application access to it.

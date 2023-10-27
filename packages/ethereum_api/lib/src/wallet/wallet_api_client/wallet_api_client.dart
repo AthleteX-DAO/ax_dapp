@@ -25,8 +25,12 @@ abstract class WalletApiClient {
   Future<BigInt> getDecimals(String tokenAddress);
 
   /// Creates new wallet credentials for users signing onto athletex dapp
-  /// Returns Wallet Credentials
+  /// Returns the [WalletCredentials] for the newly created account.
   Future<WalletCredentials> createWalletCredentials();
+
+  /// Creates wallet credentials for a user based on a private key
+  /// Returns the [WalletCredentials] for the improted account
+  Future<WalletCredentials> importWalletCredentials(String hex);
 
   /// Asks the user to select an account and give your application access to it.
   /// Returns the [WalletCredentials] for the connected account.

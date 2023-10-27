@@ -50,6 +50,12 @@ class EthereumWalletApiClient implements WalletApiClient {
     );
   }
 
+  Future<WalletCredentials> importWalletCredentials(String hex) {
+    throw UnsupportedError(
+      'importWalletCredentials not supported on the current platform',
+    );
+  }
+
   @override
   Future<WalletCredentials> getWalletCredentials() {
     throw UnsupportedError(
