@@ -4,6 +4,7 @@ import 'package:ax_dapp/wallet/exceptions/log_in_exception.dart';
 import 'package:ax_dapp/wallet/exceptions/sign_up_exception.dart';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
+import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -17,9 +18,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   WalletBloc({
     required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
+    required FireStoreCredentialsRepository fireStoreCredentialsRepository,
     required FireBaseAuthRepository fireBaseAuthRepository,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
+        _fireStoreCredentialsRepository = fireStoreCredentialsRepository,
         _fireBaseAuthRepository = fireBaseAuthRepository,
         super(WalletState.fromWallet(wallet: walletRepository.currentWallet)) {
     // Connect the web3 wallet
@@ -48,6 +51,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
+  final FireStoreCredentialsRepository _fireStoreCredentialsRepository;
   final FireBaseAuthRepository _fireBaseAuthRepository;
 
   Future<void> _onLoginSignUpViewRequested(
