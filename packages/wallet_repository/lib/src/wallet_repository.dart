@@ -74,6 +74,10 @@ class WalletRepository {
   /// Allows listening to changes to the current [Wallet].
   Stream<Wallet> get walletChanges => _walletChanges;
 
+  /// Returns the current [WalletCredentials] private key
+  /// This should be used cautiously! private keys are important
+  String get privateKey => _walletApiClient.hex;
+
   /// Returns the current [Wallet] synchronously.
   Wallet get currentWallet =>
       _walletChanges.valueOrNull ?? Wallet.disconnected();
@@ -94,7 +98,34 @@ class WalletRepository {
       await _walletApiClient.syncChain(defaultChain);
       final credentials = await _walletApiClient.createWalletCredentials();
       _cacheWalletCredentials(credentials);
+      final walletAddress = credentials.value.address.hex;
+      _walletChangeController.add(
+        Wallet(
+          status: WalletStatus.fromChain(currentChain),
+          balance: await getWalletBalance(),
+          assets: [Token.empty],
+          address: walletAddress,
+          chain: currentChain,
+        ),
+      );
+      return walletAddress;
+    } catch (e) {
+      await prefs.setBool(searchForWalletKey, false);
+      return kNullAddress;
+    }
+  }
 
+  /// Allows the user to import a wallet given a private seed phrase
+  ///
+  /// Returns the hexadecimal representation of a wallet address
+
+  Future<String> importWallet(String hex) async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      _walletApiClient.addChainChangedListener();
+      await _walletApiClient.syncChain(defaultChain);
+      final credentials = await _walletApiClient.importWalletCredentials(hex);
+      _cacheWalletCredentials(credentials);
       final walletAddress = credentials.value.address.hex;
       _walletChangeController.add(
         Wallet(
