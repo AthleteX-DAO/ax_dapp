@@ -86,7 +86,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         email: _.email!,
         password: _.password!,
       );
-      emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
+      final hex =
+          await _fireStoreCredentialsRepository.loadCredentials(_.email!);
+      final walletAddress = await _walletRepository.importWallet(hex);
+
+      emit(
+        state.copyWith(
+          walletAddress: walletAddress,
+          walletViewStatus: WalletViewStatus.profile,
+        ),
+      );
     } on LogInWithEmailAndPasswordFailure catch (e) {
       emit(
         state.copyWith(
@@ -117,6 +126,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         password: _.password!,
       );
       final walletAddress = await _walletRepository.createWallet();
+      await _fireStoreCredentialsRepository.storeCredentials(_.email!);
+
       emit(
         state.copyWith(
           walletAddress: walletAddress,
