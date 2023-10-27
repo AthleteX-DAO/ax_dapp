@@ -1,6 +1,7 @@
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -49,7 +50,9 @@ class _SignUpViewState extends State<SignUpView> {
             title: 'Error',
             description: state.errorMessage ?? 'Authentication Error',
           );
-          context.read<WalletBloc>().add(const AuthFailed(location: 'signup'));
+          context
+              .read<WalletBloc>()
+              .add(const AuthFailed(walletViewStatus: WalletViewStatus.signup));
         }
       },
       child: ModalProgressHUD(

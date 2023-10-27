@@ -1,6 +1,7 @@
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,9 @@ class _LoginViewState extends State<LoginView> {
             title: 'Error',
             description: state.errorMessage ?? 'Authentication Error',
           );
-          context.read<WalletBloc>().add(const AuthFailed(location: 'login'));
+          context
+              .read<WalletBloc>()
+              .add(const AuthFailed(walletViewStatus: WalletViewStatus.login));
         }
       },
       child: ModalProgressHUD(

@@ -94,10 +94,10 @@ class WalletFailed extends WalletEvent {
 }
 
 class AuthFailed extends WalletEvent {
-  const AuthFailed({required this.location});
+  const AuthFailed({required this.walletViewStatus});
 
-  final String location;
+  final WalletViewStatus walletViewStatus;
 
   @override
-  List<Object?> get props => [location];
+  List<Object?> get props => [walletViewStatus];
 }

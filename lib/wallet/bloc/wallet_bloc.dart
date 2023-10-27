@@ -233,9 +233,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     AuthFailed event,
     Emitter<WalletState> emit,
   ) async {
-    final location = event.location;
-    final walletViewStatus =
-        location == 'login' ? WalletViewStatus.login : WalletViewStatus.signup;
+    final walletViewStatus = event.walletViewStatus.currentStatus();
     emit(
       WalletState.fromWallet(
         walletViewStatus: walletViewStatus,
