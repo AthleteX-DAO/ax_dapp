@@ -289,7 +289,9 @@ class Account extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.receipt_rounded),
                         tooltip: 'View your transaction history',
-                        onPressed: () {},
+                        onPressed: () {
+                          launchUrl(Uri.parse(explorerUrl));
+                        },
                       ),
                     ],
                   ),
