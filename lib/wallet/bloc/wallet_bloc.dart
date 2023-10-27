@@ -5,6 +5,7 @@ import 'package:ax_dapp/wallet/exceptions/sign_up_exception.dart';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
 import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -89,14 +90,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       final hex =
           await _fireStoreCredentialsRepository.loadCredentials(_.email!);
       final walletAddress = await _walletRepository.importWallet(hex);
-
+      final privateKey = _walletRepository.privateKey;
       emit(
         state.copyWith(
           walletAddress: walletAddress,
+          walletStatus: WalletStatus.connected,
           walletViewStatus: WalletViewStatus.profile,
         ),
       );
     } on LogInWithEmailAndPasswordFailure catch (e) {
+      debugPrint('ERROR: $e');
       emit(
         state.copyWith(
           failure: WalletFailure.fromUnsuccessfulOperation(),
@@ -105,6 +108,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         ),
       );
     } catch (_) {
+      debugPrint('ERROR: $_');
       emit(
         state.copyWith(
           failure: WalletFailure.fromUnsuccessfulOperation(),
@@ -126,8 +130,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         password: _.password!,
       );
       final walletAddress = await _walletRepository.createWallet();
-      await _fireStoreCredentialsRepository.storeCredentials(_.email!);
-
       emit(
         state.copyWith(
           walletAddress: walletAddress,
@@ -150,6 +152,18 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         ),
       );
     }
+
+    try {
+      await _fireStoreCredentialsRepository.storeCredentials(_.email!);
+    } catch (e) {
+      emit(
+        state.copyWith(
+          failure: WalletFailure.fromUnsuccessfulOperation(),
+          walletViewStatus: WalletViewStatus.signup,
+        ),
+      );
+      debugPrint('ERROR: $e');
+    }
   }
 
   Future<void> _onProfileViewRequested(
@@ -157,7 +171,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
-    add(const ConnectWalletRequested());
     emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
   }
 
