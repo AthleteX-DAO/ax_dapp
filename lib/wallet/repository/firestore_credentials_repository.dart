@@ -15,7 +15,8 @@ class FireStoreCredentialsRepository {
   final FirebaseFirestore _firestore;
   final WalletRepository _walletRepository;
 
-  /// This function encrypts & stores a users credentials in firestor
+  /// This function encrypts and then stores a users private key on firebase
+  /// It returns a [void]
   Future<void> storeCredentials(String email) async {
     // Setup encryption keys
 
@@ -32,6 +33,7 @@ class FireStoreCredentialsRepository {
   }
 
   /// This function loads and decrypts a [EthPrivateKey] based on an email
+  /// This returns a [String] of the unloaded & decrypted private key
   Future<String> loadCredentials(String email) async {
     // Setup encryption keys
     final key = Key.fromUtf8(email);
