@@ -102,7 +102,7 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
-          balance: await getWalletBalance(),
+          balance: 0.00,
           assets: [Token.empty],
           address: walletAddress,
           chain: currentChain,
@@ -130,7 +130,7 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
-          balance: await getWalletBalance(),
+          balance: 0.00,
           assets: [Token.empty],
           address: walletAddress,
           chain: currentChain,
@@ -138,6 +138,7 @@ class WalletRepository {
       );
       return walletAddress;
     } catch (e) {
+      debugPrint('ERROR: $e');
       await prefs.setBool(searchForWalletKey, false);
       return kNullAddress;
     }
@@ -164,7 +165,7 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
-          balance: await getWalletBalance(),
+          balance: 0.00,
           assets: [Token.empty],
           address: walletAddress,
           chain: currentChain,
@@ -258,14 +259,18 @@ class WalletRepository {
   ///
   Future<double> getWalletBalance() async {
     var crossChainUSDCBalance = 0.00;
-    for (final chain in EthereumChain.mainnetChains) {
-      final tokenAddress = Token.usdc(chain).address;
-      final usdcBalance = await getTokenBalance(tokenAddress) ?? 0.00;
+    final polygonBalance = await getTokenBalance(
+          const Token.usdc(EthereumChain.polygonMainnet).address,
+        ) ??
+        0.00;
 
-      crossChainUSDCBalance += usdcBalance;
-    }
+    final sxBalance = await getTokenBalance(
+          const Token.usdc(EthereumChain.sxMainnet).address,
+        ) ??
+        0.00;
+    crossChainUSDCBalance = sxBalance + polygonBalance;
 
-    return crossChainUSDCBalance;
+    return 0.00;
   }
 
   /// Returns a [BigInt] amount of decimals from a [tokenAddress].
