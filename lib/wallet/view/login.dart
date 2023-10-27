@@ -45,7 +45,7 @@ class _LoginViewState extends State<LoginView> {
     final height = MediaQuery.of(context).size.height;
     return BlocListener<WalletBloc, WalletState>(
       listener: (context, state) {
-        if (state.failure == WalletFailure.fromUnsuccessfulOperation()) {
+        if (state.hasFailure) {
           context.showWarningToast(
             title: 'Error',
             description: state.errorMessage ?? 'Authentication Error',

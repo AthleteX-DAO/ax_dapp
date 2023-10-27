@@ -44,7 +44,7 @@ class _SignUpViewState extends State<SignUpView> {
     var showSpinner = false;
     return BlocListener<WalletBloc, WalletState>(
       listener: (context, state) {
-        if (state.failure == WalletFailure.fromUnsuccessfulOperation()) {
+        if (state.hasFailure) {
           context.showWarningToast(
             title: 'Error',
             description: state.errorMessage ?? 'Authentication Error',
