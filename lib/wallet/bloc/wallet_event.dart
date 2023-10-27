@@ -92,3 +92,12 @@ class WalletFailed extends WalletEvent {
   @override
   List<Object?> get props => [failure];
 }
+
+class AuthFailed extends WalletEvent {
+  const AuthFailed({required this.location});
+
+  final String location;
+
+  @override
+  List<Object?> get props => [location];
+}

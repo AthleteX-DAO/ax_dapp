@@ -49,6 +49,7 @@ class _SignUpViewState extends State<SignUpView> {
             title: 'Error',
             description: state.errorMessage ?? 'Authentication Error',
           );
+          context.read<WalletBloc>().add(const AuthFailed(location: 'signup'));
         }
       },
       child: ModalProgressHUD(

@@ -40,6 +40,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
     on<GetGasPriceRequested>(_onGetGasPriceRequested);
     on<WalletFailed>(_onWalletFailed);
+    on<AuthFailed>(_onAuthFailed);
 
     add(const WatchWalletChangesStarted());
     add(const WatchAxtChangesStarted());
@@ -226,5 +227,20 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     if (failure.needsReconnecting) {
       add(const DisconnectWalletRequested());
     }
+  }
+
+  Future<void> _onAuthFailed(
+    AuthFailed event,
+    Emitter<WalletState> emit,
+  ) async {
+    final location = event.location;
+    final walletViewStatus =
+        location == 'login' ? WalletViewStatus.login : WalletViewStatus.signup;
+    emit(
+      WalletState.fromWallet(
+        walletViewStatus: walletViewStatus,
+        wallet: Wallet.disconnected(),
+      ),
+    );
   }
 }

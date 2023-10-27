@@ -50,6 +50,7 @@ class _LoginViewState extends State<LoginView> {
             title: 'Error',
             description: state.errorMessage ?? 'Authentication Error',
           );
+          context.read<WalletBloc>().add(const AuthFailed(location: 'login'));
         }
       },
       child: ModalProgressHUD(
