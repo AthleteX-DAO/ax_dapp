@@ -23,11 +23,11 @@ class ProfileViewRequested extends WalletEvent {
   const ProfileViewRequested();
 }
 
-class MetamaskProfileViewRequested extends ProfileViewRequested {
+class MetamaskProfileViewRequested extends WalletEvent {
   const MetamaskProfileViewRequested();
 }
 
-class ProfileViewRequestedFromSignUp extends ProfileViewRequested {
+class ProfileViewRequestedFromSignUp extends WalletEvent {
   const ProfileViewRequestedFromSignUp({
     required this.email,
     required this.password,
@@ -39,7 +39,7 @@ class ProfileViewRequestedFromSignUp extends ProfileViewRequested {
   List<Object?> get props => [email, password];
 }
 
-class ProfileViewRequestedFromLogin extends ProfileViewRequested {
+class ProfileViewRequestedFromLogin extends WalletEvent {
   const ProfileViewRequestedFromLogin({
     required this.email,
     required this.password,
