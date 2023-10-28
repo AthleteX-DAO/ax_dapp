@@ -21,7 +21,6 @@ class FireStoreCredentialsRepository {
   /// It returns a [void]
   Future<String> storeCredentials(String email) async {
     // Setup encryption keys
-
     final hashedKey = encrypter.encrypt(_walletRepository.privateKey, iv: iv);
 
     // Store relevant data
