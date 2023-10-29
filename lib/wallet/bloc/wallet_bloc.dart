@@ -77,18 +77,19 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   Future<void> _onProfileViewRequestedFromLogin(
-    ProfileViewRequestedFromLogin _,
+    ProfileViewRequestedFromLogin event,
     Emitter<WalletState> emit,
   ) async {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
-
+    final email = event.email;
+    final password = event.password;
     try {
       await _fireBaseAuthRepository.signIn(
-        email: _.email!,
-        password: _.password!,
+        email: email!,
+        password: password!,
       );
       final hex =
-          await _fireStoreCredentialsRepository.loadCredentials(_.email!);
+          await _fireStoreCredentialsRepository.loadCredentials(email);
       final walletAddress = await _walletRepository.importWallet(hex);
       final privateKey = _walletRepository.privateKey;
       emit(
@@ -119,15 +120,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   Future<void> _onProfileViewRequestedFromSignUp(
-    ProfileViewRequestedFromSignUp _,
+    ProfileViewRequestedFromSignUp event,
     Emitter<WalletState> emit,
   ) async {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
-
+    final email = event.email;
+    final password = event.password;
     try {
       await _fireBaseAuthRepository.createUser(
-        email: _.email!,
-        password: _.password!,
+        email: email!,
+        password: password!,
       );
       final walletAddress = await _walletRepository.createWallet();
       emit(
@@ -154,7 +156,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
 
     try {
-      await _fireStoreCredentialsRepository.storeCredentials(_.email!);
+      await _fireStoreCredentialsRepository.storeCredentials(email!);
     } catch (e) {
       emit(
         state.copyWith(
