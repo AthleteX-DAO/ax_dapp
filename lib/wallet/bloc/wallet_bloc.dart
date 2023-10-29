@@ -220,7 +220,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     try {
       final walletAddress = await _walletRepository.connectWallet();
-      emit(state.copyWith(walletAddress: walletAddress));
+      emit(
+        state.copyWith(
+          walletAddress: walletAddress,
+          walletViewStatus: WalletViewStatus.profile,
+        ),
+      );
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
     }
