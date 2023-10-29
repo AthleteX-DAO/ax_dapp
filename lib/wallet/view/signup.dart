@@ -70,9 +70,6 @@ class _SignUpViewState extends State<SignUpView> {
                 controller: passwordController,
                 obscureText: true,
                 textAlign: TextAlign.center,
-                onSubmitted: (value) {
-                  passwordController.text = value;
-                },
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your Password',
                   labelText: 'Password',
