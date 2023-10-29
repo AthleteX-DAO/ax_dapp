@@ -16,10 +16,10 @@ class Wallet extends Equatable {
   });
 
   /// Represents a disconnected [Wallet].
-  Wallet.disconnected()
+  const Wallet.disconnected()
       : this(
           status: WalletStatus.disconnected,
-          balance: 0.00,
+          balance: 0,
           assets: const [
             Token.usdc(EthereumChain.none),
             Token.weth(EthereumChain.none),

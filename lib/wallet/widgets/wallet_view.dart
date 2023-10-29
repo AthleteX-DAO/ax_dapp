@@ -1,8 +1,6 @@
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
-import 'package:ax_dapp/wallet/widgets/wallet_account.dart';
-import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

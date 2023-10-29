@@ -238,9 +238,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     _walletRepository.disconnectWallet();
     _fireBaseAuthRepository.signOut();
     emit(
-      state.copyWith(
-        walletAddress: kEmptyAddress,
-        walletViewStatus: WalletViewStatus.initial,
+      WalletState.fromWallet(
+        wallet: const Wallet.disconnected(),
       ),
     );
   }
@@ -310,7 +309,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(
       WalletState.fromWallet(
         walletViewStatus: walletViewStatus,
-        wallet: Wallet.disconnected(),
+        wallet: const Wallet.disconnected(),
       ),
     );
   }
