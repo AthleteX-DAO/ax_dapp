@@ -102,8 +102,8 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
-          balance: 0.00,
-          assets: [Token.empty],
+          balance: 0,
+          assets: const [Token.empty],
           address: walletAddress,
           chain: currentChain,
         ),
@@ -130,8 +130,8 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
-          balance: 0.00,
-          assets: [Token.empty],
+          balance: 0,
+          assets: const [Token.empty],
           address: walletAddress,
           chain: currentChain,
         ),
@@ -165,8 +165,8 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
-          balance: 0.00,
-          assets: [Token.empty],
+          balance: 0,
+          assets: const [Token.empty],
           address: walletAddress,
           chain: currentChain,
         ),
@@ -269,7 +269,7 @@ class WalletRepository {
         ) ??
         0.00;
     crossChainUSDCBalance = sxBalance + polygonBalance;
-
+    debugPrint('$crossChainUSDCBalance');
     return 0.00;
   }
 
