@@ -78,12 +78,9 @@ class _SignUpViewState extends State<SignUpView> {
                 keyboardType: TextInputType.emailAddress,
                 controller: emailController,
                 textAlign: TextAlign.center,
-                onSubmitted: (value) {
-                  emailController.text = value;
-                },
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your email',
-                  labelText: 'Emails',
+                  labelText: 'Email',
                 ),
               ),
               const SizedBox(

@@ -6,7 +6,6 @@ class LoginSignup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Returns The Signup & Login button together
     return const Column(
       children: [
         SignUpButton(),

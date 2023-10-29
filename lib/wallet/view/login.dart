@@ -79,9 +79,6 @@ class _LoginViewState extends State<LoginView> {
                 keyboardType: TextInputType.emailAddress,
                 controller: emailController,
                 textAlign: TextAlign.center,
-                onSubmitted: (value) {
-                  emailController.text = value;
-                },
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your email',
                   labelText: 'Email',
@@ -94,9 +91,6 @@ class _LoginViewState extends State<LoginView> {
                 obscureText: true,
                 controller: passwordController,
                 textAlign: TextAlign.center,
-                onSubmitted: (value) {
-                  passwordController.text = value;
-                },
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your password.',
                   labelText: 'Password',
