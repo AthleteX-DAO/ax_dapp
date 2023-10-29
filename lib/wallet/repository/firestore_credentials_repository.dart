@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encrypt/encrypt.dart';
-import 'package:flutter/material.dart' hide Key;
 import 'package:wallet_repository/wallet_repository.dart';
 
 class FireStoreCredentialsRepository {
@@ -18,28 +17,22 @@ class FireStoreCredentialsRepository {
   );
 
   /// This function encrypts and then stores a users private key on firebase
-  /// It returns a [void]
+  /// It returns a [String] of the encrypted key.
   Future<String> storeCredentials(String email) async {
-    // Setup encryption keys
     final hashedKey = encrypter.encrypt(_walletRepository.privateKey, iv: iv);
-
-    // Store relevant data
     final payload = <String, String>{
       'email': email,
       'encrypted-key': hashedKey.base64,
     };
-    await _firestore.collection('credentials').doc('$email').set(payload);
+    await _firestore.collection('credentials').doc(email).set(payload);
     return hashedKey.base64;
   }
 
-  /// This function loads and decrypts a [EthPrivateKey] based on an email
+  /// This function loads and decrypts an already encrypted-key that is linked to an email
   /// This returns a [String] of the unloaded & decrypted private key
   Future<String> loadCredentials(String email) async {
-    // Setup encryption keys
-
-    // Fetch relevant data
     final listOfCredentials =
-        await _firestore.collection('credentials').doc('$email').get();
+        await _firestore.collection('credentials').doc(email).get();
     final data = listOfCredentials.data();
     final hashedKey = data?['encrypted-key'] as String;
 
