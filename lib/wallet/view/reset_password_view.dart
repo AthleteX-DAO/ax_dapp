@@ -53,6 +53,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               keyboardType: TextInputType.emailAddress,
               controller: emailController,
               textAlign: TextAlign.center,
+              onChanged: (value) =>
+                  context.read<WalletBloc>().add(EmailChanged(email: value)),
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your email',
                 labelText: 'Email',
@@ -90,9 +92,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               ),
               onPressed: () async {
                 context.read<WalletBloc>().add(
-                      ResetPassword(
-                        email: emailController.text,
-                      ),
+                      const ResetPassword(),
                     );
               },
             ),

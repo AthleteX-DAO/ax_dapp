@@ -58,6 +58,8 @@ class _SignUpViewState extends State<SignUpView> {
                 keyboardType: TextInputType.emailAddress,
                 controller: emailController,
                 textAlign: TextAlign.center,
+                onChanged: (value) =>
+                    context.read<WalletBloc>().add(EmailChanged(email: value)),
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your email',
                   labelText: 'Email',
@@ -70,6 +72,9 @@ class _SignUpViewState extends State<SignUpView> {
                 controller: passwordController,
                 obscureText: true,
                 textAlign: TextAlign.center,
+                onChanged: (value) => context
+                    .read<WalletBloc>()
+                    .add(PassWordChanged(password: value)),
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your Password',
                   labelText: 'Password',
@@ -98,10 +103,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 onPressed: () async {
                   context.read<WalletBloc>().add(
-                        ProfileViewRequestedFromSignUp(
-                          email: emailController.text,
-                          password: passwordController.text,
-                        ),
+                        const ProfileViewRequestedFromSignUp(),
                       );
 
                   showSpinner = false;

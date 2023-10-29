@@ -38,6 +38,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ProfileViewRequestedFromLogin>(_onProfileViewRequestedFromLogin);
     on<ResetPasswordViewRequested>(_onResetPasswordViewRequested);
     on<ResetPassword>(_onResetPassword);
+    on<EmailChanged>(_onEmailChanged);
+    on<PassWordChanged>(_onPassWordChanged);
 
     // Watch for changes
     on<WatchWalletChangesStarted>(_onWatchWalletChangesStarted);
@@ -89,12 +91,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
-    final email = event.email;
-    final password = event.password;
+    final email = state.email;
+    final password = state.password;
     try {
       await _fireBaseAuthRepository.signIn(
-        email: email!,
-        password: password!,
+        email: email,
+        password: password,
       );
       final hex = await _fireStoreCredentialsRepository.loadCredentials(email);
       final walletAddress = await _walletRepository.importWallet(hex);
@@ -132,12 +134,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
-    final email = event.email;
-    final password = event.password;
+    final email = state.email;
+    final password = state.password;
     try {
       await _fireBaseAuthRepository.createUser(
-        email: email!,
-        password: password!,
+        email: email,
+        password: password,
       );
       final walletAddress = await _walletRepository.createWallet();
       emit(
@@ -164,7 +166,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
 
     try {
-      await _fireStoreCredentialsRepository.storeCredentials(email!);
+      await _fireStoreCredentialsRepository.storeCredentials(email);
     } catch (e) {
       emit(
         state.copyWith(
@@ -180,9 +182,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     ResetPassword event,
     Emitter<WalletState> emit,
   ) async {
-    final email = event.email;
+    final email = state.email;
     try {
-      await _fireBaseAuthRepository.resetPassword(email: email!);
+      await _fireBaseAuthRepository.resetPassword(email: email);
       emit(
         state.copyWith(
           walletViewStatus: WalletViewStatus.login,
@@ -212,6 +214,20 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
     emit(state.copyWith(walletViewStatus: WalletViewStatus.profile));
+  }
+
+  void _onEmailChanged(
+    EmailChanged event,
+    Emitter<WalletState> emit,
+  ) {
+    emit(state.copyWith(email: event.email));
+  }
+
+  void _onPassWordChanged(
+    PassWordChanged event,
+    Emitter<WalletState> emit,
+  ) {
+    emit(state.copyWith(password: event.password));
   }
 
   Future<void> _onConnectWalletRequested(

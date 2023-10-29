@@ -59,6 +59,8 @@ class _LoginViewState extends State<LoginView> {
                 keyboardType: TextInputType.emailAddress,
                 controller: emailController,
                 textAlign: TextAlign.center,
+                onChanged: (value) =>
+                    context.read<WalletBloc>().add(EmailChanged(email: value)),
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your email',
                   labelText: 'Email',
@@ -71,6 +73,9 @@ class _LoginViewState extends State<LoginView> {
                 obscureText: true,
                 controller: passwordController,
                 textAlign: TextAlign.center,
+                onChanged: (value) => context
+                    .read<WalletBloc>()
+                    .add(PassWordChanged(password: value)),
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your password.',
                   labelText: 'Password',
@@ -108,10 +113,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 onPressed: () async {
                   context.read<WalletBloc>().add(
-                        ProfileViewRequestedFromLogin(
-                          email: emailController.text,
-                          password: passwordController.text,
-                        ),
+                        const ProfileViewRequestedFromLogin(),
                       );
 
                   showSpinner = false;
