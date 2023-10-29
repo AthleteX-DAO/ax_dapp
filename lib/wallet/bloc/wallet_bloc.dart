@@ -99,6 +99,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       final hex = await _fireStoreCredentialsRepository.loadCredentials(email);
       final walletAddress = await _walletRepository.importWallet(hex);
       final privateKey = _walletRepository.privateKey;
+      debugPrint(privateKey);
       emit(
         state.copyWith(
           walletAddress: walletAddress,

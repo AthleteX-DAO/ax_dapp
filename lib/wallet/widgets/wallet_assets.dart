@@ -14,7 +14,7 @@ class WalletAssets extends StatelessWidget {
           padding: const EdgeInsets.only(top: 10),
           physics: const BouncingScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            const WalletAssetCard();
+            return  const WalletAssetCard();
           },
         ),
       ],
