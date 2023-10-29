@@ -174,6 +174,26 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
               ),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Forgot Password?',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          context
+                              .read<WalletBloc>()
+                              .add(const ResetPasswordViewRequested());
+                        },
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

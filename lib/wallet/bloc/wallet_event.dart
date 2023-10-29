@@ -23,6 +23,10 @@ class ProfileViewRequested extends WalletEvent {
   const ProfileViewRequested();
 }
 
+class ResetPasswordViewRequested extends WalletEvent {
+  const ResetPasswordViewRequested();
+}
+
 class MetamaskProfileViewRequested extends WalletEvent {
   const MetamaskProfileViewRequested();
 }

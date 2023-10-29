@@ -36,6 +36,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ProfileViewRequested>(_onProfileViewRequested);
     on<ProfileViewRequestedFromSignUp>(_onProfileViewRequestedFromSignUp);
     on<ProfileViewRequestedFromLogin>(_onProfileViewRequestedFromLogin);
+    on<ResetPasswordViewRequested>(_onResetPasswordViewRequested);
     on<ResetPassword>(_onResetPassword);
 
     // Watch for changes
@@ -74,6 +75,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.login));
+  }
+
+  void _onResetPasswordViewRequested(
+    ResetPasswordViewRequested event,
+    Emitter<WalletState> emit,
+  ) {
+    emit(state.copyWith(walletViewStatus: WalletViewStatus.resetPassword));
   }
 
   Future<void> _onProfileViewRequestedFromLogin(

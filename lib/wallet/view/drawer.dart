@@ -26,6 +26,8 @@ class DrawerView extends StatelessWidget {
                 const LoginView(),
               if (state.walletViewStatus == WalletViewStatus.signup)
                 const SignUpView(),
+              if (state.walletViewStatus == WalletViewStatus.resetPassword)
+                const ResetPasswordView(),
               if (state.walletViewStatus == WalletViewStatus.initial ||
                   state.walletViewStatus == WalletViewStatus.none)
                 const LoginSignup(),
