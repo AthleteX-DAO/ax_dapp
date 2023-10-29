@@ -1,6 +1,15 @@
 // Models all the possible states of the wallet
 
-enum WalletViewStatus { initial, loading, login, signup, profile, error, none }
+enum WalletViewStatus {
+  initial,
+  loading,
+  login,
+  signup,
+  profile,
+  resetPassword,
+  error,
+  none
+}
 
 /// [WalletViewStatus] extensions.
 extension WalletViewStatusX on WalletViewStatus {
@@ -23,6 +32,8 @@ extension WalletViewStatusX on WalletViewStatus {
         return WalletViewStatus.error;
       case WalletViewStatus.none:
         return WalletViewStatus.none;
+      case WalletViewStatus.resetPassword:
+        return WalletViewStatus.resetPassword;
     }
   }
 

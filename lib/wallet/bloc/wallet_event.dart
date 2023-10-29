@@ -51,6 +51,15 @@ class ProfileViewRequestedFromLogin extends WalletEvent {
   List<Object?> get props => [email, password];
 }
 
+class ResetPassword extends WalletEvent {
+  const ResetPassword({required this.email});
+
+  final String? email;
+
+  @override
+  List<Object?> get props => [email];
+}
+
 class ConnectWalletRequested extends WalletEvent {
   const ConnectWalletRequested();
 }

@@ -36,6 +36,16 @@ class FireBaseAuthRepository {
     }
   }
 
+  Future<void> resetPassword({required String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw SendPasswordResetFailure.fromCode(e.code);
+    } catch (_) {
+      throw const SendPasswordResetFailure();
+    }
+  }
+
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();

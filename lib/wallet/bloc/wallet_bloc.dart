@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:ax_dapp/wallet/exceptions/log_in_exception.dart';
-import 'package:ax_dapp/wallet/exceptions/sign_up_exception.dart';
+import 'package:ax_dapp/wallet/exceptions/exceptions.dart';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
 import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
@@ -37,6 +36,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ProfileViewRequested>(_onProfileViewRequested);
     on<ProfileViewRequestedFromSignUp>(_onProfileViewRequestedFromSignUp);
     on<ProfileViewRequestedFromLogin>(_onProfileViewRequestedFromLogin);
+    on<ResetPassword>(_onResetPassword);
 
     // Watch for changes
     on<WatchWalletChangesStarted>(_onWatchWalletChangesStarted);
@@ -88,8 +88,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         email: email!,
         password: password!,
       );
-      final hex =
-          await _fireStoreCredentialsRepository.loadCredentials(email);
+      final hex = await _fireStoreCredentialsRepository.loadCredentials(email);
       final walletAddress = await _walletRepository.importWallet(hex);
       final privateKey = _walletRepository.privateKey;
       emit(
@@ -165,6 +164,36 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         ),
       );
       debugPrint('ERROR: $e');
+    }
+  }
+
+  Future<void> _onResetPassword(
+    ResetPassword event,
+    Emitter<WalletState> emit,
+  ) async {
+    final email = event.email;
+    try {
+      await _fireBaseAuthRepository.resetPassword(email: email!);
+      emit(
+        state.copyWith(
+          walletViewStatus: WalletViewStatus.login,
+        ),
+      );
+    } on SendPasswordResetFailure catch (e) {
+      emit(
+        state.copyWith(
+          failure: WalletFailure.fromUnsuccessfulOperation(),
+          errorMessage: e.message,
+          walletViewStatus: WalletViewStatus.initial,
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(
+          failure: WalletFailure.fromUnsuccessfulOperation(),
+          walletViewStatus: WalletViewStatus.initial,
+        ),
+      );
     }
   }
 
