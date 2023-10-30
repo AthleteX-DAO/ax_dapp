@@ -4,6 +4,7 @@ import 'package:ax_dapp/wallet/exceptions/exceptions.dart';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
 import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
+import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -17,6 +18,7 @@ part 'wallet_state.dart';
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
   WalletBloc({
     required WalletRepository walletRepository,
+    required this.crossChainBalanceUseCase,
     required TokensRepository tokensRepository,
     required FireStoreCredentialsRepository fireStoreCredentialsRepository,
     required FireBaseAuthRepository fireBaseAuthRepository,
@@ -49,12 +51,17 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<WalletFailed>(_onWalletFailed);
     on<AuthFailed>(_onAuthFailed);
 
+    // Updates Wallet Balance
+    on<FetchWalletBalanceRequested>(_onFetchWalletBalanceRequested);
+
     add(const WatchWalletChangesStarted());
     add(const WatchAxtChangesStarted());
   }
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
+
+  final CrossChainBalanceUseCase crossChainBalanceUseCase;
   final FireStoreCredentialsRepository _fireStoreCredentialsRepository;
   final FireBaseAuthRepository _fireBaseAuthRepository;
 
@@ -268,6 +275,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       _walletRepository.walletChanges,
       onData: (wallet) => state.copyWithWallet(wallet),
     );
+    add(const FetchWalletBalanceRequested());
+  }
+
+  Future<void> _onFetchWalletBalanceRequested(
+    FetchWalletBalanceRequested event,
+    Emitter<WalletState> emit,
+  ) async {
+    final walletBalance =
+        await crossChainBalanceUseCase.usdcBalance(state.chain);
+    emit(state.copyWith(walletBalance: walletBalance));
   }
 
   Future<void> _onWatchAxtChangesStarted(

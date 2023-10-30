@@ -90,6 +90,10 @@ class UpdateAxDataRequested extends WalletEvent {
   const UpdateAxDataRequested();
 }
 
+class FetchWalletBalanceRequested extends WalletEvent {
+  const FetchWalletBalanceRequested();
+}
+
 class GetGasPriceRequested extends WalletEvent {
   const GetGasPriceRequested();
 }

@@ -8,6 +8,7 @@ import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
 import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
+import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,9 @@ class App extends StatelessWidget {
             fireBaseAuthRepository: context.read<FireBaseAuthRepository>(),
             fireStoreCredentialsRepository:
                 context.read<FireStoreCredentialsRepository>(),
+            crossChainBalanceUseCase: CrossChainBalanceUseCase(
+              walletRepository: context.read<WalletRepository>(),
+            ),
           ),
         ),
         BlocProvider(
