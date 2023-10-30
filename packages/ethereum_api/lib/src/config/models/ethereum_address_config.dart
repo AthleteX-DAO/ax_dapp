@@ -57,8 +57,8 @@ class EthereumAddressConfig {
         goerliTestNet = '0x3a034FE373B6304f98b7A24A3F21C958946d4075',
         sportxMainnet = '0xe2aa35c2039bd0ff196a6ef99523cc0d3972ae3e',
         sportxTestnet = kEmptyAddress,
-        optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        optimism = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+        arbitriumOne = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831';
 
   /// Configuration for [Token.longApt] and [Token.shortApt].
   const EthereumAddressConfig.apt({
