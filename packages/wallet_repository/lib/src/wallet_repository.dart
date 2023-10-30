@@ -32,7 +32,6 @@ class WalletRepository {
         );
         walletUpdate = Wallet(
           address: (chain.isSupported) ? cachedWalletAddress : kEmptyAddress,
-          balance: await getWalletBalance(),
           assets: [Token.ax(chain), Token.sx(chain)],
           chain: chain,
           status: WalletStatus.fromChain(chain),
@@ -102,7 +101,6 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
-          balance: 0,
           assets: const [Token.empty],
           address: walletAddress,
           chain: currentChain,
@@ -130,7 +128,6 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
-          balance: 0,
           assets: const [Token.empty],
           address: walletAddress,
           chain: currentChain,
@@ -165,7 +162,6 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
-          balance: 0,
           assets: const [Token.empty],
           address: walletAddress,
           chain: currentChain,
@@ -253,24 +249,6 @@ class WalletRepository {
     final balance = getAmountWithDecimal(rawBalance, decimal);
     final formattedBalance = balance.toStringAsFixed(11);
     return double.parse(formattedBalance);
-  }
-
-  /// Returns an aproxximate cross-chain balance of a [Wallet]'s USDC
-  ///
-  Future<double> getWalletBalance() async {
-    var crossChainUSDCBalance = 0.00;
-    final polygonBalance = await getTokenBalance(
-          const Token.usdc(EthereumChain.polygonMainnet).address,
-        ) ??
-        0.00;
-
-    final sxBalance = await getTokenBalance(
-          const Token.usdc(EthereumChain.sxMainnet).address,
-        ) ??
-        0.00;
-    crossChainUSDCBalance = sxBalance + polygonBalance;
-    debugPrint('$crossChainUSDCBalance');
-    return 0.00;
   }
 
   /// Returns a [BigInt] amount of decimals from a [tokenAddress].
