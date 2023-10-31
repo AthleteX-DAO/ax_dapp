@@ -79,7 +79,7 @@ class WalletRepository {
 
   /// Returns the current [Wallet] synchronously.
   Wallet get currentWallet =>
-      _walletChanges.valueOrNull ?? Wallet.disconnected();
+      _walletChanges.valueOrNull ?? const Wallet.disconnected();
 
   /// Returns the cached [WalletCredentials] for the connected wallet. This
   /// doesn't return `null`, because when called, the wallet is asssumed to be

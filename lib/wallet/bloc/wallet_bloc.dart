@@ -275,7 +275,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       _walletRepository.walletChanges,
       onData: (wallet) => state.copyWithWallet(wallet),
     );
-    add(const FetchWalletBalanceRequested());
   }
 
   Future<void> _onFetchWalletBalanceRequested(

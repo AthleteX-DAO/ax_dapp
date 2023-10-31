@@ -9,7 +9,6 @@ class Wallet extends Equatable {
   /// {@macro wallet}
   const Wallet({
     required this.status,
-    required this.balance,
     required this.assets,
     required this.address,
     required this.chain,
@@ -19,7 +18,6 @@ class Wallet extends Equatable {
   const Wallet.disconnected()
       : this(
           status: WalletStatus.disconnected,
-          balance: 0,
           assets: const [
             Token.usdc(EthereumChain.none),
             Token.weth(EthereumChain.none),
@@ -37,9 +35,6 @@ class Wallet extends Equatable {
 
   /// Wallet chain.
   final EthereumChain chain;
-
-  /// Cross-chain Wallet Balance
-  final double balance;
 
   /// Wallet Assets
   final List<Token> assets;

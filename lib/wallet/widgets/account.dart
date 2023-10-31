@@ -14,11 +14,17 @@ class Account extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var walletBalance = 0.0;
     final walletAddress =
         context.select((WalletBloc bloc) => bloc.state.walletAddress);
     final chain = context.select((WalletBloc bloc) => bloc.state.chain);
-    final walletBalance =
-        context.select((WalletBloc bloc) => bloc.state.walletBalance);
+    final isConnected =
+        context.select((WalletBloc bloc) => bloc.state.isWalletConnected);
+    if (isConnected) {
+      context.read<WalletBloc>().add(const FetchWalletBalanceRequested());
+      walletBalance =
+          context.select((WalletBloc bloc) => bloc.state.walletBalance);
+    }
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     var wid = 400.0;

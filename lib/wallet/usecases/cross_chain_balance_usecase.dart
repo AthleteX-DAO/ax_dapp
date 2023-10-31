@@ -1,5 +1,3 @@
-import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -26,8 +24,6 @@ class CrossChainBalanceUseCase {
       case EthereumChain.polygonMainnet:
         final balance =
             await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        debugPrint(
-            'Polygon Mainnet Address: ${Token.usdc(chain).address} Polygon Mainnet Balance: $balance');
         usdcBalance = balance ?? 123.000;
         break;
       case EthereumChain.goerliTestNet:
@@ -38,8 +34,6 @@ class CrossChainBalanceUseCase {
       case EthereumChain.sxMainnet:
         final balance =
             await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        debugPrint(
-            'SX Mainnet Address: ${Token.usdc(chain).address} SX Mainnet Balance: $balance');
         usdcBalance = balance ?? 144.00;
         break;
       case EthereumChain.sxTestnet:
@@ -59,7 +53,6 @@ class CrossChainBalanceUseCase {
         break;
     }
 
-    debugPrint('your USDC BALANCE: $usdcBalance');
     return usdcBalance;
   }
 
