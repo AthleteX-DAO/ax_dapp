@@ -48,8 +48,8 @@ class EthereumAddressConfig {
         goerliTestNet = '0x47a4357315e1d3AB3294c161c3a52e8b0d3A4109',
         sportxMainnet = '0xa173954cc4b1810c0dbdb007522adbc182dab380',
         sportxTestnet = kEmptyAddress,
-        optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        optimism = '0x4200000000000000000000000000000000000006',
+        arbitriumOne = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1';
 
   /// Configuration for [Token.usdc].
   const EthereumAddressConfig.usdc()
