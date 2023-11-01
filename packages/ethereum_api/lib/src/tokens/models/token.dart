@@ -83,6 +83,16 @@ class Token extends Equatable {
           currency: EthereumCurrency.usdc,
         );
 
+  /// Represents an 'Unknown' [Token]
+  Token.unknown(String name, String ticker, String address, EthereumChain chain)
+      : this(
+          name: name,
+          ticker: ticker,
+          addressConfig: EthereumAddressConfig.unknown(address, chain),
+          chain: chain,
+          currency: EthereumCurrency.none,
+        );
+
   /// {@macro athlete_performance_token}
   ///
   /// {@macro long_athlete_performance_token}
@@ -125,7 +135,6 @@ class Token extends Equatable {
     chain: EthereumChain.none,
     currency: EthereumCurrency.none,
   );
-
   @override
   List<Object?> get props => [
         name,

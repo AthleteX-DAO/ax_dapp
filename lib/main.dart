@@ -30,6 +30,8 @@ import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/sports_markets/repository/overtime_markets_repository.dart';
 import 'package:ax_dapp/sports_markets/repository/sx_markets_repository.dart';
 import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
+import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
+import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
@@ -51,7 +53,7 @@ import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 void main() async {
-  const defaultChain = EthereumChain.sxMainnet;
+  const defaultChain = EthereumChain.polygonMainnet;
 
   _setupLogging();
   final dio = Dio()..interceptors.add(LoggingInterceptor());
@@ -210,6 +212,15 @@ void main() async {
               sxMarketsRepository: context.read<SXMarketsRepository>(),
               overTimeMarketsRepository:
                   context.read<OverTimeMarketsRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => FireBaseAuthRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => FireStoreCredentialsRepository(
+              fireStore: FirebaseFirestore.instance,
+              walletRepository: context.read<WalletRepository>(),
             ),
           ),
         ],

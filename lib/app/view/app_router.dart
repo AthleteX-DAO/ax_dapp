@@ -38,8 +38,6 @@ import 'package:ax_dapp/sports_markets/view/sports_page.dart';
 import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/trade/desktop_trade.dart';
 import 'package:ax_dapp/util/util.dart';
-import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,27 +52,12 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
   final GoRouter _router = GoRouter(
-    redirect: (context, state) async {
-      // ignore: use_build_context_synchronously
-      if (await context.read<WalletRepository>().searchForWallet() ?? false) {
-        // ignore: use_build_context_synchronously
-        context.read<WalletBloc>().add(const ConnectWalletRequested());
-      }
-      if (state.location.contains('/athlete') && Global().athleteList.isEmpty) {
-        return '/scout';
-      }
-      if (state.location.contains('/prediction') &&
-          Global().predictions.isEmpty) {
-        return '/predict';
-      }
-      return null;
-    },
     navigatorKey: _rootNavigatorKey,
     routes: [
       GoRoute(
-        name: 'landing',
+        name: '/',
         path: '/',
-        redirect: (context, state) => '/trade',
+        redirect: (context, state) => '/scout',
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
@@ -274,6 +257,16 @@ class AppRouter {
         ],
       ),
     ],
+    redirect: (context, state) async {
+      // These fix redirects a page back to the markest list if a user refreshes
+      if (state.location.contains('/athlete') && Global().athleteList.isEmpty) {
+        return '/scout';
+      } else if (state.location.contains('/prediction') &&
+          Global().predictions.isEmpty) {
+        return '/predict';
+      }
+      return null;
+    },
     errorPageBuilder: (context, state) => MaterialPage(
       key: UniqueKey(),
       child: Scaffold(

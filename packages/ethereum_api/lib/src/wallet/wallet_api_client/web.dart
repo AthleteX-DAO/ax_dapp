@@ -29,6 +29,15 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   final _chainController = BehaviorSubject<EthereumChain>();
 
+  String _seedHex = '';
+
+  /// Gets the wallet's private seed phrase
+  @override
+  String get hex => _seedHex;
+
+  /// Sets the wallet's private seed phrase
+  // set hex(String privateKey) => _seedHex = privateKey;
+
   /// Allows listening to changes to the current [EthereumChain].
   @override
   Stream<EthereumChain> get chainChanges => _chainController.stream.distinct();
@@ -138,6 +147,34 @@ class EthereumWalletApiClient implements WalletApiClient {
   Future<void> _syncChainId() async {
     final chainId = await _ethereum!.getChainId();
     _chainController.add(EthereumChain.fromChainId(chainId));
+  }
+
+  ///
+  @override
+  Future<WalletCredentials> createWalletCredentials() async {
+    final mnemonic = generateMnemonic();
+    validateMnemonic(mnemonic);
+    final hex = mnemonicToSeedHex(mnemonic);
+    _seedHex = hex; // Stores seed hex
+    final credentials = EthPrivateKey.fromHex(hex);
+    return WalletCredentials(credentials);
+  }
+
+  /// Takes a [String] representation of a private key, and converts it into an Ethereum Private Key
+  /// Returns the [WalletCredentials] for the imported Wallet
+  /// Throws:
+  /// - [UnknownWalletFailure]
+  @override
+  Future<WalletCredentials> importWalletCredentials(String hex) async {
+    _checkWalletAvailability();
+    try {
+      final credentials = EthPrivateKey.fromHex(hex);
+      _seedHex = hex; //Stores seed hex
+
+      return WalletCredentials(credentials);
+    } catch (err, stackTrace) {
+      throw WalletFailure.fromError(err, stackTrace);
+    }
   }
 
   /// Asks the user to select an account and give your application access to it.

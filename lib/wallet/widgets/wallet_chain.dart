@@ -53,7 +53,7 @@ class WalletChain extends StatelessWidget {
               },
             ),
           ),
-        )
+        ),
       ],
     );
   }

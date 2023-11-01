@@ -196,7 +196,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

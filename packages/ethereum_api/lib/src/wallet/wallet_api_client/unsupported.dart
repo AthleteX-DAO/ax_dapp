@@ -14,6 +14,8 @@ class EthereumWalletApiClient implements WalletApiClient {
     required ValueStream<Web3Client> reactiveWeb3Client,
   });
 
+  /// returns the Wallets private seed phrase
+  String get hex => throw UnsupportedError('hex is not available');
   @override
   Stream<EthereumChain> get chainChanges => throw UnsupportedError(
         'ethereumChainChanges not supported on the current platform',
@@ -40,6 +42,19 @@ class EthereumWalletApiClient implements WalletApiClient {
   Future<void> syncChain(EthereumChain ethereumChain) {
     throw UnsupportedError(
       'syncChain not supported on the current platform',
+    );
+  }
+
+  @override
+  Future<WalletCredentials> createWalletCredentials() {
+    throw UnsupportedError(
+      'createWalletCredentials not supported on the current platform',
+    );
+  }
+
+  Future<WalletCredentials> importWalletCredentials(String hex) {
+    throw UnsupportedError(
+      'importWalletCredentials not supported on the current platform',
     );
   }
 

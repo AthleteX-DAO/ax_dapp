@@ -125,6 +125,10 @@ enum EthereumChain {
   static List<EthereumChain> get supportedValues => values
       .where((chain) => chain.chainId != 647 && chain.isSupported)
       .toList();
+
+  /// Returns a list of chains that
+  static List<EthereumChain> get mainnetChains =>
+      values.where((chain) => !chain.isTestnet && chain.isSupported).toList();
 }
 
 /// [EthereumChain] extensions.
@@ -132,6 +136,10 @@ extension ChainX on EthereumChain {
   /// Returns whether this [EthereumChain] is supported.
   bool get isSupported =>
       this != EthereumChain.none && this != EthereumChain.unsupported;
+
+  /// Returns whether this [EthereumChain] is a testnet.
+  bool get isTestnet =>
+      this == EthereumChain.goerliTestNet || this == EthereumChain.sxTestnet;
 
   /// Returns the RPC URL used to initialize a [Web3Client].
   String get rpcUrl => rpcUrls.firstOrNull ?? '';

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cache/cache.dart';
+import 'package:ethereum_api/tokens_api.dart';
 import 'package:ethereum_api/wallet_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared/shared.dart';
@@ -31,6 +32,7 @@ class WalletRepository {
         );
         walletUpdate = Wallet(
           address: (chain.isSupported) ? cachedWalletAddress : kEmptyAddress,
+          assets: [Token.ax(chain), Token.sx(chain)],
           chain: chain,
           status: WalletStatus.fromChain(chain),
         );
@@ -71,6 +73,10 @@ class WalletRepository {
   /// Allows listening to changes to the current [Wallet].
   Stream<Wallet> get walletChanges => _walletChanges;
 
+  /// Returns the current [WalletCredentials] private key
+  /// This should be used cautiously! private keys are important
+  String get privateKey => _walletApiClient.hex;
+
   /// Returns the current [Wallet] synchronously.
   Wallet get currentWallet =>
       _walletChanges.valueOrNull ?? const Wallet.disconnected();
@@ -80,6 +86,60 @@ class WalletRepository {
   /// connected and thus have it's credentials cached.
   WalletCredentials get credentials =>
       _cache.read<WalletCredentials>(key: credentialsCacheKey)!;
+
+  /// Allows the user to create their own wallet via signup
+  ///
+  /// Returns the hexadecimal representation of the wallet address.
+  Future<String> createWallet() async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      _walletApiClient.addChainChangedListener();
+      await _walletApiClient.syncChain(defaultChain);
+      final credentials = await _walletApiClient.createWalletCredentials();
+      _cacheWalletCredentials(credentials);
+      final walletAddress = credentials.value.address.hex;
+      _walletChangeController.add(
+        Wallet(
+          status: WalletStatus.fromChain(currentChain),
+          assets: const [Token.empty],
+          address: walletAddress,
+          chain: currentChain,
+        ),
+      );
+      return walletAddress;
+    } catch (e) {
+      await prefs.setBool(searchForWalletKey, false);
+      return kNullAddress;
+    }
+  }
+
+  /// Allows the user to import a wallet given a private seed phrase
+  ///
+  /// Returns the hexadecimal representation of a wallet address
+
+  Future<String> importWallet(String hex) async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      _walletApiClient.addChainChangedListener();
+      await _walletApiClient.syncChain(defaultChain);
+      final credentials = await _walletApiClient.importWalletCredentials(hex);
+      _cacheWalletCredentials(credentials);
+      final walletAddress = credentials.value.address.hex;
+      _walletChangeController.add(
+        Wallet(
+          status: WalletStatus.fromChain(currentChain),
+          assets: const [Token.empty],
+          address: walletAddress,
+          chain: currentChain,
+        ),
+      );
+      return walletAddress;
+    } catch (e) {
+      debugPrint('ERROR: $e');
+      await prefs.setBool(searchForWalletKey, false);
+      return kNullAddress;
+    }
+  }
 
   /// Allows the user to connect to a `MetaMask` wallet.
   ///
@@ -102,6 +162,7 @@ class WalletRepository {
       _walletChangeController.add(
         Wallet(
           status: WalletStatus.fromChain(currentChain),
+          assets: const [Token.empty],
           address: walletAddress,
           chain: currentChain,
         ),

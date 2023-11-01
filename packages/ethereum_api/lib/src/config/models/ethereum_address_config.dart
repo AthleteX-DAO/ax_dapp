@@ -48,8 +48,8 @@ class EthereumAddressConfig {
         goerliTestNet = '0x47a4357315e1d3AB3294c161c3a52e8b0d3A4109',
         sportxMainnet = '0xa173954cc4b1810c0dbdb007522adbc182dab380',
         sportxTestnet = kEmptyAddress,
-        optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        optimism = '0x4200000000000000000000000000000000000006',
+        arbitriumOne = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1';
 
   /// Configuration for [Token.usdc].
   const EthereumAddressConfig.usdc()
@@ -57,17 +57,18 @@ class EthereumAddressConfig {
         goerliTestNet = '0x3a034FE373B6304f98b7A24A3F21C958946d4075',
         sportxMainnet = '0xe2aa35c2039bd0ff196a6ef99523cc0d3972ae3e',
         sportxTestnet = kEmptyAddress,
-        optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        optimism = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+        arbitriumOne = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831';
 
   /// Configuration for [Token.longApt] and [Token.shortApt].
-  const EthereumAddressConfig.apt(
-      {required this.polygonMainnet,
-      required this.goerliTestNet,
-      required this.sportxMainnet,
-      required this.sportxTestnet,
-      required this.optimism,
-      required this.arbitriumOne});
+  const EthereumAddressConfig.apt({
+    required this.polygonMainnet,
+    required this.goerliTestNet,
+    required this.sportxMainnet,
+    required this.sportxTestnet,
+    required this.optimism,
+    required this.arbitriumOne,
+  });
 
   /// Configuration for [] client.
   const EthereumAddressConfig.event()
@@ -123,6 +124,29 @@ class EthereumAddressConfig {
         optimism = kEmptyAddress,
         arbitriumOne = kEmptyAddress;
 
+  /// Unkown configuration
+  EthereumAddressConfig.unknown(String address, EthereumChain chain)
+      : polygonMainnet =
+            (chain.chainName == EthereumChain.polygonMainnet.chainName)
+                ? address
+                : kEmptyAddress,
+        goerliTestNet =
+            (chain.chainName == EthereumChain.goerliTestNet.chainName)
+                ? address
+                : kEmptyAddress,
+        sportxMainnet = (chain.chainName == EthereumChain.sxMainnet.chainName)
+            ? address
+            : kEmptyAddress,
+        sportxTestnet = (chain.chainName == EthereumChain.sxTestnet.chainName)
+            ? address
+            : kEmptyAddress,
+        optimism = (chain.chainName == EthereumChain.optimism.chainName)
+            ? address
+            : kEmptyAddress,
+        arbitriumOne = (chain.chainName == EthereumChain.arbitriumOne.chainName)
+            ? address
+            : kEmptyAddress;
+
   /// Represents the object address on the [EthereumChain.polygonMainnet].
   final String polygonMainnet;
 
@@ -165,5 +189,10 @@ extension EthereumAddressConfigX on EthereumAddressConfig {
       case EthereumChain.arbitriumOne:
         return arbitriumOne;
     }
+  }
+
+  ///Returns an unknown
+  EthereumAddressConfig fromHex(EthereumChain chain, String address) {
+    return EthereumAddressConfig.unknown(address, chain);
   }
 }

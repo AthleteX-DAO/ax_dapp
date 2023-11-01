@@ -27,6 +27,12 @@ class ExplorerUseCase {
       case EthereumChain.sxTestnet:
         // TODO: Handle this case.
         break;
+      case EthereumChain.optimism:
+        buttonName = 'Show on Optimism';
+        break;
+      case EthereumChain.arbitriumOne:
+        buttonName = 'Show on Arbitrum';
+        break;
     }
     return buttonName;
   }
@@ -51,6 +57,12 @@ class ExplorerUseCase {
         break;
       case EthereumChain.sxTestnet:
         // TODO: Handle this case.
+        break;
+      case EthereumChain.optimism:
+        explorerUrl = 'https://optimistic.etherscan.io/address/$walletAddress';
+        break;
+      case EthereumChain.arbitriumOne:
+        explorerUrl = 'https://arbiscan.io/address/$walletAddress';
         break;
     }
     return explorerUrl;
