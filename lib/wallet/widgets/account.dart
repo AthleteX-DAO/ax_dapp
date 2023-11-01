@@ -105,7 +105,7 @@ class Account extends StatelessWidget {
                   SizedBox(
                     width: wid - edge2,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         SizedBox(
                           height: _height * 0.2,
@@ -275,21 +275,22 @@ class Account extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.arrow_upward_outlined),
-                        tooltip: 'Send your crypto ',
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.arrow_downward_outlined,
-                        ),
-                        tooltip: 'Recieve your crypto',
-                        onPressed: () {},
-                      ),
+                      /// I don't know what to do with these yet
+                      // IconButton(
+                      //   icon: const Icon(Icons.arrow_upward_outlined),
+                      //   tooltip: 'Send your crypto ',
+                      //   onPressed: () {},
+                      // ),
+                      // IconButton(
+                      //   icon: const Icon(
+                      //     Icons.arrow_downward_outlined,
+                      //   ),
+                      //   tooltip: 'Recieve your crypto',
+                      //   onPressed: () {},
+                      // ),
                       IconButton(
                         icon: const Icon(Icons.payments_sharp),
-                        tooltip: 'Add to your USDC balance',
+                        tooltip: 'Add to your USDC balance -- Coming Soon!',
                         onPressed: () {},
                       ),
                       IconButton(
