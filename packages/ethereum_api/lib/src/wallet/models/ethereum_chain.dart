@@ -166,7 +166,6 @@ extension ChainConfigX on EthereumChain {
         Token.matic(this),
         Token.weth(this),
         Token.usdc(this),
-        ...createApts(this),
       ];
 
   /// Generates the list of [Apt]'s for this [EthereumChain]. Composed based on
