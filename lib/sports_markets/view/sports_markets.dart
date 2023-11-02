@@ -50,15 +50,18 @@ class SportsMarkets extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: constraints.maxHeight * 0.8 - 120,
-      child: ListView.builder(
-        padding: const EdgeInsets.only(top: 10),
-        physics: const BouncingScrollPhysics(),
-        itemCount: liveSportsMarkets.length,
-        itemBuilder: (context, index) {
-          return DesktopSportsCard(
-            sportsMarketsModel: liveSportsMarkets[index],
-          );
-        },
+      child: const Center(
+        child: SizedBox(
+          height: 70,
+          child: Text(
+            'Check later for Sports Betting Markets!',
+            style: TextStyle(
+              color: Colors.yellow,
+              fontSize: 30,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
       ),
     );
   }
