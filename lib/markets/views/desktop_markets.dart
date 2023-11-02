@@ -110,7 +110,7 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                         SportsMarkets(
                           sportsMarkets: liveSports,
                           boxConstraints: constraints,
-                        ).sportsDesktopMarkets(),
+                        ),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Crypto)
                         const Center(

@@ -306,7 +306,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                           SportsMarkets(
                             sportsMarkets: liveSports,
                             boxConstraints: constraints,
-                          ).sportsMobileMarkets(),
+                          ),
                         if (state.status == BlocStatus.success &&
                             state.selectedMarket == SupportedMarkets.Athlete)
                           AthleteMarkets(
