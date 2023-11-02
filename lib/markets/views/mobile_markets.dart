@@ -312,7 +312,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                           AthleteMarkets(
                             filteredAthletes: filteredAthletes,
                             boxConstraints: constraints,
-                          ).athleteMobileMarkets(),
+                          ),
                         // Default Structure
                         SizedBox(
                           height: constraints.maxHeight * 0.8 - 120,
