@@ -312,52 +312,6 @@ class BuildFilterMenu extends StatelessWidget {
             ),
           ),
         ),
-        TextButton(
-          onPressed: () {
-            setSelectedSport(SupportedSport.MLB);
-          },
-          child: Text(
-            'MLB',
-            style: textSwapState(
-              condition: selectedSport == SupportedSport.MLB,
-              tabNotSelected: textStyle(
-                Colors.white,
-                14,
-                isBold: false,
-                isUline: false,
-              ),
-              tabSelected: textStyle(
-                Colors.amber[400]!,
-                14,
-                isBold: false,
-                isUline: false,
-              ),
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            setSelectedSport(SupportedSport.NFL);
-          },
-          child: Text(
-            'NFL',
-            style: textSwapState(
-              condition: selectedSport == SupportedSport.NFL,
-              tabNotSelected: textStyle(
-                Colors.white,
-                14,
-                isBold: false,
-                isUline: false,
-              ),
-              tabSelected: textStyle(
-                Colors.amber[400]!,
-                14,
-                isBold: false,
-                isUline: false,
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }
