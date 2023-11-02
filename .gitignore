@@ -35,6 +35,7 @@ pubspec.lock
 
 
 # Web related
+.firebase/
 
 # Symbolication related
 app.*.symbols
