@@ -15,7 +15,7 @@ class OnrampOfframpRepository {
     var params = '&product=SELL';
   }
 
-  Future<void> buyCrypto() async {}
+  Future<void> buyCrypto(String buyAmount, EthereumChain chain) async {}
 
-  Future<void> sellCrypto() async {}
+  Future<void> sellCrypto(String sellAmount, EthereumChain chain) async {}
 }
