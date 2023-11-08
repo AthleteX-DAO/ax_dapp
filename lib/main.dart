@@ -27,11 +27,13 @@ import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.da
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
+import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/sports_markets/repository/overtime_markets_repository.dart';
 import 'package:ax_dapp/sports_markets/repository/sx_markets_repository.dart';
 import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
 import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
 import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
+import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
@@ -220,6 +222,17 @@ void main() async {
           RepositoryProvider(
             create: (context) => FireStoreCredentialsRepository(
               fireStore: FirebaseFirestore.instance,
+              walletRepository: context.read<WalletRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => GetTotalTokenBalanceUseCase(
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => CrossChainBalanceUseCase(
               walletRepository: context.read<WalletRepository>(),
             ),
           ),

@@ -1,6 +1,8 @@
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class AccountAssetCard extends StatelessWidget {
@@ -14,7 +16,6 @@ class AccountAssetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
-
     return SizedBox(
       height: 40,
       child: OutlinedButton(
@@ -72,6 +73,19 @@ class AccountAssetCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            FutureBuilder<double>(
+              future:
+                  context.read<CrossChainBalanceUseCase>().tokenBalance(token),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('0');
+                } else if (snapshot.hasData) {
+                  return Text('${snapshot.data}');
+                } else {
+                  return const Loader();
+                }
+              },
             ),
           ],
         ),

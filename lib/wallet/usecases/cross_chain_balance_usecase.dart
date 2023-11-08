@@ -13,6 +13,11 @@ class CrossChainBalanceUseCase {
     return balance ?? 0;
   }
 
+  Future<double> tokenBalance(Token token) async {
+    final balance = await _walletRepository.getTokenBalance(token.address);
+    return balance ?? 0;
+  }
+
   Future<double> getGasBalance(EthereumChain chain) async {
     var gasBalance = 0.00;
     switch (chain) {
