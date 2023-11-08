@@ -66,7 +66,7 @@ class Token extends Equatable {
   /// Represents a `Wrapped Ether` [Token].
   const Token.weth(EthereumChain chain)
       : this(
-          name: 'WETH',
+          name: 'Wrapped Ethereum',
           ticker: 'WETH',
           addressConfig: const EthereumAddressConfig.weth(),
           chain: chain,
