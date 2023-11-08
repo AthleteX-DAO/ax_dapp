@@ -1,6 +1,10 @@
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/account/models/status.dart';
+import 'package:ax_dapp/account/view/view.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Account extends StatelessWidget {
   const Account({super.key});
@@ -71,9 +75,29 @@ class Account extends StatelessWidget {
                     .5,
                     primaryOrangeColor,
                   ),
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[],
+                  child: BlocBuilder<AccountBloc, AccountState>(
+                    builder: (BuildContext context, state) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          if (state.accountViewStatus ==
+                                  AccountViewStatus.initial ||
+                              state.accountViewStatus ==
+                                  AccountViewStatus.deposit ||
+                              state.accountViewStatus == AccountViewStatus.none)
+                            AccountDetails(),
+                          if (state.accountViewStatus ==
+                              AccountViewStatus.buySell)
+                            AccountBuyAndSell(),
+                          if (state.accountViewStatus ==
+                              AccountViewStatus.deposit)
+                            AccountDepositView(),
+                          if (state.accountViewStatus ==
+                              AccountViewStatus.withdraw)
+                            AccountWithdrawView(),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ],
