@@ -9,6 +9,9 @@ enum WalletAssets {
   /// Cryptocurrency Tokens
   Crypto,
 
+  /// Athlet Performance Tokens
+  APTs,
+
   /// Non-Fungible Tokens
   NFTs,
 }
