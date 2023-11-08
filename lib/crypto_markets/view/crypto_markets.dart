@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AthleteMarkets extends StatelessWidget {
-  const AthleteMarkets({
+class CryptoMarkets extends StatelessWidget {
+  const CryptoMarkets({
     super.key,
+    required List<String> filteredMarkets,
     required BoxConstraints boxConstraints,
-  }) : constraints = boxConstraints;
+  })  : cryptoMarkets = filteredMarkets,
+        constraints = boxConstraints;
 
+  final List<String> cryptoMarkets;
   final BoxConstraints constraints;
 
   @override
@@ -16,7 +19,7 @@ class AthleteMarkets extends StatelessWidget {
         child: SizedBox(
           height: 70,
           child: Text(
-            'Check later for Athlete Markets!',
+            'Check later for Crypto Markets!',
             style: TextStyle(
               color: Colors.yellow,
               fontSize: 30,

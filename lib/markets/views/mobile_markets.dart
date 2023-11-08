@@ -310,7 +310,6 @@ class _MobileMarketsState extends State<MobileMarkets> {
                         if (state.status == BlocStatus.success &&
                             state.selectedMarket == SupportedMarkets.Athlete)
                           AthleteMarkets(
-                            filteredAthletes: filteredAthletes,
                             boxConstraints: constraints,
                           ),
                         // Default Structure

@@ -102,7 +102,6 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Athlete)
                         AthleteMarkets(
-                          filteredAthletes: filteredAthletes,
                           boxConstraints: constraints,
                         ),
                       if (state.status == BlocStatus.success &&
@@ -113,18 +112,9 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                         ),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Crypto)
-                        const Center(
-                          child: SizedBox(
-                            height: 70,
-                            child: Text(
-                              'Crypto Markets coming soon!',
-                              style: TextStyle(
-                                color: Colors.yellow,
-                                fontSize: 30,
-                                fontFamily: 'OpenSans',
-                              ),
-                            ),
-                          ),
+                        CryptoMarkets(
+                          filteredMarkets: const [],
+                          boxConstraints: constraints,
                         ),
                       SizedBox(
                         height: constraints.maxHeight * 0.8 - 120,
