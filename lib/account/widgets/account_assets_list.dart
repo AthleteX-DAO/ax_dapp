@@ -22,8 +22,8 @@ class WalletAssetsList extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             itemCount: currentTokens.length,
             itemBuilder: (context, index) {
-              return WalletAssetCard(
-                tokenAsset: currentTokens[index],
+              return AccountAssetCard(
+                token: currentTokens[index],
               );
             },
           ),
