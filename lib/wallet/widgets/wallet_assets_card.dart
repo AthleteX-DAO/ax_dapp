@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class WalletAssetCard extends StatelessWidget {
-  const WalletAssetCard({super.key});
+  const WalletAssetCard({
+    super.key,
+    required this.tokenAsset,
+  });
+
+  final Token tokenAsset;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return SizedBox(
-          height: 70,
-          child: OutlinedButton(
-            onPressed: () {},
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('AssetImage'),
-                Text('AssetName'),
-                Text('Quantity & price'),
-              ],
-            ),
-          ),
-        );
-      },
+    return SizedBox(
+      height: 40,
+      child: OutlinedButton(
+        onPressed: () {},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text('Your Asset: ${tokenAsset.name}'),
+          ],
+        ),
+      ),
     );
   }
 }
