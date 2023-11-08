@@ -1,8 +1,5 @@
 import 'dart:html';
 import 'dart:ui' as ui;
-import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/util/util.dart';
-import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
 
 class BuyAndSell extends StatefulWidget {
