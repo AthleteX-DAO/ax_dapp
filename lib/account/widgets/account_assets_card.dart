@@ -23,7 +23,7 @@ class AccountAssetCard extends StatelessWidget {
           children: <Widget>[
             Container(
               height: 30,
-              width: 60,
+              width: 50,
               alignment: Alignment.centerLeft,
               child: Container(
                 width: 30,
