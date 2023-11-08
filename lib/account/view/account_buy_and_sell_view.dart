@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'dart:ui' as ui;
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/account/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,8 +22,8 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
   void initState() {
     super.initState();
     _iframeElement
-      ..height = '620'
-      ..width = '480'
+      ..height = '6200'
+      ..width = '4800'
       ..src =
           'https://app.kado.money/?apiKey=137cd949-ab0f-429f-93b8-187ef3a93862';
     _iframeElement.style.border = 'none';
@@ -44,8 +45,8 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             IconButton(
               alignment: Alignment.centerLeft,
@@ -58,6 +59,14 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
                     const AccountDetailsViewRequested(),
                   ),
             ),
+            const Row(
+              children: [
+                WalletAddress(),
+              ],
+            ),
+            Center(
+              child: kadoMoney,
+            )
           ],
         );
       },
