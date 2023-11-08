@@ -9,51 +9,8 @@ class CrossChainBalanceUseCase {
   final WalletRepository _walletRepository;
 
   Future<double> usdcBalance(EthereumChain chain) async {
-    var usdcBalance = 0.00;
-    switch (chain) {
-      case EthereumChain.none:
-        final balance =
-            await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 0;
-        break;
-      case EthereumChain.unsupported:
-        final balance =
-            await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 0;
-        break;
-      case EthereumChain.polygonMainnet:
-        final balance =
-            await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 0;
-        break;
-      case EthereumChain.goerliTestNet:
-        final balance =
-            await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 0;
-        break;
-      case EthereumChain.sxMainnet:
-        final balance =
-            await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 0;
-        break;
-      case EthereumChain.sxTestnet:
-        final balance =
-            await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 0;
-        break;
-      case EthereumChain.optimism:
-        final balance =
-            await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 0;
-        break;
-      case EthereumChain.arbitriumOne:
-        final balance =
-            await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 0;
-        break;
-    }
-
-    return usdcBalance;
+    final balance = await _walletRepository.getTokenBalance(Token.usdc(chain).address);
+    return balance ?? 0;
   }
 
   Future<double> getGasBalance(EthereumChain chain) async {
