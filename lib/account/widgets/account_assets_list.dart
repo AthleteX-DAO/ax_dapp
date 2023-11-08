@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class WalletAssetsList extends StatelessWidget {
-  WalletAssetsList({super.key, required BoxConstraints boxConstraints})
+  const WalletAssetsList({super.key, required BoxConstraints boxConstraints})
       : constraints = boxConstraints;
 
-  BoxConstraints constraints;
+  final BoxConstraints constraints;
 
   @override
   Widget build(BuildContext context) {
