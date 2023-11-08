@@ -83,18 +83,18 @@ class Account extends StatelessWidget {
                           if (state.accountViewStatus ==
                                   AccountViewStatus.initial ||
                               state.accountViewStatus ==
-                                  AccountViewStatus.deposit ||
+                                  AccountViewStatus.details ||
                               state.accountViewStatus == AccountViewStatus.none)
-                            AccountDetails(),
+                            const AccountDetails(),
                           if (state.accountViewStatus ==
                               AccountViewStatus.buySell)
-                            AccountBuyAndSell(),
+                            const AccountBuyAndSell(),
                           if (state.accountViewStatus ==
                               AccountViewStatus.deposit)
-                            AccountDepositView(),
+                            const AccountDepositView(),
                           if (state.accountViewStatus ==
                               AccountViewStatus.withdraw)
-                            AccountWithdrawView(),
+                            const AccountWithdrawView(),
                         ],
                       );
                     },
