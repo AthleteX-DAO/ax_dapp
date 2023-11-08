@@ -5,16 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AccountBuyAndSell extends StatefulWidget {
-  AccountBuyAndSell({
+  const AccountBuyAndSell({
     super.key,
-    required BoxConstraints boxConstraints,
-    required this.width,
-    required this.height,
-  }) : constraints = boxConstraints;
-
-  BoxConstraints constraints;
-  double height;
-  double width;
+  });
 
   @override
   State<AccountBuyAndSell> createState() => _AccountBuyAndSellState();
@@ -48,23 +41,26 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        IconButton(
-          alignment: Alignment.centerLeft,
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-            size: 30,
-          ),
-          onPressed: () => context.read<AccountBloc>().add(
-                const AccountDetailsViewRequested(),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            IconButton(
+              alignment: Alignment.centerLeft,
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 30,
               ),
-        ),
-      ],
+              onPressed: () => context.read<AccountBloc>().add(
+                    const AccountDetailsViewRequested(),
+                  ),
+            ),
+          ],
+        );
+      },
     );
-    ;
   }
 }
