@@ -1,9 +1,9 @@
-import 'dart:html';
 import 'dart:ui' as ui;
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/account/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_html/html.dart';
 
 class AccountBuyAndSell extends StatefulWidget {
   const AccountBuyAndSell({

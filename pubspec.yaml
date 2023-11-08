@@ -66,6 +66,7 @@ dependencies:
     path: packages/tokens_repository
   tracking_repository:
     path: packages/tracking_repository
+  universal_html: ^2.2.4
   url_launcher: ^6.1.5
   url_launcher_web: ^2.0.12
   use_cases:
