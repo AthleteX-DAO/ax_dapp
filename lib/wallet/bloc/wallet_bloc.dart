@@ -150,6 +150,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         password: password,
       );
       final walletAddress = await _walletRepository.createWallet();
+      await _fireStoreCredentialsRepository.storeCredentials(email);
       emit(
         state.copyWith(
           walletAddress: walletAddress,
@@ -171,18 +172,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           walletViewStatus: WalletViewStatus.signup,
         ),
       );
-    }
-
-    try {
-      await _fireStoreCredentialsRepository.storeCredentials(email);
-    } catch (e) {
-      emit(
-        state.copyWith(
-          failure: WalletFailure.fromUnsuccessfulOperation(),
-          walletViewStatus: WalletViewStatus.signup,
-        ),
-      );
-      debugPrint('ERROR: $e');
     }
   }
 

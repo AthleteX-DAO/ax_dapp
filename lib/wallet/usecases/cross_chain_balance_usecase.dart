@@ -24,7 +24,7 @@ class CrossChainBalanceUseCase {
       case EthereumChain.polygonMainnet:
         final balance =
             await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 123.000;
+        usdcBalance = balance ?? 0;
         break;
       case EthereumChain.goerliTestNet:
         final balance =
@@ -34,12 +34,12 @@ class CrossChainBalanceUseCase {
       case EthereumChain.sxMainnet:
         final balance =
             await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 144.00;
+        usdcBalance = balance ?? 0;
         break;
       case EthereumChain.sxTestnet:
         final balance =
             await _walletRepository.getTokenBalance(Token.usdc(chain).address);
-        usdcBalance = balance ?? 0.00;
+        usdcBalance = balance ?? 0;
         break;
       case EthereumChain.optimism:
         final balance =
