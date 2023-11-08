@@ -1,7 +1,5 @@
 import 'package:ax_dapp/util/util.dart';
-import 'package:ax_dapp/wallet/view/signup.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
-import 'package:ax_dapp/wallet/view/account.dart';
 import 'package:ax_dapp/wallet/widgets/terms_and_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
