@@ -1,3 +1,4 @@
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/view.dart';
 import 'package:ax_dapp/app/widgets/bottom_navigation_bar/bloc/bottom_navigation_bar_bloc.dart';
@@ -49,6 +50,12 @@ class App extends StatelessWidget {
             crossChainBalanceUseCase: CrossChainBalanceUseCase(
               walletRepository: context.read<WalletRepository>(),
             ),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => AccountBloc(
+            tokensRepository: context.read<TokensRepository>(),
+            walletRepository: context.read<WalletRepository>(),
           ),
         ),
         BlocProvider(
