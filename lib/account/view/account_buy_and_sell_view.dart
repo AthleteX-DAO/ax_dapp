@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/account/widgets/widgets.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart';
@@ -45,6 +46,9 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
     const edge = 40.0;
+    var wid = 400.0;
+
+    const edge2 = 60.0;
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
@@ -52,15 +56,14 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const WalletAddress(),
                 IconButton(
                   alignment: Alignment.centerLeft,
                   icon: const Icon(
                     Icons.arrow_back,
                     color: Colors.white,
-                    size: 30,
+                    size: 20,
                   ),
                   onPressed: () => context.read<AccountBloc>().add(
                         const AccountDetailsViewRequested(),
@@ -68,6 +71,58 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
                 ),
               ],
             ),
+
+            SizedBox(
+              width: wid - edge2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: _height * 0.18,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Your Wallet Details',
+                              style: textStyle(
+                                Colors.grey[600]!,
+                                13,
+                                isBold: false,
+                                isUline: false,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            WalletBalance(),
+                          ],
+                        ),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            WalletAddress(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Divider
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              width: constraints.maxWidth - edge,
+              child: const Divider(
+                color: Colors.grey,
+              ),
+            ),
+
             SizedBox(
               width: constraints.maxWidth - edge,
               height: _height * 0.5,
