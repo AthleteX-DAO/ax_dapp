@@ -102,7 +102,6 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.Athlete)
                         AthleteMarkets(
-                          filteredAthletes: filteredAthletes,
                           boxConstraints: constraints,
                         ),
                       if (state.status == BlocStatus.success &&
