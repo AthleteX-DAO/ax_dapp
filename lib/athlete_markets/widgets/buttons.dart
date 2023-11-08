@@ -12,7 +12,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dar
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
-import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
+import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/util.dart';

@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
-import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
+import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ethereum_api/src/tokens/models/contract.dart';
 import 'package:shared/shared.dart';
