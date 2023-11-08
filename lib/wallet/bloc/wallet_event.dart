@@ -94,6 +94,17 @@ class FetchWalletBalanceRequested extends WalletEvent {
   const FetchWalletBalanceRequested();
 }
 
+class SelectedWalletAssetsChanged extends WalletEvent {
+  const SelectedWalletAssetsChanged({
+    required this.selectedAssets,
+  });
+
+  final WalletAssets selectedAssets;
+
+  @override
+  List<Object?> get props => [selectedAssets];
+}
+
 class GetGasPriceRequested extends WalletEvent {
   const GetGasPriceRequested();
 }

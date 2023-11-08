@@ -10,6 +10,7 @@ class WalletState extends Equatable {
     this.gasPrice = 0,
     this.failure = WalletFailure.none,
     this.walletViewStatus = WalletViewStatus.initial,
+    this.selectedAssets = WalletAssets.all,
     this.errorMessage,
     this.email = '',
     this.password = '',
@@ -26,6 +27,7 @@ class WalletState extends Equatable {
         );
 
   final WalletStatus walletStatus;
+  final WalletAssets selectedAssets;
   final String walletAddress;
   final double walletBalance;
   final WalletViewStatus walletViewStatus;
@@ -42,6 +44,7 @@ class WalletState extends Equatable {
         walletStatus,
         walletAddress,
         walletViewStatus,
+        selectedAssets,
         walletBalance,
         chain,
         gasPrice,
@@ -55,6 +58,7 @@ class WalletState extends Equatable {
   WalletState copyWith({
     WalletStatus? walletStatus,
     WalletViewStatus? walletViewStatus,
+    WalletAssets? selectedAssets,
     String? walletAddress,
     double? walletBalance,
     EthereumChain? chain,
@@ -68,6 +72,7 @@ class WalletState extends Equatable {
     return WalletState(
       walletStatus: walletStatus ?? this.walletStatus,
       walletViewStatus: walletViewStatus ?? this.walletViewStatus,
+      selectedAssets: selectedAssets ?? this.selectedAssets,
       walletBalance: walletBalance ?? this.walletBalance,
       walletAddress: walletAddress ?? this.walletAddress,
       chain: chain ?? this.chain,

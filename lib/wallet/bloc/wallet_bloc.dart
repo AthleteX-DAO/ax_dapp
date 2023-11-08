@@ -47,6 +47,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<WatchWalletChangesStarted>(_onWatchWalletChangesStarted);
     on<WatchAxtChangesStarted>(_onWatchAxtChangesStarted);
     on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
+    on<SelectedWalletAssetsChanged>(_onSelectedWalletAssetsChanged);
     on<GetGasPriceRequested>(_onGetGasPriceRequested);
     on<WalletFailed>(_onWalletFailed);
     on<AuthFailed>(_onAuthFailed);
@@ -310,6 +311,21 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         await _walletRepository.getTokenBalance(currentAxtAddress);
     final axData = AxData.fromAxMarketData(axMarketData);
     emit(state.copyWith(axData: axData.copyWith(balance: axBalance)));
+  }
+
+  Future<void> _onSelectedWalletAssetsChanged(
+    SelectedWalletAssetsChanged event,
+    Emitter<WalletState> emit,
+  ) async {
+    try {
+      emit(
+        state.copyWith(
+          selectedAssets: event.selectedAssets,
+        ),
+      );
+    } catch (e) {
+      debugPrint('An error occured $e');
+    }
   }
 
   // IMO this should be moved to a repository or something that does this consistently
