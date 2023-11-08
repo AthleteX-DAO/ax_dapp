@@ -22,11 +22,12 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
   void initState() {
     super.initState();
     _iframeElement
-      ..height = '6200'
-      ..width = '4800'
+      ..height = '620'
+      ..width = '480'
       ..src =
           'https://app.kado.money/?apiKey=137cd949-ab0f-429f-93b8-187ef3a93862';
-    _iframeElement.style.border = 'none';
+    _iframeElement.style.borderRadius = '14px';
+    _iframeElement.style.borderColor = 'rgba(254, 197, 0, 1)';
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
@@ -42,33 +43,29 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
 
   @override
   Widget build(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-    var wid = 400.0;
     const edge = 40.0;
-    const edge2 = 60.0;
-    if (_width < 405) wid = _width;
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            IconButton(
-              alignment: Alignment.centerLeft,
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-                size: 30,
-              ),
-              onPressed: () => context.read<AccountBloc>().add(
-                    const AccountDetailsViewRequested(),
-                  ),
-            ),
-            const Row(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                WalletAddress(),
+                const WalletAddress(),
+                IconButton(
+                  alignment: Alignment.centerLeft,
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () => context.read<AccountBloc>().add(
+                        const AccountDetailsViewRequested(),
+                      ),
+                ),
               ],
             ),
             SizedBox(
