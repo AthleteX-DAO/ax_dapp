@@ -1,4 +1,5 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/account/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,53 +9,76 @@ class AccountWithdrawView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const edge = 40;
-
+    const edge = 40.0;
+    var wid = 400.0;
+    const edge2 = 60.0;
+    final _height = MediaQuery.of(context).size.height;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  alignment: Alignment.centerLeft,
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  onPressed: () => context.read<AccountBloc>().add(
+                        const AccountDetailsViewRequested(),
+                      ),
+                ),
+              ],
+            ),
+
             SizedBox(
-              height: 45,
+              width: wid - edge2,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    alignment: Alignment.centerLeft,
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                      size: 15,
-                    ),
-                    onPressed: () => context.read<AccountBloc>().add(
-                          const AccountDetailsViewRequested(),
+                  SizedBox(
+                    height: _height * 0.18,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Your Wallet Details',
+                              style: textStyle(
+                                Colors.grey[600]!,
+                                13,
+                                isBold: false,
+                                isUline: false,
+                              ),
+                            ),
+                          ],
                         ),
-                  ),
-                  Text(
-                    'Select a Token',
-                    style: textStyle(
-                      Colors.white,
-                      16,
-                      isBold: true,
-                      isUline: true,
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            WalletBalance(),
+                          ],
+                        ),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            WalletAddress(),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 65,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    children: [],
-                  ),
-                ],
-              ),
-            ),
+
+            // Divider
             Container(
               margin: const EdgeInsets.only(top: 20),
               width: constraints.maxWidth - edge,
