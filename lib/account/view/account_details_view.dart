@@ -5,8 +5,8 @@ import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class WalletDetails extends StatelessWidget {
-  WalletDetails({
+class AccountDetails extends StatelessWidget {
+  AccountDetails({
     super.key,
     required BoxConstraints boxConstraints,
     required this.width,

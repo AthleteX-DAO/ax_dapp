@@ -4,8 +4,8 @@ import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BuyAndSell extends StatefulWidget {
-  BuyAndSell({
+class AccountBuyAndSell extends StatefulWidget {
+  AccountBuyAndSell({
     super.key,
     required BoxConstraints boxConstraints,
     required this.width,
@@ -17,10 +17,10 @@ class BuyAndSell extends StatefulWidget {
   double width;
 
   @override
-  State<BuyAndSell> createState() => _BuyAndSellState();
+  State<AccountBuyAndSell> createState() => _AccountBuyAndSellState();
 }
 
-class _BuyAndSellState extends State<BuyAndSell> {
+class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
   late Widget kadoMoney;
   final _iframeElement = IFrameElement();
 
