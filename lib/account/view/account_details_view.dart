@@ -51,48 +51,45 @@ class AccountDetails extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             const WalletBalance(),
-                            SizedBox(
-                              height: 65,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                      right: 5,
-                                      top: 5,
-                                    ),
-                                    width: 75,
-                                    height: 25,
-                                    decoration: boxDecoration(
-                                      Colors.transparent,
-                                      100,
-                                      0,
+                            TextButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                  Colors.transparent,
+                                ),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(100),
+                                    side:
+                                        BorderSide(color: Colors.red[900]!),
+                                  ),
+                                ),
+                                minimumSize: MaterialStateProperty.all(
+                                  const Size(
+                                    75,
+                                    35,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                context.read<WalletBloc>().add(
+                                      const DisconnectWalletRequested(),
+                                    );
+                                Navigator.pop(context);
+                              },
+                              child: FittedBox(
+                                child: SizedBox(
+                                  child: Text(
+                                    'Disconnect',
+                                    style: textStyle(
                                       Colors.red[900]!,
-                                    ),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        context.read<WalletBloc>().add(
-                                              const DisconnectWalletRequested(),
-                                            );
-                                        Navigator.pop(context);
-                                      },
-                                      child: FittedBox(
-                                        child: SizedBox(
-                                          child: Text(
-                                            'Disconnect',
-                                            style: textStyle(
-                                              Colors.red[900]!,
-                                              10,
-                                              isBold: true,
-                                              isUline: false,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                      10,
+                                      isBold: true,
+                                      isUline: false,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           ],
