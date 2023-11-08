@@ -1,8 +1,7 @@
-import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/usecases/explorer_usecase.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,14 +20,15 @@ class WalletActionButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        /// I don't know what to do with these yet
         IconButton(
           icon: const Icon(
             Icons.arrow_downward_outlined,
           ),
           tooltip: 'Withdraw your crypto',
           onPressed: () {
-            //Opens a new view for withdrawls
+            context.read<AccountBloc>().add(
+                  const AccountWithdrawViewRequested(),
+                );
           },
         ),
         IconButton(
@@ -36,13 +36,19 @@ class WalletActionButtons extends StatelessWidget {
           tooltip: 'Deposit your crypto ',
           onPressed: () {
             //Opens a new view for deposits
+            context.read<AccountBloc>().add(
+                  const AccountDepositViewRequested(),
+                );
           },
         ),
         IconButton(
           icon: const Icon(Icons.payments_sharp),
           tooltip: 'Buy or Sell your USDC',
           onPressed: () {
-            //Opens a new view for deposits
+            //Opens a new view for Buying and selling
+            context.read<AccountBloc>().add(
+                  const AccountBuyAndSellViewRequested(),
+                );
           },
         ),
         IconButton(

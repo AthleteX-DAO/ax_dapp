@@ -1,4 +1,4 @@
-import 'package:ax_dapp/wallet/widgets/wallet_assets_card.dart';
+import 'package:ax_dapp/account/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tokens_repository/tokens_repository.dart';

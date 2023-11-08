@@ -1,9 +1,20 @@
 import 'dart:html';
 import 'dart:ui' as ui;
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BuyAndSell extends StatefulWidget {
-  const BuyAndSell({super.key});
+  BuyAndSell({
+    super.key,
+    required BoxConstraints boxConstraints,
+    required this.width,
+    required this.height,
+  }) : constraints = boxConstraints;
+
+  BoxConstraints constraints;
+  double height;
+  double width;
 
   @override
   State<BuyAndSell> createState() => _BuyAndSellState();
@@ -37,8 +48,23 @@ class _BuyAndSellState extends State<BuyAndSell> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: kadoMoney,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        IconButton(
+          alignment: Alignment.centerLeft,
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () => context.read<AccountBloc>().add(
+                const AccountDetailsViewRequested(),
+              ),
+        ),
+      ],
     );
+    ;
   }
 }
