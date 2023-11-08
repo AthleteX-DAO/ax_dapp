@@ -11,34 +11,6 @@ class CryptoMarkets extends StatelessWidget {
   final List<String> cryptoMarkets;
   final BoxConstraints constraints;
 
-  Widget cryptoDesktopMarkets() {
-    return SizedBox(
-      height: constraints.maxHeight * 0.8 - 120,
-      child: ListView.builder(
-        padding: const EdgeInsets.only(top: 10),
-        physics: const BouncingScrollPhysics(),
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          /// CryptoDesktopMarketsCard()
-        },
-      ),
-    );
-  }
-
-  Widget cryptoMobileMarkets() {
-    return SizedBox(
-      height: constraints.maxHeight * 0.8 - 120,
-      child: ListView.builder(
-        padding: const EdgeInsets.only(top: 10),
-        physics: const BouncingScrollPhysics(),
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          /// CryptoMobileMarketsCard()
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
