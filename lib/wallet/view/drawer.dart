@@ -12,7 +12,7 @@ class DrawerView extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Drawer(
       width: width < 769 ? width : width / 3,
-      backgroundColor: Colors.black.withOpacity(0.10),
+      backgroundColor: const Color.fromRGBO(22, 22, 22, 1),
       child: BlocBuilder<WalletBloc, WalletState>(
         builder: (BuildContext context, state) {
           return Column(
