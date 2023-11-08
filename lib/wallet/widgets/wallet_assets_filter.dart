@@ -29,6 +29,7 @@ class _WalletsAssetsFilterState extends State<WalletAssetsFilter> {
         bottom: 10,
       ),
       height: 25,
+      width: widget.constraints.maxWidth,
       child: Row(
         children: [
           Text(
