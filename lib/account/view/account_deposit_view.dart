@@ -7,22 +7,26 @@ class AccountDepositView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        IconButton(
-          alignment: Alignment.centerLeft,
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-            size: 30,
-          ),
-          onPressed: () => context.read<AccountBloc>().add(
-                const AccountDetailsViewRequested(),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            IconButton(
+              alignment: Alignment.centerLeft,
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 30,
               ),
-        ),
-      ],
+              onPressed: () => context.read<AccountBloc>().add(
+                    const AccountDetailsViewRequested(),
+                  ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
