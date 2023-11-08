@@ -55,6 +55,7 @@ dependencies:
   postgres: ^2.4.5
   property_change_notifier: ^0.3.0
   provider: ^6.0.3
+  qr_flutter: ^4.1.0
   retrofit: ^3.0.1+1
   share_plus: ^4.0.10
   shared:
