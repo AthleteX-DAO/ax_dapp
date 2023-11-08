@@ -42,10 +42,17 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+    var wid = 400.0;
+    const edge = 40.0;
+    const edge2 = 60.0;
+    if (_width < 405) wid = _width;
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
           // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             IconButton(
@@ -64,9 +71,11 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
                 WalletAddress(),
               ],
             ),
-            Center(
+            SizedBox(
+              width: constraints.maxWidth - edge,
+              height: _height * 0.5,
               child: kadoMoney,
-            )
+            ),
           ],
         );
       },
