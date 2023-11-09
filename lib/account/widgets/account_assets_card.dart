@@ -41,7 +41,6 @@ class AccountAssetCard extends StatelessWidget {
             ),
             SizedBox(
               height: 45,
-              // ticker/name column "AX/AthleteX"
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -74,14 +73,31 @@ class AccountAssetCard extends StatelessWidget {
                 ],
               ),
             ),
+            const Spacer(),
             FutureBuilder<double>(
               future:
                   context.read<CrossChainBalanceUseCase>().tokenBalance(token),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return const Text('0');
+                  return Text(
+                    '0',
+                    style: textStyle(
+                      Colors.white,
+                      16,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  );
                 } else if (snapshot.hasData) {
-                  return Text('${snapshot.data}');
+                  return Text(
+                    '${snapshot.data}',
+                    style: textStyle(
+                      Colors.white,
+                      16,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  );
                 } else {
                   return const Loader();
                 }
