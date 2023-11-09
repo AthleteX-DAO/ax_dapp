@@ -3,6 +3,7 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/trade/widgets/widgets.dart';
 import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,8 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final tokensRepository = context.read<TokensRepository>();
+    final currentTokens =
+        context.select((WalletBloc bloc) => bloc.state.tokens);
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     final isWeb =
@@ -76,7 +78,7 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                           elevation: 1,
                           value: token,
                           items: [
-                            for (final token in tokensRepository.currentTokens)
+                            for (final token in currentTokens)
                               DropdownMenuItem(
                                 child: Row(
                                   mainAxisAlignment:
