@@ -13,11 +13,8 @@ class Account extends StatelessWidget {
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
-    var textSize = 16.0;
-
     var wid = 400.0;
     const edge = 40.0;
-    const edge2 = 60.0;
     if (_width < 405) wid = _width;
 
     return LayoutBuilder(
@@ -32,7 +29,6 @@ class Account extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // title
                 Container(
                   margin: constraints.maxWidth < 665
                       ? const EdgeInsets.symmetric(horizontal: 10)
@@ -62,7 +58,6 @@ class Account extends StatelessWidget {
                     ],
                   ),
                 ),
-                // inner box
                 Container(
                   margin: constraints.maxWidth < 665
                       ? const EdgeInsets.symmetric(horizontal: 10)
