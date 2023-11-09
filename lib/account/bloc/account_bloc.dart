@@ -1,5 +1,7 @@
 // ignore_for_file: unused_field
 
+import 'dart:async';
+
 import 'package:ax_dapp/account/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
@@ -20,6 +22,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
             chain: walletRepository.currentChain,
             walletAddress: walletRepository.currentWallet.address,
             selectedToken: tokensRepository.currentTokens.usdc,
+            tokenAddress: tokensRepository.currentTokens.usdc.address,
           ),
         ) {
     on<AccountDetailsViewRequested>(_onAccountDetailsViewRequested);
@@ -27,8 +30,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<AccountDepositViewRequested>(_onAccountDepositViewRequested);
     on<AccountBuyAndSellViewRequested>(_onAccountBuyAndSellViewRequested);
     on<SelectedAccountAssetsChanged>(_onSelectedAccountAssetsChanged);
-
     on<SwitchTokenRequested>(_onSwitchTokenRequested);
+    on<UpdateBalanceRequested>(_onUpdateBalanceRequested);
   }
 
   // TODO(kevin): use the repositories when needed
@@ -75,9 +78,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     SwitchTokenRequested event,
     Emitter<AccountState> emit,
   ) async {
+    final selectedTokenAddress = event.tokenAddress;
+    final balance =
+        await _walletRepository.getTokenBalance(selectedTokenAddress);
     emit(
       state.copyWith(
-        selectedToken: event.token,
+        tokenAddress: selectedTokenAddress,
+        tokenBalance: balance,
       ),
     );
   }
@@ -95,5 +102,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     } catch (e) {
       debugPrint('An error occured $e');
     }
+  }
+
+  Future<void> _onUpdateBalanceRequested(
+    UpdateBalanceRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    final tokenAddress = state.tokenAddress;
+    final balance = await _walletRepository.getTokenBalance(tokenAddress);
+    emit(state.copyWith(tokenBalance: balance));
   }
 }

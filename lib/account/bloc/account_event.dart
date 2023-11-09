@@ -24,10 +24,19 @@ class AccountBuyAndSellViewRequested extends AccountEvent {
 }
 
 class SwitchTokenRequested extends AccountEvent {
-  const SwitchTokenRequested(this.token);
-  final Token? token;
+  const SwitchTokenRequested({required this.tokenAddress});
+  final String tokenAddress;
+
   @override
-  List<Object?> get props => [token];
+  List<Object?> get props => [tokenAddress];
+}
+
+class UpdateBalanceRequested extends AccountEvent {
+  const UpdateBalanceRequested({required this.tokenAddress});
+  final String tokenAddress;
+
+  @override
+  List<Object?> get props => [tokenAddress];
 }
 
 class SelectedAccountAssetsChanged extends AccountEvent {
