@@ -59,10 +59,8 @@ class AccountDetails extends StatelessWidget {
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(100),
-                                    side:
-                                        BorderSide(color: Colors.red[900]!),
+                                    borderRadius: BorderRadius.circular(100),
+                                    side: BorderSide(color: Colors.red[900]!),
                                   ),
                                 ),
                                 minimumSize: MaterialStateProperty.all(
@@ -122,6 +120,7 @@ class AccountDetails extends StatelessWidget {
             // Assets filter -- remember to refresh the state
             WalletAssetsFilter(
               boxConstraints: BoxConstraints(
+                //TODO: Remove box constraints & replace with LayoutBuilder
                 maxHeight: _height * 0.8,
                 maxWidth: constraints.maxWidth - edge,
               ),
@@ -130,6 +129,7 @@ class AccountDetails extends StatelessWidget {
             // Your Wallet Assets
             WalletAssetsList(
               boxConstraints: BoxConstraints(
+                //TODO: Remove box constraints & replace with LayoutBuilder
                 maxHeight: _height * 0.8,
                 maxWidth: constraints.maxWidth - edge,
               ),
