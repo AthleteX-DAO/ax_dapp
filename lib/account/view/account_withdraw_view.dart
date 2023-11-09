@@ -12,7 +12,7 @@ class AccountWithdrawView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const edge = 40.0;
-    var wid = 400.0;
+    const wid = 400.0;
     const edge2 = 60.0;
     final _height = MediaQuery.of(context).size.height;
     return LayoutBuilder(
@@ -22,7 +22,6 @@ class AccountWithdrawView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
                   alignment: Alignment.centerLeft,
@@ -92,6 +91,7 @@ class AccountWithdrawView extends StatelessWidget {
             // You need: recipeint address, and approve button
 
             const TokenContainerWidget(),
+            const AccountApproveWithdrawButton(),
           ],
         );
       },

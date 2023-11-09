@@ -1,4 +1,5 @@
 export 'account_action_buttons.dart';
+export 'account_approve_withdraw_button.dart';
 export 'account_assets_card.dart';
 export 'account_assets_filter.dart';
 export 'account_assets_list.dart';
