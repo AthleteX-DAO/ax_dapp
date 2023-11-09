@@ -86,6 +86,8 @@ class AccountWithdrawView extends StatelessWidget {
                 color: Colors.grey,
               ),
             ),
+
+            // You need: recipeint address, and approve button
           ],
         );
       },
