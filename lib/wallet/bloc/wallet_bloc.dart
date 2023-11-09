@@ -140,6 +140,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     if (chain == null) return;
     try {
       await _walletRepository.switchChain(chain);
+      emit(state.copyWith(chain: event.chain));
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
     }

@@ -112,7 +112,7 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                                       Icons.keyboard_arrow_down,
                                       color: Colors.white,
                                       size: 25,
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),

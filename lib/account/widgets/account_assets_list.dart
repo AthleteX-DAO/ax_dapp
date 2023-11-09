@@ -76,7 +76,7 @@ class WalletAssetsList extends StatelessWidget {
               }
               return Center(
                 child: Text(
-                  'Select an asset',
+                  'Coming Soon!',
                   style: textStyle(
                     Colors.white,
                     20,
