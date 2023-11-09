@@ -29,6 +29,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         super(WalletState.fromWallet(wallet: walletRepository.currentWallet)) {
     on<ConnectWalletRequested>(_onConnectWalletRequested);
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
+    on<SwitchChainRequested>(_onSwitchChainRequested);
     on<LoginSignUpViewRequested>(_onLoginSignUpViewRequested);
     on<SignUpViewRequested>(_onSignUpViewRequested);
     on<LoginViewRequested>(_onLoginViewRequested);
@@ -129,6 +130,19 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           walletViewStatus: WalletViewStatus.login,
         ),
       );
+    }
+  }
+
+  FutureOr<void> _onSwitchChainRequested(
+    SwitchChainRequested event,
+    Emitter<WalletState> emit,
+  ) async {
+    final chain = event.chain;
+    if (chain == null) return;
+    try {
+      await _walletRepository.switchChain(chain);
+    } on WalletFailure catch (failure) {
+      add(WalletFailed(failure));
     }
   }
 
