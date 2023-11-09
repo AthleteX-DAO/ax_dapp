@@ -1,5 +1,6 @@
+// ignore_for_file: unused_field
+
 import 'package:ax_dapp/account/models/models.dart';
-import 'package:ax_dapp/wallet/view/account.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -19,13 +20,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
             walletAddress: walletRepository.currentWallet.address,
           ),
         ) {
-    // Account Views
     on<AccountDetailsViewRequested>(_onAccountDetailsViewRequested);
     on<AccountWithdrawViewRequested>(_onAccountWithdrawViewRequested);
     on<AccountDepositViewRequested>(_onAccountDepositViewRequested);
     on<AccountBuyAndSellViewRequested>(_onAccountBuyAndSellViewRequested);
   }
 
+  // TODO(kevin): use the repositories when needed
   final TokensRepository _tokensRepository;
   final WalletRepository _walletRepository;
 
