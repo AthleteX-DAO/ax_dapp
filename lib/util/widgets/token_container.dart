@@ -86,7 +86,6 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text(token.name),
                                 const SizedBox(width: 10),
                                 Container(
                                   width: 30,
