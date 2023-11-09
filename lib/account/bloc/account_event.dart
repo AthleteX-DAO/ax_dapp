@@ -22,3 +22,10 @@ class AccountDepositViewRequested extends AccountEvent {
 class AccountBuyAndSellViewRequested extends AccountEvent {
   const AccountBuyAndSellViewRequested();
 }
+
+class SwitchTokenRequested extends AccountEvent {
+  const SwitchTokenRequested(this.token);
+  final Token? token;
+  @override
+  List<Object?> get props => [token];
+}

@@ -18,6 +18,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
           AccountState(
             chain: walletRepository.currentChain,
             walletAddress: walletRepository.currentWallet.address,
+            selectedToken: tokensRepository.currentTokens[1],
           ),
         ) {
     on<AccountDetailsViewRequested>(_onAccountDetailsViewRequested);
