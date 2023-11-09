@@ -106,12 +106,12 @@ class AccountDepositView extends StatelessWidget {
                                 children: <Widget>[
                                   Icon(
                                     Icons.account_balance_wallet,
-                                    color: primaryOrangeColor,
+                                    color: lightOrangeColor,
                                   ),
                                   Text(
                                     formattedWalletAddress,
                                     style: textStyle(
-                                      primaryOrangeColor,
+                                      lightOrangeColor,
                                       20,
                                       isBold: false,
                                       isUline: false,
@@ -119,7 +119,7 @@ class AccountDepositView extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Row(
@@ -158,7 +158,7 @@ class AccountDepositView extends StatelessWidget {
               height: _height * 0.5,
               child: QrImageView(
                 data: walletAddress,
-                backgroundColor: primaryOrangeColor,
+                backgroundColor: lightOrangeColor,
               ),
             ),
           ],
