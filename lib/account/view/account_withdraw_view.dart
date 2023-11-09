@@ -1,6 +1,7 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/account/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -88,6 +89,7 @@ class AccountWithdrawView extends StatelessWidget {
             ),
 
             // You need: recipeint address, and approve button
+            const WalletChain(),
           ],
         );
       },
