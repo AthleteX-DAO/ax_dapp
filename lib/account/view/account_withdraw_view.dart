@@ -14,6 +14,7 @@ class AccountWithdrawView extends StatelessWidget {
     const edge = 40.0;
     const wid = 400.0;
     const edge2 = 60.0;
+    const spacing = 25.0;
     final _height = MediaQuery.of(context).size.height;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -36,7 +37,6 @@ class AccountWithdrawView extends StatelessWidget {
                 ),
               ],
             ),
-
             SizedBox(
               width: wid - edge2,
               child: Row(
@@ -78,8 +78,6 @@ class AccountWithdrawView extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Divider
             Container(
               margin: const EdgeInsets.only(top: 20),
               width: constraints.maxWidth - edge,
@@ -87,10 +85,10 @@ class AccountWithdrawView extends StatelessWidget {
                 color: Colors.grey,
               ),
             ),
-
-            // You need: recipeint address, and approve button
-
             const TokenContainerWidget(),
+            const SizedBox(height: spacing),
+            const AccountRecipentAddressInput(),
+            const SizedBox(height: spacing),
             const AccountApproveWithdrawButton(),
           ],
         );
