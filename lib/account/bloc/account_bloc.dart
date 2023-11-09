@@ -18,13 +18,15 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
           AccountState(
             chain: walletRepository.currentChain,
             walletAddress: walletRepository.currentWallet.address,
-            selectedToken: tokensRepository.currentTokens[1],
+            selectedToken: tokensRepository.currentTokens.usdc,
           ),
         ) {
     on<AccountDetailsViewRequested>(_onAccountDetailsViewRequested);
     on<AccountWithdrawViewRequested>(_onAccountWithdrawViewRequested);
     on<AccountDepositViewRequested>(_onAccountDepositViewRequested);
     on<AccountBuyAndSellViewRequested>(_onAccountBuyAndSellViewRequested);
+
+    on<SwitchTokenRequested>(_onSwitchTokenRequested);
   }
 
   // TODO(kevin): use the repositories when needed
@@ -64,6 +66,17 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   ) async {
     emit(
       state.copyWith(accountViewStatus: AccountViewStatus.buySell),
+    );
+  }
+
+  Future<void> _onSwitchTokenRequested(
+    SwitchTokenRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        selectedToken: event.token,
+      ),
     );
   }
 }
