@@ -3,12 +3,13 @@ part of 'account_bloc.dart';
 class AccountState extends Equatable {
   const AccountState({
     required this.chain,
-    required this.selectedToken,
     required this.walletAddress,
-    required this.tokenAddress,
+    this.selectedToken = Token.empty,
+    this.tokenAddress = kEmptyAddress,
     this.selectedAssets = AccountAssets.all,
     this.accountViewStatus = AccountViewStatus.initial,
     this.tokenBalance = 0,
+    this.tokens = const [],
   });
 
   final String walletAddress;
@@ -18,6 +19,7 @@ class AccountState extends Equatable {
   final EthereumChain chain;
   final AccountViewStatus accountViewStatus;
   final double tokenBalance;
+  final List<Token> tokens;
 
   @override
   List<Object?> get props => [
@@ -28,6 +30,7 @@ class AccountState extends Equatable {
         chain,
         tokenBalance,
         tokenAddress,
+        tokens,
       ];
 
   AccountState copyWith({
@@ -38,6 +41,7 @@ class AccountState extends Equatable {
     AccountViewStatus? accountViewStatus,
     double? tokenBalance,
     String? tokenAddress,
+    List<Token>? tokens,
   }) {
     return AccountState(
       chain: chain ?? this.chain,
@@ -47,6 +51,7 @@ class AccountState extends Equatable {
       walletAddress: walletAddress ?? this.walletAddress,
       tokenBalance: tokenBalance ?? this.tokenBalance,
       tokenAddress: tokenAddress ?? this.tokenAddress,
+      tokens: tokens ?? this.tokens,
     );
   }
 }

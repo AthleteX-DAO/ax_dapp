@@ -56,6 +56,7 @@ class App extends StatelessWidget {
           create: (_) => AccountBloc(
             tokensRepository: context.read<TokensRepository>(),
             walletRepository: context.read<WalletRepository>(),
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
           ),
         ),
         BlocProvider(
