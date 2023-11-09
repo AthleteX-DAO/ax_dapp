@@ -1,26 +1,26 @@
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/account/models/models.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
-class WalletAssetsFilter extends StatefulWidget {
-  const WalletAssetsFilter({
+class AccountAssetsFilter extends StatefulWidget {
+  const AccountAssetsFilter({
     super.key,
     required BoxConstraints boxConstraints,
   }) : constraints = boxConstraints;
 
   final BoxConstraints constraints;
   @override
-  State<WalletAssetsFilter> createState() => _WalletsAssetsFilterState();
+  State<AccountAssetsFilter> createState() => _WalletsAssetsFilterState();
 }
 
-class _WalletsAssetsFilterState extends State<WalletAssetsFilter> {
+class _WalletsAssetsFilterState extends State<AccountAssetsFilter> {
   @override
   Container build(BuildContext context) {
-    final bloc = context.read<WalletBloc>();
+    final bloc = context.read<AccountBloc>();
     const assetsFilterTxSz = 14.0;
-    var _selectedWalletAsset = context.read<WalletBloc>().state.selectedAssets;
+    var _selectedWalletAsset = context.read<AccountBloc>().state.selectedAssets;
 
     return Container(
       margin: const EdgeInsets.only(
@@ -53,19 +53,19 @@ class _WalletsAssetsFilterState extends State<WalletAssetsFilter> {
           TextButton(
             onPressed: () {
               setState(() {
-                _selectedWalletAsset = WalletAssets.all;
+                _selectedWalletAsset = AccountAssets.all;
               });
 
               bloc.add(
-                const SelectedWalletAssetsChanged(
-                  selectedAssets: WalletAssets.all,
+                const SelectedAccountAssetsChanged(
+                  selectedAssets: AccountAssets.all,
                 ),
               );
             },
             child: Text(
               'All',
               style: textSwapState(
-                condition: _selectedWalletAsset == WalletAssets.all,
+                condition: _selectedWalletAsset == AccountAssets.all,
                 tabNotSelected: textStyle(
                   Colors.white,
                   18,
@@ -84,19 +84,19 @@ class _WalletsAssetsFilterState extends State<WalletAssetsFilter> {
           TextButton(
             onPressed: () {
               setState(() {
-                _selectedWalletAsset = WalletAssets.Crypto;
+                _selectedWalletAsset = AccountAssets.Crypto;
               });
 
               bloc.add(
-                const SelectedWalletAssetsChanged(
-                  selectedAssets: WalletAssets.Crypto,
+                const SelectedAccountAssetsChanged(
+                  selectedAssets: AccountAssets.Crypto,
                 ),
               );
             },
             child: Text(
               'Crypto',
               style: textSwapState(
-                condition: _selectedWalletAsset == WalletAssets.Crypto,
+                condition: _selectedWalletAsset == AccountAssets.Crypto,
                 tabNotSelected: textStyle(
                   Colors.white,
                   assetsFilterTxSz,
@@ -115,19 +115,19 @@ class _WalletsAssetsFilterState extends State<WalletAssetsFilter> {
           TextButton(
             onPressed: () {
               setState(() {
-                _selectedWalletAsset = WalletAssets.APTs;
+                _selectedWalletAsset = AccountAssets.APTs;
               });
 
               bloc.add(
-                const SelectedWalletAssetsChanged(
-                  selectedAssets: WalletAssets.APTs,
+                const SelectedAccountAssetsChanged(
+                  selectedAssets: AccountAssets.APTs,
                 ),
               );
             },
             child: Text(
               'APTs',
               style: textSwapState(
-                condition: _selectedWalletAsset == WalletAssets.APTs,
+                condition: _selectedWalletAsset == AccountAssets.APTs,
                 tabNotSelected: textStyle(
                   Colors.white,
                   assetsFilterTxSz,
@@ -146,19 +146,19 @@ class _WalletsAssetsFilterState extends State<WalletAssetsFilter> {
           TextButton(
             onPressed: () {
               setState(() {
-                _selectedWalletAsset = WalletAssets.NFTs;
+                _selectedWalletAsset = AccountAssets.NFTs;
               });
 
               bloc.add(
-                const SelectedWalletAssetsChanged(
-                  selectedAssets: WalletAssets.NFTs,
+                const SelectedAccountAssetsChanged(
+                  selectedAssets: AccountAssets.NFTs,
                 ),
               );
             },
             child: Text(
               'NFTs',
               style: textSwapState(
-                condition: _selectedWalletAsset == WalletAssets.NFTs,
+                condition: _selectedWalletAsset == AccountAssets.NFTs,
                 tabNotSelected: textStyle(
                   Colors.white,
                   assetsFilterTxSz,

@@ -118,7 +118,7 @@ class AccountDetails extends StatelessWidget {
             ),
 
             // Assets filter -- remember to refresh the state
-            WalletAssetsFilter(
+            AccountAssetsFilter(
               boxConstraints: BoxConstraints(
                 //TODO: Remove box constraints & replace with LayoutBuilder
                 maxHeight: _height * 0.8,

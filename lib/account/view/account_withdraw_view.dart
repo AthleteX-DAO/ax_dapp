@@ -51,7 +51,7 @@ class AccountWithdrawView extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Your Wallet Details',
+                              'Select your Chain & Token Below',
                               style: textStyle(
                                 Colors.grey[600]!,
                                 13,
@@ -64,13 +64,13 @@ class AccountWithdrawView extends StatelessWidget {
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            WalletBalance(),
+                            WalletAddress(),
                           ],
                         ),
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            WalletAddress(),
+                            WalletChain(),
                           ],
                         ),
                       ],
@@ -90,7 +90,7 @@ class AccountWithdrawView extends StatelessWidget {
             ),
 
             // You need: recipeint address, and approve button
-            const WalletChain(),
+
             const TokenContainerWidget(),
           ],
         );
