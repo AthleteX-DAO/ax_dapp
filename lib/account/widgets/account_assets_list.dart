@@ -1,7 +1,7 @@
 import 'package:ax_dapp/account/widgets/widgets.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
 class WalletAssetsList extends StatelessWidget {
   const WalletAssetsList({super.key, required BoxConstraints boxConstraints})
@@ -11,9 +11,8 @@ class WalletAssetsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentTokens = context.select(
-      (TokensRepository tokensRepository) => tokensRepository.currentTokens,
-    );
+    final currentTokens =
+        context.select((WalletBloc bloc) => bloc.state.tokens);
     return Stack(
       alignment: Alignment.center,
       children: [
