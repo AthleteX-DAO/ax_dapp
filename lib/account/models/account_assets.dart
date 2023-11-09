@@ -2,7 +2,7 @@
 ///
 /// en
 
-enum WalletAssets {
+enum AccountAssets {
   /// Mix of Crypto, DeFi, and Athlete Assets
   all,
 

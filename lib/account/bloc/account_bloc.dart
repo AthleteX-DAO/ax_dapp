@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:ax_dapp/account/models/models.dart';
+import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -25,6 +26,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<AccountWithdrawViewRequested>(_onAccountWithdrawViewRequested);
     on<AccountDepositViewRequested>(_onAccountDepositViewRequested);
     on<AccountBuyAndSellViewRequested>(_onAccountBuyAndSellViewRequested);
+    on<SelectedAccountAssetsChanged>(_onSelectedAccountAssetsChanged);
 
     on<SwitchTokenRequested>(_onSwitchTokenRequested);
   }
@@ -78,5 +80,20 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         selectedToken: event.token,
       ),
     );
+  }
+
+  Future<void> _onSelectedAccountAssetsChanged(
+    SelectedAccountAssetsChanged event,
+    Emitter<AccountState> emit,
+  ) async {
+    try {
+      emit(
+        state.copyWith(
+          selectedAssets: event.selectedAssets,
+        ),
+      );
+    } catch (e) {
+      debugPrint('An error occured $e');
+    }
   }
 }

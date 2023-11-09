@@ -29,3 +29,14 @@ class SwitchTokenRequested extends AccountEvent {
   @override
   List<Object?> get props => [token];
 }
+
+class SelectedAccountAssetsChanged extends AccountEvent {
+  const SelectedAccountAssetsChanged({
+    required this.selectedAssets,
+  });
+
+  final AccountAssets selectedAssets;
+
+  @override
+  List<Object?> get props => [selectedAssets];
+}
