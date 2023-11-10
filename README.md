@@ -1,6 +1,8 @@
 # AthleteX dApp UI
 
-Front end UI for athlete equity MVBP built using flutter
+The world's leading Sports Digital Asset Exchange, focused on Sports, SportsFi, Athletes, and Athlete performance.
+
+Learn more at our website: [AthleteX.io](https://athletex.io)
 
 ## Getting Started 🚀
 
