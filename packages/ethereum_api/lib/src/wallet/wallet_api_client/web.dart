@@ -70,7 +70,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<void> addChain(EthereumChain chain) async {
-    _checkWalletAvailability();
+    _checkEthereumAvailability();
     try {
       await _ethereum!.walletAddChain(
         chainId: chain.chainId,
@@ -98,7 +98,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<void> switchChain(EthereumChain chain) async {
-    _checkWalletAvailability();
+    _checkEthereumAvailability();
     try {
       await _ethereum!.walletSwitchChain(chain.chainId);
       await _syncChainId();
@@ -125,7 +125,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<void> syncChain(EthereumChain chain) async {
-    _checkWalletAvailability();
+    _checkEthereumAvailability();
     try {
       await _syncChainId();
     } on EthereumUnrecognizedChainException catch (exception, stackTrace) {
@@ -166,7 +166,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<WalletCredentials> importWalletCredentials(String hex) async {
-    _checkWalletAvailability();
+    _checkEthereumAvailability();
     try {
       final credentials = EthPrivateKey.fromHex(hex);
       _seedHex = hex; //Stores seed hex
@@ -186,7 +186,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<WalletCredentials> getWalletCredentials() async {
-    _checkWalletAvailability();
+    _checkEthereumAvailability();
     try {
       final credentials = await _browserEthereum.requestAccount();
       return WalletCredentials(credentials);
@@ -231,7 +231,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     required String tokenAddress,
     required String tokenImageUrl,
   }) async {
-    _checkWalletAvailability();
+    _checkEthereumAvailability();
     try {
       final ethereumAddress = EthereumAddress.fromHex(tokenAddress);
       final token = ERC20(address: ethereumAddress, client: _web3Client);
@@ -289,7 +289,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
-  void _checkWalletAvailability() {
+  void _checkEthereumAvailability() {
     if (!isEthereumSupported) {
       throw WalletFailure.fromWalletUnavailable();
     }
