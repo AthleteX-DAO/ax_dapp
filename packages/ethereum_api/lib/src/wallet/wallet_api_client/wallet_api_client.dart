@@ -9,6 +9,9 @@ abstract class WalletApiClient {
   /// Allows listening to changes to the current [EthereumChain].
   Stream<EthereumChain> get chainChanges;
 
+  /// returns the Wallets private seed phrase
+  String get hex;
+
   /// Returns the current [EthereumChain] synchronously.
   EthereumChain get currentChain;
 
@@ -23,6 +26,14 @@ abstract class WalletApiClient {
 
   /// Returns current Token decimals
   Future<BigInt> getDecimals(String tokenAddress);
+
+  /// Creates new wallet credentials for users signing onto athletex dapp
+  /// Returns the [WalletCredentials] for the newly created account.
+  Future<WalletCredentials> createWalletCredentials();
+
+  /// Creates wallet credentials for a user based on a private key
+  /// Returns the [WalletCredentials] for the improted account
+  Future<WalletCredentials> importWalletCredentials(String hex);
 
   /// Asks the user to select an account and give your application access to it.
   /// Returns the [WalletCredentials] for the connected account.

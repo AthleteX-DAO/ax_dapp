@@ -1,7 +1,8 @@
-import 'package:ax_dapp/athlete/athlete.dart';
+import 'package:ax_dapp/athlete_markets/widgets/athlete_mint_approve_button.dart';
 import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/mint/widgets/widgets.dart';
-import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/markets/markets.dart';
+
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';

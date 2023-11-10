@@ -21,20 +21,6 @@ class TrackingCubit extends Cubit<TrackingState> {
   }
 }
 
-extension LandingPageTracking on TrackingCubit {
-  void onPressedStartTrading() {
-    trackingRepository.track(
-      LandingPageEvent.onPressedStartTrading({}),
-    );
-  }
-
-  void onLandingPageView() {
-    trackingRepository.track(
-      LandingPageEvent.onLandingPageView({}),
-    );
-  }
-}
-
 extension ConnectWalletSuccessfulTracking on TrackingCubit {
   void onConnectWalletSuccessful({
     required String publicAddress,
@@ -42,7 +28,7 @@ extension ConnectWalletSuccessfulTracking on TrackingCubit {
     required String walletType,
   }) {
     trackingRepository.track(
-      ScoutPageTrackingEvent.onConnectWalletSuccessful({
+      MarketsPageTrackingEvent.onConnectWalletSuccessful({
         'public_address': publicAddress,
         'ax_units': axUnits,
         'wallet_type': walletType,
@@ -56,7 +42,7 @@ extension ConnectWalletSuccessfulTracking on TrackingCubit {
     required String walletType,
   }) {
     trackingRepository.track(
-      ScoutPageTrackingEvent.onConnectWalletPressed({
+      MarketsPageTrackingEvent.onConnectWalletPressed({
         'public_address': publicAddress,
         'ax_units': axUnits,
         'wallet_type': walletType,
@@ -65,14 +51,14 @@ extension ConnectWalletSuccessfulTracking on TrackingCubit {
   }
 }
 
-extension ScoutPageTracking on TrackingCubit {
+extension MarketsPageTracking on TrackingCubit {
   /// Get athlete view information for analytics
   void trackAthleteView({
     required String athleteName,
     required String walletId,
   }) {
     trackingRepository.track(
-      ScoutPageTrackingEvent.onPressedAthleteView(
+      MarketsPageTrackingEvent.onPressedAthleteView(
         {'apt_player_name': athleteName, 'wallet_id': walletId},
       ),
     );

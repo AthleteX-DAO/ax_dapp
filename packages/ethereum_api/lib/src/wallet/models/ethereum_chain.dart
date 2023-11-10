@@ -1,3 +1,4 @@
+import 'package:ethereum_api/event_markets_api.dart';
 import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/config/models/apt_config.dart';
@@ -56,7 +57,7 @@ enum EthereumChain {
     chainId: 416,
     chainName: 'SX Network',
     currency: EthereumCurrency.sx,
-    rpcUrls: ['https://api.athletex.io/sx/rpc'],
+    rpcUrls: ['https://rpc.sx.technology'],
     blockExplorerUrls: ['https://explorer.sx.technology/'],
   ),
 
@@ -67,6 +68,24 @@ enum EthereumChain {
     currency: EthereumCurrency.sx,
     rpcUrls: ['https://rpc.toronto.sx.technology'],
     blockExplorerUrls: ['https://explorer.toronto.sx.technology/'],
+  ),
+
+  /// Optimism Mainnnet
+  optimism(
+    chainId: 10,
+    chainName: 'Optimism',
+    currency: EthereumCurrency.weth,
+    rpcUrls: ['mainnet.optimism.io', 'https://rpc.ankr.com/optimism'],
+    blockExplorerUrls: ['https://explorer.optimism.io'],
+  ),
+
+  /// ArbitriumOne Mainnet
+  arbitriumOne(
+    chainId: 42161,
+    chainName: 'Arbitrium One',
+    currency: EthereumCurrency.weth,
+    rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+    blockExplorerUrls: ['https://arbiscan.io'],
   );
 
   /// {@macro ethereum_chain}
@@ -106,6 +125,10 @@ enum EthereumChain {
   static List<EthereumChain> get supportedValues => values
       .where((chain) => chain.chainId != 647 && chain.isSupported)
       .toList();
+
+  /// Returns a list of chains that
+  static List<EthereumChain> get mainnetChains =>
+      values.where((chain) => !chain.isTestnet && chain.isSupported).toList();
 }
 
 /// [EthereumChain] extensions.
@@ -113,6 +136,10 @@ extension ChainX on EthereumChain {
   /// Returns whether this [EthereumChain] is supported.
   bool get isSupported =>
       this != EthereumChain.none && this != EthereumChain.unsupported;
+
+  /// Returns whether this [EthereumChain] is a testnet.
+  bool get isTestnet =>
+      this == EthereumChain.goerliTestNet || this == EthereumChain.sxTestnet;
 
   /// Returns the RPC URL used to initialize a [Web3Client].
   String get rpcUrl => rpcUrls.firstOrNull ?? '';
@@ -139,7 +166,6 @@ extension ChainConfigX on EthereumChain {
         Token.matic(this),
         Token.weth(this),
         Token.usdc(this),
-        ...createApts(this),
       ];
 
   /// Generates the list of [Apt]'s for this [EthereumChain]. Composed based on
@@ -179,6 +205,14 @@ extension ChainConfigX on EthereumChain {
   APTFactory createAptFactoryClient(Web3Client client) => APTFactory(
         address: EthereumAddress.fromHex(
           const EthereumAddressConfig.dexFactoryAddress().address(this),
+        ),
+        client: client,
+      );
+
+  EventBasedPredictionMarket createEventMarketsClient(Web3Client client) =>
+      EventBasedPredictionMarket(
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.event().address(this),
         ),
         client: client,
       );

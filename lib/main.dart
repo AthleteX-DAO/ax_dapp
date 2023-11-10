@@ -1,11 +1,17 @@
 import 'dart:async';
 
-import 'package:ax_dapp/app/view/app_routing.dart';
+import 'package:ax_dapp/app/view/app.dart';
 import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
 import 'package:ax_dapp/firebase_options.dart';
+import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
+import 'package:ax_dapp/league/repository/timer_repository.dart';
+import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
+import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
+import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -17,9 +23,17 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
+import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';
 import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
-import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
+import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
+import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
+import 'package:ax_dapp/sports_markets/repository/overtime_markets_repository.dart';
+import 'package:ax_dapp/sports_markets/repository/sx_markets_repository.dart';
+import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
+import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
+import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
+import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
@@ -32,6 +46,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:league_repository/league_repository.dart';
 import 'package:logging/logging.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -94,6 +109,11 @@ void main() async {
             create: (_) => SwapRepository(),
           ),
           RepositoryProvider(
+            create: (_) => LeagueRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+          RepositoryProvider(
             create: (_) => LiveChatRepository(
               fireStore: FirebaseFirestore.instance,
             ),
@@ -154,6 +174,67 @@ void main() async {
           ),
           RepositoryProvider(
             create: (context) => TrackingRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => EventMarketRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => LeagueUseCase(),
+          ),
+          RepositoryProvider(
+            create: (context) => TimerRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => PrizePoolRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => PredictionSnapshotRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => PredictionAddressRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => GetPredictionMarketInfoUseCase(
+              predictionSnapshotRepository:
+                  context.read<PredictionSnapshotRepository>(),
+              predictionAddressRepository:
+                  context.read<PredictionAddressRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => OverTimeMarketsRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => SXMarketsRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => GetSportsMarketsDataUseCase(
+              sxMarketsRepository: context.read<SXMarketsRepository>(),
+              overTimeMarketsRepository:
+                  context.read<OverTimeMarketsRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => FireBaseAuthRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => FireStoreCredentialsRepository(
+              fireStore: FirebaseFirestore.instance,
+              walletRepository: context.read<WalletRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => GetTotalTokenBalanceUseCase(
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => CrossChainBalanceUseCase(
+              walletRepository: context.read<WalletRepository>(),
+            ),
           ),
         ],
         child: App(configRepository: configRepository),

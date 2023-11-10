@@ -66,7 +66,7 @@ class Token extends Equatable {
   /// Represents a `Wrapped Ether` [Token].
   const Token.weth(EthereumChain chain)
       : this(
-          name: 'WETH',
+          name: 'Wrapped Ethereum',
           ticker: 'WETH',
           addressConfig: const EthereumAddressConfig.weth(),
           chain: chain,
@@ -81,6 +81,16 @@ class Token extends Equatable {
           addressConfig: const EthereumAddressConfig.usdc(),
           chain: chain,
           currency: EthereumCurrency.usdc,
+        );
+
+  /// Represents an 'Unknown' [Token]
+  Token.unknown(String name, String ticker, String address, EthereumChain chain)
+      : this(
+          name: name,
+          ticker: ticker,
+          addressConfig: EthereumAddressConfig.unknown(address, chain),
+          chain: chain,
+          currency: EthereumCurrency.none,
         );
 
   /// {@macro athlete_performance_token}
@@ -125,7 +135,6 @@ class Token extends Equatable {
     chain: EthereumChain.none,
     currency: EthereumCurrency.none,
   );
-
   @override
   List<Object?> get props => [
         name,

@@ -16,8 +16,6 @@ class NFLAthlete extends SportAthlete {
     required this.receivingYards,
     required this.receivingTouchdowns,
     required this.rushingYards,
-    required this.offensiveSnapsPlayed,
-    required this.defensiveSnapsPlayed,
     required double price,
     required String timeStamp,
   }) : super(id, name, team, position, price, timeStamp);
@@ -37,10 +35,6 @@ class NFLAthlete extends SportAthlete {
   final double receivingTouchdowns;
   @JsonKey(name: 'rushingYards')
   final double rushingYards;
-  @JsonKey(name: 'offensiveSnapsPlayed')
-  final double offensiveSnapsPlayed;
-  @JsonKey(name: 'defensiveSnapsPlayed')
-  final double defensiveSnapsPlayed;
 
   Map<String, dynamic> toJson() => _$NFLAthleteToJson(this);
 }

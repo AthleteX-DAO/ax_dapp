@@ -20,6 +20,8 @@ enum WalletStatus {
         return WalletStatus.unsupported;
       case EthereumChain.polygonMainnet:
       case EthereumChain.goerliTestNet:
+      case EthereumChain.optimism:
+      case EthereumChain.arbitriumOne:
       case EthereumChain.sxMainnet:
       case EthereumChain.sxTestnet:
         return WalletStatus.connected;

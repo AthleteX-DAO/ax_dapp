@@ -223,7 +223,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -313,7 +313,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                       Icons.keyboard_arrow_down,
                       color: Colors.white,
                       size: 25,
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -581,7 +581,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                           const Text(
                             'Please input an amount of liquidity for both tokens',
                           ),
-                        ]
+                        ],
                       ],
                     ],
                   ),

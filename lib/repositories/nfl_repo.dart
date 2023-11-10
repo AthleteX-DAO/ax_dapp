@@ -1,11 +1,8 @@
 import 'package:ax_dapp/repositories/sports_repo.dart';
-import 'package:ax_dapp/service/api/models/player_ids.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
-// ignore: don't_import_implementation_files
-import 'package:ethereum_api/src/config/models/apts/nfl_apt_list.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class NFLRepo extends SportsRepo<NFLAthlete> {
@@ -21,14 +18,12 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
 
   @override
   Future<List<NFLAthlete>> getPlayersById(List<int> ids) async {
-    return _api.getPlayersById(PlayerIds(ids));
+    return _api.getPlayersById(ids);
   }
 
   @override
   Future<List<NFLAthlete>> getSupportedPlayers() async {
-    return _api.getPlayersById(
-      PlayerIds(nflApts.map((e) => e.athleteId).toList()),
-    );
+    return _api.getAllPlayers();
   }
 
   @override
@@ -79,8 +74,7 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
     String from,
     String until,
   ) async {
-    final playerIds = PlayerIds(ids);
-    final list = _api.getPlayersHistory(playerIds, from, until);
+    final list = _api.getPlayersHistory(ids, from, until);
     return list;
   }
 
@@ -91,9 +85,8 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
     String? until,
     String? interval,
   }) async {
-    final playerIds = PlayerIds(ids);
     final list =
-        _api.getPlayersPriceHistory(playerIds, from, until, interval ?? '1d');
+        _api.getPlayersPriceHistory(ids, from, until, interval ?? '1d');
     return list;
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ax_dapp/service/controller/scout/long_short_pair_repository.dart.dart';
-import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
+import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';
+import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';

@@ -1,6 +1,5 @@
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/util/chain_localized_name.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
