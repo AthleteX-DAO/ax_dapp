@@ -117,7 +117,7 @@ class TopNavigationBarWeb extends StatelessWidget {
                   ],
                 ),
               ),
-              const WalletView(),
+              const WalletTopBar(),
             ],
           ),
         );

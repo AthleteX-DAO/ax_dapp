@@ -4,8 +4,8 @@ import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class WalletView extends StatelessWidget {
-  const WalletView({super.key});
+class WalletTopBar extends StatelessWidget {
+  const WalletTopBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class WalletView extends StatelessWidget {
             previous.walletStatus != current.walletStatus,
         builder: (_, state) {
           if (state.isWalletConnected) {
-            return const WalletAccount();
+            return const WalletTopBarDetails();
           }
           return const ConnectWalletButton();
         },

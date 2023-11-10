@@ -21,10 +21,10 @@ class TopNavigationBarMobile extends StatelessWidget {
               launchUrl(Uri.parse(urlString));
             },
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
-              WalletView(),
+            children: [
+              WalletTopBar(),
               DropdownMenuMobile(),
             ],
           ),

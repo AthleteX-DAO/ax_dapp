@@ -86,6 +86,10 @@ class WatchAxtChangesStarted extends WalletEvent {
   const WatchAxtChangesStarted();
 }
 
+class WatchTokenChangesStarted extends WalletEvent {
+  const WatchTokenChangesStarted();
+}
+
 class UpdateAxDataRequested extends WalletEvent {
   const UpdateAxDataRequested();
 }

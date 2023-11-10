@@ -2,8 +2,8 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class WalletAccount extends StatelessWidget {
-  const WalletAccount({super.key});
+class WalletTopBarDetails extends StatelessWidget {
+  const WalletTopBarDetails({super.key});
 
   @override
   Widget build(BuildContext context) {

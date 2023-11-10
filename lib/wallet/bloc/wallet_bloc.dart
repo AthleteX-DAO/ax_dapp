@@ -27,11 +27,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         _fireStoreCredentialsRepository = fireStoreCredentialsRepository,
         _fireBaseAuthRepository = fireBaseAuthRepository,
         super(WalletState.fromWallet(wallet: walletRepository.currentWallet)) {
-    // Connect the web3 wallet
     on<ConnectWalletRequested>(_onConnectWalletRequested);
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
-
-    // WalletView Status
+    on<SwitchChainRequested>(_onSwitchChainRequested);
     on<LoginSignUpViewRequested>(_onLoginSignUpViewRequested);
     on<SignUpViewRequested>(_onSignUpViewRequested);
     on<LoginViewRequested>(_onLoginViewRequested);
@@ -42,20 +40,18 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ResetPassword>(_onResetPassword);
     on<EmailChanged>(_onEmailChanged);
     on<PassWordChanged>(_onPassWordChanged);
-
-    // Watch for changes
     on<WatchWalletChangesStarted>(_onWatchWalletChangesStarted);
     on<WatchAxtChangesStarted>(_onWatchAxtChangesStarted);
+    on<WatchTokenChangesStarted>(_onWatchTokenChangesStarted);
     on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
     on<GetGasPriceRequested>(_onGetGasPriceRequested);
     on<WalletFailed>(_onWalletFailed);
     on<AuthFailed>(_onAuthFailed);
-
-    // Updates Wallet Balance
     on<FetchWalletBalanceRequested>(_onFetchWalletBalanceRequested);
 
     add(const WatchWalletChangesStarted());
     add(const WatchAxtChangesStarted());
+    add(const WatchTokenChangesStarted());
   }
 
   final WalletRepository _walletRepository;
@@ -133,6 +129,20 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           walletViewStatus: WalletViewStatus.login,
         ),
       );
+    }
+  }
+
+  FutureOr<void> _onSwitchChainRequested(
+    SwitchChainRequested event,
+    Emitter<WalletState> emit,
+  ) async {
+    final chain = event.chain;
+    if (chain == null) return;
+    try {
+      await _walletRepository.switchChain(chain);
+      emit(state.copyWith(chain: event.chain));
+    } on WalletFailure catch (failure) {
+      add(WalletFailed(failure));
     }
   }
 
@@ -288,7 +298,20 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     );
   }
 
-  // Again I think this should be handled elsewhere
+  Future<void> _onWatchTokenChangesStarted(
+    WatchTokenChangesStarted event,
+    Emitter<WalletState> emit,
+  ) async {
+    await emit.onEach<List<Token>>(
+      _tokensRepository.tokensChanges,
+      onData: (tokens) => emit(
+        state.copyWith(
+          tokens: tokens,
+        ),
+      ),
+    );
+  }
+
   Future<void> _onUpdateAxDataRequested(
     UpdateAxDataRequested event,
     Emitter<WalletState> emit,
@@ -301,7 +324,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(state.copyWith(axData: axData.copyWith(balance: axBalance)));
   }
 
-  // IMO this should be moved to a repository or something that does this consistently
   Future<void> _onGetGasPriceRequested(
     GetGasPriceRequested event,
     Emitter<WalletState> emit,
