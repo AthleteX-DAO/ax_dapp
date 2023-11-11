@@ -112,8 +112,6 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
                 ],
               ),
             ),
-
-            // Divider
             Container(
               margin: const EdgeInsets.only(top: 20),
               width: constraints.maxWidth - edge,
