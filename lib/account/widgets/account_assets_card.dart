@@ -2,6 +2,7 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
@@ -19,7 +20,13 @@ class AccountAssetCard extends StatelessWidget {
     return SizedBox(
       height: 40,
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: () {
+          Clipboard.setData(
+            ClipboardData(
+              text: token.address,
+            ),
+          );
+        },
         child: Row(
           children: <Widget>[
             Container(
