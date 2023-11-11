@@ -23,21 +23,6 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
   Widget build(BuildContext context) {
     final currentTokens =
         context.select((WalletBloc bloc) => bloc.state.tokens);
-    debugPrint(currentTokens.first.address);
-    //context.read<AccountBloc>().add(SelectTokenRequested(tokenAddress: currentTokens.first.address));
-    // final balance =
-    //     context.select((AccountBloc bloc) => bloc.state.tokenBalance);
-    // final selectedTokenAddress =
-    //     context.select((AccountBloc bloc) => bloc.state.tokenAddress);
-    // final currentToken =
-    //     context.select((AccountBloc bloc) => bloc.state.selectedToken);
-    // final tokenBalance =
-    //     context.select((AccountBloc bloc) => bloc.state.tokenBalance);
-    // final currentTokenAddress =
-    //     context.select((AccountBloc bloc) => bloc.state.tokenAddress);
-    // context
-    //     .read<AccountBloc>()
-    //     .add(UpdateBalanceRequested(tokenAddress: currentTokenAddress));
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     final isWeb =
