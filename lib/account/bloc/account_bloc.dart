@@ -39,7 +39,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     add(const WatchAppDataChangesStarted());
   }
 
-  // TODO(kevin): use the repositories when needed
   final TokensRepository _tokensRepository;
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
