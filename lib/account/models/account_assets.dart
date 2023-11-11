@@ -1,17 +1,15 @@
 /// Represents supported & available wallet assets
-///
-/// en
 
 enum AccountAssets {
   /// Mix of Crypto, DeFi, and Athlete Assets
   all,
 
   /// Cryptocurrency Tokens
-  Crypto,
+  crypto,
 
   /// Athlet Performance Tokens
-  APTs,
+  apts,
 
   /// Non-Fungible Tokens
-  NFTs,
+  nfts,
 }

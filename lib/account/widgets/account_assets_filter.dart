@@ -84,19 +84,19 @@ class _WalletsAssetsFilterState extends State<AccountAssetsFilter> {
           TextButton(
             onPressed: () {
               setState(() {
-                _selectedWalletAsset = AccountAssets.Crypto;
+                _selectedWalletAsset = AccountAssets.crypto;
               });
 
               bloc.add(
                 const SelectedAccountAssetsChanged(
-                  selectedAssets: AccountAssets.Crypto,
+                  selectedAssets: AccountAssets.crypto,
                 ),
               );
             },
             child: Text(
               'Crypto',
               style: textSwapState(
-                condition: _selectedWalletAsset == AccountAssets.Crypto,
+                condition: _selectedWalletAsset == AccountAssets.crypto,
                 tabNotSelected: textStyle(
                   Colors.white,
                   assetsFilterTxSz,
@@ -115,19 +115,19 @@ class _WalletsAssetsFilterState extends State<AccountAssetsFilter> {
           TextButton(
             onPressed: () {
               setState(() {
-                _selectedWalletAsset = AccountAssets.APTs;
+                _selectedWalletAsset = AccountAssets.apts;
               });
 
               bloc.add(
                 const SelectedAccountAssetsChanged(
-                  selectedAssets: AccountAssets.APTs,
+                  selectedAssets: AccountAssets.apts,
                 ),
               );
             },
             child: Text(
               'APTs',
               style: textSwapState(
-                condition: _selectedWalletAsset == AccountAssets.APTs,
+                condition: _selectedWalletAsset == AccountAssets.apts,
                 tabNotSelected: textStyle(
                   Colors.white,
                   assetsFilterTxSz,
@@ -146,19 +146,19 @@ class _WalletsAssetsFilterState extends State<AccountAssetsFilter> {
           TextButton(
             onPressed: () {
               setState(() {
-                _selectedWalletAsset = AccountAssets.NFTs;
+                _selectedWalletAsset = AccountAssets.nfts;
               });
 
               bloc.add(
                 const SelectedAccountAssetsChanged(
-                  selectedAssets: AccountAssets.NFTs,
+                  selectedAssets: AccountAssets.nfts,
                 ),
               );
             },
             child: Text(
               'NFTs',
               style: textSwapState(
-                condition: _selectedWalletAsset == AccountAssets.NFTs,
+                condition: _selectedWalletAsset == AccountAssets.nfts,
                 tabNotSelected: textStyle(
                   Colors.white,
                   assetsFilterTxSz,
