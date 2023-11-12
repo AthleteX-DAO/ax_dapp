@@ -15,6 +15,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   final ValueStream<Web3Client> _reactiveWeb3Client;
 
   /// returns the Wallets private seed phrase
+  @override
   String get hex => throw UnimplementedError('hex is not available');
 
   @override
@@ -44,6 +45,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     throw UnimplementedError('createWalletCredentials');
   }
 
+  @override
   Future<WalletCredentials> importWalletCredentials(String hex) {
     throw UnimplementedError('importWalletCredentials');
   }
