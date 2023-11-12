@@ -1,7 +1,7 @@
 import 'package:ax_dapp/athlete_markets/widgets/athlete_sell_approve_button.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/widgets/widgets.dart';
-import 'package:ax_dapp/markets/markets.dart' hide AptTypeSelectionChanged;
+import 'package:ax_dapp/markets/markets.dart';
 
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -40,9 +40,6 @@ class _SellDialogState extends State<SellDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
   final TextEditingController _aptAmountController = TextEditingController();
-
-  // in percents, slippage tolerance determines the upper bound of the receive
-  // amount, below which transaction gets reverted
   double slippageTolerance = 1;
 
   @override
@@ -57,8 +54,8 @@ class _SellDialogState extends State<SellDialog> {
       width: wid * 0.25,
       height: hgt * 0.05,
       decoration: boxDecoration(Colors.transparent, 20, 1, Colors.grey[800]!),
-      child: Row(
-        children: const [
+      child: const Row(
+        children: [
           Expanded(
             child: LongAptButton(),
           ),
@@ -180,7 +177,6 @@ class _SellDialogState extends State<SellDialog> {
                     ),
                   ),
                 ),
-                //Input APT text with toggle
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -197,7 +193,6 @@ class _SellDialogState extends State<SellDialog> {
                     toggleLongShortToken(wid, hgt),
                   ],
                 ),
-                //APT input box
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   width: wid,
@@ -210,7 +205,6 @@ class _SellDialogState extends State<SellDialog> {
                   ),
                   child: Column(
                     children: [
-                      //APT icon - athlete name - max button - input field
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -310,12 +304,12 @@ class _SellDialogState extends State<SellDialog> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Flexible(
                             child: Price(),
-                          )
+                          ),
                         ],
                       ),
                       Row(
@@ -395,7 +389,7 @@ class _SellDialogState extends State<SellDialog> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -417,9 +411,10 @@ class LongAptButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
+        backgroundColor:
+            aptTypeSelection.isLong ? Colors.amber : Colors.transparent,
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
-        primary: aptTypeSelection.isLong ? Colors.amber : Colors.transparent,
       ),
       onPressed: () => context.read<SellDialogBloc>().add(
             const AptTypeSelectionChanged(AptType.long),
@@ -450,9 +445,10 @@ class ShortAptButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
+        backgroundColor:
+            aptTypeSelection.isLong ? Colors.transparent : Colors.black,
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
-        primary: aptTypeSelection.isLong ? Colors.transparent : Colors.black,
       ),
       onPressed: () => context.read<SellDialogBloc>().add(
             const AptTypeSelectionChanged(AptType.short),
