@@ -37,7 +37,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<UpdateBalanceRequested>(_onUpdateBalanceRequested);
     on<FetchTokenInfoRequested>(_onFetchTokenInfoRequested);
     on<UpdateWithdrawInput>(_onUpdateWithdrawInput);
-    on<MaxWithdrawTap>(_onMaxWithdrawTap);
     add(const WatchAppDataChangesStarted());
   }
 
@@ -164,14 +163,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     Emitter<AccountState> emit,
   ) async {
     final input = event.tokenAmountInput;
-    emit(state.copyWith(tokenAmountInput: input));
-  }
-
-  Future<void> _onMaxWithdrawTap(
-    MaxWithdrawTap event,
-    Emitter<AccountState> emit,
-  ) async {
-    final input = event.tokenBalance;
+    print(input);
     emit(state.copyWith(tokenAmountInput: input));
   }
 }

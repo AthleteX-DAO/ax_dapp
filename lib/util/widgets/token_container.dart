@@ -39,7 +39,6 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
       builder: (context, state) {
         final currentToken = state.selectedToken;
         final tokenBalance = state.tokenBalance;
-        final tokenAmountInput = state.tokenAmountInput;
         final bloc = context.read<AccountBloc>();
         return Container(
           width: tokenContainerWid,
@@ -139,12 +138,11 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                         child: TextButton(
                           onPressed: () {
                             bloc.add(
-                              MaxWithdrawTap(
-                                tokenBalance: tokenBalance,
+                              UpdateWithdrawInput(
+                                tokenAmountInput: tokenBalance,
                               ),
                             );
-                            tokenInputController.text =
-                                tokenAmountInput.toString();
+                            tokenInputController.text = tokenBalance.toString();
                           },
                           child: FittedBox(
                             child: SizedBox(
