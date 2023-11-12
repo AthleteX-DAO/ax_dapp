@@ -163,7 +163,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     Emitter<AccountState> emit,
   ) async {
     final input = event.tokenAmountInput;
-    print(input);
     emit(state.copyWith(tokenAmountInput: input));
   }
 }
