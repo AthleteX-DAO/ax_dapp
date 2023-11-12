@@ -67,7 +67,6 @@ void main() async {
   final httpClient = http.Client();
 
   await initHiveForFlutter();
-  // usePathUrlStrategy();
   final configApiClient = ConfigApiClient(
     defaultChain: defaultChain,
     httpClient: httpClient,
