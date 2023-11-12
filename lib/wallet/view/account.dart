@@ -90,6 +90,9 @@ class Account extends StatelessWidget {
                           if (state.accountViewStatus ==
                               AccountViewStatus.withdraw)
                             const AccountWithdrawView(),
+                          if (state.accountViewStatus ==
+                              AccountViewStatus.token)
+                            const AccountTokenView(),
                         ],
                       );
                     },

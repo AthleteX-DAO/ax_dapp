@@ -23,6 +23,15 @@ class AccountBuyAndSellViewRequested extends AccountEvent {
   const AccountBuyAndSellViewRequested();
 }
 
+class AccountTokenViewRequested extends AccountEvent {
+  const AccountTokenViewRequested({required this.token});
+
+  final Token token;
+
+  @override
+  List<Object?> get props => [token];
+}
+
 class WatchAppDataChangesStarted extends AccountEvent {
   const WatchAppDataChangesStarted();
 }
