@@ -1,4 +1,3 @@
-import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/sports_markets/models/sports_markets_model.dart';
 import 'package:ax_dapp/sports_markets/widgets/widget_factories/sports_details_widget.dart';
@@ -17,7 +16,6 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
   @override
   Widget sportsDetailsCardsForMobile(bool showIcon, double athNameBx) {
     final _width = MediaQuery.of(context).size.width;
-    final _height = MediaQuery.of(context).size.height;
     return Row(
       children: [
         SizedBox(
@@ -94,10 +92,10 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
-        )
+        ),
       ],
     );
   }
@@ -135,7 +133,7 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                       isBold: false,
                       isUline: false,
                     ),
-                  )
+                  ),
                 ],
               ),
               Divider(
@@ -171,15 +169,14 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                       isBold: true,
                       isUline: false,
                     ),
-                  )
+                  ),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('${sportsMarketsModel}'),
+                  Text('$sportsMarketsModel'),
                   Text('${sportsMarketsModel.line}'),
-                  Text('')
                 ],
               ),
               Row(
@@ -207,9 +204,7 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                           ),
                         ),
                         child: TextButton(
-                          onPressed: () {
-                            // Call textbuttion!
-                          },
+                          onPressed: () {},
                           child: Text(
                             'Place Bet',
                             style: textStyle(
@@ -222,9 +217,9 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -248,7 +243,7 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
                     textStyle(Colors.white, 24, isBold: false, isUline: false),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -266,7 +261,7 @@ class SXBetSportsDetailsWidget implements SportsDetailsWidget {
               'Key Stats',
               style: textStyle(Colors.white, 24, isBold: false, isUline: false),
             ),
-          )
+          ),
         ],
       ),
     );

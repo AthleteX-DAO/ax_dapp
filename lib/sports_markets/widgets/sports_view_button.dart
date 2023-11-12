@@ -1,4 +1,3 @@
-import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/sports_markets/models/sports_markets_model.dart';
