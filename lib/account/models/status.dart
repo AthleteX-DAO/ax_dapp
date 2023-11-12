@@ -6,6 +6,7 @@ enum AccountViewStatus {
   buySell,
   deposit,
   withdraw,
+  token,
   error,
   none
 }
@@ -27,6 +28,8 @@ extension AccountViewStatusX on AccountViewStatus {
         return AccountViewStatus.deposit;
       case AccountViewStatus.withdraw:
         return AccountViewStatus.withdraw;
+      case AccountViewStatus.token:
+        return AccountViewStatus.token;
       case AccountViewStatus.none:
         return AccountViewStatus.none;
       case AccountViewStatus.error:

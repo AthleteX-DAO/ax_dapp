@@ -32,6 +32,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<AccountWithdrawViewRequested>(_onAccountWithdrawViewRequested);
     on<AccountDepositViewRequested>(_onAccountDepositViewRequested);
     on<AccountBuyAndSellViewRequested>(_onAccountBuyAndSellViewRequested);
+    on<AccountTokenViewRequested>(_onAccountTokenViewRequested);
     on<SelectedAccountAssetsChanged>(_onSelectedAccountAssetsChanged);
     on<SelectTokenRequested>(_onSelectTokenRequested);
     on<UpdateBalanceRequested>(_onUpdateBalanceRequested);
@@ -113,6 +114,19 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   ) async {
     emit(
       state.copyWith(accountViewStatus: AccountViewStatus.buySell),
+    );
+  }
+
+  Future<void> _onAccountTokenViewRequested(
+    AccountTokenViewRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    final token = event.token;
+    emit(
+      state.copyWith(
+        accountViewStatus: AccountViewStatus.token,
+        selectedToken: token,
+      ),
     );
   }
 
