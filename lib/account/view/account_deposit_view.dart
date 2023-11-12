@@ -1,6 +1,5 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -101,14 +100,14 @@ class AccountDepositView extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
-                                  Icon(
+                                  const Icon(
                                     Icons.account_balance_wallet,
-                                    color: lightOrangeColor,
+                                    color: Colors.white,
                                   ),
                                   Text(
                                     formattedWalletAddress,
                                     style: textStyle(
-                                      lightOrangeColor,
+                                      Colors.white,
                                       20,
                                       isBold: false,
                                       isUline: false,
@@ -151,7 +150,7 @@ class AccountDepositView extends StatelessWidget {
               height: _height * 0.5,
               child: QrImageView(
                 data: walletAddress,
-                backgroundColor: lightOrangeColor,
+                backgroundColor: Colors.white,
               ),
             ),
           ],
