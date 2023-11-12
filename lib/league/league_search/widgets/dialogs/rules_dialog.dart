@@ -622,14 +622,14 @@ class _LeagueDialog extends State<LeagueDialog> {
                               title: 'Date Range Error',
                               description:
                                   'Cannot have a start date that is after the end date!',
-                            )
+                            ),
                           }
                         else if (selectedSports.isEmpty)
                           {
                             context.showWarningToast(
                               title: 'Selected Sports Error',
                               description: 'Select At Least One Sport!',
-                            )
+                            ),
                           }
                         else
                           {
@@ -649,7 +649,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                               ),
                             ),
                             Navigator.pop(context),
-                          }
+                          },
                       },
                       child: const Text(
                         'Confirm',

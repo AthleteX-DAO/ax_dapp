@@ -48,7 +48,7 @@ class PrizePool extends StatelessWidget {
                 fontSize: textSize,
                 fontWeight: FontWeight.w400,
               ),
-            )
+            ),
           ],
         ),
       ),

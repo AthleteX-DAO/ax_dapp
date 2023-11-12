@@ -99,7 +99,7 @@ class MyTeamCard extends StatelessWidget {
                 },
               ),
             ),
-          )
+          ),
         ],
       ),
     );

@@ -142,7 +142,7 @@ class _LiveChatBoxState extends State<LiveChatBox> {
                                           );
                                           _inputController.clear();
                                         },
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
