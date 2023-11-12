@@ -39,6 +39,8 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
       builder: (context, state) {
         final currentToken = state.selectedToken;
         final tokenBalance = state.tokenBalance;
+        final tokenAmountInput = state.tokenAmountInput;
+        final bloc = context.read<AccountBloc>();
         return Container(
           width: tokenContainerWid,
           height: _height * 0.11,
@@ -111,11 +113,12 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                               ),
                           ],
                           onChanged: (token) {
-                            context.read<AccountBloc>().add(
-                                  SelectTokenRequested(
-                                    token: token!,
-                                  ),
-                                );
+                            bloc.add(
+                              SelectTokenRequested(
+                                token: token!,
+                              ),
+                            );
+                            tokenInputController.clear();
                           },
                         ),
                       ),
@@ -134,7 +137,15 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                           Colors.grey[400]!,
                         ),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            bloc.add(
+                              MaxWithdrawTap(
+                                tokenBalance: tokenBalance,
+                              ),
+                            );
+                            tokenInputController.text =
+                                tokenAmountInput.toString();
+                          },
                           child: FittedBox(
                             child: SizedBox(
                               child: Text(
@@ -159,7 +170,14 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                               decimal: true,
                             ),
                             controller: tokenInputController,
-                            onChanged: (value) => {},
+                            onChanged: (value) => {
+                              bloc.add(
+                                UpdateWithdrawInput(
+                                  tokenAmountInput:
+                                      double.parse(tokenInputController.text),
+                                ),
+                              ),
+                            },
                             style: TextStyle(
                               color: Colors.grey[400],
                               fontSize: 22,

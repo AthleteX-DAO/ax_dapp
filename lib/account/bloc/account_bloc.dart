@@ -36,6 +36,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<SelectTokenRequested>(_onSelectTokenRequested);
     on<UpdateBalanceRequested>(_onUpdateBalanceRequested);
     on<FetchTokenInfoRequested>(_onFetchTokenInfoRequested);
+    on<UpdateWithdrawInput>(_onUpdateWithdrawInput);
+    on<MaxWithdrawTap>(_onMaxWithdrawTap);
     add(const WatchAppDataChangesStarted());
   }
 
@@ -128,6 +130,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         selectedToken: selectedToken,
         tokenAddress: selectedTokenAddress,
         tokenBalance: balance,
+        tokenAmountInput: 0,
       ),
     );
   }
@@ -154,5 +157,21 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final tokenAddress = state.tokenAddress;
     final balance = await _walletRepository.getTokenBalance(tokenAddress);
     emit(state.copyWith(tokenBalance: balance));
+  }
+
+  Future<void> _onUpdateWithdrawInput(
+    UpdateWithdrawInput event,
+    Emitter<AccountState> emit,
+  ) async {
+    final input = event.tokenAmountInput;
+    emit(state.copyWith(tokenAmountInput: input));
+  }
+
+  Future<void> _onMaxWithdrawTap(
+    MaxWithdrawTap event,
+    Emitter<AccountState> emit,
+  ) async {
+    final input = event.tokenBalance;
+    emit(state.copyWith(tokenAmountInput: input));
   }
 }

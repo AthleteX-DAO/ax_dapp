@@ -57,3 +57,21 @@ class SelectedAccountAssetsChanged extends AccountEvent {
   @override
   List<Object?> get props => [selectedAssets];
 }
+
+class UpdateWithdrawInput extends AccountEvent {
+  const UpdateWithdrawInput({required this.tokenAmountInput});
+
+  final double tokenAmountInput;
+
+  @override
+  List<Object?> get props => [tokenAmountInput];
+}
+
+class MaxWithdrawTap extends AccountEvent {
+  const MaxWithdrawTap({required this.tokenBalance});
+
+  final double tokenBalance;
+
+  @override
+  List<Object?> get props => [tokenBalance];
+}
