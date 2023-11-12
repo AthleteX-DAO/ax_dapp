@@ -13,6 +13,8 @@ class ChatResponse {
     required this.choices,
   });
 
+  factory ChatResponse.fromJson(Map<String, dynamic> json) => _$ChatResponseFromJson(json);
+
   static const empty = ChatResponse(
     id: '',
     object: '',
@@ -26,8 +28,6 @@ class ChatResponse {
   final int created;
   final String model;
   final List<Choice> choices;
-
-  factory ChatResponse.fromJson(Map<String, dynamic> json) => _$ChatResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatResponseToJson(this);
 }
