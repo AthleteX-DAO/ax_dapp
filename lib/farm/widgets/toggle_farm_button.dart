@@ -102,7 +102,7 @@ class ToggleFarmButton extends StatelessWidget {
                     textStyle(Colors.white, 16, isBold: true, isUline: false),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

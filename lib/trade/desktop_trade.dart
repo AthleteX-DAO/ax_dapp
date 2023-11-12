@@ -108,7 +108,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
             if (tknNum == 1) {
               return currentToken.address == state.tokenFrom.address;
             } else {
-              //tknNum == 2
               return currentToken.address == state.tokenTo.address;
             }
           }
@@ -118,7 +117,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
             int tknNum,
             BuildContext builderContext,
           ) {
-            //Creates a token item for AthleteTokenList widget
             final _width = MediaQuery.of(context).size.width;
             return SizedBox(
               height: 50,
@@ -185,7 +183,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     ),
                     SizedBox(
                       height: 45,
-                      // ticker/name column "AX/AthleteX"
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -237,7 +234,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
               tkr = tokenFrom.ticker;
               _tokenImage = tokenImage(tokenFrom);
             } else {
-              //tknNum == 2
               tkr = tokenTo.ticker;
               _tokenImage = tokenImage(tokenTo);
             }
@@ -299,7 +295,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       Icons.keyboard_arrow_down,
                       color: Colors.white,
                       size: 25,
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -359,7 +355,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               ),
                             ),
                           ),
-                          //First Token container with border
                           Container(
                             width: tokenContainerWid,
                             height: _height * 0.11,
@@ -371,7 +366,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               Colors.grey[400]!,
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: 15),
-                            //This columns contains token info and balance below
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -380,18 +374,15 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     createTokenButton(1),
-                                    //Max button and amount box 1
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        //Max Button
                                         MaxButton(
                                           bloc: bloc,
                                           tokenFromBalance: tokenFromBalance,
                                           tokenFromInputController:
                                               _tokenFromInputController,
                                         ),
-                                        //Amount box
                                         FromAmountBox(
                                           amountBoxAndMaxButtonWid:
                                               amountBoxAndMaxButtonWid,
@@ -400,17 +391,17 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                           bloc: bloc,
                                           addEventForFromInputValue:
                                               addEventForFromInputValue,
-                                        )
+                                        ),
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Balance(balance: tokenFromBalance)
+                                    Balance(balance: tokenFromBalance),
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -451,7 +442,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               ),
                             ),
                           ),
-                          //Second Token container with border
                           Container(
                             width: tokenContainerWid,
                             height: _height * 0.11,
@@ -471,13 +461,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     createTokenButton(2),
-                                    // Amount box 2
                                     ToAmountBox(
                                       amountBoxAndMaxButtonWid:
                                           amountBoxAndMaxButtonWid,
                                       tokenToInputController:
                                           _tokenToInputController,
-                                    )
+                                    ),
                                   ],
                                 ),
                                 Row(
@@ -516,7 +505,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               YouReceived(
                                 receiveAmount: receiveAmount,
                                 tokenTo: tokenTo,
-                              )
+                              ),
                             ],
                           ),
                         ),

@@ -30,7 +30,7 @@ class ShareDetailsHeader extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(left: 6),
             child: const AddLiquidityToolTip(),
-          )
+          ),
         ],
       ),
     );

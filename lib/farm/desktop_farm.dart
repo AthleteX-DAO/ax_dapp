@@ -149,12 +149,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
                               farmTextController: farmTextController,
                             ),
                             const SizedBox(width: 50),
-                            toggle
+                            toggle,
                           ],
                         ),
                       if (!isWeb) toggle,
                       SizedBox(
-                        //contains list of allfarms cards
                         width: layoutWidth,
                         height: layoutHeight - 120,
                         child: ScrollConfiguration(

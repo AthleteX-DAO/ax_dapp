@@ -67,10 +67,9 @@ class FarmItem extends StatelessWidget {
                       '${farm.stakingInfo.value.viewAmount} ${farm.strStakedSymbol}',
                       style: txStyle,
                     ),
-                  )
+                  ),
                 ],
               ),
-              // TVL
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -78,15 +77,14 @@ class FarmItem extends StatelessWidget {
                     'TVL',
                     style: txStyle,
                   ),
-                  Text('\$${farm.strTVL}', style: txStyle)
+                  Text('\$${farm.strTVL}', style: txStyle),
                 ],
               ),
-              // Total APY
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Total APR', style: txStyle),
-                  Text('${farm.strAPR}%', style: txStyle)
+                  Text('${farm.strAPR}%', style: txStyle),
                 ],
               ),
             ],

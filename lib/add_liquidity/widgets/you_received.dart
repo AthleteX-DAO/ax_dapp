@@ -103,13 +103,13 @@ class YouReceived extends StatelessWidget {
                           const Text(
                             'LP Tokens',
                             style: TextStyle(color: Colors.white, fontSize: 15),
-                          )
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ],
-              )
+              ),
             ],
           );
         }

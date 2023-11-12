@@ -74,7 +74,7 @@ class DualStakeDialog extends StatelessWidget {
                           size: 30,
                           color: Colors.white,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -351,7 +351,7 @@ class DualStakeDialog extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
