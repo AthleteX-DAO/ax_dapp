@@ -32,6 +32,10 @@ class AccountTokenViewRequested extends AccountEvent {
   List<Object?> get props => [token];
 }
 
+class AccountWithdrawConfirm extends AccountEvent {
+  const AccountWithdrawConfirm();
+}
+
 class WatchAppDataChangesStarted extends AccountEvent {
   const WatchAppDataChangesStarted();
 }
@@ -46,6 +50,15 @@ class SelectTokenRequested extends AccountEvent {
 
   @override
   List<Object?> get props => [token];
+}
+
+class UpdateRecipentAddressRequested extends AccountEvent {
+  const UpdateRecipentAddressRequested({required this.recipentAddress});
+
+  final String recipentAddress;
+
+  @override
+  List<Object?> get props => [recipentAddress];
 }
 
 class UpdateBalanceRequested extends AccountEvent {

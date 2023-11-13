@@ -1,5 +1,7 @@
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/util/text_field_input_decoration.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountRecipentAddressInput extends StatefulWidget {
   const AccountRecipentAddressInput({super.key});
@@ -20,11 +22,23 @@ class _AccountRecipentAddressInputState
       keyboardType: TextInputType.emailAddress,
       controller: recipentAddressController,
       textAlign: TextAlign.center,
-      onChanged: (value) {},
+      onChanged: (_) {
+        context.read<AccountBloc>().add(
+              UpdateRecipentAddressRequested(
+                recipentAddress: recipentAddressController.text,
+              ),
+            );
+      },
       decoration: kTextFieldDecoration.copyWith(
         hintText: 'Enter Receiving Address',
         labelText: 'Recipent Address',
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    recipentAddressController.dispose();
+    super.dispose();
   }
 }

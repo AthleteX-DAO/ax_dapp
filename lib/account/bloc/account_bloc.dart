@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:ax_dapp/account/models/models.dart';
+import 'package:ax_dapp/account/repository/account_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -17,9 +18,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     required TokensRepository tokensRepository,
     required WalletRepository walletRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
+    required AccountRepository accountRepository,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
         _streamAppDataChangesUseCase = streamAppDataChanges,
+        _accountRepository = accountRepository,
         super(
           AccountState(
             chain: walletRepository.currentChain,
@@ -38,12 +41,15 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<UpdateBalanceRequested>(_onUpdateBalanceRequested);
     on<FetchTokenInfoRequested>(_onFetchTokenInfoRequested);
     on<UpdateWithdrawInput>(_onUpdateWithdrawInput);
+    on<AccountWithdrawConfirm>(_onAccountWithdrawConfirm);
+    on<UpdateRecipentAddressRequested>(_onUpdateRecipentAddressRequested);
     add(const WatchAppDataChangesStarted());
   }
 
   final TokensRepository _tokensRepository;
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
+  final AccountRepository _accountRepository;
 
   FutureOr<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted event,
@@ -53,6 +59,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       _streamAppDataChangesUseCase.appDataChanges,
       onData: (appData) {
         final tokens = appData.tokens;
+        final appConfig = appData.appConfig;
+        _accountRepository.controller.client.value =
+            appConfig.reactiveWeb3Client.value;
+        _accountRepository.controller.credentials =
+            _walletRepository.credentials.value;
         emit(
           state.copyWith(
             selectedToken: tokens.first,
@@ -130,6 +141,22 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     );
   }
 
+  Future<void> _onAccountWithdrawConfirm(
+    AccountWithdrawConfirm event,
+    Emitter<AccountState> emit,
+  ) async {
+    final recipentAddress = state.recipentAddress;
+    final tokenAmountInput = state.tokenAmountInput;
+    final tokenAddress = state.tokenAddress;
+    final decimals = await _walletRepository.getDecimals(tokenAddress);
+    await _accountRepository.transerTokens(
+      toAddress: recipentAddress,
+      tokenAddress: tokenAddress,
+      inputAmount: tokenAmountInput,
+      tokenDecimals: decimals.toInt(),
+    );
+  }
+
   Future<void> _onSelectTokenRequested(
     SelectTokenRequested event,
     Emitter<AccountState> emit,
@@ -178,5 +205,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   ) async {
     final input = event.tokenAmountInput;
     emit(state.copyWith(tokenAmountInput: input));
+  }
+
+  Future<void> _onUpdateRecipentAddressRequested(
+    UpdateRecipentAddressRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    final recipentAddress = event.recipentAddress;
+    emit(state.copyWith(recipentAddress: recipentAddress));
   }
 }
