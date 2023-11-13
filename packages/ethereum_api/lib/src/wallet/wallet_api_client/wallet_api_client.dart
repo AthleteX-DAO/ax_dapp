@@ -24,6 +24,9 @@ abstract class WalletApiClient {
   /// Sync the current used chain
   Future<void> syncChain(EthereumChain chain);
 
+  /// Updates the currently used chain
+  Future<void> updateChain(EthereumChain chain);
+
   /// Returns current Token decimals
   Future<BigInt> getDecimals(String tokenAddress);
 
