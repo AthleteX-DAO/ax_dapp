@@ -94,7 +94,6 @@ class WalletRepository {
     final prefs = await SharedPreferences.getInstance();
     try {
       _walletApiClient.addChainChangedListener();
-      await _walletApiClient.syncChain(defaultChain);
       final credentials = await _walletApiClient.createWalletCredentials();
       _cacheWalletCredentials(credentials);
       final walletAddress = credentials.value.address.hex;
@@ -121,7 +120,6 @@ class WalletRepository {
     final prefs = await SharedPreferences.getInstance();
     try {
       _walletApiClient.addChainChangedListener();
-      await _walletApiClient.syncChain(defaultChain);
       final credentials = await _walletApiClient.importWalletCredentials(hex);
       _cacheWalletCredentials(credentials);
       final walletAddress = credentials.value.address.hex;
