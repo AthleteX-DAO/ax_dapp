@@ -70,15 +70,20 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<void> addChain(EthereumChain chain) async {
-    _checkEthereumAvailability();
+    final useEthereumBrowser = _checkEthereumAvailability();
     try {
-      await _ethereum!.walletAddChain(
-        chainId: chain.chainId,
-        chainName: chain.chainName,
-        nativeCurrency: chain.currency.toCurrencyParams,
-        rpcUrls: chain.rpcUrls,
-        blockExplorerUrls: chain.blockExplorerUrls,
-      );
+      if (useEthereumBrowser) {
+        await _ethereum!.walletAddChain(
+          chainId: chain.chainId,
+          chainName: chain.chainName,
+          nativeCurrency: chain.currency.toCurrencyParams,
+          rpcUrls: chain.rpcUrls,
+          blockExplorerUrls: chain.blockExplorerUrls,
+        );
+      }
+      if (!useEthereumBrowser) {
+        _chainController.add(chain);
+      }
     } on EthereumUserRejected catch (exception, stackTrace) {
       throw WalletFailure.fromOperationRejected(exception, stackTrace);
     } on EthereumException catch (exception, stackTrace) {
@@ -98,10 +103,15 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<void> switchChain(EthereumChain chain) async {
-    _checkEthereumAvailability();
+    final useEthereumBrowser = _checkEthereumAvailability();
     try {
-      await _ethereum!.walletSwitchChain(chain.chainId);
-      await _syncChainId();
+      if (useEthereumBrowser) {
+        await _ethereum!.walletSwitchChain(chain.chainId);
+        await _syncChainId();
+      }
+      if (!useEthereumBrowser) {
+        _chainController.add(chain);
+      }
     } on EthereumUnrecognizedChainException catch (exception, stackTrace) {
       // Bug with `EthereumUnrecognizedChainException` not being thrown by the
       // underlying method, `WalletFailure.fromError` handles it.
@@ -115,7 +125,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
-  /// Sync the current chain of Wallet.
+  /// Sync the current chain of Wallet.  Only necessary if using an external wallet like Metamask
   ///
   /// Throws:
   /// - [WalletUnavailableFailure]
@@ -125,7 +135,6 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<void> syncChain(EthereumChain chain) async {
-    _checkEthereumAvailability();
     try {
       await _syncChainId();
     } on EthereumUnrecognizedChainException catch (exception, stackTrace) {
@@ -166,7 +175,6 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<WalletCredentials> importWalletCredentials(String hex) async {
-    _checkEthereumAvailability();
     try {
       final credentials = EthPrivateKey.fromHex(hex);
       _seedHex = hex; //Stores seed hex
@@ -186,8 +194,11 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<WalletCredentials> getWalletCredentials() async {
-    _checkEthereumAvailability();
+    final isEthereumBrowserAvailable = _checkEthereumAvailability();
     try {
+      if (isEthereumBrowserAvailable == false) {
+        throw WalletFailure.fromWalletUnavailable();
+      }
       final credentials = await _browserEthereum.requestAccount();
       return WalletCredentials(credentials);
     } catch (error, stackTrace) {
@@ -231,7 +242,10 @@ class EthereumWalletApiClient implements WalletApiClient {
     required String tokenAddress,
     required String tokenImageUrl,
   }) async {
-    _checkEthereumAvailability();
+    final isBrowserEthereumAvailable = _checkEthereumAvailability();
+    if (isBrowserEthereumAvailable == false) {
+      throw WalletFailure.fromUnsuccessfulOperation();
+    }
     try {
       final ethereumAddress = EthereumAddress.fromHex(tokenAddress);
       final token = ERC20(address: ethereumAddress, client: _web3Client);
@@ -289,10 +303,14 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
-  void _checkEthereumAvailability() {
+  bool _checkEthereumAvailability() {
+    bool isBrowserEthereumAvailable;
     if (!isEthereumSupported) {
-      throw WalletFailure.fromWalletUnavailable();
+      isBrowserEthereumAvailable = false;
+    } else {
+      isBrowserEthereumAvailable = true;
     }
+    return isBrowserEthereumAvailable;
   }
 
   /// Returns current Token decimals
