@@ -95,6 +95,8 @@ class WalletRepository {
     try {
       _walletApiClient.addChainChangedListener();
       final credentials = await _walletApiClient.createWalletCredentials();
+      await _walletApiClient.updateChain(defaultChain);
+
       _cacheWalletCredentials(credentials);
       final walletAddress = credentials.value.address.hex;
       _walletChangeController.add(
@@ -121,6 +123,7 @@ class WalletRepository {
     try {
       _walletApiClient.addChainChangedListener();
       final credentials = await _walletApiClient.importWalletCredentials(hex);
+      await _walletApiClient.updateChain(defaultChain);
       _cacheWalletCredentials(credentials);
       final walletAddress = credentials.value.address.hex;
       _walletChangeController.add(

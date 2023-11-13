@@ -158,6 +158,17 @@ class EthereumWalletApiClient implements WalletApiClient {
     _chainController.add(EthereumChain.fromChainId(chainId));
   }
 
+  /// Updates the current chain of the Wallet.
+  ///
+  /// Throws: [UnknownWalletFailure]
+  Future<void> updateChain(EthereumChain chain) async {
+    try {
+      _chainController.add(chain);
+    } catch (error, stackTrace) {
+      throw WalletFailure.fromError(error, stackTrace);
+    }
+  }
+
   ///
   @override
   Future<WalletCredentials> createWalletCredentials() async {
