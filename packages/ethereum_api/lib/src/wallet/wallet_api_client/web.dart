@@ -207,7 +207,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   Future<WalletCredentials> getWalletCredentials() async {
     final isEthereumBrowserAvailable = _checkEthereumAvailability();
     try {
-      if (isEthereumBrowserAvailable == false) {
+      if (!isEthereumBrowserAvailable) {
         throw WalletFailure.fromWalletUnavailable();
       }
       final credentials = await _browserEthereum.requestAccount();
@@ -253,8 +253,8 @@ class EthereumWalletApiClient implements WalletApiClient {
     required String tokenAddress,
     required String tokenImageUrl,
   }) async {
-    final isBrowserEthereumAvailable = _checkEthereumAvailability();
-    if (isBrowserEthereumAvailable == false) {
+    final isEthereumBrowserAvailable = _checkEthereumAvailability();
+    if (!isEthereumBrowserAvailable) {
       throw WalletFailure.fromUnsuccessfulOperation();
     }
     try {
