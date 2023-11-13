@@ -80,8 +80,7 @@ class EthereumWalletApiClient implements WalletApiClient {
           rpcUrls: chain.rpcUrls,
           blockExplorerUrls: chain.blockExplorerUrls,
         );
-      }
-      if (!useEthereumBrowser) {
+      } else {
         _chainController.add(chain);
       }
     } on EthereumUserRejected catch (exception, stackTrace) {
@@ -108,8 +107,7 @@ class EthereumWalletApiClient implements WalletApiClient {
       if (useEthereumBrowser) {
         await _ethereum!.walletSwitchChain(chain.chainId);
         await _syncChainId();
-      }
-      if (!useEthereumBrowser) {
+      } else {
         _chainController.add(chain);
       }
     } on EthereumUnrecognizedChainException catch (exception, stackTrace) {
@@ -314,15 +312,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
-  bool _checkEthereumAvailability() {
-    bool isBrowserEthereumAvailable;
-    if (!isEthereumSupported) {
-      isBrowserEthereumAvailable = false;
-    } else {
-      isBrowserEthereumAvailable = true;
-    }
-    return isBrowserEthereumAvailable;
-  }
+  bool _checkEthereumAvailability() => isEthereumSupported;
 
   /// Returns current Token decimals
   @override
