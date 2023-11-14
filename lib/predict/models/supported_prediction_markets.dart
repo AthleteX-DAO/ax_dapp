@@ -1,7 +1,6 @@
 /// Represents supported & available prediction markets
 
 enum SupportedPredictionMarkets {
-
   // Mix of all Supported Markets
   all,
 
@@ -22,6 +21,9 @@ enum SupportedPredictionMarkets {
 
   /// Soccer Athletes
   Soccer,
+
+  /// Voted markets from snapshot
+  Voted,
 
   /// Exotic Athlete Markets
   Exotic
