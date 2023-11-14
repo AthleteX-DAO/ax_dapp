@@ -1,4 +1,4 @@
-import 'package:ax_dapp/markets/bloc/markets_page_bloc.dart';
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
