@@ -1,7 +1,9 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
+import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/predict/widgets/desktop_headers.dart';
 import 'package:ax_dapp/predict/widgets/desktop_prediction_card.dart';
+import 'package:ax_dapp/predict/widgets/markets_filter_desktop.dart';
 import 'package:ax_dapp/predict/widgets/prediction_loading_status.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -44,7 +46,8 @@ class _DesktopPredictState extends State<DesktopPredict> {
         }
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return SizedBox(
+            return Container(
+              margin: const EdgeInsets.only(top: 20),
               height: constraints.maxHeight * 0.90,
               width: constraints.maxWidth * 0.99,
               child: Column(
@@ -57,27 +60,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
                       color: Colors.grey,
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      bottom: 10,
-                    ),
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Text(
-                          'Athlete Predictions',
-                          style: textStyle(
-                            Colors.white,
-                            18,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  const PredictionMarketsFilterDesktop(),
                   const DesktopHeaders(),
                   Stack(
                     alignment: Alignment.center,
@@ -92,19 +75,33 @@ class _DesktopPredictState extends State<DesktopPredict> {
                         const PredictionLoadingStatus(
                           message: 'Failed to Load Markets!',
                         ),
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.all)
+                        SizedBox(
+                          height: constraints.maxHeight * 0.8 - 120,
+                          child: const Center(
+                            child: SizedBox(
+                              height: 70,
+                              child: Text(
+                                'Select a market from the tabs above',
+                                style: TextStyle(
+                                  color: Colors.yellow,
+                                  fontSize: 30,
+                                  fontFamily: 'OpenSans',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       SizedBox(
                         height: constraints.maxHeight * 0.8 - 120,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.only(top: 10),
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: currentPredictions.length,
-                          itemBuilder: (context, index) {
-                            return DesktopPredictionCard(
-                              predictionModel: currentPredictions[index],
-                            );
-                          },
+                        child: const Center(
+                          child: SizedBox(
+                            height: 70,
+                          ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ],
