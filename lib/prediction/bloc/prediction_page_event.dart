@@ -42,14 +42,3 @@ class PredictionPageLoaded extends PredictionPageEvent {
 class LoadMarketAddress extends PredictionPageEvent {}
 
 class ToggleAdvanceFeatures extends PredictionPageEvent {}
-
-class SelectedMarketsChanged extends MarketsPageEvent {
-  const SelectedMarketsChanged({
-    required this.selectedMarkets,
-  });
-
-  final SupportedPredictionMarkets selectedMarkets;
-
-  @override
-  List<Object?> get props => [selectedMarkets];
-}

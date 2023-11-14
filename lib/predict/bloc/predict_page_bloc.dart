@@ -1,4 +1,4 @@
-import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -21,6 +21,8 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
         _getPredictionMarketInfoUseCase = getPredictionMarketInfoUseCase,
         super(const PredictPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
+    on<SelectedPredictionMarketsChanged>(_onSelectedPredictionMarketsChanged);
+
     on<LoadPredictionsEvent>(_onLoadPredictions);
 
     add(const WatchAppDataChangesStarted());
@@ -75,6 +77,23 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     } catch (e) {
       debugPrint('$e');
       emit(state.copyWith(status: BlocStatus.error, predictions: []));
+    }
+  }
+
+  Future<void> _onSelectedPredictionMarketsChanged(
+    SelectedPredictionMarketsChanged event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    try {
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          selectedMarket: event.selectedMarkets,
+        ),
+      );
+    } catch (error) {
+      debugPrint('ERROR SELECTING MARKETS $error');
+      emit(state.copyWith(status: BlocStatus.error));
     }
   }
 }

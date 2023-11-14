@@ -18,3 +18,50 @@ class LoadPredictionsEvent extends PredictPageEvent {
 class ViewPredictionDetails extends PredictPageEvent {
   const ViewPredictionDetails();
 }
+
+class SelectedPredictionMarketsChanged extends PredictPageEvent {
+  const SelectedPredictionMarketsChanged({
+    required this.selectedMarkets,
+  });
+
+  final SupportedPredictionMarkets selectedMarkets;
+
+  @override
+  List<Object?> get props => [selectedMarkets];
+}
+
+class AllPredictionMarketsRequested extends PredictPageEvent {
+  const AllPredictionMarketsRequested();
+}
+
+class CollegePredictionMarketsRequested extends PredictPageEvent {
+  const CollegePredictionMarketsRequested();
+}
+
+class BasketballPredictionMarketsRequested extends PredictPageEvent {
+  const BasketballPredictionMarketsRequested();
+}
+
+class FootballPredictionMarketsRequested extends PredictPageEvent {
+  const FootballPredictionMarketsRequested();
+}
+
+class HockeyPredictionMarketsRequested extends PredictPageEvent {
+  const HockeyPredictionMarketsRequested();
+}
+
+class BaseballPredictionMarketsRequested extends PredictPageEvent {
+  const BaseballPredictionMarketsRequested();
+}
+
+class SoccerPredictionMarketsRequested extends PredictPageEvent {
+  const SoccerPredictionMarketsRequested();
+}
+
+class VotedPredictionMarketsRequested extends PredictPageEvent {
+  const VotedPredictionMarketsRequested();
+}
+
+class ExoticPredictionMarketsRequested extends PredictPageEvent {
+  const ExoticPredictionMarketsRequested();
+}

@@ -28,7 +28,6 @@ class PredictionPageBloc
     on<PredictionPageLoaded>(_onPredictionPageLoaded);
     on<LoadingPredictionPage>(_onLoadingPredictionPage);
     on<MintPredictionTokens>(_onMintPredictionTokens);
-    on<SelectedMarketsChanged>(_onSelectedMarketsChanged);
     on<RedeemPredictionTokens>(_onRedeemPredictionTokens);
     on<LoadMarketAddress>(_onLoadMarketAddress);
     on<ToggleAdvanceFeatures>(_onToggleAdvanceFeatured);
@@ -140,22 +139,5 @@ class PredictionPageBloc
     Emitter<PredictionPageState> emit,
   ) {
     emit(state.copyWith(isToggled: !state.isToggled));
-  }
-
-    Future<void> _onSelectedMarketsChanged(
-    SelectedMarketsChanged event,
-    Emitter<MarketsPageState> emit,
-  ) async {
-    try {
-      emit(
-        state.copyWith(
-          status: BlocStatus.success,
-          selectedMarket: event.selectedMarkets,
-        ),
-      );
-    } catch (error) {
-      debugPrint('ERROR SELECTING MARKETS $error');
-      emit(state.copyWith(status: BlocStatus.error));
-    }
   }
 }
