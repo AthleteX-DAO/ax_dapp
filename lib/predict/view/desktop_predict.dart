@@ -94,6 +94,22 @@ class _DesktopPredictState extends State<DesktopPredict> {
                             ),
                           ),
                         ),
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.Voted)
+                        SizedBox(
+                          height: constraints.maxHeight * 0.8 - 120,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.only(top: 10),
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: currentPredictions.length,
+                            itemBuilder: (context, index) {
+                              return DesktopPredictionCard(
+                                predictionModel: currentPredictions[index],
+                              );
+                            },
+                          ),
+                        ),
                       SizedBox(
                         height: constraints.maxHeight * 0.8 - 120,
                         child: const Center(
