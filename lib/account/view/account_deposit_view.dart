@@ -1,7 +1,5 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
-import 'package:ax_dapp/account/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +12,7 @@ class AccountDepositView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const edge = 40.0;
-    var wid = 400.0;
+    const wid = 400.0;
     const edge2 = 60.0;
     final _height = MediaQuery.of(context).size.height;
     var formattedWalletAddress = '';
@@ -36,7 +34,6 @@ class AccountDepositView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
                   alignment: Alignment.centerLeft,
@@ -51,7 +48,6 @@ class AccountDepositView extends StatelessWidget {
                 ),
               ],
             ),
-
             SizedBox(
               width: wid - edge2,
               child: Row(
@@ -86,7 +82,7 @@ class AccountDepositView extends StatelessWidget {
                                 isBold: false,
                                 isUline: false,
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Row(
@@ -104,14 +100,14 @@ class AccountDepositView extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
-                                  Icon(
+                                  const Icon(
                                     Icons.account_balance_wallet,
-                                    color: lightOrangeColor,
+                                    color: Colors.white,
                                   ),
                                   Text(
                                     formattedWalletAddress,
                                     style: textStyle(
-                                      lightOrangeColor,
+                                      Colors.white,
                                       20,
                                       isBold: false,
                                       isUline: false,
@@ -133,17 +129,15 @@ class AccountDepositView extends StatelessWidget {
                                 isBold: false,
                                 isUline: false,
                               ),
-                            )
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-
-            // Divider
             Container(
               margin: const EdgeInsets.only(top: 20),
               width: constraints.maxWidth - edge,
@@ -151,14 +145,12 @@ class AccountDepositView extends StatelessWidget {
                 color: Colors.grey,
               ),
             ),
-
-            // List Supported Tokens & Networks + QR Code
             SizedBox(
               width: constraints.maxWidth - edge2,
               height: _height * 0.5,
               child: QrImageView(
                 data: walletAddress,
-                backgroundColor: lightOrangeColor,
+                backgroundColor: Colors.white,
               ),
             ),
           ],

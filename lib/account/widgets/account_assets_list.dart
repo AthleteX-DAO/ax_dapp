@@ -5,11 +5,12 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 class WalletAssetsList extends StatelessWidget {
-  const WalletAssetsList({super.key, required BoxConstraints boxConstraints})
-      : constraints = boxConstraints;
+  const WalletAssetsList({
+    super.key,
+    required BoxConstraints boxConstraints,
+  }) : constraints = boxConstraints;
 
   final BoxConstraints constraints;
 
@@ -36,7 +37,7 @@ class WalletAssetsList extends StatelessWidget {
                   },
                 );
               }
-              if (state.selectedAssets == AccountAssets.Crypto) {
+              if (state.selectedAssets == AccountAssets.crypto) {
                 return ListView.builder(
                   padding: const EdgeInsets.only(top: 10),
                   physics: const BouncingScrollPhysics(),
@@ -48,7 +49,7 @@ class WalletAssetsList extends StatelessWidget {
                   },
                 );
               }
-              if (state.selectedAssets == AccountAssets.APTs) {
+              if (state.selectedAssets == AccountAssets.apts) {
                 return Center(
                   child: Text(
                     'Coming Soon!',
@@ -61,7 +62,7 @@ class WalletAssetsList extends StatelessWidget {
                   ),
                 );
               }
-              if (state.selectedAssets == AccountAssets.NFTs) {
+              if (state.selectedAssets == AccountAssets.nfts) {
                 Center(
                   child: Text(
                     'Coming Soon!',

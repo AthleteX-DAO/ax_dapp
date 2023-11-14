@@ -85,7 +85,7 @@ class LeagueTimerStatus extends StatelessWidget {
                 isUline: false,
               ),
             ),
-          ]
+          ],
         ],
       ),
     );

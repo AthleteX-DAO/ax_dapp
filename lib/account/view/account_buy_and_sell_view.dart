@@ -46,7 +46,7 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
     const edge = 40.0;
-    var wid = 400.0;
+    const wid = 400.0;
 
     const edge2 = 60.0;
     return LayoutBuilder(
@@ -56,7 +56,6 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
                   alignment: Alignment.centerLeft,
@@ -113,8 +112,6 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
                 ],
               ),
             ),
-
-            // Divider
             Container(
               margin: const EdgeInsets.only(top: 20),
               width: constraints.maxWidth - edge,

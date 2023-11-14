@@ -37,7 +37,10 @@ class LeagueTeamHeader extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Visibility(visible: false, child: Container())
+            Visibility(
+              visible: false,
+              child: Container(),
+            ),
           ],
         ),
         controlAffinity: ListTileControlAffinity.leading,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ax_dapp/account/repository/account_repository.dart';
 import 'package:ax_dapp/app/view/app.dart';
 import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/chat_box/repository/chat_gpt_repository.dart';
@@ -67,7 +68,6 @@ void main() async {
   final httpClient = http.Client();
 
   await initHiveForFlutter();
-  // usePathUrlStrategy();
   final configApiClient = ConfigApiClient(
     defaultChain: defaultChain,
     httpClient: httpClient,
@@ -235,6 +235,9 @@ void main() async {
             create: (context) => CrossChainBalanceUseCase(
               walletRepository: context.read<WalletRepository>(),
             ),
+          ),
+          RepositoryProvider(
+            create: (context) => AccountRepository(),
           ),
         ],
         child: App(configRepository: configRepository),

@@ -46,7 +46,7 @@ class EntryFee extends StatelessWidget {
                 fontSize: textSize,
                 fontWeight: FontWeight.w400,
               ),
-            )
+            ),
           ],
         ),
       ),

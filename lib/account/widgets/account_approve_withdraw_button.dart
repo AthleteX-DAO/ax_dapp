@@ -1,4 +1,6 @@
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountApproveWithdrawButton extends StatelessWidget {
   const AccountApproveWithdrawButton({super.key});
@@ -24,8 +26,9 @@ class AccountApproveWithdrawButton extends StatelessWidget {
                 ),
               ),
             ),
-            //TODO(anyone): Complete the logic to handle account withdraw
-            onPressed: () {},
+            onPressed: () {
+              context.read<AccountBloc>().add(const AccountWithdrawConfirm());
+            },
             child: const Text(
               'Approve Withdraw',
               style: TextStyle(

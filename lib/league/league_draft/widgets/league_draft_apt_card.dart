@@ -141,7 +141,7 @@ class APTCard extends StatelessWidget {
                 },
               ),
             ),
-          )
+          ),
         ],
       ),
     );

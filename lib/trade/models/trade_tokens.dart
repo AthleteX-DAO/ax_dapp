@@ -38,6 +38,10 @@ extension EthereumChainX on EthereumChain {
           tokenFrom = Token.sx(this);
           tokenTo = axt;
           break;
+        case EthereumChain.optimism:
+          return TradeTokens.empty;
+        case EthereumChain.arbitriumOne:
+          return TradeTokens.empty;
       }
     }
     return TradeTokens(tokenFrom: tokenFrom, tokenTo: tokenTo);

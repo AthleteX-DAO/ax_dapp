@@ -1,7 +1,7 @@
 import 'package:ax_dapp/athlete_markets/widgets/athlete_buy_approve_button.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/widgets/widgets.dart';
-import 'package:ax_dapp/markets/markets.dart' hide AptTypeSelectionChanged;
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -40,9 +40,6 @@ class _BuyDialogState extends State<BuyDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
   final TextEditingController _aptAmountController = TextEditingController();
-
-  // in percents, slippage tolerance determines the upper bound of the receive
-  // amount, below which transaction gets reverted
   double slippageTolerance = 1;
 
   @override
@@ -64,7 +61,7 @@ class _BuyDialogState extends State<BuyDialog> {
           ),
           Expanded(
             child: ShortAptButton(),
-          )
+          ),
         ],
       ),
     );
@@ -196,7 +193,6 @@ class _BuyDialogState extends State<BuyDialog> {
                     ),
                   ),
                 ),
-                //Input AX text with toggle
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -213,7 +209,6 @@ class _BuyDialogState extends State<BuyDialog> {
                     toggleLongShortToken(wid, hgt),
                   ],
                 ),
-                //APT input box
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   width: wid,
@@ -226,7 +221,6 @@ class _BuyDialogState extends State<BuyDialog> {
                   ),
                   child: Column(
                     children: [
-                      //APT icon - athlete name - max button - input field
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -346,9 +340,9 @@ class _BuyDialogState extends State<BuyDialog> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [Flexible(child: Price())],
+                        children: [Flexible(child: Price())],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -386,7 +380,6 @@ class _BuyDialogState extends State<BuyDialog> {
                     ],
                   ),
                 ),
-
                 SizedBox(
                   width: wid,
                   child: Row(
@@ -430,7 +423,7 @@ class _BuyDialogState extends State<BuyDialog> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -452,9 +445,10 @@ class LongAptButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
+        backgroundColor:
+            (aptTypeSelection.isLong) ? Colors.amber : Colors.transparent,
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
-        primary: (aptTypeSelection.isLong) ? Colors.amber : Colors.transparent,
       ),
       onPressed: () => context
           .read<BuyDialogBloc>()
@@ -485,9 +479,10 @@ class ShortAptButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
+        backgroundColor:
+            (aptTypeSelection.isLong) ? Colors.transparent : Colors.black,
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
-        primary: (aptTypeSelection.isLong) ? Colors.transparent : Colors.black,
       ),
       onPressed: () => context
           .read<BuyDialogBloc>()

@@ -23,6 +23,19 @@ class AccountBuyAndSellViewRequested extends AccountEvent {
   const AccountBuyAndSellViewRequested();
 }
 
+class AccountTokenViewRequested extends AccountEvent {
+  const AccountTokenViewRequested({required this.token});
+
+  final Token token;
+
+  @override
+  List<Object?> get props => [token];
+}
+
+class AccountWithdrawConfirm extends AccountEvent {
+  const AccountWithdrawConfirm();
+}
+
 class WatchAppDataChangesStarted extends AccountEvent {
   const WatchAppDataChangesStarted();
 }
@@ -37,6 +50,15 @@ class SelectTokenRequested extends AccountEvent {
 
   @override
   List<Object?> get props => [token];
+}
+
+class UpdateRecipentAddressRequested extends AccountEvent {
+  const UpdateRecipentAddressRequested({required this.recipentAddress});
+
+  final String recipentAddress;
+
+  @override
+  List<Object?> get props => [recipentAddress];
 }
 
 class UpdateBalanceRequested extends AccountEvent {
@@ -56,4 +78,13 @@ class SelectedAccountAssetsChanged extends AccountEvent {
 
   @override
   List<Object?> get props => [selectedAssets];
+}
+
+class UpdateWithdrawInput extends AccountEvent {
+  const UpdateWithdrawInput({required this.tokenAmountInput});
+
+  final double tokenAmountInput;
+
+  @override
+  List<Object?> get props => [tokenAmountInput];
 }

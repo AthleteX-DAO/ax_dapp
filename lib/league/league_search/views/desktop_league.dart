@@ -82,7 +82,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.allow(
                               RegExp('[a-zA-z. ]'),
-                            )
+                            ),
                           ],
                           controller: leagueSearchController,
                           decoration: InputDecoration(

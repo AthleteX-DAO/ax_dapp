@@ -80,7 +80,6 @@ class ShortButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final invalidAddr = GoRouter.of(context).location.contains('prediction') &&
         prompt.yesTokenAddress.isEmpty;
-    final _width = MediaQuery.of(context).size.width;
     return Container(
       width: MediaQuery.of(context).size.width * 0.20,
       height: 36,
@@ -211,7 +210,6 @@ class LongButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final invalidAddr = GoRouter.of(context).location.contains('prediction') &&
         prompt.yesTokenAddress.isEmpty;
-    final _width = MediaQuery.of(context).size.width;
     return Container(
       width: MediaQuery.of(context).size.width * 0.20,
       height: 36,

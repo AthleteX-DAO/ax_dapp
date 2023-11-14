@@ -42,9 +42,11 @@ class _TeamSizeFieldState extends State<TeamSizeField> {
           width: widget.textBoxWid,
           child: TextFormField(
             onChanged: (value) => {
-              context
-                  .read<EditRulesBloc>()
-                  .add(UpdateTeamSize(teamSize: int.parse(value)))
+              context.read<EditRulesBloc>().add(
+                    UpdateTeamSize(
+                      teamSize: int.parse(value),
+                    ),
+                  ),
             },
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.allow(

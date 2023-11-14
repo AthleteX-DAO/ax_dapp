@@ -10,6 +10,8 @@ class AccountState extends Equatable {
     this.accountViewStatus = AccountViewStatus.initial,
     this.tokenBalance = 0,
     this.tokens = const [],
+    this.tokenAmountInput = 0,
+    this.recipentAddress = kEmptyAddress,
   });
 
   final String walletAddress;
@@ -20,6 +22,8 @@ class AccountState extends Equatable {
   final AccountViewStatus accountViewStatus;
   final double tokenBalance;
   final List<Token> tokens;
+  final double tokenAmountInput;
+  final String recipentAddress;
 
   @override
   List<Object?> get props => [
@@ -31,6 +35,8 @@ class AccountState extends Equatable {
         tokenBalance,
         tokenAddress,
         tokens,
+        tokenAmountInput,
+        recipentAddress,
       ];
 
   AccountState copyWith({
@@ -42,6 +48,8 @@ class AccountState extends Equatable {
     double? tokenBalance,
     String? tokenAddress,
     List<Token>? tokens,
+    double? tokenAmountInput,
+    String? recipentAddress,
   }) {
     return AccountState(
       chain: chain ?? this.chain,
@@ -52,6 +60,8 @@ class AccountState extends Equatable {
       tokenBalance: tokenBalance ?? this.tokenBalance,
       tokenAddress: tokenAddress ?? this.tokenAddress,
       tokens: tokens ?? this.tokens,
+      tokenAmountInput: tokenAmountInput ?? this.tokenAmountInput,
+      recipentAddress: recipentAddress ?? this.recipentAddress,
     );
   }
 }

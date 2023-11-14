@@ -54,9 +54,7 @@ class MyFarmItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // Farm Title
           SingleLogoFarmTitle(farm: farm, cardWidth: cardWidth),
-          // Current Balance
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -69,10 +67,9 @@ class MyFarmItem extends StatelessWidget {
                   '${farm.stakingInfo.value.viewAmount} ${farm.strStakedSymbol}',
                   style: customTextStyle,
                 ),
-              )
+              ),
             ],
           ),
-          //Upper information section
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -80,22 +77,20 @@ class MyFarmItem extends StatelessWidget {
                 'Current APR',
                 style: customTextStyle,
               ),
-              Text('${farm.strAPR}%', style: customTextStyle)
+              Text('${farm.strAPR}%', style: customTextStyle),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('TVL', style: customTextStyle),
-              Text('\$${farm.strTVL}', style: customTextStyle)
+              Text('\$${farm.strTVL}', style: customTextStyle),
             ],
           ),
-          //Divider line
           Divider(
             thickness: 0.35,
             color: Colors.grey[400],
           ),
-          //Bottom information section
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -106,7 +101,6 @@ class MyFarmItem extends StatelessWidget {
               ),
             ],
           ),
-          //Show different information for AX item card and AX with APT card
           SizedBox(
             width: cardWidth,
             child: Row(
@@ -139,37 +133,16 @@ class MyFarmItem extends StatelessWidget {
                     '${farm.rewardInfo.value.viewAmount} $rewardSymbol',
                     style: customTextStyle,
                   ),
-                )
+                ),
               ],
             ),
           ),
-          // we will add this feature in the future
-          // SizedBox(
-          //   width: cardWidth,
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       Text(
-          //         'Total AX available (Staked + Earned)',
-          //         style: customTextStyle,
-          //       ),
-          //       Obx(
-          //         () => Text(
-          //           '${parsedTotal.toStringAsFixed(2)} $rewardSymbol',
-          //           style: customTextStyle,
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          // ),
-          //Claim rewards and Unstake liquidity buttons
           SizedBox(
             width: cardWidth,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  //subtract padding for card's content for mobile
                   width: (cardWidth / 2) - 25,
                   height: 35,
                   decoration: boxDecoration(
@@ -231,7 +204,6 @@ class MyFarmItem extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  //width takes into account padding for card's content
                   width: (cardWidth / 2) - 25,
                   height: 35,
                   decoration: boxDecoration(

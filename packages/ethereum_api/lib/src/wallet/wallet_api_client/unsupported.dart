@@ -15,6 +15,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   });
 
   /// returns the Wallets private seed phrase
+  @override
   String get hex => throw UnsupportedError('hex is not available');
   @override
   Stream<EthereumChain> get chainChanges => throw UnsupportedError(
@@ -39,6 +40,13 @@ class EthereumWalletApiClient implements WalletApiClient {
   }
 
   @override
+  Future<void> updateChain(EthereumChain chain) {
+    throw UnsupportedError(
+      'updateChain not supported on the current platform',
+    );
+  }
+
+  @override
   Future<void> syncChain(EthereumChain ethereumChain) {
     throw UnsupportedError(
       'syncChain not supported on the current platform',
@@ -52,6 +60,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     );
   }
 
+  @override
   Future<WalletCredentials> importWalletCredentials(String hex) {
     throw UnsupportedError(
       'importWalletCredentials not supported on the current platform',

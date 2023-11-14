@@ -254,7 +254,7 @@ class LeagueTeamCards extends StatelessWidget {
                     ),
                   );
                 }).toList(),
-              )
+              ),
             ],
     );
   }

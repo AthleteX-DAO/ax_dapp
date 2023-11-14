@@ -35,7 +35,6 @@ class WalletActionButtons extends StatelessWidget {
           icon: const Icon(Icons.arrow_upward_outlined),
           tooltip: 'Deposit your crypto ',
           onPressed: () {
-            //Opens a new view for deposits
             context.read<AccountBloc>().add(
                   const AccountDepositViewRequested(),
                 );
@@ -45,7 +44,6 @@ class WalletActionButtons extends StatelessWidget {
           icon: const Icon(Icons.payments_sharp),
           tooltip: 'Buy or Sell your USDC',
           onPressed: () {
-            //Opens a new view for Buying and selling
             context.read<AccountBloc>().add(
                   const AccountBuyAndSellViewRequested(),
                 );

@@ -33,7 +33,7 @@ class ConfirmEdit extends StatelessWidget {
               ),
               onPressed: () => {
                 context.read<EditRulesBloc>().add(UpdateLeague()),
-                Navigator.pop(context)
+                Navigator.pop(context),
               },
               child: const Text(
                 'Confirm',

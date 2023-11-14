@@ -342,7 +342,7 @@ class _MintDialogState extends State<MintDialog> {
                             }
                             return 'Something went wrong';
                           }(),
-                        )
+                        ),
                     ],
                   ),
                 ),

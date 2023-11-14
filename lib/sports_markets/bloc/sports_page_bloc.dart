@@ -1,6 +1,7 @@
+// ignore_for_file: unused_field
+
 import 'dart:async';
 
-import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:shared/shared.dart';
@@ -22,6 +23,7 @@ class SportsPageBloc extends Bloc<SportsPageEvent, SportsPageState> {
     on<FetchLatestInfo>(_onFetchLatestIntfo);
   }
 
+  //TODO(Kevin): use this when ready
   final WalletRepository _walletRepository;
   final GetSportsMarketsDataUseCase _getSportsMarketsDataUseCase;
 

@@ -1,7 +1,5 @@
-import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/sports_markets/models/sports_markets_model.dart';
-import 'package:ax_dapp/sports_markets/repository/overtime_markets_repository.dart';
-import 'package:ax_dapp/sports_markets/repository/sx_markets_repository.dart';
+import 'package:ax_dapp/sports_markets/repository/repository.dart';
 
 class GetSportsMarketsDataUseCase {
   GetSportsMarketsDataUseCase({
