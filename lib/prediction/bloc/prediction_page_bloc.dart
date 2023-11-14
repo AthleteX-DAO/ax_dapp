@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -28,6 +28,7 @@ class PredictionPageBloc
     on<PredictionPageLoaded>(_onPredictionPageLoaded);
     on<LoadingPredictionPage>(_onLoadingPredictionPage);
     on<MintPredictionTokens>(_onMintPredictionTokens);
+    on<SelectedMarketsChanged>(_onSelectedMarketsChanged);
     on<RedeemPredictionTokens>(_onRedeemPredictionTokens);
     on<LoadMarketAddress>(_onLoadMarketAddress);
     on<ToggleAdvanceFeatures>(_onToggleAdvanceFeatured);
@@ -139,5 +140,22 @@ class PredictionPageBloc
     Emitter<PredictionPageState> emit,
   ) {
     emit(state.copyWith(isToggled: !state.isToggled));
+  }
+
+    Future<void> _onSelectedMarketsChanged(
+    SelectedMarketsChanged event,
+    Emitter<MarketsPageState> emit,
+  ) async {
+    try {
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          selectedMarket: event.selectedMarkets,
+        ),
+      );
+    } catch (error) {
+      debugPrint('ERROR SELECTING MARKETS $error');
+      emit(state.copyWith(status: BlocStatus.error));
+    }
   }
 }
