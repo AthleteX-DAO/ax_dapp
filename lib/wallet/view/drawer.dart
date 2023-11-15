@@ -1,3 +1,4 @@
+import 'package:ax_dapp/account/account.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:ax_dapp/wallet/widgets/terms_and_conditions.dart';
