@@ -20,8 +20,7 @@ class _PredictionMarketsFilterDesktopState
   Widget build(BuildContext context) {
     const sportFilterTxSz = 14.0;
     final bloc = context.read<PredictPageBloc>();
-    final _selectedMarket =
-        context.read<PredictPageBloc>().state.selectedMarket;
+    var _selectedMarket = context.read<PredictPageBloc>().state.selectedMarket;
     return Container(
         margin: const EdgeInsets.only(
           left: 20,
@@ -51,7 +50,10 @@ class _PredictionMarketsFilterDesktopState
             ),
             TextButton(
               onPressed: () {
-                marketsSearchController.clear();
+                setState(() {
+                  _selectedMarket = SupportedPredictionMarkets.College;
+                });
+
                 bloc
                   ..add(
                     const SelectedPredictionMarketsChanged(
@@ -82,6 +84,10 @@ class _PredictionMarketsFilterDesktopState
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  _selectedMarket = SupportedPredictionMarkets.Basketball;
+                });
+
                 marketsSearchController.clear();
                 bloc
                   ..add(
@@ -113,6 +119,9 @@ class _PredictionMarketsFilterDesktopState
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  _selectedMarket = SupportedPredictionMarkets.Football;
+                });
                 marketsSearchController.clear();
                 bloc
                   ..add(
@@ -144,6 +153,9 @@ class _PredictionMarketsFilterDesktopState
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  _selectedMarket = SupportedPredictionMarkets.Hockey;
+                });
                 marketsSearchController.clear();
                 bloc
                   ..add(
@@ -175,6 +187,9 @@ class _PredictionMarketsFilterDesktopState
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  _selectedMarket = SupportedPredictionMarkets.Baseball;
+                });
                 marketsSearchController.clear();
                 bloc
                   ..add(
@@ -206,6 +221,9 @@ class _PredictionMarketsFilterDesktopState
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  _selectedMarket = SupportedPredictionMarkets.Soccer;
+                });
                 marketsSearchController.clear();
                 bloc
                   ..add(
@@ -237,6 +255,9 @@ class _PredictionMarketsFilterDesktopState
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  _selectedMarket = SupportedPredictionMarkets.Voted;
+                });
                 marketsSearchController.clear();
                 bloc
                   ..add(
@@ -268,6 +289,10 @@ class _PredictionMarketsFilterDesktopState
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  _selectedMarket = SupportedPredictionMarkets.Exotic;
+                });
+
                 marketsSearchController.clear();
                 bloc
                   ..add(
