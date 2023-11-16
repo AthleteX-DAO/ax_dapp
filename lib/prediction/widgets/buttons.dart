@@ -213,19 +213,22 @@ class LongButton extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.20,
       height: 36,
-      decoration: invalidAddr
-          ? boxDecoration(
-              secondaryGreyColor,
-              100,
-              0,
-              primaryWhiteColor,
-            )
-          : boxDecoration(
-              primaryRedColor,
-              100,
-              0,
-              primaryWhiteColor,
-            ),
+      decoration: boxDecoration(
+        const Color.fromRGBO(
+          254,
+          197,
+          0,
+          0.2,
+        ),
+        100,
+        0,
+        const Color.fromRGBO(
+          254,
+          197,
+          0,
+          0.2,
+        ),
+      ),
       child: TextButton(
         onPressed: () {
           if (invalidAddr) {
