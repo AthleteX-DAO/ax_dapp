@@ -1,4 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/predict.dart';
+import 'package:ax_dapp/predict/widgets/24h_volume.dart';
 import 'package:ax_dapp/predict/widgets/prediction_prompt.dart';
 import 'package:ax_dapp/predict/widgets/view_button.dart';
 import 'package:ax_dapp/prediction/widgets/buttons.dart';
@@ -32,7 +34,16 @@ class DesktopPredictionCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            // Prediction Prompt
             PredictionPrompt(predictionModel: predictionModel),
+
+            // Probability
+            MarketProbability(
+              prompt: predictionModel.details,
+            ),
+            // 24H Volume
+            Market24HVolume(model: predictionModel),
+            // price
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
