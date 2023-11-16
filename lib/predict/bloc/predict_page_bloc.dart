@@ -87,6 +87,11 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     try {
       emit(
         state.copyWith(
+          status: BlocStatus.loading,
+        ),
+      );
+      emit(
+        state.copyWith(
           status: BlocStatus.success,
           selectedMarket: event.selectedMarkets,
         ),
