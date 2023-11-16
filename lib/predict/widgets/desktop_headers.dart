@@ -38,6 +38,48 @@ class DesktopHeaders extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(
+              width: 100,
+            ),
+            SizedBox(
+              child: Text(
+                'Probability',
+                style: textStyle(
+                  Colors.grey[400]!,
+                  12,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 80,
+            ),
+            SizedBox(
+              child: Text(
+                '24H Volume',
+                style: textStyle(
+                  Colors.grey[400]!,
+                  12,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 50,
+            ),
+            SizedBox(
+              child: Text(
+                'Price',
+                style: textStyle(
+                  Colors.grey[400]!,
+                  12,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+            ),
           ],
         ),
       ),
