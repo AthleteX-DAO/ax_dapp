@@ -1,11 +1,5 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
-import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/predict.dart';
-import 'package:ax_dapp/predict/widgets/desktop_headers.dart';
-import 'package:ax_dapp/predict/widgets/desktop_prediction_card.dart';
-import 'package:ax_dapp/predict/widgets/markets_filter_desktop.dart';
-import 'package:ax_dapp/predict/widgets/prediction_loading_status.dart';
-import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/widgets/loader.dart';
@@ -66,15 +60,12 @@ class _DesktopPredictState extends State<DesktopPredict> {
                     alignment: Alignment.center,
                     children: [
                       if (state.status == BlocStatus.loading) const Loader(),
-                      if (state.predictions.isEmpty &&
-                          state.status == BlocStatus.success)
-                        const PredictionLoadingStatus(
-                          message: 'No Active Markets At This Time!',
-                        ),
                       if (state.status == BlocStatus.error)
                         const PredictionLoadingStatus(
-                          message: 'Failed to Load Markets!',
+                          message: 'Unable to load markets, please refresh',
                         ),
+
+                      /// List of all available prediction markets
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket ==
                               SupportedPredictionMarkets.all)
@@ -94,6 +85,21 @@ class _DesktopPredictState extends State<DesktopPredict> {
                             ),
                           ),
                         ),
+
+                      /// College Athlete Prediction Markets
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.College)
+                        SizedBox(
+                          height: constraints.maxHeight * 0.8 - 120,
+                          child: const Center(
+                            child: SizedBox(
+                              height: 70,
+                            ),
+                          ),
+                        ),
+
+                      /// Community Voted Prediction Markets
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket ==
                               SupportedPredictionMarkets.Voted)
@@ -110,6 +116,8 @@ class _DesktopPredictState extends State<DesktopPredict> {
                             },
                           ),
                         ),
+
+                      /// Empty Space when loading markets
                       SizedBox(
                         height: constraints.maxHeight * 0.8 - 120,
                         child: const Center(
@@ -117,7 +125,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
                             height: 70,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ],
