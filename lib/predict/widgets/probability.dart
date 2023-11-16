@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MarketProbability extends StatelessWidget {
-  const MarketProbability({super.key, 
+  const MarketProbability({
+    super.key,
     required this.prompt,
   });
 
@@ -12,10 +13,10 @@ class MarketProbability extends StatelessWidget {
     final _width = MediaQuery.of(context).size.width;
     return SizedBox(
       width: _width * 0.18 > 175 ? _width * 0.18 : 175,
-      child: Column(
+      child: const Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: const [Text('0%')],
+        children: [Text('0%')],
       ),
     );
   }
