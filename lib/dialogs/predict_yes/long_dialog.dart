@@ -1,11 +1,11 @@
-import 'package:ax_dapp/dialogs/predict_short/bloc/short_button_bloc.dart';
-import 'package:ax_dapp/predict/models/models.dart';
+import 'package:ax_dapp/dialogs/predict_long/bloc/long_button_bloc.dart';
+import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ShortDialog extends StatelessWidget {
-  const ShortDialog({
+class LongDialog extends StatelessWidget {
+  const LongDialog({
     super.key,
     required this.predictionModel,
   });
@@ -16,9 +16,9 @@ class ShortDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     const paddingHorizontal = 20.0;
     final _width = MediaQuery.of(context).size.width;
-    return BlocBuilder<ShortButtonBloc, ShortButtonState>(
+    return BlocBuilder<YesButtonBloc, YesButtonState>(
       builder: (context, state) {
-        final bloc = context.read<ShortButtonBloc>();
+        final bloc = context.read<YesButtonBloc>();
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(
@@ -42,7 +42,7 @@ class ShortDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Buy ${predictionModel.noName}',
+                        'Buy ${predictionModel.yesName}',
                         style: textStyle(
                           Colors.white,
                           20,
@@ -76,7 +76,7 @@ class ShortDialog extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              'Buy: ${state.aptBuyInfo.axPerAptPrice} AX',
+                              'Buy: ${state.swapInfo.receiveAmount} AX',
                             ),
                           ),
                         ],
@@ -109,7 +109,7 @@ class ShortDialog extends StatelessWidget {
                           bloc.add(
                             BuyButtonPressed(
                               eventMarketAddress: predictionModel.address,
-                              shortTokenAddress: predictionModel.noTokenAddress,
+                              longTokenAddress: predictionModel.yesTokenAddress,
                             ),
                           );
                         },
@@ -125,7 +125,7 @@ class ShortDialog extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

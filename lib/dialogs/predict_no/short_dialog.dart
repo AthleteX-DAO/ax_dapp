@@ -1,11 +1,11 @@
-import 'package:ax_dapp/dialogs/predict_long/bloc/long_button_bloc.dart';
-import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/dialogs/predict_short/bloc/short_button_bloc.dart';
+import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LongDialog extends StatelessWidget {
-  const LongDialog({
+class ShortDialog extends StatelessWidget {
+  const ShortDialog({
     super.key,
     required this.predictionModel,
   });
@@ -16,9 +16,9 @@ class LongDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     const paddingHorizontal = 20.0;
     final _width = MediaQuery.of(context).size.width;
-    return BlocBuilder<LongButtonBloc, LongButtonState>(
+    return BlocBuilder<NoButtonBloc, NoButtonState>(
       builder: (context, state) {
-        final bloc = context.read<LongButtonBloc>();
+        final bloc = context.read<NoButtonBloc>();
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(
@@ -42,7 +42,7 @@ class LongDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Buy ${predictionModel.yesName}',
+                        'Buy ${predictionModel.noName}',
                         style: textStyle(
                           Colors.white,
                           20,
@@ -76,7 +76,7 @@ class LongDialog extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              'Buy: ${state.swapInfo.receiveAmount} AX',
+                              'Buy: ${state.aptBuyInfo.axPerAptPrice} AX',
                             ),
                           ),
                         ],
@@ -109,7 +109,7 @@ class LongDialog extends StatelessWidget {
                           bloc.add(
                             BuyButtonPressed(
                               eventMarketAddress: predictionModel.address,
-                              longTokenAddress: predictionModel.yesTokenAddress,
+                              shortTokenAddress: predictionModel.noTokenAddress,
                             ),
                           );
                         },
@@ -125,7 +125,7 @@ class LongDialog extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
+                )
               ],
             ),
           ),

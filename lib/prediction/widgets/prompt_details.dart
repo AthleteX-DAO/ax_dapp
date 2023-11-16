@@ -140,10 +140,10 @@ class PromptDetails extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    LongButton(
+                    YesButton(
                       prompt: predictionModel,
                     ),
-                    ShortButton(
+                    NoButton(
                       prompt: predictionModel,
                     )
                   ],

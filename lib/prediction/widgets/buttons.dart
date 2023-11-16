@@ -69,8 +69,8 @@ class GenericMintButton extends StatelessWidget {
   }
 }
 
-class ShortButton extends StatelessWidget {
-  const ShortButton({
+class NoButton extends StatelessWidget {
+  const NoButton({
     super.key,
     required this.prompt,
   });
@@ -110,7 +110,7 @@ class ShortButton extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (context) => BlocProvider(
-                create: (context) => ShortButtonBloc(
+                create: (context) => NoButtonBloc(
                   repo: context.read<GetBuyInfoUseCase>(),
                   eventMarketRepository: context.read<EventMarketRepository>(),
                   streamAppDataChangesUseCase:
@@ -199,8 +199,8 @@ class GenericRedeemButton extends StatelessWidget {
   }
 }
 
-class LongButton extends StatelessWidget {
-  const LongButton({
+class YesButton extends StatelessWidget {
+  const YesButton({
     super.key,
     required this.prompt,
   });
@@ -243,7 +243,7 @@ class LongButton extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (context) => BlocProvider(
-                create: (context) => LongButtonBloc(
+                create: (context) => YesButtonBloc(
                   repo: context.read<GetSwapInfoUseCase>(),
                   eventMarketRepository: context.read<EventMarketRepository>(),
                   streamAppDataChangesUseCase:

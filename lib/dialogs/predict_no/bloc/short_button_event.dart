@@ -1,18 +1,18 @@
 part of 'short_button_bloc.dart';
 
-abstract class ShortButtonEvent extends Equatable {
-  const ShortButtonEvent();
+abstract class NoButtonEvent extends Equatable {
+  const NoButtonEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class WatchAppDataChangesStarted extends ShortButtonEvent {
+class WatchAppDataChangesStarted extends NoButtonEvent {
   const WatchAppDataChangesStarted();
 }
 
-class ShortButtonPressed extends ShortButtonEvent {
-  const ShortButtonPressed({
+class NoButtonPressed extends NoButtonEvent {
+  const NoButtonPressed({
     required this.eventMarketAddress,
     required this.shortTokenAddress,
   });
@@ -22,14 +22,14 @@ class ShortButtonPressed extends ShortButtonEvent {
   List<Object?> get props => [eventMarketAddress, shortTokenAddress];
 }
 
-class FetchBuyInfoRequested extends ShortButtonEvent {
+class FetchBuyInfoRequested extends NoButtonEvent {
   const FetchBuyInfoRequested({required this.shortTokenAddress});
   final String shortTokenAddress;
   @override
   List<Object?> get props => [shortTokenAddress];
 }
 
-class BuyButtonPressed extends ShortButtonEvent {
+class BuyButtonPressed extends NoButtonEvent {
   const BuyButtonPressed({
     required this.eventMarketAddress,
     required this.shortTokenAddress,
@@ -40,7 +40,7 @@ class BuyButtonPressed extends ShortButtonEvent {
   List<Object?> get props => [eventMarketAddress, shortTokenAddress];
 }
 
-class SellButtonPressed extends ShortButtonEvent {
+class SellButtonPressed extends NoButtonEvent {
   const SellButtonPressed({
     required this.eventMarketAddress,
     required this.shortTokenAddress,

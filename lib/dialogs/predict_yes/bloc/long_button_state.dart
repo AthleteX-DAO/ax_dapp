@@ -1,15 +1,17 @@
-part of 'short_button_bloc.dart';
+part of 'long_button_bloc.dart';
 
-class ShortButtonState extends Equatable {
-  const ShortButtonState({
+class YesButtonState extends Equatable {
+  const YesButtonState({
     this.status = BlocStatus.initial,
     this.errorMessage = '',
+    this.swapInfo = SwapInfo.empty,
     this.aptBuyInfo = AptBuyInfo.empty,
     this.aptSellInfo = AptSellInfo.empty,
   });
 
   final BlocStatus status;
   final String errorMessage;
+  final SwapInfo swapInfo;
   final AptBuyInfo aptBuyInfo;
   final AptSellInfo aptSellInfo;
 
@@ -18,18 +20,21 @@ class ShortButtonState extends Equatable {
         status,
         aptBuyInfo,
         aptSellInfo,
+        swapInfo,
         errorMessage,
       ];
 
-  ShortButtonState copyWith({
+  YesButtonState copyWith({
     BlocStatus? status,
     String? errorMessage,
+    SwapInfo? swapInfo,
     AptBuyInfo? aptBuyInfo,
     AptSellInfo? aptSellInfo,
   }) {
-    return ShortButtonState(
+    return YesButtonState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      swapInfo: swapInfo ?? this.swapInfo,
       aptBuyInfo: aptBuyInfo ?? this.aptBuyInfo,
       aptSellInfo: aptSellInfo ?? this.aptSellInfo,
     );

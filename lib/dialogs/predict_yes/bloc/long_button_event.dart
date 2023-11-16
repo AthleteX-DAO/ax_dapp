@@ -1,18 +1,18 @@
 part of 'long_button_bloc.dart';
 
-abstract class LongButtonEvent extends Equatable {
-  const LongButtonEvent();
+abstract class YesButtonEvent extends Equatable {
+  const YesButtonEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class WatchAppDataChangesStarted extends LongButtonEvent {
+class WatchAppDataChangesStarted extends YesButtonEvent {
   const WatchAppDataChangesStarted();
 }
 
-class LongButtonPressed extends LongButtonEvent {
-  const LongButtonPressed({
+class YesButtonPressed extends YesButtonEvent {
+  const YesButtonPressed({
     required this.eventMarketAddress,
     required this.longTokenAddress,
   });
@@ -22,7 +22,7 @@ class LongButtonPressed extends LongButtonEvent {
   List<Object?> get props => [eventMarketAddress, longTokenAddress];
 }
 
-class FetchSwapInfoRequested extends LongButtonEvent {
+class FetchSwapInfoRequested extends YesButtonEvent {
   const FetchSwapInfoRequested({
     required this.longTokenAddress,
   });
@@ -33,7 +33,7 @@ class FetchSwapInfoRequested extends LongButtonEvent {
   List<Object?> get props => [longTokenAddress];
 }
 
-class BuyButtonPressed extends LongButtonEvent {
+class BuyButtonPressed extends YesButtonEvent {
   const BuyButtonPressed({
     required this.eventMarketAddress,
     required this.longTokenAddress,
@@ -44,7 +44,7 @@ class BuyButtonPressed extends LongButtonEvent {
   List<Object?> get props => [eventMarketAddress, longTokenAddress];
 }
 
-class SellButtonPressed extends LongButtonEvent {
+class SellButtonPressed extends YesButtonEvent {
   const SellButtonPressed({
     required this.eventMarketAddress,
     required this.longTokenAddress,
