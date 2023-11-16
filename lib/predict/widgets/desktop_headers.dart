@@ -8,81 +8,85 @@ class DesktopHeaders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: OutlinedButton(
-        style: ButtonStyle(
-          overlayColor: MaterialStateProperty.all(
-            Colors.transparent,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          child: OutlinedButton(
+            style: ButtonStyle(
+              overlayColor: MaterialStateProperty.all(
+                Colors.transparent,
+              ),
+              side: MaterialStateProperty.resolveWith<BorderSide>(
+                (_) => BorderSide.none,
+              ),
+              mouseCursor: MaterialStateProperty.resolveWith<MouseCursor>(
+                (_) => MouseCursor.defer,
+              ),
+            ),
+            onPressed: () {},
+            child: Row(
+              children: <Widget>[
+                SizedBox(
+                  child: Text(
+                    'Ticker',
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      12,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+                SizedBox(
+                  child: Text(
+                    'Prediction',
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      12,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 100,
+                ),
+                SizedBox(
+                  child: Text(
+                    'Probability',
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      12,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 80,
+                ),
+                SizedBox(
+                  child: Text(
+                    '24H Volume',
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      12,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+              ],
+            ),
           ),
-          side: MaterialStateProperty.resolveWith<BorderSide>(
-            (_) => BorderSide.none,
-          ),
-          mouseCursor: MaterialStateProperty.resolveWith<MouseCursor>(
-            (_) => MouseCursor.defer,
-          ),
-        ),
-        onPressed: () {},
-        child: Row(
-          children: <Widget>[
-            const SizedBox(
-              width: 50,
-            ),
-            SizedBox(
-              child: Text(
-                'Prediction',
-                style: textStyle(
-                  Colors.grey[400]!,
-                  12,
-                  isBold: false,
-                  isUline: false,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 100,
-            ),
-            SizedBox(
-              child: Text(
-                'Probability',
-                style: textStyle(
-                  Colors.grey[400]!,
-                  12,
-                  isBold: false,
-                  isUline: false,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 80,
-            ),
-            SizedBox(
-              child: Text(
-                '24H Volume',
-                style: textStyle(
-                  Colors.grey[400]!,
-                  12,
-                  isBold: false,
-                  isUline: false,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 50,
-            ),
-            SizedBox(
-              child: Text(
-                'Price',
-                style: textStyle(
-                  Colors.grey[400]!,
-                  12,
-                  isBold: false,
-                  isUline: false,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
