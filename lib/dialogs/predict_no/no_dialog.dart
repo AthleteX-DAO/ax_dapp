@@ -1,4 +1,4 @@
-import 'package:ax_dapp/dialogs/predict_short/bloc/short_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_no/bloc/no_button_bloc.dart';
 import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';

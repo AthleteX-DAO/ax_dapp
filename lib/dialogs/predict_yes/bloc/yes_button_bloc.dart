@@ -8,8 +8,8 @@ import 'package:shared/shared.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-part 'long_button_event.dart';
-part 'long_button_state.dart';
+part 'yes_button_event.dart';
+part 'yes_button_state.dart';
 
 class YesButtonBloc extends Bloc<YesButtonEvent, YesButtonState> {
   YesButtonBloc({

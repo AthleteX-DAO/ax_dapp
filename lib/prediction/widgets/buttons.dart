@@ -1,9 +1,9 @@
-import 'package:ax_dapp/dialogs/predict_long/bloc/long_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_long/long_dialog.dart';
+import 'package:ax_dapp/dialogs/predict_yes/bloc/yes_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_yes/yes_dialog.dart';
 import 'package:ax_dapp/dialogs/predict_mint/bloc/mint_button_bloc.dart';
 import 'package:ax_dapp/dialogs/predict_redeem/bloc/redeem_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_short/bloc/short_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_short/short_dialog.dart';
+import 'package:ax_dapp/dialogs/predict_no/bloc/no_button_bloc.dart';
+import 'package:ax_dapp/dialogs/predict_no/no_dialog.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';

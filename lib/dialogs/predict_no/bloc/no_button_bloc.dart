@@ -7,8 +7,8 @@ import 'package:shared/shared.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-part 'short_button_event.dart';
-part 'short_button_state.dart';
+part 'no_button_event.dart';
+part 'no_button_state.dart';
 
 class NoButtonBloc extends Bloc<NoButtonEvent, NoButtonState> {
   NoButtonBloc({

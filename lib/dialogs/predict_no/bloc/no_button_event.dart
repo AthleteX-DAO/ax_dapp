@@ -1,4 +1,4 @@
-part of 'short_button_bloc.dart';
+part of 'no_button_bloc.dart';
 
 abstract class NoButtonEvent extends Equatable {
   const NoButtonEvent();

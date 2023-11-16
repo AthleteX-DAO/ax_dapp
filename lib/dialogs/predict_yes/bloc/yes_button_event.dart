@@ -1,4 +1,4 @@
-part of 'long_button_bloc.dart';
+part of 'yes_button_bloc.dart';
 
 abstract class YesButtonEvent extends Equatable {
   const YesButtonEvent();
