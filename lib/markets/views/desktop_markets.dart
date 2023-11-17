@@ -1,4 +1,4 @@
-import 'package:ax_dapp/athlete_markets/view/athlete_markets.dart';
+import 'package:ax_dapp/athlete_markets/athlete.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/markets/widgets/desktop_headers.dart';
 import 'package:ax_dapp/service/global.dart';
