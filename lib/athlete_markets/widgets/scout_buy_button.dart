@@ -1,9 +1,8 @@
+import 'package:ax_dapp/athlete_markets/widgets/widgets.dart';
+import 'package:ax_dapp/crypto_markets/models/models.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
-import 'package:ax_dapp/crypto_markets/models/models.dart';
-import 'package:ax_dapp/crypto_markets/widgets/widgets.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
-
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
