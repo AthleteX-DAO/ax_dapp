@@ -1,9 +1,12 @@
+import 'package:ax_dapp/athlete_markets/athlete.dart';
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/predict/widgets/24h_volume.dart';
 import 'package:ax_dapp/predict/widgets/prediction_prompt.dart';
 import 'package:ax_dapp/predict/widgets/view_button.dart';
 import 'package:ax_dapp/prediction/widgets/buttons.dart';
+import 'package:ax_dapp/prediction/widgets/buy_prediction_button.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -47,8 +50,8 @@ class DesktopPredictionCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                YesButton(
-                  prompt: predictionModel,
+                PredictionBuyButton(
+                  model: predictionModel,
                 ),
                 if (_width >= 1090) ...[
                   const SizedBox(
@@ -62,8 +65,8 @@ class DesktopPredictionCard extends StatelessWidget {
                     child: ViewButton(
                       predictionModel: predictionModel,
                     ),
-                  )
-                ]
+                  ),
+                ],
               ],
             )
           ],
