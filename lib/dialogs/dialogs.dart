@@ -16,10 +16,8 @@ export 'mint/widgets/widgets.dart' hide Balance;
 /// Promo
 export 'promo/connected_wallet_promo_dialog.dart';
 
-/// Redeem Dialogs
-export 'redeem/bloc/redeem_dialog_bloc.dart' hide WatchAptPairStarted;
-export 'redeem/redeem_dialog.dart';
-export 'redeem/widgets/widgets.dart';
+/// Redeem
+export 'redeem/redeem.dart';
 
 /// Sell Dialogs
 export 'sell/bloc/sell_dialog_bloc.dart'
