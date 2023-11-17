@@ -1,9 +1,5 @@
-import 'package:ax_dapp/dialogs/predict_yes/bloc/yes_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_yes/yes_dialog.dart';
-import 'package:ax_dapp/dialogs/predict_mint/bloc/mint_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_redeem/bloc/redeem_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_no/bloc/no_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_no/no_dialog.dart';
+import 'package:ax_dapp/dialogs/dialogs.dart';
+
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
@@ -18,8 +14,8 @@ import 'package:go_router/go_router.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-class GenericMintButton extends StatelessWidget {
-  const GenericMintButton({
+class MintPredictionButton extends StatelessWidget {
+  const MintPredictionButton({
     super.key,
     required this.prompt,
   });
@@ -37,20 +33,21 @@ class GenericMintButton extends StatelessWidget {
           final isWalletConnected =
               context.read<WalletBloc>().state.isWalletConnected;
           if (isWalletConnected) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => BlocProvider(
-                create: (context) => MintButtonBloc(
-                  eventMarketRepository: context.read<EventMarketRepository>(),
-                  streamAppDataChangesUseCase:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  walletRepository: context.read<WalletRepository>(),
-                ),
-                child: LongDialog(
-                  predictionModel: prompt,
-                ),
-              ),
-            );
+            // showDialog<void>(
+            //   context: context,
+            //   builder: (context) => BlocProvider(
+            //     create: (context) => MintDialogBloc(
+            //       eventMarketRepository: context.read<EventMarketRepository>(),
+            //       streamAppDataChangesUseCase:
+            //           context.read<StreamAppDataChangesUseCase>(),
+            //       walletRepository: context.read<WalletRepository>(),
+            //     ),
+            //     child: MintPredictionDialog(
+            //       predictionModel: prompt,
+            //     ),
+            //   ),
+            // );
+            context.showWalletWarningToast();
           } else {
             context.showWalletWarningToast();
           }
@@ -107,21 +104,22 @@ class NoButton extends StatelessWidget {
           final isWalletConnected =
               context.read<WalletBloc>().state.isWalletConnected;
           if (isWalletConnected) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => BlocProvider(
-                create: (context) => NoButtonBloc(
-                  repo: context.read<GetBuyInfoUseCase>(),
-                  eventMarketRepository: context.read<EventMarketRepository>(),
-                  streamAppDataChangesUseCase:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  walletRepository: context.read<WalletRepository>(),
-                ),
-                child: ShortDialog(
-                  predictionModel: prompt,
-                ),
-              ),
-            );
+            // showDialog<void>(
+            //   context: context,
+            //   builder: (context) => BlocProvider(
+            //     create: (context) => NoButtonBloc(
+            //       repo: context.read<GetBuyInfoUseCase>(),
+            //       eventMarketRepository: context.read<EventMarketRepository>(),
+            //       streamAppDataChangesUseCase:
+            //           context.read<StreamAppDataChangesUseCase>(),
+            //       walletRepository: context.read<WalletRepository>(),
+            //     ),
+            //     child: ShortDialog(
+            //       predictionModel: prompt,
+            //     ),
+            //   ),
+            // );
+            context.showWalletWarningToast();
           } else {
             context.showWalletWarningToast();
           }
@@ -147,8 +145,8 @@ class NoButton extends StatelessWidget {
   }
 }
 
-class GenericRedeemButton extends StatelessWidget {
-  const GenericRedeemButton({
+class RedeemPredictionButton extends StatelessWidget {
+  const RedeemPredictionButton({
     super.key,
     required this.prompt,
   });
@@ -167,20 +165,21 @@ class GenericRedeemButton extends StatelessWidget {
           final isWalletConnected =
               context.read<WalletBloc>().state.isWalletConnected;
           if (isWalletConnected) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => BlocProvider(
-                create: (context) => RedeemButtonBloc(
-                  eventMarketRepository: context.read<EventMarketRepository>(),
-                  streamAppDataChangesUseCase:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  walletRepository: context.read<WalletRepository>(),
-                ),
-                child: LongDialog(
-                  predictionModel: prompt,
-                ),
-              ),
-            );
+            // showDialog<void>(
+            //   context: context,
+            //   builder: (context) => BlocProvider(
+            //     create: (context) => RedeemDialogBloc(
+            //       eventMarketRepository: context.read<EventMarketRepository>(),
+            //       streamAppDataChangesUseCase:
+            //           context.read<StreamAppDataChangesUseCase>(),
+            //       walletRepository: context.read<WalletRepository>(),
+            //     ),
+            //     child: RedeemPredictionsDialog(
+            //       predictionModel: prompt,
+            //     ),
+            //   ),
+            // );
+            context.showWalletWarningToast();
           } else {
             context.showWalletWarningToast();
           }
@@ -240,21 +239,22 @@ class YesButton extends StatelessWidget {
           final isWalletConnected =
               context.read<WalletBloc>().state.isWalletConnected;
           if (isWalletConnected) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => BlocProvider(
-                create: (context) => YesButtonBloc(
-                  repo: context.read<GetSwapInfoUseCase>(),
-                  eventMarketRepository: context.read<EventMarketRepository>(),
-                  streamAppDataChangesUseCase:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  walletRepository: context.read<WalletRepository>(),
-                ),
-                child: LongDialog(
-                  predictionModel: prompt,
-                ),
-              ),
-            );
+            // showDialog<void>(
+            //   context: context,
+            //   builder: (context) => BlocProvider(
+            //     create: (context) => YesButtonBloc(
+            //       repo: context.read<GetSwapInfoUseCase>(),
+            //       eventMarketRepository: context.read<EventMarketRepository>(),
+            //       streamAppDataChangesUseCase:
+            //           context.read<StreamAppDataChangesUseCase>(),
+            //       walletRepository: context.read<WalletRepository>(),
+            //     ),
+            //     child: LongDialog(
+            //       predictionModel: prompt,
+            //     ),
+            //   ),
+            // );
+            context.showWalletWarningToast();
           } else {
             context.showWalletWarningToast();
           }
