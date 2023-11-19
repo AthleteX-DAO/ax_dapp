@@ -64,7 +64,7 @@ class PredictionPageBloc
               appConfig.reactiveEventMarketsClient.value
           ..controller.client.value = appConfig.reactiveWeb3Client.value
           ..controller.credentials = _walletRepository.credentials.value
-          ..marketAddress.value = state.predictionModel.address;
+          ..marketAddress.value = state.predictionModel.marketAddress;
       },
     );
   }
@@ -94,7 +94,7 @@ class PredictionPageBloc
     PredictionPageLoaded event,
     Emitter<PredictionPageState> emit,
   ) async {
-    final predictionAddress = event.predictionModel.address;
+    final predictionAddress = event.predictionModel.marketAddress;
     final currentPrediction = event.predictionModel;
     _eventMarketRepository.eventMarketAddress = predictionAddress;
     emit(
