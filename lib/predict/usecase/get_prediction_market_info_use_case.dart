@@ -21,7 +21,7 @@ class GetPredictionMarketInfoUseCase {
         id: model.id,
         prompt: model.prompt,
         details: model.details,
-        address: '',
+        marketAddress: '',
         yesTokenAddress: predictionInfo.isEmpty ? '' : predictionInfo[0],
         noTokenAddress: predictionInfo.isEmpty ? '' : predictionInfo[1],
         yesName: predictionInfo.isEmpty ? '' : predictionInfo[2],
