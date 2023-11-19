@@ -1,38 +1,68 @@
+import 'package:ax_dapp/markets/models/models.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:shared/shared.dart';
 
-class PredictionModel extends Equatable {
+class PredictionModel extends MarketModel {
   const PredictionModel({
     required this.id,
     required this.prompt,
     required this.details,
-    required this.address,
+    required this.marketAddress,
     this.resolution,
     required this.yesTokenAddress,
     required this.noTokenAddress,
     required this.yesName,
     required this.noName,
-  });
+    required this.time,
+    required this.longTokenPrice,
+    required this.shortTokenPrice,
+    required this.longTokenPercentage,
+    required this.shortTokenPercentage,
+    required this.longTokenPriceUsd,
+    required this.shortTokenPriceUsd,
+  }) : super(
+          id: id,
+          name: prompt,
+          marketHash: marketAddress,
+          typeOfMarket: SupportedMarkets.Prediction,
+        );
 
-  final String id;
+  @override
+  final int id;
+
   final String prompt;
   final String details;
   final bool? resolution;
-  final String address;
+  final String marketAddress;
   final String yesTokenAddress;
   final String noTokenAddress;
   final String yesName;
   final String noName;
 
+  final String time;
+  final double? longTokenPrice;
+  final double? longTokenPriceUsd;
+  final double? shortTokenPrice;
+  final double? shortTokenPriceUsd;
+  final double? longTokenPercentage;
+  final double? shortTokenPercentage;
+
   static const empty = PredictionModel(
-    id: '',
+    id: 0,
     prompt: '',
     details: '',
-    address: kEmptyAddress,
+    marketAddress: kEmptyAddress,
     yesTokenAddress: '',
     noTokenAddress: '',
     yesName: '',
     noName: '',
+    time: '',
+    longTokenPrice: 0,
+    shortTokenPrice: 0,
+    longTokenPercentage: 0,
+    shortTokenPercentage: 0,
+    longTokenPriceUsd: 0,
+    shortTokenPriceUsd: 0,
   );
 
   @override
@@ -40,12 +70,19 @@ class PredictionModel extends Equatable {
         id,
         prompt,
         details,
-        address,
+        marketAddress,
         yesTokenAddress,
         noTokenAddress,
         resolution,
         yesName,
         noName,
+        time,
+        longTokenPrice,
+        longTokenPriceUsd,
+        shortTokenPrice,
+        shortTokenPriceUsd,
+        longTokenPercentage,
+        shortTokenPercentage,
       ];
 
   @override
