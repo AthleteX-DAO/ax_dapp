@@ -49,7 +49,7 @@ class PredictionPage extends StatelessWidget {
                     ),
                     PromptDetails(
                       predictionModel: predictionModel,
-                    )
+                    ),
                   ],
                 ),
               ),
