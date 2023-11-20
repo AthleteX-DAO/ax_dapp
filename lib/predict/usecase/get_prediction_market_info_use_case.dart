@@ -16,7 +16,7 @@ class GetPredictionMarketInfoUseCase {
         await predictionSnapshotRepository.fetchCurrentMarkets();
     for (final model in predictionModel) {
       final predictionInfo =
-          await predictionAddressRepository.fetchMarketAddresses(model.id);
+          await predictionAddressRepository.fetchMarketAddresses('${model.id}');
       final predictionModel = PredictionModel(
         id: model.id,
         prompt: model.prompt,
@@ -26,6 +26,13 @@ class GetPredictionMarketInfoUseCase {
         noTokenAddress: predictionInfo.isEmpty ? '' : predictionInfo[1],
         yesName: predictionInfo.isEmpty ? '' : predictionInfo[2],
         noName: predictionInfo.isEmpty ? '' : predictionInfo[3],
+        time: '',
+        longTokenPrice: 0,
+        shortTokenPrice: 0,
+        longTokenPercentage: 0,
+        shortTokenPercentage: 0,
+        longTokenPriceUsd: 0,
+        shortTokenPriceUsd: 0,
       );
       markets.add(predictionModel);
     }
