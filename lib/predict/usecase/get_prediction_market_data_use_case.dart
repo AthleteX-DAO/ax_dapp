@@ -21,7 +21,7 @@ class GetPredictionMarketDataUseCase {
     String startDate,
   ) async {}
 
-  List<PriceRecord>? getMarketPriceRecords(
+  List<PriceRecord>? _getMarketPriceRecords(
     String strTokenAddr,
     String strAXTAddr,
   ) {
