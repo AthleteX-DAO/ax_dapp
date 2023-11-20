@@ -1,6 +1,7 @@
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/app_scaffold.dart';
+import 'package:ax_dapp/athlete_markets/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/athlete_markets/view/athlete_page.dart';
 import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
@@ -94,7 +95,7 @@ class AppRouter {
                           context.read<StreamAppDataChangesUseCase>(),
                       predictionAddressRepository:
                           context.read<PredictionAddressRepository>(),
-                      predictionModelId: _toPrediction(state.params['id']!)!.id,
+                      predictionModelId: state.params['id']!,
                     ),
                     child: PredictionPage(
                       predictionModel: _toPrediction(state.params['id']!)!,
@@ -114,7 +115,8 @@ class AppRouter {
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
-                  getSportsMarketsDataUseCase: context.read<GetSportsMarketsDataUseCase>(),
+                  getSportsMarketsDataUseCase:
+                      context.read<GetSportsMarketsDataUseCase>(),
                   repo: GetScoutAthletesDataUseCase(
                     tokensRepository: context.read<TokensRepository>(),
                     graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
