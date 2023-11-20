@@ -31,7 +31,29 @@ class _DesktopPredictState extends State<DesktopPredict> {
       builder: (context, state) {
         final bloc = context.read<PredictPageBloc>();
         global.predictions = state.predictions;
-        final currentPredictions = state.predictions;
+        final currentPredictions = [
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+          PredictionModel.empty,
+        ];
         if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
           bloc.add(
