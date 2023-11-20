@@ -108,7 +108,10 @@ class AccountDetails extends StatelessWidget {
               color: Colors.grey,
             ),
             const AccountAssetsFilter(),
-            const WalletAssetsList(),
+            SizedBox(
+              height: constraints.maxHeight * 0.5,
+              child: const WalletAssetsList(),
+            ),
           ],
         );
       },
