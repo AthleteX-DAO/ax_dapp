@@ -36,7 +36,7 @@ class PredictionSnapshotRepository {
           )
           .toList();
       for (final proposal in proposalMap) {
-        final id = proposal['id'] as String;
+        final id = proposal['id'] as int;
         final title = proposal['title'] as String;
         final body = proposal['body'] as String;
         predictions.add(
@@ -44,11 +44,18 @@ class PredictionSnapshotRepository {
             id: id,
             prompt: title,
             details: body,
-            address: '',
+            marketAddress: '',
             yesTokenAddress: '',
             noTokenAddress: '',
             yesName: '',
             noName: '',
+            time: '',
+            longTokenPrice: 0,
+            shortTokenPrice: 0,
+            longTokenPercentage: 0,
+            shortTokenPercentage: 0,
+            longTokenPriceUsd: 0,
+            shortTokenPriceUsd: 0,
           ),
         );
       }
