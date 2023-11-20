@@ -4,16 +4,11 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AccountAssetsFilter extends StatefulWidget {
+class AccountAssetsFilter extends StatelessWidget {
   const AccountAssetsFilter({
     super.key,
   });
 
-  @override
-  State<AccountAssetsFilter> createState() => _WalletsAssetsFilterState();
-}
-
-class _WalletsAssetsFilterState extends State<AccountAssetsFilter> {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AccountBloc>();
