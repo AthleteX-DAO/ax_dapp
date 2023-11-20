@@ -1,11 +1,6 @@
-import 'package:ax_dapp/athlete_markets/athlete.dart';
-import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/predict/widgets/24h_volume.dart';
-import 'package:ax_dapp/predict/widgets/prediction_prompt.dart';
-import 'package:ax_dapp/predict/widgets/view_button.dart';
-import 'package:ax_dapp/prediction/widgets/buttons.dart';
+import 'package:ax_dapp/predict/widgets/price.dart';
 import 'package:ax_dapp/prediction/widgets/buy_prediction_button.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +25,7 @@ class DesktopPredictionCard extends StatelessWidget {
           context.goNamed(
             'prediction',
             params: {
-              'id': predictionModel.id,
+              'id': '${predictionModel.id}',
             },
           );
         },
@@ -40,12 +35,8 @@ class DesktopPredictionCard extends StatelessWidget {
             // Prediction Prompt
             PredictionPrompt(predictionModel: predictionModel),
 
-            // Probability
-            MarketProbability(
-              prompt: predictionModel.details,
-            ),
-            // 24H Volume
-            Market24HVolume(model: predictionModel),
+            MarketPrice(predictionModel: predictionModel, isYesToken: true),
+
             // price
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -68,7 +59,7 @@ class DesktopPredictionCard extends StatelessWidget {
                   ),
                 ],
               ],
-            )
+            ),
           ],
         ),
       ),
