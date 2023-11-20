@@ -11,7 +11,6 @@ class Account extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     var wid = 400.0;
     const edge = 40.0;
@@ -20,7 +19,7 @@ class Account extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          height: _height * 0.9,
+          height: constraints.maxHeight * 0.85,
           width: constraints.maxWidth * 0.9,
           decoration:
               boxDecoration(Colors.transparent, 30, 0, Colors.transparent),
@@ -63,7 +62,7 @@ class Account extends StatelessWidget {
                       ? const EdgeInsets.symmetric(horizontal: 10)
                       : EdgeInsets.zero,
                   width: constraints.maxWidth - edge,
-                  height: _height * 0.8,
+                  height: constraints.maxHeight * 0.8,
                   decoration: boxDecoration(
                     Colors.transparent,
                     14,
@@ -80,7 +79,10 @@ class Account extends StatelessWidget {
                               state.accountViewStatus ==
                                   AccountViewStatus.details ||
                               state.accountViewStatus == AccountViewStatus.none)
-                            const AccountDetails(),
+                            SizedBox(
+                              height: constraints.maxHeight * 0.6,
+                              child: const AccountDetails(),
+                            ),
                           if (state.accountViewStatus ==
                               AccountViewStatus.buySell)
                             const AccountBuyAndSell(),

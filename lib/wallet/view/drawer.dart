@@ -11,6 +11,7 @@ class DrawerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Drawer(
       width: width < 769 ? width : width / 3,
       backgroundColor: Colors.black,
@@ -20,7 +21,10 @@ class DrawerView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               if (state.walletViewStatus == WalletViewStatus.profile)
-                const Account(),
+                SizedBox(
+                  height: height * 0.95,
+                  child: const Account(),
+                ),
               if (state.walletViewStatus == WalletViewStatus.login)
                 const LoginView(),
               if (state.walletViewStatus == WalletViewStatus.signup)

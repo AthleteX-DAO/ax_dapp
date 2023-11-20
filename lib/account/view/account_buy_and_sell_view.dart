@@ -112,14 +112,9 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
                 ],
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 20),
-              width: constraints.maxWidth - edge,
-              child: const Divider(
-                color: Colors.grey,
-              ),
+            const Divider(
+              color: Colors.grey,
             ),
-
             SizedBox(
               width: constraints.maxWidth - edge,
               height: _height * 0.5,

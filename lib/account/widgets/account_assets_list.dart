@@ -9,10 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class WalletAssetsList extends StatelessWidget {
   const WalletAssetsList({
     super.key,
-    required BoxConstraints boxConstraints,
-  }) : constraints = boxConstraints;
-
-  final BoxConstraints constraints;
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +19,7 @@ class WalletAssetsList extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         SizedBox(
-          height: constraints.maxHeight * 0.5,
+          height: 250,
           child: BlocBuilder<AccountBloc, AccountState>(
             builder: (BuildContext context, state) {
               if (state.selectedAssets == AccountAssets.all) {
