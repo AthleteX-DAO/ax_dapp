@@ -1,0 +1,9 @@
+export 'baseball_prediction_details_widget.dart';
+export 'basketball_prediction_details_widget.dart';
+export 'college_prediction_details_widget.dart';
+export 'exotic_prediction_details_widget.dart';
+export 'football_prediction_details_widget.dart';
+export 'hockey_prediction_details_widget.dart';
+export 'prediction_details_widget.dart';
+export 'soccer_prediction_details_widget.dart';
+export 'voted_prediction_details_widget.dart';
