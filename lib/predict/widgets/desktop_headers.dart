@@ -25,10 +25,11 @@ class DesktopHeaders extends StatelessWidget {
             ),
             onPressed: () {},
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 SizedBox(
                   child: Text(
-                    'Ticker',
+                    'Prompt',
                     style: textStyle(
                       Colors.grey[400]!,
                       12,
@@ -56,7 +57,7 @@ class DesktopHeaders extends StatelessWidget {
                 ),
                 SizedBox(
                   child: Text(
-                    'Probability',
+                    'Market Price',
                     style: textStyle(
                       Colors.grey[400]!,
                       12,
@@ -70,7 +71,7 @@ class DesktopHeaders extends StatelessWidget {
                 ),
                 SizedBox(
                   child: Text(
-                    '24H Volume',
+                    'Action Items',
                     style: textStyle(
                       Colors.grey[400]!,
                       12,
