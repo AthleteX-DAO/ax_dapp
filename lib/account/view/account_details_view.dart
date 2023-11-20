@@ -105,10 +105,7 @@ class AccountDetails extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Send, Recieve, Top up & view txn history
             const WalletActionButtons(),
-            // Divider
             Container(
               margin: const EdgeInsets.only(top: 20),
               width: constraints.maxWidth - edge,
@@ -116,17 +113,7 @@ class AccountDetails extends StatelessWidget {
                 color: Colors.grey,
               ),
             ),
-
-            // Assets filter -- remember to refresh the state
-            AccountAssetsFilter(
-              boxConstraints: BoxConstraints(
-                //TODO: Remove box constraints & replace with LayoutBuilder
-                maxHeight: _height * 0.8,
-                maxWidth: constraints.maxWidth - edge,
-              ),
-            ),
-
-            // Your Wallet Assets
+            const AccountAssetsFilter(),
             WalletAssetsList(
               boxConstraints: BoxConstraints(
                 //TODO: Remove box constraints & replace with LayoutBuilder
