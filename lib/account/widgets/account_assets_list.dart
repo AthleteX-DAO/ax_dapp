@@ -9,87 +9,88 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class WalletAssetsList extends StatelessWidget {
   const WalletAssetsList({
     super.key,
-    required BoxConstraints boxConstraints,
-  }) : constraints = boxConstraints;
-
-  final BoxConstraints constraints;
+  });
 
   @override
   Widget build(BuildContext context) {
     final currentTokens =
         context.select((WalletBloc bloc) => bloc.state.tokens);
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        SizedBox(
-          height: constraints.maxHeight * 0.5,
-          child: BlocBuilder<AccountBloc, AccountState>(
-            builder: (BuildContext context, state) {
-              if (state.selectedAssets == AccountAssets.all) {
-                return ListView.builder(
-                  padding: const EdgeInsets.only(top: 10),
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: currentTokens.length,
-                  itemBuilder: (context, index) {
-                    return AccountAssetCard(
-                      token: currentTokens[index],
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox(
+              height: constraints.maxHeight,
+              child: BlocBuilder<AccountBloc, AccountState>(
+                builder: (BuildContext context, state) {
+                  if (state.selectedAssets == AccountAssets.all) {
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(top: 10),
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: currentTokens.length,
+                      itemBuilder: (context, index) {
+                        return AccountAssetCard(
+                          token: currentTokens[index],
+                        );
+                      },
                     );
-                  },
-                );
-              }
-              if (state.selectedAssets == AccountAssets.crypto) {
-                return ListView.builder(
-                  padding: const EdgeInsets.only(top: 10),
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: currentTokens.length,
-                  itemBuilder: (context, index) {
-                    return AccountAssetCard(
-                      token: currentTokens[index],
+                  }
+                  if (state.selectedAssets == AccountAssets.crypto) {
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(top: 10),
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: currentTokens.length,
+                      itemBuilder: (context, index) {
+                        return AccountAssetCard(
+                          token: currentTokens[index],
+                        );
+                      },
                     );
-                  },
-                );
-              }
-              if (state.selectedAssets == AccountAssets.apts) {
-                return Center(
-                  child: Text(
-                    'Coming Soon!',
-                    style: textStyle(
-                      Colors.white,
-                      20,
-                      isBold: false,
-                      isUline: false,
+                  }
+                  if (state.selectedAssets == AccountAssets.apts) {
+                    return Center(
+                      child: Text(
+                        'Coming Soon!',
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    );
+                  }
+                  if (state.selectedAssets == AccountAssets.nfts) {
+                    Center(
+                      child: Text(
+                        'Coming Soon!',
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    );
+                  }
+                  return Center(
+                    child: Text(
+                      'Coming Soon!',
+                      style: textStyle(
+                        Colors.white,
+                        20,
+                        isBold: false,
+                        isUline: false,
+                      ),
                     ),
-                  ),
-                );
-              }
-              if (state.selectedAssets == AccountAssets.nfts) {
-                Center(
-                  child: Text(
-                    'Coming Soon!',
-                    style: textStyle(
-                      Colors.white,
-                      20,
-                      isBold: false,
-                      isUline: false,
-                    ),
-                  ),
-                );
-              }
-              return Center(
-                child: Text(
-                  'Coming Soon!',
-                  style: textStyle(
-                    Colors.white,
-                    20,
-                    isBold: false,
-                    isUline: false,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

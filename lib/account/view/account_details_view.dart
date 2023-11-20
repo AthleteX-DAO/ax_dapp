@@ -13,9 +13,7 @@ class AccountDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var wid = 400.0;
-    const edge = 40.0;
     const edge2 = 60.0;
-    final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     if (_width < 405) wid = _width;
 
@@ -30,7 +28,7 @@ class AccountDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: _height * 0.2,
+                    height: constraints.maxHeight * 0.3,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -106,20 +104,13 @@ class AccountDetails extends StatelessWidget {
               ),
             ),
             const WalletActionButtons(),
-            Container(
-              margin: const EdgeInsets.only(top: 20),
-              width: constraints.maxWidth - edge,
-              child: const Divider(
-                color: Colors.grey,
-              ),
+            const Divider(
+              color: Colors.grey,
             ),
             const AccountAssetsFilter(),
-            WalletAssetsList(
-              boxConstraints: BoxConstraints(
-                //TODO: Remove box constraints & replace with LayoutBuilder
-                maxHeight: _height * 0.8,
-                maxWidth: constraints.maxWidth - edge,
-              ),
+            SizedBox(
+              height: constraints.maxHeight * 0.5,
+              child: const WalletAssetsList(),
             ),
           ],
         );
