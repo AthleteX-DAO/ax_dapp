@@ -85,7 +85,10 @@ class Account extends StatelessWidget {
                             ),
                           if (state.accountViewStatus ==
                               AccountViewStatus.buySell)
-                            const AccountBuyAndSell(),
+                            SizedBox(
+                              height: constraints.maxHeight * 0.7,
+                              child: const AccountBuyAndSell(),
+                            ),
                           if (state.accountViewStatus ==
                               AccountViewStatus.deposit)
                             const AccountDepositView(),

@@ -23,8 +23,8 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
   void initState() {
     super.initState();
     _iframeElement
-      ..height = '620'
-      ..width = '480'
+      ..height = '400'
+      ..width = '400'
       ..src =
           'https://app.kado.money/?apiKey=137cd949-ab0f-429f-93b8-187ef3a93862';
     _iframeElement.style.borderRadius = '14px';
@@ -44,16 +44,13 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
 
   @override
   Widget build(BuildContext context) {
-    final _height = MediaQuery.of(context).size.height;
     const edge = 40.0;
     const wid = 400.0;
-
     const edge2 = 60.0;
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
@@ -70,14 +67,13 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
                 ),
               ],
             ),
-
             SizedBox(
               width: wid - edge2,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: _height * 0.18,
+                    height: constraints.maxHeight * 0.2,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -117,7 +113,7 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
             ),
             SizedBox(
               width: constraints.maxWidth - edge,
-              height: _height * 0.5,
+              height: constraints.maxHeight * 0.6,
               child: kadoMoney,
             ),
           ],
