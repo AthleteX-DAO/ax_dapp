@@ -20,7 +20,8 @@ class _WalletsAssetsFilterState extends State<AccountAssetsFilter> {
   Container build(BuildContext context) {
     final bloc = context.read<AccountBloc>();
     const assetsFilterTxSz = 14.0;
-    var _selectedWalletAsset = context.read<AccountBloc>().state.selectedAssets;
+    final selectedWalletAsset =
+        context.select((AccountBloc bloc) => bloc.state.selectedAssets);
 
     return Container(
       margin: const EdgeInsets.only(
@@ -50,127 +51,120 @@ class _WalletsAssetsFilterState extends State<AccountAssetsFilter> {
               isUline: false,
             ),
           ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _selectedWalletAsset = AccountAssets.all;
-              });
-
-              bloc.add(
-                const SelectedAccountAssetsChanged(
-                  selectedAssets: AccountAssets.all,
-                ),
-              );
-            },
-            child: Text(
-              'All',
-              style: textSwapState(
-                condition: _selectedWalletAsset == AccountAssets.all,
-                tabNotSelected: textStyle(
-                  Colors.white,
-                  18,
-                  isBold: false,
-                  isUline: false,
-                ),
-                tabSelected: textStyle(
-                  Colors.amber[400]!,
-                  18,
-                  isBold: false,
-                  isUline: true,
-                ),
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _selectedWalletAsset = AccountAssets.crypto;
-              });
-
-              bloc.add(
-                const SelectedAccountAssetsChanged(
-                  selectedAssets: AccountAssets.crypto,
-                ),
-              );
-            },
-            child: Text(
-              'Crypto',
-              style: textSwapState(
-                condition: _selectedWalletAsset == AccountAssets.crypto,
-                tabNotSelected: textStyle(
-                  Colors.white,
-                  assetsFilterTxSz,
-                  isBold: false,
-                  isUline: false,
-                ),
-                tabSelected: textStyle(
-                  Colors.amber[400]!,
-                  assetsFilterTxSz,
-                  isBold: false,
-                  isUline: true,
-                ),
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _selectedWalletAsset = AccountAssets.apts;
-              });
-
-              bloc.add(
-                const SelectedAccountAssetsChanged(
-                  selectedAssets: AccountAssets.apts,
-                ),
-              );
-            },
-            child: Text(
-              'APTs',
-              style: textSwapState(
-                condition: _selectedWalletAsset == AccountAssets.apts,
-                tabNotSelected: textStyle(
-                  Colors.white,
-                  assetsFilterTxSz,
-                  isBold: false,
-                  isUline: false,
-                ),
-                tabSelected: textStyle(
-                  Colors.amber[400]!,
-                  assetsFilterTxSz,
-                  isBold: false,
-                  isUline: true,
-                ),
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _selectedWalletAsset = AccountAssets.nfts;
-              });
-
-              bloc.add(
-                const SelectedAccountAssetsChanged(
-                  selectedAssets: AccountAssets.nfts,
-                ),
-              );
-            },
-            child: Text(
-              'NFTs',
-              style: textSwapState(
-                condition: _selectedWalletAsset == AccountAssets.nfts,
-                tabNotSelected: textStyle(
-                  Colors.white,
-                  assetsFilterTxSz,
-                  isBold: false,
-                  isUline: false,
-                ),
-                tabSelected: textStyle(
-                  Colors.amber[400]!,
-                  assetsFilterTxSz,
-                  isBold: false,
-                  isUline: true,
-                ),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      bloc.add(
+                        const SelectedAccountAssetsChanged(
+                          selectedAssets: AccountAssets.all,
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'All',
+                      style: textSwapState(
+                        condition: selectedWalletAsset == AccountAssets.all,
+                        tabNotSelected: textStyle(
+                          Colors.white,
+                          18,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                        tabSelected: textStyle(
+                          Colors.amber[400]!,
+                          18,
+                          isBold: false,
+                          isUline: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      bloc.add(
+                        const SelectedAccountAssetsChanged(
+                          selectedAssets: AccountAssets.crypto,
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Crypto',
+                      style: textSwapState(
+                        condition: selectedWalletAsset == AccountAssets.crypto,
+                        tabNotSelected: textStyle(
+                          Colors.white,
+                          assetsFilterTxSz,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                        tabSelected: textStyle(
+                          Colors.amber[400]!,
+                          assetsFilterTxSz,
+                          isBold: false,
+                          isUline: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      bloc.add(
+                        const SelectedAccountAssetsChanged(
+                          selectedAssets: AccountAssets.apts,
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'APTs',
+                      style: textSwapState(
+                        condition: selectedWalletAsset == AccountAssets.apts,
+                        tabNotSelected: textStyle(
+                          Colors.white,
+                          assetsFilterTxSz,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                        tabSelected: textStyle(
+                          Colors.amber[400]!,
+                          assetsFilterTxSz,
+                          isBold: false,
+                          isUline: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      bloc.add(
+                        const SelectedAccountAssetsChanged(
+                          selectedAssets: AccountAssets.nfts,
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'NFTs',
+                      style: textSwapState(
+                        condition: selectedWalletAsset == AccountAssets.nfts,
+                        tabNotSelected: textStyle(
+                          Colors.white,
+                          assetsFilterTxSz,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                        tabSelected: textStyle(
+                          Colors.amber[400]!,
+                          assetsFilterTxSz,
+                          isBold: false,
+                          isUline: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
