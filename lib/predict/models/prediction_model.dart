@@ -1,4 +1,5 @@
 import 'package:ax_dapp/markets/models/models.dart';
+import 'package:ax_dapp/predict/predict.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:shared/shared.dart';
 
@@ -9,6 +10,7 @@ class PredictionModel extends MarketModel {
     required this.details,
     required this.marketAddress,
     this.resolution,
+    required this.supportedPredictionMarkets,
     required this.yesTokenAddress,
     required this.noTokenAddress,
     required this.yesName,
@@ -38,7 +40,7 @@ class PredictionModel extends MarketModel {
   final String noTokenAddress;
   final String yesName;
   final String noName;
-
+  final SupportedPredictionMarkets supportedPredictionMarkets;
   final String time;
   final double? longTokenPrice;
   final double? longTokenPriceUsd;
@@ -56,6 +58,7 @@ class PredictionModel extends MarketModel {
     noTokenAddress: '',
     yesName: '',
     noName: '',
+    supportedPredictionMarkets: SupportedPredictionMarkets.all,
     time: '',
     longTokenPrice: 0,
     shortTokenPrice: 0,
@@ -76,6 +79,7 @@ class PredictionModel extends MarketModel {
         resolution,
         yesName,
         noName,
+        supportedPredictionMarkets,
         time,
         longTokenPrice,
         longTokenPriceUsd,
