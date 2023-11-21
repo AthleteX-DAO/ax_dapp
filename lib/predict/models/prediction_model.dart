@@ -1,7 +1,6 @@
 import 'package:ax_dapp/markets/models/models.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ethereum_api/tokens_api.dart';
-import 'package:shared/shared.dart';
 
 class PredictionModel extends MarketModel {
   const PredictionModel({

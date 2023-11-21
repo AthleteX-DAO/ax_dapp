@@ -3,7 +3,6 @@ import 'package:ax_dapp/markets/widgets/search.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
 class MarketsFilterDesktop extends StatefulWidget {
   const MarketsFilterDesktop({

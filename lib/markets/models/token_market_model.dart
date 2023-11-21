@@ -1,5 +1,4 @@
 import 'package:ax_dapp/markets/models/models.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
 class TokenMarketModel extends MarketModel {
   const TokenMarketModel({
