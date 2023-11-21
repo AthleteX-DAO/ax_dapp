@@ -43,7 +43,7 @@ class DesktopHeaders extends StatelessWidget {
                 ),
                 SizedBox(
                   child: Text(
-                    'Prediction',
+                    'Yes Price',
                     style: textStyle(
                       Colors.grey[400]!,
                       12,
@@ -57,7 +57,7 @@ class DesktopHeaders extends StatelessWidget {
                 ),
                 SizedBox(
                   child: Text(
-                    'Market Price',
+                    'No Price',
                     style: textStyle(
                       Colors.grey[400]!,
                       12,
