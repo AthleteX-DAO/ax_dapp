@@ -5,3 +5,4 @@ export 'prompt_details.dart';
 export 'prompt_page_details.dart';
 export 'prompt_page_title.dart';
 export 'show_details.dart';
+export 'stats_side.dart';
