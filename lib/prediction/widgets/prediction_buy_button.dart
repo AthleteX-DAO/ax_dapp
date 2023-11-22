@@ -1,4 +1,5 @@
 import 'package:ax_dapp/athlete_markets/athlete.dart';
+import 'package:ax_dapp/dialogs/buy/prediction_buy_dialog.dart';
 import 'package:ax_dapp/dialogs/dialogs.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
@@ -68,8 +69,11 @@ class PredictionBuyButton extends StatelessWidget {
                   context,
                 ),
                 swapRepository: context.read<SwapRepository>(),
+                predictionId: predictionModel.id,
               ),
-              child: Container(),
+              child: BuyPredictionDialog(
+                predictionModel: predictionModel,
+              ),
             ),
           );
         },
