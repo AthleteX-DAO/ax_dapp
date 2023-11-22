@@ -35,6 +35,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         _tokensRepository = tokensRepository,
         super(
           // setting the apt corresponding to the default aptType which is long
+          // TODO: refactor this so this can be nullable
           BuyDialogState(
             longApt: tokensRepository.currentAptPair(athleteId!).longApt,
           ),
