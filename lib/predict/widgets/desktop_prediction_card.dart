@@ -1,5 +1,4 @@
 import 'package:ax_dapp/predict/predict.dart';
-import 'package:ax_dapp/predict/widgets/24h_volume.dart';
 import 'package:ax_dapp/predict/widgets/price.dart';
 import 'package:ax_dapp/predict/widgets/widget_factories/prediction_details_widget.dart';
 import 'package:ax_dapp/prediction/widgets/prediction_buy_button.dart';
@@ -26,7 +25,7 @@ class DesktopPredictionCard extends StatelessWidget {
           context.goNamed(
             'prediction',
             params: {
-              'id': '${predictionModel.id}',
+              'id': predictionModel.id.toString() + predictionModel.prompt,
             },
           );
         },
