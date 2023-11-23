@@ -1,12 +1,7 @@
-import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
-import 'package:go_router/go_router.dart';
-import 'package:tokens_repository/tokens_repository.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/widgets/widgets.dart';
-import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
+import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -17,6 +12,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BuyPredictionDialog extends StatelessWidget {
   BuyPredictionDialog({super.key, required this.predictionModel});
@@ -502,7 +500,7 @@ class PedictionBuyApproveButton extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () {},
-        child: Text(
+        child: const Text(
           'Approve',
           style: TextStyle(
             fontSize: 16,

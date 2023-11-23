@@ -4,7 +4,9 @@ import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:shared/shared.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
