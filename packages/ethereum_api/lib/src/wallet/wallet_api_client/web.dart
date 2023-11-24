@@ -159,6 +159,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// Updates the current chain of the Wallet.
   ///
   /// Throws: [UnknownWalletFailure]
+  @override
   Future<void> updateChain(EthereumChain chain) async {
     try {
       _chainController.add(chain);
