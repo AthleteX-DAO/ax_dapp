@@ -10,6 +10,12 @@ enum AptType {
 
   /// Type of [Apt.short].
   short,
+
+  /// Type of [Apt.yes]
+  yes,
+
+  /// Type of [Apt.no]
+  no,
 }
 
 /// [AptType] extensions.
@@ -19,6 +25,10 @@ extension AptTypeX on AptType {
 
   /// Returns `true` if the [AptType] is short.
   bool get isShort => this == AptType.short;
+
+  bool get isYes => this == AptType.yes;
+
+  bool get isNo => this == AptType.no;
 
   /// Returns the correspondent apt url for this [AptType].
   String get url => isLong
