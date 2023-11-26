@@ -36,7 +36,7 @@ class _PredictionMarketsFilterMobileState
           child: Row(
             children: [
               Text(
-                'Athlete Prediction Markets',
+                'Athlete Performance Markets',
                 style: textStyle(
                   Colors.white,
                   18,
