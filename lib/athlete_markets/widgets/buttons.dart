@@ -21,6 +21,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BuyButton extends StatelessWidget {
   const BuyButton({
@@ -282,6 +283,35 @@ class RedeemButton extends StatelessWidget {
             Colors.white,
             20,
             isBold: false,
+            isUline: false,
+          ),
+          maxLines: 1,
+        ),
+      ),
+    );
+  }
+}
+
+class ProposeButton extends StatelessWidget {
+  const ProposeButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 175,
+      height: 50,
+      decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
+      child: TextButton(
+        onPressed: () {
+          const urlString = 'https://oracle.uma.xyz/';
+          launchUrl(Uri.parse(urlString));
+        },
+        child: AutoSizeText(
+          'Propose Resolution',
+          style: textStyle(
+            Colors.white,
+            20,
+            isBold: true,
             isUline: false,
           ),
           maxLines: 1,
