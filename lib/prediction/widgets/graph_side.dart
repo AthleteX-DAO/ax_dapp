@@ -1,9 +1,8 @@
-import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/athlete_markets/widgets/buttons.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/prediction/prediction.dart';
-import 'package:ax_dapp/prediction/widgets/prompt_page_details.dart';
+import 'package:ax_dapp/prediction/widgets/prediction_page_tooltip.dart';
 
-import 'package:ax_dapp/prediction/widgets/prompt_page_title.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -108,69 +107,54 @@ class GraphSide extends StatelessWidget {
                 const SizedBox(
                   height: 12,
                 ),
+                // Build about tile
+                ExpansionTile(
+                  title: Text(
+                    'About',
+                    style: textStyle(
+                      Colors.white,
+                      20,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                  children: [
+                    Expanded(
+                      child: Text(
+                        predictionModel.details,
+                        textAlign: TextAlign.center,
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ProposeButton(),
+                      ],
+                    ),
+                  ],
+                ),
                 //build buttons and tooltip
-                // SizedBox(
-                //   width: wid * .875,
-                //   height: 150,
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //         children: [
-                //           BlocSelector<PredictionPageBloc, PredictionPageState,
-                //               AptType>(
-                //             selector: (state) => state.aptTypeSelection,
-                //             builder: (context, aptTypeSelection) {
-                //               return BuyButton(
-                //                 athlete: athlete,
-                //                 isPortraitMode: _isPortraitMode,
-                //                 containerWdt: containerWidth,
-                //                 isLongApt: aptTypeSelection.isLong,
-                //               );
-                //             },
-                //           ),
-                //           BlocSelector<PredictionPageBloc, PredictionPageState,
-                //               AptType>(
-                //             selector: (state) => state.aptTypeSelection,
-                //             builder: (context, aptTypeSelection) {
-                //               return SellButton(
-                //                 athlete: athlete,
-                //                 isPortraitMode: _isPortraitMode,
-                //                 containerWdt: containerWidth,
-                //                 isLongApt: aptTypeSelection.isLong,
-                //               );
-                //             },
-                //           ),
-                //         ],
-                //       ),
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //         children: [
-                //           MintButton(
-                //             athlete: athlete,
-                //             isPortraitMode: _isPortraitMode,
-                //             containerWdt: containerWidth,
-                //           ),
-                //           RedeemButton(
-                //             athlete: athlete,
-                //             inputLongApt: '',
-                //             inputShortApt: '',
-                //             valueInAX: '',
-                //             isPortraitMode: _isPortraitMode,
-                //             containerWdt: containerWidth,
-                //           ),
-                //         ],
-                //       ),
-                //       const Row(
-                //         mainAxisAlignment: MainAxisAlignment.end,
-                //         children: [
-                //           PredictionPageToolTip(),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                SizedBox(
+                  width: wid * .875,
+                  height: 150,
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          PredictionPageToolTip(),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
