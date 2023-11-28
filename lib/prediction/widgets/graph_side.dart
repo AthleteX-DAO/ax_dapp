@@ -107,6 +107,22 @@ class GraphSide extends StatelessWidget {
                 const SizedBox(
                   height: 12,
                 ),
+                //build buttons and tooltip
+                SizedBox(
+                  width: wid * .875,
+                  height: 26,
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          PredictionPageToolTip(),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                 // Build about tile
                 ExpansionTile(
                   title: Text(
@@ -119,15 +135,25 @@ class GraphSide extends StatelessWidget {
                     ),
                   ),
                   children: [
-                    Expanded(
-                      child: Text(
-                        predictionModel.details,
-                        textAlign: TextAlign.center,
-                        style: textStyle(
-                          Colors.white,
-                          20,
-                          isBold: false,
-                          isUline: false,
+                    Container(
+                      decoration: boxDecoration(
+                        Colors.transparent,
+                        10,
+                        1,
+                        greyTextColor,
+                      ),
+                      width: wid * .875,
+                      height: 128,
+                      child: Center(
+                        child: Text(
+                          'Prediction Details go here',
+                          textAlign: TextAlign.center,
+                          style: textStyle(
+                            Colors.white,
+                            20,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
                       ),
                     ),
@@ -138,22 +164,6 @@ class GraphSide extends StatelessWidget {
                       ],
                     ),
                   ],
-                ),
-                //build buttons and tooltip
-                SizedBox(
-                  width: wid * .875,
-                  height: 150,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          PredictionPageToolTip(),
-                        ],
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),
