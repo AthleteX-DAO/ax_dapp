@@ -106,7 +106,7 @@ class StatsSide extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Market Price',
+                      'Yes Price',
                       style: textStyle(
                         greyTextColor,
                         20,
@@ -175,14 +175,14 @@ class StatsSide extends StatelessWidget {
                           );
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Book Value',
+                      'No Price',
                       style: textStyle(
                         greyTextColor,
                         20,
@@ -196,47 +196,41 @@ class StatsSide extends StatelessWidget {
                       builder: (context, aptTypeSelection) {
                         return Row(
                           children: [
-                            // Text(
-                            //   aptTypeSelection.isLong
-                            //       ? '''${predictionModel.longTokenBookPrice!.toStringAsFixed(2)} AX'''
-                            //       : '''${predictionModel.shortTokenBookPrice!.toStringAsFixed(2)} AX''',
-                            //   style: textStyle(
-                            //     Colors.white,
-                            //     14,
-                            //     isBold: false,
-                            //     isUline: false,
-                            //   ),
-                            // ),
-                            // Text(
-                            //   aptTypeSelection.isLong
-                            //       ? getPercentageDesc(
-                            //           predictionModel
-                            //               .longTokenBookPricePercent!,
-                            //         )
-                            //       : getPercentageDesc(
-                            //           predictionModel
-                            //               .shortTokenBookPricePercent!,
-                            //         ),
-                            //   style: aptTypeSelection.isLong
-                            //       ? textStyle(
-                            //           getPercentageColor(
-                            //             predictionModel
-                            //                 .longTokenBookPricePercent!,
-                            //           ),
-                            //           12,
-                            //           isBold: false,
-                            //           isUline: false,
-                            //         )
-                            //       : textStyle(
-                            //           getPercentageColor(
-                            //             predictionModel
-                            //                 .shortTokenBookPricePercent!,
-                            //           ),
-                            //           12,
-                            //           isBold: false,
-                            //           isUline: false,
-                            //         ),
-                            // ),
+                            Text(
+                              aptTypeSelection.isLong ? '''0 AX''' : '''0 AX''',
+                              style: textStyle(
+                                Colors.white,
+                                14,
+                                isBold: false,
+                                isUline: false,
+                              ),
+                            ),
+                            Text(
+                              aptTypeSelection.isLong
+                                  ? getPercentageDesc(
+                                      predictionModel.longTokenPercentage!,
+                                    )
+                                  : getPercentageDesc(
+                                      predictionModel.shortTokenPercentage!,
+                                    ),
+                              style: aptTypeSelection.isLong
+                                  ? textStyle(
+                                      getPercentageColor(
+                                        predictionModel.longTokenPercentage!,
+                                      ),
+                                      12,
+                                      isBold: false,
+                                      isUline: false,
+                                    )
+                                  : textStyle(
+                                      getPercentageColor(
+                                        predictionModel.shortTokenPercentage!,
+                                      ),
+                                      12,
+                                      isBold: false,
+                                      isUline: false,
+                                    ),
+                            ),
                             // TODO(anyone): get the all time high book value
                             // and market value prices
                             // Text(shortBookValue, style: textStyle
@@ -245,41 +239,6 @@ class StatsSide extends StatelessWidget {
                         );
                       },
                     ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'MP:BV Ratio',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    ),
-                    BlocSelector<PredictionPageBloc, PredictionPageState,
-                        AptType>(
-                      selector: (state) => state.aptTypeSelection,
-                      builder: (context, aptTypeSelection) {
-                        return Text(
-                          // '''${aptTypeSelection.isLong ? longCurrentBookValueRatio.toStringAsFixed(2) : shortCurrentBookValueRatio.toStringAsFixed(2)}%''',
-                          '',
-                          style: textStyle(
-                            greyTextColor,
-                            16,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                        );
-                      },
-                    ),
-                    // TODO(anyone): get the all time high book value and
-                    // market value prices
-                    // Container(
-                    //   child: Text("120%", style: textStyle(greyTextColor, 16,
-                    //false, false)),),
                   ],
                 ),
               ],
