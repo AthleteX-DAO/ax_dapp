@@ -36,7 +36,7 @@ AssetImage tokenImage(Token token) {
 
 // TODO(Rolly): gen assets & move to ui package
 AssetImage aptImage(Apt apt) {
-  String tokenAssetName;
+  var tokenAssetName = '';
   switch (apt.type) {
     case AptType.none:
       throw UnsupportedError('apt image for ${apt.type}');
