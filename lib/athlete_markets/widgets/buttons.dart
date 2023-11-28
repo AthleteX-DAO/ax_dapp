@@ -291,32 +291,3 @@ class RedeemButton extends StatelessWidget {
     );
   }
 }
-
-class ProposeButton extends StatelessWidget {
-  const ProposeButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 175,
-      height: 50,
-      decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
-      child: TextButton(
-        onPressed: () {
-          const urlString = 'https://oracle.uma.xyz/';
-          launchUrl(Uri.parse(urlString));
-        },
-        child: AutoSizeText(
-          'Propose Resolution',
-          style: textStyle(
-            Colors.white,
-            20,
-            isBold: true,
-            isUline: false,
-          ),
-          maxLines: 1,
-        ),
-      ),
-    );
-  }
-}

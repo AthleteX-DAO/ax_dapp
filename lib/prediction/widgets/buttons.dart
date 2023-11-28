@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ax_dapp/dialogs/dialogs.dart';
 
 import 'package:ax_dapp/predict/models/prediction_model.dart';
@@ -11,6 +12,7 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -267,6 +269,35 @@ class YesButton extends StatelessWidget {
             isBold: false,
             isUline: false,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ProposeButton extends StatelessWidget {
+  const ProposeButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 175,
+      height: 25,
+      decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
+      child: TextButton(
+        onPressed: () {
+          const urlString = 'https://oracle.uma.xyz/';
+          launchUrl(Uri.parse(urlString));
+        },
+        child: AutoSizeText(
+          'Propose Resolution',
+          style: textStyle(
+            Colors.white,
+            20,
+            isBold: true,
+            isUline: false,
+          ),
+          maxLines: 1,
         ),
       ),
     );
