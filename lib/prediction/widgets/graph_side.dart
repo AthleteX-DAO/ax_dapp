@@ -1,5 +1,6 @@
 import 'package:ax_dapp/athlete_markets/widgets/buttons.dart';
 import 'package:ax_dapp/predict/predict.dart';
+import 'package:ax_dapp/predict/widgets/widget_factories/prediction_details_widget.dart';
 import 'package:ax_dapp/prediction/prediction.dart';
 import 'package:ax_dapp/prediction/widgets/prediction_page_tooltip.dart';
 
@@ -145,23 +146,23 @@ class GraphSide extends StatelessWidget {
                       width: wid * .875,
                       height: 128,
                       child: Center(
-                        child: Text(
-                          'Prediction Details go here',
-                          textAlign: TextAlign.center,
-                          style: textStyle(
-                            Colors.white,
-                            20,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                        ),
+                        child: PredictionDetailsWidget(predictionModel)
+                            .predictionPageDetails(),
                       ),
+                    ),
+                    // Gives spacing between container & proposal button
+                    const SizedBox(
+                      height: 10,
                     ),
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ProposeButton(),
                       ],
+                    ),
+                    // Gives spacing between proposal button & bottom of tile
+                    const SizedBox(
+                      height: 5,
                     ),
                   ],
                 ),
