@@ -67,7 +67,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
             )
             ..add(
               const SelectedMarketsChanged(
-                selectedMarkets: SupportedMarkets.All,
+                selectedMarkets: SupportedMarkets.all,
               ),
             );
         }
@@ -269,7 +269,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                         if (state.status == BlocStatus.noData)
                           const FilterMenuError(),
                         if (state.status == BlocStatus.success &&
-                            state.selectedMarket == SupportedMarkets.All)
+                            state.selectedMarket == SupportedMarkets.all)
                           SizedBox(
                             height: constraints.maxHeight * 0.8 - 120,
                             child: const Center(
@@ -287,13 +287,13 @@ class _MobileMarketsState extends State<MobileMarkets> {
                             ),
                           ),
                         if (state.status == BlocStatus.success &&
-                            state.selectedMarket == SupportedMarkets.Sports)
+                            state.selectedMarket == SupportedMarkets.sports)
                           SportsMarkets(
                             sportsMarkets: liveSports,
                             boxConstraints: constraints,
                           ),
                         if (state.status == BlocStatus.success &&
-                            state.selectedMarket == SupportedMarkets.Athlete)
+                            state.selectedMarket == SupportedMarkets.athlete)
                           AthleteMarkets(
                             boxConstraints: constraints,
                           ),

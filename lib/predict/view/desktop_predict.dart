@@ -111,7 +111,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
                       /// College Athlete Prediction Markets
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket ==
-                              SupportedPredictionMarkets.College)
+                              SupportedPredictionMarkets.college)
                         SizedBox(
                           height: constraints.maxHeight * 0.8 - 120,
                           child: const Center(
@@ -124,7 +124,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
                       /// Community Voted Prediction Markets
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket ==
-                              SupportedPredictionMarkets.Voted)
+                              SupportedPredictionMarkets.voted)
                         SizedBox(
                           height: constraints.maxHeight * 0.8 - 120,
                           child: ListView.builder(

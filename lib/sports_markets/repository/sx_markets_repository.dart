@@ -24,7 +24,7 @@ class SXMarketsRepository {
         final id = markets.sportId;
         final name =
             '${markets.leagueLabel}| ${markets.outcomeOneName} & ${markets.outcomeTwoName}';
-        const typeOfMarket = SupportedMarkets.Sports;
+        const typeOfMarket = SupportedMarkets.sports;
         final marketHash = markets.marketHash;
         final marketLine = markets.line;
         final isMainLine = markets.mainLine;

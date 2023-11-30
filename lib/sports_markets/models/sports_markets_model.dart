@@ -21,7 +21,7 @@ class SportsMarketsModel extends Equatable {
   static const empty = SportsMarketsModel(
     id: '0',
     name: '',
-    typeOfMarket: SupportedMarkets.Sports,
+    typeOfMarket: SupportedMarkets.sports,
     marketHash: '',
     line: 0,
     mainLine: true,

@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 abstract class PredictionDetailsWidget {
   factory PredictionDetailsWidget(PredictionModel predictionModel) {
     switch (predictionModel.supportedPredictionMarkets) {
-      case SupportedPredictionMarkets.College:
+      case SupportedPredictionMarkets.college:
         return CollegePredictionsDetailsWidget(predictionModel);
-      case SupportedPredictionMarkets.Basketball:
+      case SupportedPredictionMarkets.basketball:
         return BasketballPredictionsDetailsWidget(predictionModel);
-      case SupportedPredictionMarkets.Football:
+      case SupportedPredictionMarkets.football:
         return FootballPredictionsDetailsWidget(predictionModel);
-      case SupportedPredictionMarkets.Hockey:
+      case SupportedPredictionMarkets.hockey:
         return HockeyPredictionsDetailsWidget(predictionModel);
-      case SupportedPredictionMarkets.Baseball:
+      case SupportedPredictionMarkets.baseball:
         return BaseballPredictionsDetailsWidget(predictionModel);
-      case SupportedPredictionMarkets.Soccer:
+      case SupportedPredictionMarkets.soccer:
         return SoccerPredictionsDetailsWidget(predictionModel);
-      case SupportedPredictionMarkets.Voted:
+      case SupportedPredictionMarkets.voted:
         return VotedPredictionsDetailsWidget(predictionModel);
-      case SupportedPredictionMarkets.Exotic:
+      case SupportedPredictionMarkets.exotic:
         return ExoticPredictionsDetailsWidget(predictionModel);
       case SupportedPredictionMarkets.all:
         return NoStatsShownWidget();

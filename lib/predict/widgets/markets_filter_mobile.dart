@@ -1,6 +1,4 @@
-import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/predict/predict.dart';
-import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,268 +52,270 @@ class _PredictionMarketsFilterMobileState
                 ),
               ),
               Expanded(
-                  child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        marketsSearchController.clear();
-                        bloc
-                          ..add(
-                            const SelectedPredictionMarketsChanged(
-                              selectedMarkets:
-                                  SupportedPredictionMarkets.College,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          marketsSearchController.clear();
+                          bloc
+                            ..add(
+                              const SelectedPredictionMarketsChanged(
+                                selectedMarkets:
+                                    SupportedPredictionMarkets.college,
+                              ),
+                            )
+                            ..add(const CollegePredictionMarketsRequested());
+                        },
+                        child: Text(
+                          'College',
+                          style: textSwapState(
+                            condition: _selectedMarket ==
+                                SupportedPredictionMarkets.college,
+                            tabNotSelected: textStyle(
+                              Colors.white,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: false,
                             ),
-                          )
-                          ..add(const CollegePredictionMarketsRequested());
-                      },
-                      child: Text(
-                        'College',
-                        style: textSwapState(
-                          condition: _selectedMarket ==
-                              SupportedPredictionMarkets.College,
-                          tabNotSelected: textStyle(
-                            Colors.white,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                          tabSelected: textStyle(
-                            Colors.amber[400]!,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: true,
+                            tabSelected: textStyle(
+                              Colors.amber[400]!,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: true,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        marketsSearchController.clear();
-                        bloc
-                          ..add(
-                            const SelectedPredictionMarketsChanged(
-                              selectedMarkets:
-                                  SupportedPredictionMarkets.Basketball,
+                      TextButton(
+                        onPressed: () {
+                          marketsSearchController.clear();
+                          bloc
+                            ..add(
+                              const SelectedPredictionMarketsChanged(
+                                selectedMarkets:
+                                    SupportedPredictionMarkets.basketball,
+                              ),
+                            )
+                            ..add(const BasketballPredictionMarketsRequested());
+                        },
+                        child: Text(
+                          'Basketball',
+                          style: textSwapState(
+                            condition: _selectedMarket ==
+                                SupportedPredictionMarkets.basketball,
+                            tabNotSelected: textStyle(
+                              Colors.white,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: false,
                             ),
-                          )
-                          ..add(const BasketballPredictionMarketsRequested());
-                      },
-                      child: Text(
-                        'Basketball',
-                        style: textSwapState(
-                          condition: _selectedMarket ==
-                              SupportedPredictionMarkets.Basketball,
-                          tabNotSelected: textStyle(
-                            Colors.white,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                          tabSelected: textStyle(
-                            Colors.amber[400]!,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: true,
+                            tabSelected: textStyle(
+                              Colors.amber[400]!,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: true,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        marketsSearchController.clear();
-                        bloc
-                          ..add(
-                            const SelectedPredictionMarketsChanged(
-                              selectedMarkets:
-                                  SupportedPredictionMarkets.Football,
+                      TextButton(
+                        onPressed: () {
+                          marketsSearchController.clear();
+                          bloc
+                            ..add(
+                              const SelectedPredictionMarketsChanged(
+                                selectedMarkets:
+                                    SupportedPredictionMarkets.football,
+                              ),
+                            )
+                            ..add(const FootballPredictionMarketsRequested());
+                        },
+                        child: Text(
+                          'Football',
+                          style: textSwapState(
+                            condition: _selectedMarket ==
+                                SupportedPredictionMarkets.football,
+                            tabNotSelected: textStyle(
+                              Colors.white,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: false,
                             ),
-                          )
-                          ..add(const FootballPredictionMarketsRequested());
-                      },
-                      child: Text(
-                        'Football',
-                        style: textSwapState(
-                          condition: _selectedMarket ==
-                              SupportedPredictionMarkets.Football,
-                          tabNotSelected: textStyle(
-                            Colors.white,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                          tabSelected: textStyle(
-                            Colors.amber[400]!,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: true,
+                            tabSelected: textStyle(
+                              Colors.amber[400]!,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: true,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        marketsSearchController.clear();
-                        bloc
-                          ..add(
-                            const SelectedPredictionMarketsChanged(
-                              selectedMarkets:
-                                  SupportedPredictionMarkets.Hockey,
+                      TextButton(
+                        onPressed: () {
+                          marketsSearchController.clear();
+                          bloc
+                            ..add(
+                              const SelectedPredictionMarketsChanged(
+                                selectedMarkets:
+                                    SupportedPredictionMarkets.hockey,
+                              ),
+                            )
+                            ..add(const HockeyPredictionMarketsRequested());
+                        },
+                        child: Text(
+                          'Hockey',
+                          style: textSwapState(
+                            condition: _selectedMarket ==
+                                SupportedPredictionMarkets.hockey,
+                            tabNotSelected: textStyle(
+                              Colors.white,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: false,
                             ),
-                          )
-                          ..add(const HockeyPredictionMarketsRequested());
-                      },
-                      child: Text(
-                        'Hockey',
-                        style: textSwapState(
-                          condition: _selectedMarket ==
-                              SupportedPredictionMarkets.Hockey,
-                          tabNotSelected: textStyle(
-                            Colors.white,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                          tabSelected: textStyle(
-                            Colors.amber[400]!,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: true,
+                            tabSelected: textStyle(
+                              Colors.amber[400]!,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: true,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        marketsSearchController.clear();
-                        bloc
-                          ..add(
-                            const SelectedPredictionMarketsChanged(
-                              selectedMarkets:
-                                  SupportedPredictionMarkets.Baseball,
+                      TextButton(
+                        onPressed: () {
+                          marketsSearchController.clear();
+                          bloc
+                            ..add(
+                              const SelectedPredictionMarketsChanged(
+                                selectedMarkets:
+                                    SupportedPredictionMarkets.baseball,
+                              ),
+                            )
+                            ..add(const BaseballPredictionMarketsRequested());
+                        },
+                        child: Text(
+                          'Baseball',
+                          style: textSwapState(
+                            condition: _selectedMarket ==
+                                SupportedPredictionMarkets.baseball,
+                            tabNotSelected: textStyle(
+                              Colors.white,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: false,
                             ),
-                          )
-                          ..add(const BaseballPredictionMarketsRequested());
-                      },
-                      child: Text(
-                        'Baseball',
-                        style: textSwapState(
-                          condition: _selectedMarket ==
-                              SupportedPredictionMarkets.Baseball,
-                          tabNotSelected: textStyle(
-                            Colors.white,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                          tabSelected: textStyle(
-                            Colors.amber[400]!,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: true,
+                            tabSelected: textStyle(
+                              Colors.amber[400]!,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: true,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        marketsSearchController.clear();
-                        bloc
-                          ..add(
-                            const SelectedPredictionMarketsChanged(
-                              selectedMarkets:
-                                  SupportedPredictionMarkets.Soccer,
+                      TextButton(
+                        onPressed: () {
+                          marketsSearchController.clear();
+                          bloc
+                            ..add(
+                              const SelectedPredictionMarketsChanged(
+                                selectedMarkets:
+                                    SupportedPredictionMarkets.soccer,
+                              ),
+                            )
+                            ..add(const SoccerPredictionMarketsRequested());
+                        },
+                        child: Text(
+                          'Soccer',
+                          style: textSwapState(
+                            condition: _selectedMarket ==
+                                SupportedPredictionMarkets.soccer,
+                            tabNotSelected: textStyle(
+                              Colors.white,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: false,
                             ),
-                          )
-                          ..add(const SoccerPredictionMarketsRequested());
-                      },
-                      child: Text(
-                        'Soccer',
-                        style: textSwapState(
-                          condition: _selectedMarket ==
-                              SupportedPredictionMarkets.Soccer,
-                          tabNotSelected: textStyle(
-                            Colors.white,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                          tabSelected: textStyle(
-                            Colors.amber[400]!,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: true,
+                            tabSelected: textStyle(
+                              Colors.amber[400]!,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: true,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        marketsSearchController.clear();
-                        bloc
-                          ..add(
-                            const SelectedPredictionMarketsChanged(
-                              selectedMarkets: SupportedPredictionMarkets.Voted,
+                      TextButton(
+                        onPressed: () {
+                          marketsSearchController.clear();
+                          bloc
+                            ..add(
+                              const SelectedPredictionMarketsChanged(
+                                selectedMarkets:
+                                    SupportedPredictionMarkets.voted,
+                              ),
+                            )
+                            ..add(const VotedPredictionMarketsRequested());
+                        },
+                        child: Text(
+                          'Voted',
+                          style: textSwapState(
+                            condition: _selectedMarket ==
+                                SupportedPredictionMarkets.voted,
+                            tabNotSelected: textStyle(
+                              Colors.white,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: false,
                             ),
-                          )
-                          ..add(const VotedPredictionMarketsRequested());
-                      },
-                      child: Text(
-                        'Voted',
-                        style: textSwapState(
-                          condition: _selectedMarket ==
-                              SupportedPredictionMarkets.Voted,
-                          tabNotSelected: textStyle(
-                            Colors.white,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                          tabSelected: textStyle(
-                            Colors.amber[400]!,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: true,
+                            tabSelected: textStyle(
+                              Colors.amber[400]!,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: true,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        marketsSearchController.clear();
-                        bloc
-                          ..add(
-                            const SelectedPredictionMarketsChanged(
-                              selectedMarkets:
-                                  SupportedPredictionMarkets.Exotic,
+                      TextButton(
+                        onPressed: () {
+                          marketsSearchController.clear();
+                          bloc
+                            ..add(
+                              const SelectedPredictionMarketsChanged(
+                                selectedMarkets:
+                                    SupportedPredictionMarkets.exotic,
+                              ),
+                            )
+                            ..add(const ExoticPredictionMarketsRequested());
+                        },
+                        child: Text(
+                          'Exotic',
+                          style: textSwapState(
+                            condition: _selectedMarket ==
+                                SupportedPredictionMarkets.exotic,
+                            tabNotSelected: textStyle(
+                              Colors.white,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: false,
                             ),
-                          )
-                          ..add(const ExoticPredictionMarketsRequested());
-                      },
-                      child: Text(
-                        'Exotic',
-                        style: textSwapState(
-                          condition: _selectedMarket ==
-                              SupportedPredictionMarkets.Exotic,
-                          tabNotSelected: textStyle(
-                            Colors.white,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: false,
-                          ),
-                          tabSelected: textStyle(
-                            Colors.amber[400]!,
-                            sportFilterTxSz,
-                            isBold: false,
-                            isUline: true,
+                            tabSelected: textStyle(
+                              Colors.amber[400]!,
+                              sportFilterTxSz,
+                              isBold: false,
+                              isUline: true,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ))
+              ),
             ],
           ),
         );

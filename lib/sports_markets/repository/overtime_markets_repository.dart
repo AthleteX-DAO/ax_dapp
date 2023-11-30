@@ -24,7 +24,7 @@ class OverTimeMarketsRepository {
       for (final market in overtimeMarkets) {
         final id = market.gameId;
         final name = '${market.homeTeam} ${market.awayTeam}';
-        const typeOfMarket = SupportedMarkets.Sports;
+        const typeOfMarket = SupportedMarkets.sports;
         final marketHash = market.address;
         const marketLine = 0.0;
         marketsLive.add(

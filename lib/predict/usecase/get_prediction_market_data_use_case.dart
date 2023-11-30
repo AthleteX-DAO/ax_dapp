@@ -4,7 +4,6 @@ import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:flutter/widgets.dart';
 
 class GetPredictionMarketDataUseCase {
   GetPredictionMarketDataUseCase({

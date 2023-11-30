@@ -6,7 +6,7 @@ class MarketsPageState extends Equatable {
     this.athletes = const [],
     this.liveSports = const [],
     this.filteredAthletes = const [],
-    this.selectedMarket = SupportedMarkets.All,
+    this.selectedMarket = SupportedMarkets.all,
     this.selectedSport = SupportedSport.all,
     this.selectedChain = EthereumChain.polygonMainnet,
     this.axPrice = 0.0,

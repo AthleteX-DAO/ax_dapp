@@ -59,14 +59,14 @@ class _PredictionMarketsFilterDesktopState
                         onPressed: () {
                           setState(() {
                             _selectedMarket =
-                                SupportedPredictionMarkets.College;
+                                SupportedPredictionMarkets.college;
                           });
 
                           bloc
                             ..add(
                               const SelectedPredictionMarketsChanged(
                                 selectedMarkets:
-                                    SupportedPredictionMarkets.College,
+                                    SupportedPredictionMarkets.college,
                               ),
                             )
                             ..add(const CollegePredictionMarketsRequested());
@@ -75,7 +75,7 @@ class _PredictionMarketsFilterDesktopState
                           'College',
                           style: textSwapState(
                             condition: _selectedMarket ==
-                                SupportedPredictionMarkets.College,
+                                SupportedPredictionMarkets.college,
                             tabNotSelected: textStyle(
                               Colors.white,
                               sportFilterTxSz,
@@ -95,7 +95,7 @@ class _PredictionMarketsFilterDesktopState
                         onPressed: () {
                           setState(() {
                             _selectedMarket =
-                                SupportedPredictionMarkets.Basketball;
+                                SupportedPredictionMarkets.basketball;
                           });
 
                           marketsSearchController.clear();
@@ -103,7 +103,7 @@ class _PredictionMarketsFilterDesktopState
                             ..add(
                               const SelectedPredictionMarketsChanged(
                                 selectedMarkets:
-                                    SupportedPredictionMarkets.Basketball,
+                                    SupportedPredictionMarkets.basketball,
                               ),
                             )
                             ..add(const BasketballPredictionMarketsRequested());
@@ -112,7 +112,7 @@ class _PredictionMarketsFilterDesktopState
                           'Basketball',
                           style: textSwapState(
                             condition: _selectedMarket ==
-                                SupportedPredictionMarkets.Basketball,
+                                SupportedPredictionMarkets.basketball,
                             tabNotSelected: textStyle(
                               Colors.white,
                               sportFilterTxSz,
@@ -132,14 +132,14 @@ class _PredictionMarketsFilterDesktopState
                         onPressed: () {
                           setState(() {
                             _selectedMarket =
-                                SupportedPredictionMarkets.Football;
+                                SupportedPredictionMarkets.football;
                           });
                           marketsSearchController.clear();
                           bloc
                             ..add(
                               const SelectedPredictionMarketsChanged(
                                 selectedMarkets:
-                                    SupportedPredictionMarkets.Football,
+                                    SupportedPredictionMarkets.football,
                               ),
                             )
                             ..add(const FootballPredictionMarketsRequested());
@@ -148,7 +148,7 @@ class _PredictionMarketsFilterDesktopState
                           'Football',
                           style: textSwapState(
                             condition: _selectedMarket ==
-                                SupportedPredictionMarkets.Football,
+                                SupportedPredictionMarkets.football,
                             tabNotSelected: textStyle(
                               Colors.white,
                               sportFilterTxSz,
@@ -167,14 +167,14 @@ class _PredictionMarketsFilterDesktopState
                       TextButton(
                         onPressed: () {
                           setState(() {
-                            _selectedMarket = SupportedPredictionMarkets.Hockey;
+                            _selectedMarket = SupportedPredictionMarkets.hockey;
                           });
                           marketsSearchController.clear();
                           bloc
                             ..add(
                               const SelectedPredictionMarketsChanged(
                                 selectedMarkets:
-                                    SupportedPredictionMarkets.Hockey,
+                                    SupportedPredictionMarkets.hockey,
                               ),
                             )
                             ..add(const HockeyPredictionMarketsRequested());
@@ -183,7 +183,7 @@ class _PredictionMarketsFilterDesktopState
                           'Hockey',
                           style: textSwapState(
                             condition: _selectedMarket ==
-                                SupportedPredictionMarkets.Hockey,
+                                SupportedPredictionMarkets.hockey,
                             tabNotSelected: textStyle(
                               Colors.white,
                               sportFilterTxSz,
@@ -203,14 +203,14 @@ class _PredictionMarketsFilterDesktopState
                         onPressed: () {
                           setState(() {
                             _selectedMarket =
-                                SupportedPredictionMarkets.Baseball;
+                                SupportedPredictionMarkets.baseball;
                           });
                           marketsSearchController.clear();
                           bloc
                             ..add(
                               const SelectedPredictionMarketsChanged(
                                 selectedMarkets:
-                                    SupportedPredictionMarkets.Baseball,
+                                    SupportedPredictionMarkets.baseball,
                               ),
                             )
                             ..add(const BaseballPredictionMarketsRequested());
@@ -219,7 +219,7 @@ class _PredictionMarketsFilterDesktopState
                           'Baseball',
                           style: textSwapState(
                             condition: _selectedMarket ==
-                                SupportedPredictionMarkets.Baseball,
+                                SupportedPredictionMarkets.baseball,
                             tabNotSelected: textStyle(
                               Colors.white,
                               sportFilterTxSz,
@@ -238,14 +238,14 @@ class _PredictionMarketsFilterDesktopState
                       TextButton(
                         onPressed: () {
                           setState(() {
-                            _selectedMarket = SupportedPredictionMarkets.Soccer;
+                            _selectedMarket = SupportedPredictionMarkets.soccer;
                           });
                           marketsSearchController.clear();
                           bloc
                             ..add(
                               const SelectedPredictionMarketsChanged(
                                 selectedMarkets:
-                                    SupportedPredictionMarkets.Soccer,
+                                    SupportedPredictionMarkets.soccer,
                               ),
                             )
                             ..add(const SoccerPredictionMarketsRequested());
@@ -254,7 +254,7 @@ class _PredictionMarketsFilterDesktopState
                           'Soccer',
                           style: textSwapState(
                             condition: _selectedMarket ==
-                                SupportedPredictionMarkets.Soccer,
+                                SupportedPredictionMarkets.soccer,
                             tabNotSelected: textStyle(
                               Colors.white,
                               sportFilterTxSz,
@@ -273,14 +273,14 @@ class _PredictionMarketsFilterDesktopState
                       TextButton(
                         onPressed: () {
                           setState(() {
-                            _selectedMarket = SupportedPredictionMarkets.Voted;
+                            _selectedMarket = SupportedPredictionMarkets.voted;
                           });
                           marketsSearchController.clear();
                           bloc
                             ..add(
                               const SelectedPredictionMarketsChanged(
                                 selectedMarkets:
-                                    SupportedPredictionMarkets.Voted,
+                                    SupportedPredictionMarkets.voted,
                               ),
                             )
                             ..add(const VotedPredictionMarketsRequested());
@@ -289,7 +289,7 @@ class _PredictionMarketsFilterDesktopState
                           'Voted',
                           style: textSwapState(
                             condition: _selectedMarket ==
-                                SupportedPredictionMarkets.Voted,
+                                SupportedPredictionMarkets.voted,
                             tabNotSelected: textStyle(
                               Colors.white,
                               sportFilterTxSz,
@@ -308,7 +308,7 @@ class _PredictionMarketsFilterDesktopState
                       TextButton(
                         onPressed: () {
                           setState(() {
-                            _selectedMarket = SupportedPredictionMarkets.Exotic;
+                            _selectedMarket = SupportedPredictionMarkets.exotic;
                           });
 
                           marketsSearchController.clear();
@@ -316,7 +316,7 @@ class _PredictionMarketsFilterDesktopState
                             ..add(
                               const SelectedPredictionMarketsChanged(
                                 selectedMarkets:
-                                    SupportedPredictionMarkets.Exotic,
+                                    SupportedPredictionMarkets.exotic,
                               ),
                             )
                             ..add(const ExoticPredictionMarketsRequested());
@@ -325,7 +325,7 @@ class _PredictionMarketsFilterDesktopState
                           'Exotic',
                           style: textSwapState(
                             condition: _selectedMarket ==
-                                SupportedPredictionMarkets.Exotic,
+                                SupportedPredictionMarkets.exotic,
                             tabNotSelected: textStyle(
                               Colors.white,
                               sportFilterTxSz,

@@ -25,7 +25,7 @@ class PredictionModel extends MarketModel {
           id: id,
           name: prompt,
           marketHash: marketAddress,
-          typeOfMarket: SupportedMarkets.Prediction,
+          typeOfMarket: SupportedMarkets.prediction,
         );
 
   @override

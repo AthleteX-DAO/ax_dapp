@@ -58,7 +58,7 @@ class _MarketsFilterDesktopState extends State<MarketsFilterDesktop> {
               bloc
                 ..add(
                   const SelectedMarketsChanged(
-                    selectedMarkets: SupportedMarkets.Athlete,
+                    selectedMarkets: SupportedMarkets.athlete,
                   ),
                 )
                 ..add(FetchScoutInfoRequested());
@@ -66,7 +66,7 @@ class _MarketsFilterDesktopState extends State<MarketsFilterDesktop> {
             child: Text(
               'Athlete',
               style: textSwapState(
-                condition: _selectedMarket == SupportedMarkets.Athlete,
+                condition: _selectedMarket == SupportedMarkets.athlete,
                 tabNotSelected: textStyle(
                   Colors.white,
                   sportFilterTxSz,
@@ -87,14 +87,14 @@ class _MarketsFilterDesktopState extends State<MarketsFilterDesktop> {
               marketsSearchController.clear();
               bloc.add(
                 const SelectedMarketsChanged(
-                  selectedMarkets: SupportedMarkets.Crypto,
+                  selectedMarkets: SupportedMarkets.crypto,
                 ),
               );
             },
             child: Text(
               'Crypto',
               style: textSwapState(
-                condition: _selectedMarket == SupportedMarkets.Crypto,
+                condition: _selectedMarket == SupportedMarkets.crypto,
                 tabNotSelected: textStyle(
                   Colors.white,
                   sportFilterTxSz,
@@ -115,14 +115,14 @@ class _MarketsFilterDesktopState extends State<MarketsFilterDesktop> {
               marketsSearchController.clear();
               bloc.add(
                 const SelectedMarketsChanged(
-                  selectedMarkets: SupportedMarkets.Sports,
+                  selectedMarkets: SupportedMarkets.sports,
                 ),
               );
             },
             child: Text(
               'Sports',
               style: textSwapState(
-                condition: _selectedMarket == SupportedMarkets.Sports,
+                condition: _selectedMarket == SupportedMarkets.sports,
                 tabNotSelected: textStyle(
                   Colors.white,
                   sportFilterTxSz,

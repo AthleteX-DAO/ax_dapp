@@ -1,25 +1,23 @@
 /// Represents supported & available markets
 
-// ignore_for_file: constant_identifier_names
-
 enum SupportedMarkets {
   /// Mix of all supported markets
-  All,
+  all,
 
   /// Athlete Performance Markets
-  Prediction,
+  prediction,
 
   /// Bitcoin, Ethereum, Thales, SX for example
-  Crypto,
+  crypto,
 
   /// SportX, Thales, Polymarket and potentially more
-  Sports,
+  sports,
 
   /// Our Athlete Performance Markets
-  Athlete,
+  athlete,
 
   /// Foreign Exchange currency markets
-  Forex
+  forex
 }
 
 extension SupportedMarketsX on SupportedMarkets {

@@ -12,7 +12,7 @@ class TokenMarketModel extends MarketModel {
           id: 0,
           name: '',
           marketHash: '',
-          typeOfMarket: SupportedMarkets.Athlete,
+          typeOfMarket: SupportedMarkets.athlete,
         );
 
   final double marketPrice;

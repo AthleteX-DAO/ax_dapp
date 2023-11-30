@@ -57,7 +57,7 @@ class PredictionSnapshotRepository {
             shortTokenPercentage: 0,
             longTokenPriceUsd: 0,
             shortTokenPriceUsd: 0,
-            supportedPredictionMarkets: SupportedPredictionMarkets.Voted,
+            supportedPredictionMarkets: SupportedPredictionMarkets.voted,
           ),
         );
       }

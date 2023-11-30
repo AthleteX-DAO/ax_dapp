@@ -69,7 +69,7 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                     boxConstraints: constraints,
                   ),
                   if (state.status == BlocStatus.success &&
-                      state.selectedMarket == SupportedMarkets.Athlete)
+                      state.selectedMarket == SupportedMarkets.athlete)
                     const DesktopHeaders(),
                   Stack(
                     alignment: Alignment.center,
@@ -80,7 +80,7 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                       if (state.status == BlocStatus.noData)
                         const FilterMenuError(),
                       if (state.status == BlocStatus.success &&
-                          state.selectedMarket == SupportedMarkets.All)
+                          state.selectedMarket == SupportedMarkets.all)
                         SizedBox(
                           height: constraints.maxHeight * 0.8 - 120,
                           child: const Center(
@@ -98,18 +98,18 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                           ),
                         ),
                       if (state.status == BlocStatus.success &&
-                          state.selectedMarket == SupportedMarkets.Athlete)
+                          state.selectedMarket == SupportedMarkets.athlete)
                         AthleteMarkets(
                           boxConstraints: constraints,
                         ),
                       if (state.status == BlocStatus.success &&
-                          state.selectedMarket == SupportedMarkets.Sports)
+                          state.selectedMarket == SupportedMarkets.sports)
                         SportsMarkets(
                           sportsMarkets: liveSports,
                           boxConstraints: constraints,
                         ),
                       if (state.status == BlocStatus.success &&
-                          state.selectedMarket == SupportedMarkets.Crypto)
+                          state.selectedMarket == SupportedMarkets.crypto)
                         CryptoMarkets(
                           filteredMarkets: const [],
                           boxConstraints: constraints,

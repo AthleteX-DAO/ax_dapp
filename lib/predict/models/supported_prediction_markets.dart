@@ -5,28 +5,28 @@ enum SupportedPredictionMarkets {
   all,
 
   /// College Athletes
-  College,
+  college,
 
   /// Basketball Athletes
-  Basketball,
+  basketball,
 
   /// Football Athletes
-  Football,
+  football,
 
   /// Hockey Athletes
-  Hockey,
+  hockey,
 
   /// Baseball Athletes
-  Baseball,
+  baseball,
 
   /// Soccer Athletes
-  Soccer,
+  soccer,
 
   /// Voted markets from snapshot
-  Voted,
+  voted,
 
   /// Exotic Athlete Markets
-  Exotic
+  exotic
 }
 
 extension SupportedPredictionMarketsX on SupportedPredictionMarkets {
