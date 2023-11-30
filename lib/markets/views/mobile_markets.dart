@@ -1,5 +1,4 @@
 import 'package:ax_dapp/athlete_markets/athlete.dart';
-import 'package:ax_dapp/athlete_markets/view/athlete_markets.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/markets/widgets/markets_filter_mobile.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -68,7 +67,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
             )
             ..add(
               const SelectedMarketsChanged(
-                selectedMarkets: SupportedMarkets.all,
+                selectedMarkets: SupportedMarkets.All,
               ),
             );
         }
@@ -106,9 +105,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                             height: 20,
                             child: Row(
                               children: [
-                                MarketsFilterMobile(
-                                  boxConstraints: constraints,
-                                ),
+                                const MarketsFilterMobile(),
                                 const Spacer(),
                                 Center(
                                   child: Align(
@@ -272,7 +269,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                         if (state.status == BlocStatus.noData)
                           const FilterMenuError(),
                         if (state.status == BlocStatus.success &&
-                            state.selectedMarket == SupportedMarkets.all)
+                            state.selectedMarket == SupportedMarkets.All)
                           SizedBox(
                             height: constraints.maxHeight * 0.8 - 120,
                             child: const Center(

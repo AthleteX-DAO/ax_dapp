@@ -4,7 +4,7 @@
 
 enum SupportedMarkets {
   /// Mix of all supported markets
-  all,
+  All,
 
   /// Athlete Performance Markets
   Prediction,

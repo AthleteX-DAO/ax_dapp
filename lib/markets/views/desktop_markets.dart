@@ -80,7 +80,7 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                       if (state.status == BlocStatus.noData)
                         const FilterMenuError(),
                       if (state.status == BlocStatus.success &&
-                          state.selectedMarket == SupportedMarkets.all)
+                          state.selectedMarket == SupportedMarkets.All)
                         SizedBox(
                           height: constraints.maxHeight * 0.8 - 120,
                           child: const Center(
