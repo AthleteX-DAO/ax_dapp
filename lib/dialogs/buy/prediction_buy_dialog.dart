@@ -16,16 +16,23 @@ import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class BuyPredictionDialog extends StatelessWidget {
-  BuyPredictionDialog({super.key, required this.predictionModel});
+class BuyPredictionDialog extends StatefulWidget {
+  const BuyPredictionDialog({
+    super.key,
+    required this.predictionModel,
+  });
 
   final PredictionModel predictionModel;
 
+  @override
+  State<BuyPredictionDialog> createState() => _BuyPredictionDialogState();
+}
+
+class _BuyPredictionDialogState extends State<BuyPredictionDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
   final TextEditingController _predictionAmountController =
       TextEditingController();
-
   double slippageTolerance = 1;
 
   @override
@@ -76,7 +83,7 @@ class BuyPredictionDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Buy ${predictionModel.prompt} Prediction',
+                        'Buy ${widget.predictionModel.prompt} Prediction',
                         style: textStyle(
                           Colors.white,
                           20,
@@ -355,7 +362,7 @@ class BuyPredictionDialog extends StatelessWidget {
                               longOrShort: state.aptTypeSelection.isLong
                                   ? 'Long Apt'
                                   : 'Short Apt',
-                              predictionModel: predictionModel,
+                              predictionModel: widget.predictionModel,
                               walletAddress: formattedWalletAddress,
                             );
                           }
@@ -379,6 +386,12 @@ class BuyPredictionDialog extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _predictionAmountController.dispose();
+    super.dispose();
   }
 }
 
