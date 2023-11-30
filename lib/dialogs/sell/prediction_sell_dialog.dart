@@ -30,12 +30,13 @@ class SellDialog extends StatefulWidget {
 class _SellDialogState extends State<SellDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
-  final TextEditingController _aptAmountController = TextEditingController();
+  final TextEditingController _predictionAmountController =
+      TextEditingController();
   double slippageTolerance = 1;
 
   @override
   void dispose() {
-    _aptAmountController.dispose();
+    _predictionAmountController.dispose();
     super.dispose();
   }
 
@@ -220,7 +221,7 @@ class _SellDialogState extends State<SellDialog> {
                                 bloc.add(
                                   MaxSellTap(),
                                 );
-                                _aptAmountController.text =
+                                _predictionAmountController.text =
                                     state.balance.toStringAsFixed(6);
                               },
                               child: Text(
@@ -242,7 +243,7 @@ class _SellDialogState extends State<SellDialog> {
                                     const TextInputType.numberWithOptions(
                                   decimal: true,
                                 ),
-                                controller: _aptAmountController,
+                                controller: _predictionAmountController,
                                 style: textStyle(
                                   Colors.grey[400]!,
                                   22,
@@ -348,7 +349,7 @@ class _SellDialogState extends State<SellDialog> {
                         builder: (_, formattedWalletAddress) {
                           if (state.status != BlocStatus.error) {
                             return PedictionSellApproveButton(
-                              amountInputted: _aptAmountController.text,
+                              amountInputted: _predictionAmountController.text,
                               aptSellInfo: state.aptSellInfo,
                               longOrShort: state.aptTypeSelection.isLong
                                   ? 'Long Apt'
