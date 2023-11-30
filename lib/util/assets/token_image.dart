@@ -35,8 +35,9 @@ AssetImage tokenImage(Token token) {
 }
 
 // TODO(Rolly): gen assets & move to ui package
+// TODO(anyone): create image assets for yes and no tokens
 AssetImage aptImage(Apt apt) {
-  var tokenAssetName = '';
+  String tokenAssetName;
   switch (apt.type) {
     case AptType.none:
       throw UnsupportedError('apt image for ${apt.type}');
@@ -45,6 +46,12 @@ AssetImage aptImage(Apt apt) {
       break;
     case AptType.short:
       tokenAssetName = 'apt_inverted.png';
+      break;
+    case AptType.yes:
+      tokenAssetName = '';
+      break;
+    case AptType.no:
+      tokenAssetName = '';
       break;
   }
   return AssetImage('assets/images/$tokenAssetName');
