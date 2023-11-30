@@ -92,7 +92,6 @@ class _MobileMarketsState extends State<MobileMarkets> {
                         color: Colors.grey,
                       ),
                     ),
-                    // APT Title & Sport Filter & search icon/bar
                     Container(
                       margin: EdgeInsets.only(
                         left: (constraints.maxWidth >= 300) ? 15 : 9,
@@ -100,11 +99,9 @@ class _MobileMarketsState extends State<MobileMarkets> {
                         bottom: 10,
                       ),
                       height: 40,
-                      // header with the dropdwons & search
                       child: IndexedStack(
                         index: _widgetIndex,
                         children: [
-                          // text & filters
                           SizedBox(
                             height: 20,
                             child: Row(
@@ -113,7 +110,6 @@ class _MobileMarketsState extends State<MobileMarkets> {
                                   boxConstraints: constraints,
                                 ),
                                 const Spacer(),
-                                // search icon
                                 Center(
                                   child: Align(
                                     child: IconButton(
@@ -135,13 +131,11 @@ class _MobileMarketsState extends State<MobileMarkets> {
                               ],
                             ),
                           ),
-                          // search bar & cancel
                           SizedBox(
                             height: 40,
                             child: Row(
                               children: [
                                 Expanded(
-                                  // Search Bar
                                   child: Container(
                                     width: constraints.maxWidth - 110,
                                     height: 160,
@@ -227,7 +221,6 @@ class _MobileMarketsState extends State<MobileMarkets> {
                                     ),
                                   ),
                                 ),
-                                // cancel serach button
                                 MaterialButton(
                                   onPressed: () {
                                     setState(
@@ -251,8 +244,6 @@ class _MobileMarketsState extends State<MobileMarkets> {
                         ],
                       ),
                     ),
-                    // List Headers
-                    // BuildListViewHeader
                     Row(
                       children: <Widget>[
                         SizedBox(
@@ -274,16 +265,12 @@ class _MobileMarketsState extends State<MobileMarkets> {
                         ),
                       ],
                     ),
-                    //BuildScoutView body
                     Stack(
                       alignment: Alignment.center,
                       children: [
                         if (state.status == BlocStatus.loading) const Loader(),
-
                         if (state.status == BlocStatus.noData)
-                          FilterMenuError(
-                            selectedChain: _selectedChain,
-                          ),
+                          const FilterMenuError(),
                         if (state.status == BlocStatus.success &&
                             state.selectedMarket == SupportedMarkets.all)
                           SizedBox(
@@ -313,7 +300,6 @@ class _MobileMarketsState extends State<MobileMarkets> {
                           AthleteMarkets(
                             boxConstraints: constraints,
                           ),
-                        // Default Structure
                         SizedBox(
                           height: constraints.maxHeight * 0.8 - 120,
                           child: const Center(

@@ -78,9 +78,7 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                       if (state.status == BlocStatus.error)
                         const ScoutLoadingError(),
                       if (state.status == BlocStatus.noData)
-                        FilterMenuError(
-                          selectedChain: _selectedChain,
-                        ),
+                        const FilterMenuError(),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.all)
                         SizedBox(
