@@ -1,8 +1,6 @@
-import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/predict/widgets/widget_factories/widget_factories.dart';
 import 'package:flutter/material.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
 abstract class PredictionDetailsWidget {
   factory PredictionDetailsWidget(PredictionModel predictionModel) {
@@ -35,14 +33,17 @@ abstract class PredictionDetailsWidget {
     double _width,
   );
   Widget predictionDetailsCardsForMobile(
-    bool showIcon,
-    double prdNameBx,
-  );
+    double prdNameBx, {
+    required bool showIcon,
+  });
 }
 
 class NoStatsShownWidget implements PredictionDetailsWidget {
   @override
-  Widget predictionDetailsCardsForMobile(bool showIcon, double prdNameBx) {
+  Widget predictionDetailsCardsForMobile(
+    double prdNameBx, {
+    required bool showIcon,
+  }) {
     return const Center(
       child: Text(''),
     );

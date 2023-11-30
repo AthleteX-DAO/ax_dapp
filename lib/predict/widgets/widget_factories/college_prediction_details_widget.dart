@@ -8,7 +8,9 @@ class CollegePredictionsDetailsWidget implements PredictionDetailsWidget {
   final PredictionModel predictionModel;
 
   @override
-  Widget predictionDetailsCardsForMobile(bool showIcon, double prdNameBx) {
+  Widget predictionDetailsCardsForMobile(double prdNameBx, {
+    required bool showIcon,
+  }) {
     // TODO: implement predictionDetailsCardsForMobile
     throw UnimplementedError();
   }
