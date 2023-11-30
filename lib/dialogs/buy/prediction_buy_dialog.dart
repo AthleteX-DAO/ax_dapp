@@ -492,15 +492,6 @@ class PedictionBuyApproveButton extends StatelessWidget {
   final String longOrShort;
   final AptBuyInfo aptBuyInfo;
 
-  /// This will come in handy
-  //   approveCallback: bloc.swapRepository.approve,
-  // confirmCallback: bloc.swapRepository.swap,
-  // confirmDialog: const TransactionStatusDialog(
-  //   title: 'Transaction Confirmed',
-  //   icons: Icons.check_circle_outline,
-  // ),
-  // walletAddress: formattedWalletAddress,
-
   @override
   Widget build(BuildContext context) {
     return Container(
