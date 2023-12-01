@@ -1,6 +1,7 @@
 import 'package:ax_dapp/athlete_markets/widgets/ticker_symbol.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
+import 'package:ax_dapp/prediction/widgets/widget.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
@@ -29,7 +30,6 @@ class StatsSide extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Price Overview Section
           // Price Overview section
           SizedBox(
             height: 180,
@@ -239,6 +239,24 @@ class StatsSide extends StatelessWidget {
                         );
                       },
                     ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          /// Buttons Sections
+          SizedBox(
+            width: wid * 0.875,
+            height: 150,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    BuyEventButton(predictionModel: predictionModel),
+                    SellEventButton(predictionModel: predictionModel),
                   ],
                 ),
               ],
