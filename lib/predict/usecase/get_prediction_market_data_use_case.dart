@@ -18,7 +18,9 @@ class GetPredictionMarketDataUseCase {
 
   Future<MarketPriceRecord> getMarketPriceHistory(
     String startDate,
-  ) async {}
+  ) async {
+    throw UnimplementedError('Implement getMarketPriceHistory');
+  }
 
   List<PriceRecord>? _getMarketPriceRecords(
     String strTokenAddr,
