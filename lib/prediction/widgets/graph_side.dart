@@ -1,4 +1,3 @@
-import 'package:ax_dapp/athlete_markets/widgets/buttons.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/predict/widgets/widget_factories/prediction_details_widget.dart';
 import 'package:ax_dapp/prediction/prediction.dart';
@@ -32,7 +31,6 @@ class GraphSide extends StatelessWidget {
     final _height = MediaQuery.of(context).size.height;
     var wid = _width * 0.4;
     if (_width < 1160) wid = containerWidth;
-    const indexUnselectedStackBackgroundColor = Colors.transparent;
     final _zoomPanBehavior = ZoomPanBehavior(
       enableMouseWheelZooming: true,
       enablePanning: true,
@@ -40,8 +38,6 @@ class GraphSide extends StatelessWidget {
     );
     final _longToolTipBehavior = TooltipBehavior(enable: true);
     final _shortToolTipBehavior = TooltipBehavior(enable: true);
-    final _isPortraitMode =
-        MediaQuery.of(context).orientation == Orientation.portrait;
     return Container(
       height: _height / 1.5,
       width: wid,
@@ -55,13 +51,11 @@ class GraphSide extends StatelessWidget {
             wid: wid,
             prompt: predictionModel.prompt,
           ),
-          // graph side
           SizedBox(
             width: wid,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                //build graph
                 Container(
                   width: wid * .875,
                   height: _height * .4,
@@ -73,7 +67,6 @@ class GraphSide extends StatelessWidget {
                   ),
                   child: Stack(
                     children: [
-                      // Graph
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 28,
@@ -95,20 +88,23 @@ class GraphSide extends StatelessWidget {
                                             _longToolTipBehavior,
                                         zoomPanBehavior: _zoomPanBehavior,
                                       ),
+                                      PredictionPageNoGraph(
+                                        chartStats: chartStats,
+                                        shortToolTipBehavior:
+                                            _shortToolTipBehavior,
+                                        zoomPanBehavior: _zoomPanBehavior,
+                                      ),
                                     ],
                                   );
                                 },
                               ),
                       ),
-                      // Price
                     ],
                   ),
                 ),
-                //give spacing between the graph and the buttons
                 const SizedBox(
                   height: 12,
                 ),
-                //build buttons and tooltip
                 SizedBox(
                   width: wid * .875,
                   height: 26,
@@ -124,7 +120,6 @@ class GraphSide extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Build about tile
                 ExpansionTile(
                   title: Text(
                     'About',
@@ -150,7 +145,6 @@ class GraphSide extends StatelessWidget {
                             .predictionPageDetails(),
                       ),
                     ),
-                    // Gives spacing between container & proposal button
                     const SizedBox(
                       height: 10,
                     ),
@@ -160,7 +154,6 @@ class GraphSide extends StatelessWidget {
                         ProposeButton(),
                       ],
                     ),
-                    // Gives spacing between proposal button & bottom of tile
                     const SizedBox(
                       height: 5,
                     ),
