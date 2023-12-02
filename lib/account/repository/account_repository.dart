@@ -1,6 +1,7 @@
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
-import 'package:shared/shared.dart';
+import 'package:ethereum_api/erc20_api.dart';
+import 'package:shared/shared.dart' hide ERC20;
 
 class AccountRepository {
   Controller controller = Controller();
