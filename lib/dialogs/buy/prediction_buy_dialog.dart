@@ -430,7 +430,11 @@ class YesAPTButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
       ),
-      onPressed: () {},
+      onPressed: () {
+        context
+            .read<BuyDialogBloc>()
+            .add(const AptTypeSelectionChanged(AptType.long));
+      },
       child: Text(
         'Yes',
         style: TextStyle(
@@ -462,7 +466,11 @@ class NoAPTButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
       ),
-      onPressed: () {},
+      onPressed: () {
+        context
+            .read<BuyDialogBloc>()
+            .add(const AptTypeSelectionChanged(AptType.short));
+      },
       child: Text(
         'No',
         style: TextStyle(
@@ -491,6 +499,15 @@ class PedictionBuyApproveButton extends StatelessWidget {
   final PredictionModel predictionModel;
   final String longOrShort;
   final AptBuyInfo aptBuyInfo;
+
+  // / This will come in handy
+  //   approveCallback: bloc.swapRepository.approve,
+  // confirmCallback: bloc.swapRepository.swap,
+  // confirmDialog: const TransactionStatusDialog(
+  //   title: 'Transaction Confirmed',
+  //   icons: Icons.check_circle_outline,
+  // ),
+  // walletAddress: formattedWalletAddress,
 
   @override
   Widget build(BuildContext context) {
