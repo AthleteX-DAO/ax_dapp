@@ -37,6 +37,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     on<Token0AmountChanged>(_onToken0AmountChanged);
     on<Token1AmountChanged>(_onToken1AmountChanged);
     on<SwapTokensRequested>(_onSwapTokensRequested);
+    on<TokenSearchChanged>(_onTokenSearchChanged);
     add(const WatchAppDataChangesStarted());
     add(const FetchPairInfoRequested());
   }
@@ -100,8 +101,10 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     poolRepository
       ..tknAddress1 = (state.token0.address)
       ..tknAddress2 = (state.token1.address);
-    final tokenZeroDecimal = await _walletRepository.getDecimals(state.token0.address);
-    final tokenOneDecimal = await _walletRepository.getDecimals(state.token1.address);
+    final tokenZeroDecimal =
+        await _walletRepository.getDecimals(state.token0.address);
+    final tokenOneDecimal =
+        await _walletRepository.getDecimals(state.token1.address);
     poolRepository
       ..topDecimals = (tokenZeroDecimal.toInt())
       ..bottomDecimals = (tokenOneDecimal.toInt());
@@ -411,6 +414,18 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       return double.parse(lpTokenBalance);
     } else {
       return 0;
+    }
+  }
+
+  void _onTokenSearchChanged(
+    TokenSearchChanged event,
+    Emitter<AddLiquidityState> emit,
+  ) async {
+    final parsedInput = event.searchedName;
+
+    // If input is an unknown token
+    if (parsedInput.contains('0x') && parsedInput.length == 42) {
+      emit(state.copyWith());
     }
   }
 }
