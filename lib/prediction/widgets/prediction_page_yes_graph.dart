@@ -50,6 +50,31 @@ class PredictionPageYesGraph extends StatelessWidget {
           opacity: 1,
           dashArray: <double>[5, 5],
         ),
+        FastLineSeries<GraphData, DateTime>(
+          name: 'Market Value',
+          dataSource: chartStats,
+          xValueMapper: (
+            GraphData data,
+            _,
+          ) =>
+              data.date,
+          yValueMapper: (
+            GraphData data,
+            _,
+          ) =>
+              data.longMarketPrice,
+          dataLabelSettings: const DataLabelSettings(
+            textStyle: TextStyle(
+              fontSize: 10,
+              color: Colors.orange,
+            ),
+          ),
+          enableTooltip: true,
+          color: Colors.white,
+          width: 2,
+          opacity: 1,
+          dashArray: <double>[5, 5],
+        ),
       ],
     );
   }
