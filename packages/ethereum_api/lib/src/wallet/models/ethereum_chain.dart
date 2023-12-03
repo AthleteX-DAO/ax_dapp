@@ -213,14 +213,14 @@ extension ChainConfigX on EthereumChain {
   EventBasedPredictionMarket createEventMarketsClient(Web3Client client) =>
       EventBasedPredictionMarket(
         address: EthereumAddress.fromHex(
-          EthereumAddressConfig.event(
-                  polygonMainnet: kNullAddress,
-                  goerliTestNet: kNullAddress,
-                  sportxMainnet: kNullAddress,
-                  sportxTestnet: kNullAddress,
-                  optimism: kNullAddress,
-                  arbitriumOne: kNullAddress)
-              .address(this),
+          const EthereumAddressConfig.event(
+            polygonMainnet: kNullAddress,
+            goerliTestNet: kNullAddress,
+            sportxMainnet: kNullAddress,
+            sportxTestnet: kNullAddress,
+            optimism: kNullAddress,
+            arbitriumOne: kNullAddress,
+          ).address(this),
         ),
         client: client,
       );
