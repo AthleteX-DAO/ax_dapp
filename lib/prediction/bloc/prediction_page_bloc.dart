@@ -26,6 +26,7 @@ class PredictionPageBloc
         _streamAppDataChangesUseCase = streamAppDataChangesUseCase,
         _predictionAddressRepository = predictionAddressRepository,
         super(const PredictionPageState()) {
+    // This area is subject to reform
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<PredictionPageLoaded>(_onPredictionPageLoaded);
     on<LoadingPredictionPage>(_onLoadingPredictionPage);
@@ -33,9 +34,14 @@ class PredictionPageBloc
     on<RedeemPredictionTokens>(_onRedeemPredictionTokens);
     on<LoadMarketAddress>(_onLoadMarketAddress);
     on<ToggleAdvanceFeatures>(_onToggleAdvanceFeatured);
+    // End region
+
+    on<GetEventStatsRequested>(_onGetEventStatsRequested);
 
     add(const WatchAppDataChangesStarted());
     add(LoadMarketAddress());
+    //Load Prediction Graph
+    add(GetEventStatsRequested(0));
   }
 
   final WalletRepository _walletRepository;
@@ -142,4 +148,17 @@ class PredictionPageBloc
   ) {
     emit(state.copyWith(isToggled: !state.isToggled));
   }
+
+  Future<void> _onGetEventStatsRequested(
+    GetEventStatsRequested event,
+    Emitter<PredictionPageState> emit,
+  ) async {
+    final eventID = event.predictionId;
+
+    emit(state.copyWith(status: BlocStatus.loading));
+
+    /// Get event price stats
+  }
+
+  void updatePriceGraphData() {}
 }
