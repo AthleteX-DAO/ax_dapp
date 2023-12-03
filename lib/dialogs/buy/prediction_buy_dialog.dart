@@ -520,7 +520,14 @@ class PedictionBuyApproveButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(100),
       ),
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          context.read<BuyDialogBloc>().add(
+                const BuyAPTRequested(
+                  addressToApprove:
+                      '0x711b8208753fC1B9ed2836519c02Da649157E864',
+                ),
+              );
+        },
         child: const Text(
           'Approve',
           style: TextStyle(
