@@ -6,6 +6,7 @@ import 'package:ethereum_api/src/config/models/apts/mlb_apt_list.dart';
 import 'package:ethereum_api/src/config/models/apts/nfl_apt_list.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_url_config.dart';
+import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/pool_info/pool_info.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 import 'package:flutter/widgets.dart';
@@ -212,7 +213,14 @@ extension ChainConfigX on EthereumChain {
   EventBasedPredictionMarket createEventMarketsClient(Web3Client client) =>
       EventBasedPredictionMarket(
         address: EthereumAddress.fromHex(
-          const EthereumAddressConfig.event().address(this),
+          EthereumAddressConfig.event(
+                  polygonMainnet: kNullAddress,
+                  goerliTestNet: kNullAddress,
+                  sportxMainnet: kNullAddress,
+                  sportxTestnet: kNullAddress,
+                  optimism: kNullAddress,
+                  arbitriumOne: kNullAddress)
+              .address(this),
         ),
         client: client,
       );
