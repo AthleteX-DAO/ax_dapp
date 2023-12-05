@@ -15,4 +15,10 @@ class EventPair extends Equatable {
 
   /// Represents [Event.no].
   final Event no;
+
+  /// Represents an empty [EventPair].
+  static const empty = EventPair(yes: Event.empty(), no: Event.empty());
+
+  @override
+  List<Object?> get props => [yes, no];
 }

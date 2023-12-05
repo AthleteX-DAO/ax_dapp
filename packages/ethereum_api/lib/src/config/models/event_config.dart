@@ -19,7 +19,8 @@ import 'package:shared/shared.dart';
 class EventConfig extends Equatable {
   /// {@macro athlete_events_markets_config}
   const EventConfig({
-    required this.marketId,
+    required this.eventId,
+    required this.eventName,
     required this.eventTicker,
     required this.eventMarketAddressConfig,
     required this.longAddressConfig,
@@ -29,7 +30,12 @@ class EventConfig extends Equatable {
   /// {@template market_id}
   /// Represents market's ID.
   /// {@endtemplate}
-  final int marketId;
+  final int eventId;
+
+  /// {@template marketName}
+  /// Represents event market's name
+  /// {@endtemplate}
+  final String eventName;
 
   /// Represents the [Event] market's ticker.
   final String eventTicker;
@@ -46,7 +52,8 @@ class EventConfig extends Equatable {
   @override
   // TODO: implement props
   List<Object?> get props => [
-        marketId,
+        eventId,
+        eventName,
         eventTicker,
         eventMarketAddressConfig,
         longAddressConfig,
@@ -55,7 +62,8 @@ class EventConfig extends Equatable {
 
   /// Represents an empty [EventConfig]. Useful as default value.
   static const empty = EventConfig(
-    marketId: 0,
+    eventId: 0,
+    eventName: '',
     eventTicker: '',
     eventMarketAddressConfig: EthereumAddressConfig.empty(),
     longAddressConfig: EthereumAddressConfig.empty(),
@@ -77,5 +85,6 @@ List<EventConfig> getAllEventMarkets() {
 
 /// [EventConfig] extensions.
 extension EventConfigX on EventConfig {
-  /// TODO: Add necessary extensions on EventConfig Repository
+  String eventName(EventType eventType) =>
+      '$eventName ${eventType.name.capitalize()} Event';
 }

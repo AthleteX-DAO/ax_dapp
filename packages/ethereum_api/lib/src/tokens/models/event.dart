@@ -52,3 +52,40 @@ class Event extends Token {
   @override
   List<Object?> get props => super.props..addAll([eventType, _eventConfig]);
 }
+
+/// [Event]s extensions
+
+extension EventX on Event {
+  /// Returns 'true' for an empty [Event]
+  bool get isEmpty => this == const Event.empty();
+
+  /// {@macro event_id}
+  int get eventId => _eventConfig.eventId;
+
+  /// {@macro event_name}
+  String get eventName => _eventConfig.eventName;
+
+  /// Returns [Event]'s pair address
+  String get pairAddress =>
+      _eventConfig.eventMarketAddressConfig.address(_chain);
+}
+
+/// [Event]s extensions.
+extension EventsX on Iterable<Event> {
+  /// Returns the [EventPair] with the corresponding [pairAddress].
+  ///
+  /// Defaults to [EventPair.empty] when no such pair is found
+
+  EventPair findPairByAddress(String pairAddress) => EventPair(
+        yes: singleWhere((element) => false),
+        no: singleWhere((element) => false),
+      );
+
+  /// Returns the [EventPair] with the corresponding [eventId];
+  ///
+  /// Defaults to [EventPair.empty] when no such [EventPair] is found.  `
+  EventPair findPairByEventId(int eventId) => EventPair(
+        yes: singleWhere((element) => false),
+        no: singleWhere((element) => false),
+      );
+}

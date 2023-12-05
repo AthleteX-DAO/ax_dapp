@@ -18,6 +18,7 @@ class GetPredictionMarketDataUseCase {
 
   Future<MarketPriceRecord> getMarketPriceHistory(
     String startDate,
+    int eventId,
   ) async {
     throw UnimplementedError('Implement getMarketPriceHistory');
   }
