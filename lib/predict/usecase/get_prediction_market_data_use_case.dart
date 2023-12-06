@@ -1,4 +1,5 @@
 import 'package:ax_dapp/athlete_markets/models/market_price_record.dart';
+import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
@@ -15,6 +16,7 @@ class GetPredictionMarketDataUseCase {
 
   List<TokenPair> allPairs = [];
 
+  /// Returns a [MarketPriceRecord] of the Prediction's event's history
   Future<MarketPriceRecord> getMarketPriceHistory(
     String startDate,
     int eventId,
@@ -39,25 +41,44 @@ class GetPredictionMarketDataUseCase {
           _equalsIgnoreCase(pair.token1.id, strTokenAddr),
     );
 
-    return allPairs[index0 >= 0 ? index0 : index1]
-        .pairHourData
-        ?.asMap()
-        .entries
-        .map((entry) {
-      final price = index0 >= 0
-          ? double.parse(entry.value.reserve1) /
-              double.parse(entry.value.reserve0)
-          : double.parse(entry.value.reserve0) /
-              double.parse(entry.value.reserve1);
+    // return allPairs[index0 >= 0 ? index0 : index1]
+    //     .pairHourData
+    //     ?.asMap()
+    //     .entries
+    //     .map((entry) {
+    //   final price = index0 >= 0
+    //       ? double.parse(entry.value.reserve1) /
+    //           double.parse(entry.value.reserve0)
+    //       : double.parse(entry.value.reserve0) /
+    //           double.parse(entry.value.reserve1);
 
-      final date =
-          DateTime.fromMillisecondsSinceEpoch(entry.value.hourStartUnix * 1000);
+    //   final date =
+    //       DateTime.fromMillisecondsSinceEpoch(entry.value.hourStartUnix * 1000);
 
-      return PriceRecord(
-        price: price,
-        timestamp: date.toString(),
-      );
-    }).toList();
+    //   return PriceRecord(
+    //     price: price,
+    //     timestamp: date.toString(),
+    //   );
+    // }).toList();
+
+    throw UnimplementedError('Implement _getMarketPriceRecords');
+  }
+
+  /// Maps Lowlevel API data to Higher level prediction models
+  List<PredictionModel> _mapEventToPredictionModel() {
+    // Map<int, PredictionModel> mappedPredictions;
+
+    // return mappedPredictions.values.toList();
+    throw UnimplementedError('Implement _mapEventToPredictionModel');
+  }
+
+  /// Query the subgraph for specific token pairs
+  Future<List<TokenPair>> _fetchSpecificPairs(
+    Token token,
+    String startDate, {
+    bool isLimited = true,
+  }) async {
+    throw UnimplementedError('Implement _fetchSpecificPairs');
   }
 
   bool _equalsIgnoreCase(String? string1, String? string2) {
