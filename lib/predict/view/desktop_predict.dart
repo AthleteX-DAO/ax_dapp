@@ -112,31 +112,64 @@ class _DesktopPredictState extends State<DesktopPredict> {
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket ==
                               SupportedPredictionMarkets.college)
-                        SizedBox(
-                          height: constraints.maxHeight * 0.8 - 120,
-                          child: const Center(
-                            child: SizedBox(
-                              height: 70,
-                            ),
-                          ),
+                        CollegeMarkets(
+                          boxConstraints: constraints,
                         ),
 
-                      /// Community Voted Prediction Markets
+                      /// Basketball Athletes Prediction Markets
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.basketball)
+                        BasketballMarkets(
+                          boxConstraints: constraints,
+                        ),
+
+                      /// Football Athletes Prediction Markets
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.football)
+                        FootballMarkets(
+                          boxConstraints: constraints,
+                        ),
+
+                      /// Hockey Athletes Prediction Markets
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.hockey)
+                        HockeyMarkets(
+                          boxConstraints: constraints,
+                        ),
+
+                      /// Baseball Athletes Prediction Markets
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.baseball)
+                        BaseballMarkets(
+                          boxConstraints: constraints,
+                        ),
+
+                      /// Soccer Athletes Prediction Markets
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.soccer)
+                        SoccerMarkets(
+                          boxConstraints: constraints,
+                        ),
+
+                      /// Voted Prediction Markets
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket ==
                               SupportedPredictionMarkets.voted)
-                        SizedBox(
-                          height: constraints.maxHeight * 0.8 - 120,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.only(top: 10),
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: currentPredictions.length,
-                            itemBuilder: (context, index) {
-                              return DesktopPredictionCard(
-                                predictionModel: currentPredictions[index],
-                              );
-                            },
-                          ),
+                        VotedMarkets(
+                          boxConstraints: constraints,
+                        ),
+
+                      /// Exotic Athletes Prediction Markets
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.exotic)
+                        ExoticMarkets(
+                          boxConstraints: constraints,
                         ),
 
                       /// Empty Space when loading markets
