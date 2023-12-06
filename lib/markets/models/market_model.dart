@@ -1,6 +1,9 @@
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:shared/shared.dart';
 
+/// {@template market_model}
+/// A base class to facilitate interopability between different Markets
+/// {@endtemplate}
 class MarketModel extends Equatable {
   const MarketModel({
     required this.id,
