@@ -272,9 +272,10 @@ class GetScoutAthletesDataUseCase {
           double.parse(allPairs[index1].pairHourData![0].reserve1);
     }
     return TokenMarketModel(
+      bookPrice: bookPrice * collateralizationMultiplier,
+      supportedMarket: SupportedMarkets.athlete,
       marketPrice: marketPrice,
       recentPrice: recentPrice,
-      bookPrice: bookPrice * collateralizationMultiplier,
     );
   }
 
