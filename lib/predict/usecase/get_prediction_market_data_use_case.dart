@@ -64,12 +64,22 @@ class GetPredictionMarketDataUseCase {
     throw UnimplementedError('Implement _getMarketPriceRecords');
   }
 
-  /// Maps Lowlevel API data to Higher level prediction models
-  List<PredictionModel> _mapEventToPredictionModel() {
-    // Map<int, PredictionModel> mappedPredictions;
+  /// Returns a list of all active Event Markets
+  List<PredictionModel> fetchAllMarkets() {
+    final allMarkets = _tokensRepository.currentEvents;
+    return allMarkets;
+  }
 
-    // return mappedPredictions.values.toList();
-    throw UnimplementedError('Implement _mapEventToPredictionModel');
+  /// Maps Lowlevel API data to Higher level prediction models
+  List<PredictionModel> _mapEventToPredictionModel(
+      List<PredictionModel> predictions,
+      List<PredictionPriceRecord> histories,
+      double axPrice) {
+    Map<int, PredictionModel> mappedPredictions;
+    mappedPredictions = predictions.asMap().map((key, prediction) {
+      final eventpari = _tokensRepository.current
+    });
+    return mappedPredictions.values.toList();
   }
 
   /// Query the subgraph for specific token pairs

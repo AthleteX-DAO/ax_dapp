@@ -7,18 +7,18 @@ part of 'nfl_athlete.dart';
 // **************************************************************************
 
 NFLAthlete _$NFLAthleteFromJson(Map<String, dynamic> json) => NFLAthlete(
-      id: json['ID'] as int,
-      name: json['Name'] as String,
-      team: json['Team'] as String,
-      position: json['Position'] as String,
-      passingYards: (json['PassingYards'] as num).toDouble(),
-      passingTouchdowns: (json['PassingTouchdowns'] as num).toDouble(),
-      reception: (json['Receptions'] as num).toDouble(),
-      receivingYards: (json['ReceivingYards'] as num).toDouble(),
-      receivingTouchdowns: (json['ReceivingTouchdowns'] as num).toDouble(),
-      rushingYards: (json['RushingYards'] as num).toDouble(),
-      price: (json['BookPrice'] as num).toDouble(),
-      timeStamp: json['Time'] as String,
+      id: json['id'] as int,
+      name: json['name'] as String,
+      team: json['team'] as String,
+      position: json['position'] as String,
+      passingYards: (json['passingYards'] as num).toDouble(),
+      passingTouchdowns: (json['passingTouchdowns'] as num).toDouble(),
+      reception: (json['reception'] as num).toDouble(),
+      receivingYards: (json['receivingYards'] as num).toDouble(),
+      receivingTouchdowns: (json['receivingTouchdowns'] as num).toDouble(),
+      rushingYards: (json['rushingYards'] as num).toDouble(),
+      price: (json['price'] as num).toDouble(),
+      timeStamp: json['timestamp'] as String,
     );
 
 Map<String, dynamic> _$NFLAthleteToJson(NFLAthlete instance) =>

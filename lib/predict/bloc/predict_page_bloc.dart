@@ -1,4 +1,5 @@
 import 'package:ax_dapp/predict/predict.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -15,22 +16,37 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
   PredictPageBloc({
     required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
     required EventMarketRepository eventMarketRepository,
+    required GetPredictionMarketDataUseCase getPredictionMarketDataUseCase,
     required GetPredictionMarketInfoUseCase getPredictionMarketInfoUseCase,
   })  : _streamAppDataChanges = streamAppDataChangesUseCase,
         _eventMarketRepository = eventMarketRepository,
+        _getPredictionMarketDataUseCase = getPredictionMarketDataUseCase,
         _getPredictionMarketInfoUseCase = getPredictionMarketInfoUseCase,
         super(const PredictPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<SelectedPredictionMarketsChanged>(_onSelectedPredictionMarketsChanged);
 
-    on<LoadPredictionsEvent>(_onLoadPredictions);
+    on<CollegePredictionMarketsRequested>(_onCollegePredictionMarketsRequested);
+    on<BasketballPredictionMarketsRequested>(
+        _onBasketballPredictionMarketsRequested);
+    on<FootballPredictionMarketsRequested>(
+        _onFootballPredictionMarketsRequested);
+    on<HockeyPredictionMarketsRequested>(_onHockeyPredictionMarketsRequested);
+    on<BaseballPredictionMarketsRequested>(
+        _onBaseballPredictionMarketsRequested);
+    on<SoccerPredictionMarketsRequested>(_onSoccerPredictionMarketsRequested);
+    on<VotedPredictionMarketsRequested>(_onVotedPredictionMarketsRequested);
+    on<ExoticPredictionMarketsRequested>(_onExoticPredictionMarketsRequested);
 
+    on<FetchPredictInfoRequested>(_onFetchPredictInfoRequested);
+
+    add(const FetchPredictInfoRequested());
     add(const WatchAppDataChangesStarted());
-    add(const LoadPredictionsEvent());
   }
 
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final EventMarketRepository _eventMarketRepository;
+  final GetPredictionMarketDataUseCase _getPredictionMarketDataUseCase;
   final GetPredictionMarketInfoUseCase _getPredictionMarketInfoUseCase;
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -58,27 +74,58 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     );
   }
 
-  Future<void> _onLoadPredictions(
-    LoadPredictionsEvent _,
+  Future<void> _onFetchPredictInfoRequested(
+    FetchPredictInfoRequested _,
     Emitter<PredictPageState> emit,
   ) async {
-    emit(
-      state.copyWith(status: BlocStatus.loading),
-    );
     try {
-      final predictions =
-          await _getPredictionMarketInfoUseCase.fetchPredictionModel();
-      emit(
-        state.copyWith(
-          predictions: predictions,
-          status: BlocStatus.success,
-        ),
-      );
+      emit(state.copyWith(status: BlocStatus.loading));
+      final listOfAllPredictions =
+          _getPredictionMarketDataUseCase.fetchAllMarkets();
     } catch (e) {
-      debugPrint('$e');
-      emit(state.copyWith(status: BlocStatus.error, predictions: []));
+      emit(state.copyWith(status: BlocStatus.error));
     }
   }
+
+  Future<void> _onCollegePredictionMarketsRequested(
+    CollegePredictionMarketsRequested _,
+    Emitter<PredictPageState> emit,
+  ) async {
+      emit(state.copyWith(status: BlocStatus.loading));
+      try{
+        // final collegePredictionMarkets = _getPredictionMarketDataUseCase.fetchMarketsBySport(SupportedPredictionMarkets.college);
+        emit(state.copyWith(filteredPredictions: collegePredictionMarkets));
+      }
+  }
+
+  Future<void> _onBasketballPredictionMarketsRequested(
+    BasketballPredictionMarketsRequested _,
+    Emitter<PredictPageState> emit,
+  ) async {}
+  Future<void> _onFootballPredictionMarketsRequested(
+    FootballPredictionMarketsRequested _,
+    Emitter<PredictPageState> emit,
+  ) async {}
+  Future<void> _onHockeyPredictionMarketsRequested(
+    HockeyPredictionMarketsRequested _,
+    Emitter<PredictPageState> emit,
+  ) async {}
+  Future<void> _onBaseballPredictionMarketsRequested(
+    BaseballPredictionMarketsRequested _,
+    Emitter<PredictPageState> emit,
+  ) async {}
+  Future<void> _onSoccerPredictionMarketsRequested(
+    SoccerPredictionMarketsRequested _,
+    Emitter<PredictPageState> emit,
+  ) async {}
+  Future<void> _onVotedPredictionMarketsRequested(
+    VotedPredictionMarketsRequested _,
+    Emitter<PredictPageState> emit,
+  ) async {}
+  Future<void> _onExoticPredictionMarketsRequested(
+    ExoticPredictionMarketsRequested _,
+    Emitter<PredictPageState> emit,
+  ) async {}
 
   Future<void> _onSelectedPredictionMarketsChanged(
     SelectedPredictionMarketsChanged event,

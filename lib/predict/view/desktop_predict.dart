@@ -57,7 +57,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
         if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
           bloc.add(
-            const LoadPredictionsEvent(),
+            const FetchPredictInfoRequested(),
           );
         }
         return LayoutBuilder(

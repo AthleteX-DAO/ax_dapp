@@ -6,6 +6,7 @@ import 'package:ethereum_api/src/config/models/apts/mlb_apt_list.dart';
 import 'package:ethereum_api/src/config/models/apts/nfl_apt_list.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_url_config.dart';
+import 'package:ethereum_api/src/config/models/event_config.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/pool_info/pool_info.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
@@ -167,6 +168,8 @@ extension ChainConfigX on EthereumChain {
         Token.matic(this),
         Token.weth(this),
         Token.usdc(this),
+        ...createApts(this),
+        ...createEvents(this),
       ];
 
   /// Generates the list of [Apt]'s for this [EthereumChain]. Composed based on
@@ -185,6 +188,20 @@ extension ChainConfigX on EthereumChain {
           (aptConfig) => [
             Token.longApt(this, aptConfig: aptConfig),
             Token.shortApt(this, aptConfig: aptConfig),
+          ],
+        )
+        .toList();
+  }
+
+  /// Generates the list of [Event]s for this [EthereumChain].  Composition is based on list of available [EventConfig]s
+  List<Token> createEvents(EthereumChain chain) {
+    final supportedEvents = getAllEventMarkets();
+
+    return supportedEvents
+        .expand(
+          (eventConfig) => [
+            Event.yes(chain, eventConfig: eventConfig),
+            Event.no(chain, eventConfig: eventConfig),
           ],
         )
         .toList();

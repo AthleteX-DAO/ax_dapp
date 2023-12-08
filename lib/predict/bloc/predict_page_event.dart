@@ -11,8 +11,8 @@ class WatchAppDataChangesStarted extends PredictPageEvent {
   const WatchAppDataChangesStarted();
 }
 
-class LoadPredictionsEvent extends PredictPageEvent {
-  const LoadPredictionsEvent();
+class FetchPredictInfoRequested extends PredictPageEvent {
+  const FetchPredictInfoRequested();
 }
 
 class ViewPredictionDetails extends PredictPageEvent {
