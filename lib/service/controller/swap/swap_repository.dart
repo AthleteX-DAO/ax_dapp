@@ -5,10 +5,14 @@ import 'package:ethereum_api/apt_router_api.dart';
 import 'package:ethereum_api/erc20_api.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 import 'package:web3dart/web3dart.dart';
 
 class SwapRepository {
-  SwapRepository();
+  SwapRepository({
+    required WalletRepository walletRepository,
+  }) : _walletRepository = walletRepository;
+  WalletRepository _walletRepository;
   Controller controller = Controller();
   Rx<Token> activeTkn1 = Token.empty.obs;
   Rx<Token> activeTkn2 = Token.empty.obs;
@@ -63,7 +67,7 @@ class SwapRepository {
       txString = await tokenA.approve(
         routerMainnetAddress,
         tokenAAmount,
-        credentials: controller.credentials,
+        credentials: _walletRepository.credentials.value,
       );
     } catch (e) {
       txString = '';

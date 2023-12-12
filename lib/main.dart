@@ -106,7 +106,9 @@ void main() async {
             create: (_) => PoolRepository(),
           ),
           RepositoryProvider(
-            create: (_) => SwapRepository(),
+            create: (context) => SwapRepository(
+              walletRepository: context.read<WalletRepository>(),
+            ),
           ),
           RepositoryProvider(
             create: (_) => LeagueRepository(
