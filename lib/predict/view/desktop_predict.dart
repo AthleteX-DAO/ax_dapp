@@ -19,6 +19,7 @@ class DesktopPredict extends StatefulWidget {
 class _DesktopPredictState extends State<DesktopPredict> {
   Global global = Global();
   EthereumChain? _selectedChain;
+  List<PredictionModel> filteredPredictions = [];
   @override
   Widget build(BuildContext context) {
     context
@@ -30,7 +31,8 @@ class _DesktopPredictState extends State<DesktopPredict> {
     return BlocBuilder<PredictPageBloc, PredictPageState>(
       builder: (context, state) {
         final bloc = context.read<PredictPageBloc>();
-        global.predictions = state.predictions;
+        global.predictions = state.filteredPredictions;
+        filteredPredictions = state.filteredPredictions;
         final currentPredictions = [
           PredictionModel.empty,
           PredictionModel.empty,
@@ -57,7 +59,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
         if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
           bloc.add(
-            const LoadPredictionsEvent(),
+            const FetchPredictionInfoRequested(),
           );
         }
         return LayoutBuilder(
@@ -121,6 +123,24 @@ class _DesktopPredictState extends State<DesktopPredict> {
                           ),
                         ),
 
+                      /// Basketball Athletes Prediction Markets
+                      if (state.status == BlocStatus.success &&
+                          state.selectedMarket ==
+                              SupportedPredictionMarkets.basketball)
+                        SizedBox(
+                          height: constraints.maxHeight * 0.8 - 120,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.only(top: 10),
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: filteredPredictions.length,
+                            itemBuilder: (context, index) {
+                              return DesktopPredictionCard(
+                                predictionModel: filteredPredictions[index],
+                              );
+                            },
+                          ),
+                        ),
+
                       /// Community Voted Prediction Markets
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket ==
@@ -130,10 +150,10 @@ class _DesktopPredictState extends State<DesktopPredict> {
                           child: ListView.builder(
                             padding: const EdgeInsets.only(top: 10),
                             physics: const BouncingScrollPhysics(),
-                            itemCount: currentPredictions.length,
+                            itemCount: filteredPredictions.length,
                             itemBuilder: (context, index) {
                               return DesktopPredictionCard(
-                                predictionModel: currentPredictions[index],
+                                predictionModel: filteredPredictions[index],
                               );
                             },
                           ),
