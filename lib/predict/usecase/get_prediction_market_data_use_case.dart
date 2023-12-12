@@ -2,6 +2,7 @@ import 'package:ax_dapp/athlete_markets/models/market_price_record.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
+import 'package:intl/intl.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:flutter/widgets.dart';
@@ -21,6 +22,22 @@ class GetPredictionMarketDataUseCase {
     String startDate,
     int eventId,
   ) async {
+    final eventPair = _tokensRepository.currentEventPair(eventId);
+    final yesEventAddress = eventPair.yes.address;
+    final noEventAddress = eventPair.no.address;
+    final currentAxt = _tokensRepository.currentAxt;
+    final formattedDate =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
+
+    final yesRecords = _getMarketPriceRecords(
+      yesEventAddress,
+      currentAxt.address,
+    );
+    final noRecords = _getMarketPriceRecords(
+      noEventAddress,
+      currentAxt.address,
+    );
+
     throw UnimplementedError('Implement getMarketPriceHistory');
   }
 
