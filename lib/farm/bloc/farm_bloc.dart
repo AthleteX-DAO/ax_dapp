@@ -103,13 +103,15 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
       }
       final farms = await repo.fetchAllFarms(state.farmOwner);
       if (farms.isNotEmpty) {
-        emit(
-          state.copy(
-            farms: farms,
-            filteredFarms: farms,
-            status: BlocStatus.success,
-          ),
-        );
+        /// Temporarily hiding farms before listing a new set of farms
+        // emit(
+        //   state.copy(
+        //     farms: farms,
+        //     filteredFarms: farms,
+        //     status: BlocStatus.success,
+        //   ),
+        // );
+        emit(state.copy(status: BlocStatus.noData));
       } else {
         emit(state.copy(status: BlocStatus.noData));
       }
