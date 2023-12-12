@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
