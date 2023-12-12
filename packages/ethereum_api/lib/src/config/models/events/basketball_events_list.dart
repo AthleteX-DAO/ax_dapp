@@ -5,7 +5,9 @@ import 'package:ethereum_api/src/ethereum/models/empty_address.dart';
 const basketballEvents = [
   EventConfig.empty,
   EventConfig(
-    marketId: 001,
+    eventId: 001,
+    eventName:
+        'Will Jayson Tatum Score more than 20 points in the December 1st 76ers vs Celtics Basketball Game? If Tatum scores more than 20 points, the market will resolve to YES.  If Tatum scores less than 20 points, the market will resolve to NO.  If the game is not completed by December 1st, 2023 (11:59:59 PM ET), the market will resolve to 50-50.',
     eventTicker: 'JT-CELTICS-12-1-23',
     eventMarketAddressConfig: EthereumAddressConfig.event(
       polygonMainnet: '0x4de21dc72ee1e2608ae68019fc0541937291ed21',
