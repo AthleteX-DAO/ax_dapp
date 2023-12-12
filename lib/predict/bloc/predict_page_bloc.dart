@@ -1,10 +1,8 @@
 import 'package:ax_dapp/predict/predict.dart';
-import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -13,11 +11,12 @@ part 'predict_page_event.dart';
 part 'predict_page_state.dart';
 
 class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
-  PredictPageBloc({
-    required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
-    required EventMarketRepository eventMarketRepository,
-    required GetPredictionMarketInfoUseCase getPredictionMarketInfoUseCase,
-  })  : _streamAppDataChanges = streamAppDataChangesUseCase,
+  PredictPageBloc(
+      {required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
+      required EventMarketRepository eventMarketRepository,
+      required GetPredictionMarketInfoUseCase getPredictionMarketInfoUseCase,
+      required this.getPredictionMarketDataUseCase})
+      : _streamAppDataChanges = streamAppDataChangesUseCase,
         _eventMarketRepository = eventMarketRepository,
         _getPredictionMarketInfoUseCase = getPredictionMarketInfoUseCase,
         super(const PredictPageState()) {
@@ -55,6 +54,7 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final EventMarketRepository _eventMarketRepository;
   final GetPredictionMarketInfoUseCase _getPredictionMarketInfoUseCase;
+  final GetPredictionMarketDataUseCase getPredictionMarketDataUseCase;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,

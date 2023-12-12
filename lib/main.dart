@@ -11,6 +11,7 @@ import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/live_chat_box/repository/live_chat_repository.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
 import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -193,6 +194,12 @@ void main() async {
           RepositoryProvider(
             create: (context) => PredictionAddressRepository(
               fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => GetPredictionMarketDataUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              graphRepo: subGraphRepo,
             ),
           ),
           RepositoryProvider(

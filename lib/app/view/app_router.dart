@@ -17,6 +17,7 @@ import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
 import 'package:ax_dapp/predict/view/desktop_predict.dart';
 import 'package:ax_dapp/prediction/view/prediction_page.dart';
@@ -75,6 +76,8 @@ class AppRouter {
                   eventMarketRepository: context.read<EventMarketRepository>(),
                   getPredictionMarketInfoUseCase:
                       context.read<GetPredictionMarketInfoUseCase>(),
+                  getPredictionMarketDataUseCase:
+                      context.read<GetPredictionMarketDataUseCase>(),
                 ),
                 child: const DesktopPredict(),
               );
