@@ -4,6 +4,7 @@ import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:ax_dapp/markets/markets.dart';
+import 'package:flutter/widgets.dart';
 
 class GetPredictionMarketDataUseCase {
   GetPredictionMarketDataUseCase({
@@ -59,6 +60,33 @@ class GetPredictionMarketDataUseCase {
         timestamp: date.toString(),
       );
     }).toList();
+  }
+
+  Future<List<TokenPair>> fetchSpecificPairs(Token token, String startDate,
+      {bool isLimited = true}) async {
+    try {
+      final response = await graphRepo.querySpecificPairs(
+        token.ticker,
+        startDate: startDate,
+        isLimited: isLimited,
+      );
+      if (!response.isLeft()) return List.empty();
+      final prefixInfos =
+          response.getLeft().toNullable()!['prefix'] as List<dynamic>;
+      final suffixInfos =
+          response.getLeft().toNullable()!['suffix'] as List<dynamic>;
+      final prefixPairs = List<Map<String, dynamic>>.from(prefixInfos)
+          .map(TokenPair.fromJson)
+          .toList();
+      final suffixPairs = List<Map<String, dynamic>>.from(suffixInfos)
+          .map(TokenPair.fromJson)
+          .toList();
+      final pairs = [...prefixPairs, ...suffixPairs];
+      return pairs;
+    } catch (e) {
+      debugPrint('Error fetching specific pairs: $e');
+      return List.empty();
+    }
   }
 
   bool _equalsIgnoreCase(String? string1, String? string2) {
