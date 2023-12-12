@@ -35,9 +35,6 @@ class EthereumWalletApiClient implements WalletApiClient {
   @override
   String get hex => _seedHex;
 
-  /// Sets the wallet's private seed phrase
-  // set hex(String privateKey) => _seedHex = privateKey;
-
   /// Allows listening to changes to the current [EthereumChain].
   @override
   Stream<EthereumChain> get chainChanges => _chainController.stream.distinct();
@@ -70,9 +67,9 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<void> addChain(EthereumChain chain) async {
-    final useEthereumBrowser = _checkEthereumAvailability();
+    final isEthereumBrowserAvailable = _checkEthereumAvailability();
     try {
-      if (useEthereumBrowser) {
+      if (isEthereumBrowserAvailable) {
         await _ethereum!.walletAddChain(
           chainId: chain.chainId,
           chainName: chain.chainName,
@@ -102,9 +99,9 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<void> switchChain(EthereumChain chain) async {
-    final useEthereumBrowser = _checkEthereumAvailability();
+    final isEthereumBrowserAvailable = _checkEthereumAvailability();
     try {
-      if (useEthereumBrowser) {
+      if (isEthereumBrowserAvailable) {
         await _ethereum!.walletSwitchChain(chain.chainId);
         await _syncChainId();
       } else {
@@ -133,8 +130,13 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// - [UnknownWalletFailure]
   @override
   Future<void> syncChain(EthereumChain chain) async {
+    final isEthereumBrowserAvailable = _checkEthereumAvailability();
     try {
-      await _syncChainId();
+      if (!isEthereumBrowserAvailable) {
+        throw WalletFailure.fromWalletUnavailable();
+      } else {
+        await _syncChainId();
+      }
     } on EthereumUnrecognizedChainException catch (exception, stackTrace) {
       // Bug with `EthereumUnrecognizedChainException` not being thrown by the
       // underlying method, `WalletFailure.fromError` handles it.
@@ -159,6 +161,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// Updates the current chain of the Wallet.
   ///
   /// Throws: [UnknownWalletFailure]
+  @override
   Future<void> updateChain(EthereumChain chain) async {
     try {
       _chainController.add(chain);
@@ -167,30 +170,31 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
-  ///
+  /// Generates credentials for a newly created Wallet.
+  /// Returns the [WalletCredentials] for the created Wallet.
   @override
   Future<WalletCredentials> createWalletCredentials() async {
     final mnemonic = generateMnemonic();
     validateMnemonic(mnemonic);
     final hex = mnemonicToSeedHex(mnemonic);
-    _seedHex = hex; // Stores seed hex
+    _seedHex = hex;
     final credentials = EthPrivateKey.fromHex(hex);
     return WalletCredentials(credentials);
   }
 
-  /// Takes a [String] representation of a private key, and converts it into an Ethereum Private Key
+  /// Takes a [String] representation of a private key, and converts it into an [EthPrivateKey].
   /// Returns the [WalletCredentials] for the imported Wallet
+  ///
   /// Throws:
   /// - [UnknownWalletFailure]
   @override
   Future<WalletCredentials> importWalletCredentials(String hex) async {
     try {
       final credentials = EthPrivateKey.fromHex(hex);
-      _seedHex = hex; //Stores seed hex
-
+      _seedHex = hex;
       return WalletCredentials(credentials);
-    } catch (err, stackTrace) {
-      throw WalletFailure.fromError(err, stackTrace);
+    } catch (error, stackTrace) {
+      throw WalletFailure.fromError(error, stackTrace);
     }
   }
 

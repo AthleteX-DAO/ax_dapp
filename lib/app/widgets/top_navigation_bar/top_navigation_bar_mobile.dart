@@ -14,20 +14,20 @@ class TopNavigationBarMobile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: Image.asset('assets/images/x.png'),
+            icon: const Image(
+              image: AssetImage('assets/images/x.png'),
+              width: 35,
+              height: 35,
+            ),
             iconSize: 40,
             onPressed: () {
               const urlString = 'https://www.athletex.io/';
               launchUrl(Uri.parse(urlString));
             },
           ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              WalletTopBar(),
-              DropdownMenuMobile(),
-            ],
-          ),
+          const Spacer(),
+          const WalletTopBar(),
+          const DropdownMenuMobile(),
         ],
       ),
     );

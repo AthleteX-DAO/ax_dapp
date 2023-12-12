@@ -1,9 +1,7 @@
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({
@@ -22,22 +20,22 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    var showSpinner = false;
-    return BlocListener<WalletBloc, WalletState>(
-      listener: (context, state) {
+    return BlocBuilder<WalletBloc, WalletState>(
+      buildWhen: (previous, current) => previous != current,
+      builder: (context, state) {
+        final bloc = context.read<WalletBloc>();
+        final errorMessage = state.errorMessage;
+        final walletViewStatus = state.walletViewStatus;
         if (state.hasFailure) {
-          context.showWarningToast(
-            title: 'Error',
-            description: state.errorMessage ?? 'Authentication Error',
-          );
-          context
-              .read<WalletBloc>()
-              .add(const AuthFailed(walletViewStatus: WalletViewStatus.signup));
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.showWarningToast(
+              title: 'Error',
+              description: errorMessage ?? 'Authentication Error',
+            );
+          });
+          bloc.add(AuthFailed(walletViewStatus: walletViewStatus));
         }
-      },
-      child: ModalProgressHUD(
-        inAsyncCall: showSpinner,
-        child: Padding(
+        return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -105,8 +103,6 @@ class _SignUpViewState extends State<SignUpView> {
                   context.read<WalletBloc>().add(
                         const ProfileViewRequestedFromSignUp(),
                       );
-
-                  showSpinner = false;
                 },
                 child: FittedBox(
                   child: Text(
@@ -122,8 +118,8 @@ class _SignUpViewState extends State<SignUpView> {
               ),
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

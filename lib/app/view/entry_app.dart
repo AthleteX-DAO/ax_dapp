@@ -16,6 +16,7 @@ class EntryApp extends StatelessWidget {
       title: 'AthleteX',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: true,
         canvasColor: Colors.transparent,
         brightness: Brightness.dark,
         primaryColor: Colors.yellow[700],

@@ -1,3 +1,5 @@
+import 'package:ax_dapp/util/chain_localized_image.dart';
+import 'package:ax_dapp/util/chain_localized_name.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,47 +58,5 @@ class WalletChain extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-extension EthereumChainLocalizationX on EthereumChain {
-  String get localizedName {
-    switch (this) {
-      case EthereumChain.none:
-      case EthereumChain.unsupported:
-        throw UnsupportedError('$this');
-      case EthereumChain.polygonMainnet:
-        return 'Matic Network';
-      case EthereumChain.optimism:
-        return 'Optimism';
-      case EthereumChain.arbitriumOne:
-        return 'Arbitrium One';
-      case EthereumChain.goerliTestNet:
-        return 'Goerli Test Network';
-      case EthereumChain.sxMainnet:
-        return 'SX Network';
-      case EthereumChain.sxTestnet:
-        return 'SX Test Network';
-    }
-  }
-}
-
-extension EthereumChainLocalizationImageX on EthereumChain {
-  String get localizedImage {
-    switch (this) {
-      case EthereumChain.none:
-      case EthereumChain.unsupported:
-        throw UnsupportedError('$this');
-      case EthereumChain.polygonMainnet:
-        return 'assets/images/Polygon_Small.png';
-      case EthereumChain.goerliTestNet:
-        return 'assets/images/geth.png';
-      case EthereumChain.optimism:
-      case EthereumChain.arbitriumOne:
-      case EthereumChain.sxMainnet:
-        return 'assets/images/SX_Small.png';
-      case EthereumChain.sxTestnet:
-        return 'assets/images/SX_Small.png';
-    }
   }
 }

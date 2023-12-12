@@ -169,9 +169,9 @@ class WalletRepository {
         ),
       );
       return walletAddress;
-    } catch (_) {
+    } on WalletFailure catch (error, stackTrace) {
       await prefs.setBool(searchForWalletKey, false);
-      return kNullAddress;
+      throw WalletFailure.fromError(error, stackTrace);
     }
   }
 

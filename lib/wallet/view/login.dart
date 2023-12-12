@@ -1,10 +1,8 @@
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({
@@ -21,24 +19,24 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    var showSpinner = false;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return BlocListener<WalletBloc, WalletState>(
-      listener: (context, state) {
+    return BlocBuilder<WalletBloc, WalletState>(
+      buildWhen: (previous, current) => previous != current,
+      builder: (context, state) {
+        final bloc = context.read<WalletBloc>();
+        final errorMessage = state.errorMessage;
+        final walletViewStatus = state.walletViewStatus;
         if (state.hasFailure) {
-          context.showWarningToast(
-            title: 'Error',
-            description: state.errorMessage ?? 'Authentication Error',
-          );
-          context
-              .read<WalletBloc>()
-              .add(const AuthFailed(walletViewStatus: WalletViewStatus.login));
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.showWarningToast(
+              title: 'Error',
+              description: errorMessage ?? 'Authentication Error',
+            );
+          });
+          bloc.add(AuthFailed(walletViewStatus: walletViewStatus));
         }
-      },
-      child: ModalProgressHUD(
-        inAsyncCall: showSpinner,
-        child: Padding(
+        return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -115,8 +113,6 @@ class _LoginViewState extends State<LoginView> {
                   context.read<WalletBloc>().add(
                         const ProfileViewRequestedFromLogin(),
                       );
-
-                  showSpinner = false;
                 },
               ),
               const SizedBox(
@@ -140,7 +136,7 @@ class _LoginViewState extends State<LoginView> {
                         },
                     ),
                     TextSpan(
-                      text: ', with Metamask or another external wallet',
+                      text: ' with Metamask or another external wallet',
                       style: TextStyle(
                         color: Colors.amber[400],
                         fontSize: 14,
@@ -172,8 +168,8 @@ class _LoginViewState extends State<LoginView> {
               ),
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
