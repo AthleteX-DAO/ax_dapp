@@ -47,12 +47,6 @@ AssetImage aptImage(Apt apt) {
     case AptType.short:
       tokenAssetName = 'apt_inverted.png';
       break;
-    case AptType.yes:
-      tokenAssetName = '';
-      break;
-    case AptType.no:
-      tokenAssetName = '';
-      break;
   }
   return AssetImage('assets/images/$tokenAssetName');
 }
