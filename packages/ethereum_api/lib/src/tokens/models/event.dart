@@ -85,7 +85,11 @@ extension EventsX on Iterable<Event> {
   ///
   /// Defaults to [EventPair.empty] when no such [EventPair] is found.  `
   EventPair findPairByEventId(int eventId) => EventPair(
-        yes: singleWhere((element) => false),
-        no: singleWhere((element) => false),
+        yes: singleWhere(
+          (event) => event.eventId == eventId && event.eventType.isYes,
+        ),
+        no: singleWhere(
+          (event) => event.eventId == eventId && event.eventType.isNo,
+        ),
       );
 }

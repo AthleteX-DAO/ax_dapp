@@ -75,6 +75,11 @@ class TokensRepository {
   AptPair currentAptPair(int athleteId) =>
       currentApts.findPairByAthleteId(athleteId);
 
+  /// Returns the current [EventPair] for the given [eventId] synchronously.
+  /// The returned [EventPair] is based on the current [EthereumChain]
+  EventPair currentEventPair(int eventId) =>
+      currentEvents.findPairByEventId(eventId);
+
   /// Allows listening to changes to the [Token.ax] associated with the current
   /// [EthereumChain].
   Stream<Token> get axtChanges => tokensChanges.map((tokens) => tokens.axt);
