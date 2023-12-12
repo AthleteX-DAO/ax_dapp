@@ -5,6 +5,7 @@ import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/shared.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -23,10 +24,32 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<SelectedPredictionMarketsChanged>(_onSelectedPredictionMarketsChanged);
 
-    on<LoadPredictionsEvent>(_onLoadPredictions);
+    on<CollegePredictionMarketsRequested>(_onCollegePredictionMarketsRequested);
+
+    on<BasketballPredictionMarketsRequested>(
+      _onBasketballPredictionMarketsRequested,
+    );
+
+    on<FootballPredictionMarketsRequested>(
+      _onFootballPredictionMarketsRequested,
+    );
+
+    on<HockeyPredictionMarketsRequested>(_onHockeyPredictionMarketsRequested);
+
+    on<BaseballPredictionMarketsRequested>(
+      _onBaseballPredictionMarketsRequested,
+    );
+
+    on<SoccerPredictionMarketsRequested>(_onSoccerPredictionMarketsRequested);
+
+    on<VotedPredictionMarketsRequested>(_onVotedPredictionMarketsRequested);
+
+    on<ExoticPredictionMarketsRequested>(_onExoticPredictionMarketsRequested);
+
+    on<FetchPredictionInfoRequested>(_onFetchPredictionInfoRequested);
 
     add(const WatchAppDataChangesStarted());
-    add(const LoadPredictionsEvent());
+    add(const FetchPredictionInfoRequested());
   }
 
   final StreamAppDataChangesUseCase _streamAppDataChanges;
@@ -58,8 +81,8 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     );
   }
 
-  Future<void> _onLoadPredictions(
-    LoadPredictionsEvent _,
+  Future<void> _onFetchPredictionInfoRequested(
+    FetchPredictionInfoRequested _,
     Emitter<PredictPageState> emit,
   ) async {
     emit(
@@ -100,5 +123,99 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
       debugPrint('ERROR SELECTING MARKETS $error');
       emit(state.copyWith(status: BlocStatus.error));
     }
+  }
+
+  Future<void> _onCollegePredictionMarketsRequested(
+    CollegePredictionMarketsRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(
+      state.copyWith(status: BlocStatus.loading),
+    );
+  }
+
+  Future<void> _onBasketballPredictionMarketsRequested(
+    BasketballPredictionMarketsRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(
+      state.copyWith(status: BlocStatus.loading),
+    );
+    try {
+      final predictions = <PredictionModel>[
+        PredictionModel.empty,
+        PredictionModel.empty,
+        PredictionModel.empty,
+      ];
+
+      debugPrint('PREDICTIONS LIST: $predictions');
+      emit(
+        state.copyWith(
+          filteredPredictions: predictions,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
+    }
+  }
+
+  Future<void> _onFootballPredictionMarketsRequested(
+    FootballPredictionMarketsRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+  }
+
+  Future<void> _onHockeyPredictionMarketsRequested(
+    HockeyPredictionMarketsRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+  }
+
+  Future<void> _onBaseballPredictionMarketsRequested(
+    BaseballPredictionMarketsRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+  }
+
+  Future<void> _onSoccerPredictionMarketsRequested(
+    SoccerPredictionMarketsRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+  }
+
+  Future<void> _onVotedPredictionMarketsRequested(
+    VotedPredictionMarketsRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(
+      state.copyWith(status: BlocStatus.loading),
+    );
+    try {
+      final predictions =
+          await _getPredictionMarketInfoUseCase.fetchPredictionModel();
+
+      debugPrint('PREDICTIONS LIST: $predictions');
+      emit(
+        state.copyWith(
+          filteredPredictions: predictions,
+          status: BlocStatus.success,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
+    }
+  }
+
+  Future<void> _onExoticPredictionMarketsRequested(
+    ExoticPredictionMarketsRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
   }
 }
