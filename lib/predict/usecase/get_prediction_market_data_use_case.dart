@@ -1,4 +1,5 @@
 import 'package:ax_dapp/athlete_markets/models/market_price_record.dart';
+import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
@@ -39,6 +40,80 @@ class GetPredictionMarketDataUseCase {
     );
 
     throw UnimplementedError('Implement getMarketPriceHistory');
+  }
+
+  Future<List<PredictionModel>> fetchSupportedPredictionMarkets(
+    SupportedPredictionMarkets supportedPredictionMarkets,
+  ) async {
+    final List<PredictionModel> predictionMarkets;
+    switch (supportedPredictionMarkets) {
+      case SupportedPredictionMarkets.baseball:
+        predictionMarkets = [];
+        break;
+      case SupportedPredictionMarkets.basketball:
+        predictionMarkets = [];
+        break;
+      case SupportedPredictionMarkets.college:
+        predictionMarkets = [];
+        break;
+      case SupportedPredictionMarkets.exotic:
+        predictionMarkets = [];
+        break;
+      case SupportedPredictionMarkets.football:
+        predictionMarkets = [];
+        break;
+      case SupportedPredictionMarkets.hockey:
+        predictionMarkets = [
+          PredictionModel(
+            id: 0005,
+            prompt: 'prompt',
+            details: 'If this market is yes by 0000, then the ',
+            marketAddress: kEmptyAddress,
+            supportedPredictionMarkets: supportedPredictionMarkets,
+            yesTokenAddress: kEmptyAddress,
+            noTokenAddress: kEmptyAddress,
+            yesName: 'Yes',
+            noName: 'No',
+            time: '-',
+            longTokenPrice: 0.2,
+            shortTokenPrice: 0.5,
+            longTokenPercentage: 4,
+            shortTokenPercentage: 2,
+            longTokenPriceUsd: 0.34,
+            shortTokenPriceUsd: 0.66,
+          ),
+        ];
+        break;
+      case SupportedPredictionMarkets.soccer:
+        predictionMarkets = [
+          PredictionModel(
+            id: 0005,
+            prompt: 'prompt',
+            details: 'If this market is yes by 0000, then the ',
+            marketAddress: kEmptyAddress,
+            supportedPredictionMarkets: supportedPredictionMarkets,
+            yesTokenAddress: kEmptyAddress,
+            noTokenAddress: kEmptyAddress,
+            yesName: 'Yes',
+            noName: 'No',
+            time: '-',
+            longTokenPrice: 0.2,
+            shortTokenPrice: 0.5,
+            longTokenPercentage: 4,
+            shortTokenPercentage: 2,
+            longTokenPriceUsd: 0.34,
+            shortTokenPriceUsd: 0.66,
+          ),
+        ];
+        break;
+      case SupportedPredictionMarkets.voted:
+        predictionMarkets = [];
+        break;
+      default:
+        predictionMarkets = [];
+    }
+
+    return predictionMarkets;
   }
 
   List<PriceRecord>? _getMarketPriceRecords(
