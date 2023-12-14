@@ -1,5 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/widgets/widget_factories/widget_factories.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
 class SoccerPredictionsDetailsWidget implements PredictionDetailsWidget {
@@ -8,7 +9,8 @@ class SoccerPredictionsDetailsWidget implements PredictionDetailsWidget {
   final PredictionModel predictionModel;
 
   @override
-  Widget predictionDetailsCardsForMobile(double prdNameBx, {
+  Widget predictionDetailsCardsForMobile(
+    double prdNameBx, {
     required bool showIcon,
   }) {
     // TODO: implement predictionDetailsCardsForMobile
@@ -17,14 +19,63 @@ class SoccerPredictionsDetailsWidget implements PredictionDetailsWidget {
 
   @override
   Widget predictionDetailsCardsForWeb(double _width) {
-    // TODO: implement predictionDetailsCardsForWeb
-    throw UnimplementedError();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          width: 50,
+          child: Icon(
+            Icons.sports_soccer,
+            color: Colors.grey[700],
+          ),
+        ),
+        SizedBox(
+          width: _width * 0.1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                predictionModel.prompt,
+                style: textStyle(
+                  Colors.white,
+                  18,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   @override
   Widget predictionPageDetails() {
-    // TODO: implement predictionPageDetails
-    throw UnimplementedError();
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  predictionModel.details,
+                  style: textStyle(
+                    Colors.white,
+                    24,
+                    isBold: false,
+                    isUline: false,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override

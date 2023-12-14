@@ -186,6 +186,19 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     Emitter<PredictPageState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
+    try {
+      final predictions = await getPredictionMarketDataUseCase
+          .fetchSupportedPredictionMarkets(SupportedPredictionMarkets.soccer);
+      emit(
+        state.copyWith(
+          predictions: predictions,
+          filteredPredictions: predictions,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
+    }
   }
 
   Future<void> _onVotedPredictionMarketsRequested(
