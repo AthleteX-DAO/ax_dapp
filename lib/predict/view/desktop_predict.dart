@@ -33,29 +33,6 @@ class _DesktopPredictState extends State<DesktopPredict> {
         final bloc = context.read<PredictPageBloc>();
         global.predictions = state.filteredPredictions;
         filteredPredictions = state.filteredPredictions;
-        final currentPredictions = [
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-          PredictionModel.empty,
-        ];
         if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
           bloc.add(
@@ -110,23 +87,10 @@ class _DesktopPredictState extends State<DesktopPredict> {
                           ),
                         ),
 
-                      /// College Athlete Prediction Markets
-                      if (state.status == BlocStatus.success &&
-                          state.selectedMarket ==
-                              SupportedPredictionMarkets.college)
-                        SizedBox(
-                          height: constraints.maxHeight * 0.8 - 120,
-                          child: const Center(
-                            child: SizedBox(
-                              height: 70,
-                            ),
-                          ),
-                        ),
-
                       /// Basketball Athletes Prediction Markets
                       if (state.status == BlocStatus.success &&
-                          state.selectedMarket ==
-                              SupportedPredictionMarkets.basketball)
+                          state.selectedMarket !=
+                              SupportedPredictionMarkets.all)
                         SizedBox(
                           height: constraints.maxHeight * 0.8 - 120,
                           child: ListView.builder(
