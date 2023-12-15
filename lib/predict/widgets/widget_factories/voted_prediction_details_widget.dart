@@ -1,5 +1,7 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/widgets/widget_factories/widget_factories.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/material.dart';
 
 class VotedPredictionsDetailsWidget implements PredictionDetailsWidget {
@@ -8,7 +10,8 @@ class VotedPredictionsDetailsWidget implements PredictionDetailsWidget {
   final PredictionModel predictionModel;
 
   @override
-  Widget predictionDetailsCardsForMobile(double prdNameBx, {
+  Widget predictionDetailsCardsForMobile(
+    double prdNameBx, {
     required bool showIcon,
   }) {
     // TODO: implement predictionDetailsCardsForMobile
@@ -23,8 +26,28 @@ class VotedPredictionsDetailsWidget implements PredictionDetailsWidget {
 
   @override
   Widget predictionPageDetails() {
-    // TODO: implement predictionPageDetails
-    throw UnimplementedError();
+    return SizedBox(
+      height: 250,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Details',
+              style: textStyle(
+                Colors.white,
+                24,
+                isBold: false,
+                isUline: false,
+              ),
+            ),
+          ),
+          Divider(thickness: 1, color: greyTextColor),
+          Row(),
+        ],
+      ),
+    );
   }
 
   @override
