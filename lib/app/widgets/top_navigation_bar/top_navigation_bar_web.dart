@@ -47,7 +47,8 @@ class TopNavigationBarWeb extends StatelessWidget {
                       isSelected: selectedButton == 'predict',
                       onPressed: () {
                         bloc.add(
-                            const SelectButtonEvent(buttonName: 'predict'));
+                          const SelectButtonEvent(buttonName: 'predict'),
+                        );
                         context.goNamed('predict');
                       },
                     ),
