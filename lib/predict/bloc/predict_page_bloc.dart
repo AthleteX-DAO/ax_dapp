@@ -132,6 +132,19 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     emit(
       state.copyWith(status: BlocStatus.loading),
     );
+    try {
+      final predictions = await getPredictionMarketDataUseCase
+          .fetchSupportedPredictionMarkets(SupportedPredictionMarkets.college);
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          filteredPredictions: predictions,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
+    }
   }
 
   Future<void> _onBasketballPredictionMarketsRequested(
@@ -142,15 +155,13 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
       state.copyWith(status: BlocStatus.loading),
     );
     try {
-      final predictions = <PredictionModel>[
-        PredictionModel.empty,
-        PredictionModel.empty,
-        PredictionModel.empty,
-      ];
-
-      debugPrint('PREDICTIONS LIST: $predictions');
+      final predictions =
+          await getPredictionMarketDataUseCase.fetchSupportedPredictionMarkets(
+        SupportedPredictionMarkets.basketball,
+      );
       emit(
         state.copyWith(
+          status: BlocStatus.success,
           filteredPredictions: predictions,
         ),
       );
@@ -164,34 +175,81 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     FootballPredictionMarketsRequested event,
     Emitter<PredictPageState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
+    emit(
+      state.copyWith(status: BlocStatus.loading),
+    );
+    try {
+      final predictions = await getPredictionMarketDataUseCase
+          .fetchSupportedPredictionMarkets(SupportedPredictionMarkets.football);
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          filteredPredictions: predictions,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
+    }
   }
 
   Future<void> _onHockeyPredictionMarketsRequested(
     HockeyPredictionMarketsRequested event,
     Emitter<PredictPageState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
+    emit(
+      state.copyWith(status: BlocStatus.loading),
+    );
+    try {
+      final predictions = await getPredictionMarketDataUseCase
+          .fetchSupportedPredictionMarkets(SupportedPredictionMarkets.hockey);
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          filteredPredictions: predictions,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
+    }
   }
 
   Future<void> _onBaseballPredictionMarketsRequested(
     BaseballPredictionMarketsRequested event,
     Emitter<PredictPageState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
+    emit(
+      state.copyWith(status: BlocStatus.loading),
+    );
+    try {
+      final predictions = await getPredictionMarketDataUseCase
+          .fetchSupportedPredictionMarkets(SupportedPredictionMarkets.baseball);
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          filteredPredictions: predictions,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
+    }
   }
 
   Future<void> _onSoccerPredictionMarketsRequested(
     SoccerPredictionMarketsRequested event,
     Emitter<PredictPageState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
+    emit(
+      state.copyWith(status: BlocStatus.loading),
+    );
     try {
       final predictions = await getPredictionMarketDataUseCase
           .fetchSupportedPredictionMarkets(SupportedPredictionMarkets.soccer);
       emit(
         state.copyWith(
-          predictions: predictions,
+          status: BlocStatus.success,
           filteredPredictions: predictions,
         ),
       );
@@ -209,14 +267,12 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
       state.copyWith(status: BlocStatus.loading),
     );
     try {
-      final predictions =
-          await _getPredictionMarketInfoUseCase.fetchPredictionModel();
-
-      debugPrint('PREDICTIONS LIST: $predictions');
+      final predictions = await getPredictionMarketDataUseCase
+          .fetchSupportedPredictionMarkets(SupportedPredictionMarkets.voted);
       emit(
         state.copyWith(
-          filteredPredictions: predictions,
           status: BlocStatus.success,
+          filteredPredictions: predictions,
         ),
       );
     } catch (e) {
@@ -229,6 +285,21 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     ExoticPredictionMarketsRequested event,
     Emitter<PredictPageState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
+    emit(
+      state.copyWith(status: BlocStatus.loading),
+    );
+    try {
+      final predictions = await getPredictionMarketDataUseCase
+          .fetchSupportedPredictionMarkets(SupportedPredictionMarkets.exotic);
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          filteredPredictions: predictions,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
+    }
   }
 }
