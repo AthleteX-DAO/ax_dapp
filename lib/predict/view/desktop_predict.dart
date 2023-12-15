@@ -20,6 +20,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
   Global global = Global();
   EthereumChain? _selectedChain;
   List<PredictionModel> filteredPredictions = [];
+
   @override
   Widget build(BuildContext context) {
     context
@@ -87,28 +88,10 @@ class _DesktopPredictState extends State<DesktopPredict> {
                           ),
                         ),
 
-                      /// Basketball Athletes Prediction Markets
+                      /// All Athletes Prediction Markets, filtered by Sport
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket !=
                               SupportedPredictionMarkets.all)
-                        SizedBox(
-                          height: constraints.maxHeight * 0.8 - 120,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.only(top: 10),
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: filteredPredictions.length,
-                            itemBuilder: (context, index) {
-                              return DesktopPredictionCard(
-                                predictionModel: filteredPredictions[index],
-                              );
-                            },
-                          ),
-                        ),
-
-                      /// Community Voted Prediction Markets
-                      if (state.status == BlocStatus.success &&
-                          state.selectedMarket ==
-                              SupportedPredictionMarkets.voted)
                         SizedBox(
                           height: constraints.maxHeight * 0.8 - 120,
                           child: ListView.builder(
