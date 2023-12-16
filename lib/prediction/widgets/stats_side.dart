@@ -21,6 +21,8 @@ class StatsSide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
+    final _isPortraitMode =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     var wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
     return Container(
@@ -255,8 +257,16 @@ class StatsSide extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    BuyEventButton(predictionModel: predictionModel),
-                    SellEventButton(predictionModel: predictionModel),
+                    BuyEventButton(
+                      predictionModel: predictionModel,
+                      isPortraitMode: _isPortraitMode,
+                      containerWdt: wid,
+                    ),
+                    SellEventButton(
+                      predictionModel: predictionModel,
+                      isPortraitMode: _isPortraitMode,
+                      containerWdt: wid,
+                    ),
                   ],
                 ),
               ],

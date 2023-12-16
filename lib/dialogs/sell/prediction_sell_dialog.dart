@@ -15,8 +15,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
-class SellDialog extends StatefulWidget {
-  const SellDialog({
+class SellPredictionDialog extends StatefulWidget {
+  const SellPredictionDialog({
     super.key,
     required this.predictionModel,
   });
@@ -24,10 +24,10 @@ class SellDialog extends StatefulWidget {
   final PredictionModel predictionModel;
 
   @override
-  State<StatefulWidget> createState() => _SellDialogState();
+  State<StatefulWidget> createState() => _SellPredictionDialogState();
 }
 
-class _SellDialogState extends State<SellDialog> {
+class _SellPredictionDialogState extends State<SellPredictionDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
   final TextEditingController _predictionAmountController =
@@ -119,6 +119,7 @@ class _SellDialogState extends State<SellDialog> {
                           isBold: false,
                           isUline: false,
                         ),
+                        overflow: TextOverflow.clip,
                       ),
                       IconButton(
                         icon: const Icon(

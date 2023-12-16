@@ -90,6 +90,7 @@ class _BuyPredictionDialogState extends State<BuyPredictionDialog> {
                           isBold: false,
                           isUline: true,
                         ),
+                        overflow: TextOverflow.clip,
                       ),
                       IconButton(
                         icon: const Icon(
@@ -151,7 +152,7 @@ class _BuyPredictionDialogState extends State<BuyPredictionDialog> {
                       launchUrl(Uri.parse(urlString));
                     },
                     child: Text(
-                      'Learn How to buy AX',
+                      'Select Yes or No Events',
                       style: TextStyle(
                         color: Colors.amber[400],
                         fontSize: 14,
