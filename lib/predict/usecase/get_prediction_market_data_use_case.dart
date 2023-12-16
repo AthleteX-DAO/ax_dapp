@@ -1,12 +1,11 @@
-import 'package:ax_dapp/athlete_markets/models/market_price_record.dart';
+import 'package:ax_dapp/predict/models/token_market_model.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
-import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
+import 'package:ax_dapp/service/prediction_models/prediction_models.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:tokens_repository/tokens_repository.dart';
-import 'package:ax_dapp/markets/markets.dart';
-import 'package:flutter/widgets.dart';
 
 class GetPredictionMarketDataUseCase {
   GetPredictionMarketDataUseCase({
@@ -29,6 +28,8 @@ class GetPredictionMarketDataUseCase {
     final currentAxt = _tokensRepository.currentAxt;
     final formattedDate =
         DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
+    allPairs =
+        await fetchSpecificPairs(currentAxt, formattedDate, isLimited: false);
 
     final yesRecords = _getMarketPriceRecords(
       yesEventAddress,
@@ -39,7 +40,18 @@ class GetPredictionMarketDataUseCase {
       currentAxt.address,
     );
 
-    throw UnimplementedError('Implement getMarketPriceHistory');
+    return MarketPriceRecord(
+      yesRecord: PredictionPriceRecord(
+        id: 0,
+        name: '',
+        priceHistory: yesRecords!,
+      ),
+      noRecord: PredictionPriceRecord(
+        id: 0,
+        name: '',
+        priceHistory: noRecords!,
+      ),
+    );
   }
 
   Future<List<PredictionModel>> fetchSupportedPredictionMarkets(
@@ -54,7 +66,46 @@ class GetPredictionMarketDataUseCase {
         predictionMarkets = [];
         break;
       case SupportedPredictionMarkets.college:
-        predictionMarkets = [];
+        final time = DateTime.now().toString();
+
+        predictionMarkets = <PredictionModel>[
+          PredictionModel(
+            id: 0002,
+            prompt: 'Did Jake Paul rightfully win?',
+            details: 'If this market resolves to yes, Jake paul won',
+            marketAddress: kEmptyAddress,
+            supportedPredictionMarkets: SupportedPredictionMarkets.college,
+            yesTokenAddress: kEmptyAddress,
+            noTokenAddress: kEmptyAddress,
+            yesName: 'Jake Paul',
+            noName: 'Someone August',
+            time: time,
+            longTokenPrice: 91.2,
+            shortTokenPrice: 8.8,
+            longTokenPercentage: 1.22,
+            shortTokenPercentage: 9.2,
+            longTokenPriceUsd: 91.2,
+            shortTokenPriceUsd: 8.8,
+          ),
+          PredictionModel(
+            id: 0002,
+            prompt: 'Will you make it?',
+            details: 'If this market resolves to yes, Jake paul won',
+            marketAddress: kEmptyAddress,
+            supportedPredictionMarkets: SupportedPredictionMarkets.college,
+            yesTokenAddress: kEmptyAddress,
+            noTokenAddress: kEmptyAddress,
+            yesName: 'Yes',
+            noName: 'No',
+            time: time,
+            longTokenPrice: 91.2,
+            shortTokenPrice: 8.8,
+            longTokenPercentage: 1.22,
+            shortTokenPercentage: 9.2,
+            longTokenPriceUsd: 91.2,
+            shortTokenPriceUsd: 8.8,
+          ),
+        ];
         break;
       case SupportedPredictionMarkets.exotic:
         predictionMarkets = [];
@@ -122,6 +173,7 @@ class GetPredictionMarketDataUseCase {
   ) {
     // Looking for a pair which has the same token name as strTokenAddr
     // (token address as uppercase)
+
     final index0 = allPairs.indexWhere(
       (pair) =>
           _equalsIgnoreCase(pair.token0.id, strTokenAddr) &&
@@ -154,8 +206,54 @@ class GetPredictionMarketDataUseCase {
     }).toList();
   }
 
-  Future<List<TokenPair>> fetchSpecificPairs(Token token, String startDate,
-      {bool isLimited = true}) async {
+  /// This function returns the current market price
+  PredictionMarketModel _getMarketModel(
+    String strTokenAddr, {
+    required Token axt,
+  }) {
+    final strAXTAddr = axt.address;
+    // Looking for a pair which has the same token name as strTokenAddr
+    // (token address as uppercase)
+    final index0 = allPairs.indexWhere(
+      (pair) =>
+          _equalsIgnoreCase(pair.token0.id, strTokenAddr) &&
+          _equalsIgnoreCase(pair.token1.id, strAXTAddr),
+    );
+    final index1 = allPairs.indexWhere(
+      (pair) =>
+          _equalsIgnoreCase(pair.token0.id, strAXTAddr) &&
+          _equalsIgnoreCase(pair.token1.id, strTokenAddr),
+    );
+
+    var marketPrice = 0.0;
+    if (index0 >= 0) {
+      marketPrice = double.parse(allPairs[index0].reserve1) /
+          double.parse(allPairs[index0].reserve0);
+    } else if (index1 >= 0) {
+      marketPrice = double.parse(allPairs[index1].reserve0) /
+          double.parse(allPairs[index1].reserve1);
+    }
+
+    var recentPrice = marketPrice;
+    if (index0 >= 0 && allPairs[index0].pairHourData!.isNotEmpty) {
+      recentPrice = double.parse(allPairs[index0].pairHourData![0].reserve1) /
+          double.parse(allPairs[index0].pairHourData![0].reserve0);
+    } else if (index1 >= 0 && allPairs[index1].pairHourData!.isNotEmpty) {
+      recentPrice = double.parse(allPairs[index1].pairHourData![0].reserve0) /
+          double.parse(allPairs[index1].pairHourData![0].reserve1);
+    }
+
+    return PredictionMarketModel(
+      marketPrice: marketPrice,
+      recentPrice: recentPrice,
+    );
+  }
+
+  Future<List<TokenPair>> fetchSpecificPairs(
+    Token token,
+    String startDate, {
+    bool isLimited = true,
+  }) async {
     try {
       final response = await graphRepo.querySpecificPairs(
         token.ticker,
