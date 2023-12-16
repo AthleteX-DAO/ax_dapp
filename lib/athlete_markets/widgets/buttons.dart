@@ -21,7 +21,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class BuyButton extends StatelessWidget {
   const BuyButton({
