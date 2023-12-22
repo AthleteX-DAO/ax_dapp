@@ -16,7 +16,7 @@ class GetPredictionMarketInfoUseCase {
         await predictionSnapshotRepository.fetchCurrentMarkets();
     for (final model in predictionModel) {
       final predictionInfo =
-          await predictionAddressRepository.fetchMarketAddresses('${model.id}');
+          await predictionAddressRepository.fetchMarketAddresses(model.id);
       final predictionModel = PredictionModel(
         id: model.id,
         prompt: model.prompt,
