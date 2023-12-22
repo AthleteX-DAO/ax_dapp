@@ -1,4 +1,5 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/prediction/view/prediction_page_web_view.dart';
@@ -27,7 +28,9 @@ class PredictionPage extends StatelessWidget {
             context.read<StreamAppDataChangesUseCase>(),
         predictionAddressRepository:
             context.read<PredictionAddressRepository>(),
-        predictionModelId: predictionModel.id.toString(),
+        predictionModelId: predictionModel.id,
+        getPredictionMarketDataUseCase:
+            context.read<GetPredictionMarketDataUseCase>(),
       ),
       child: BlocListener<PredictionPageBloc, PredictionPageState>(
         listener: (context, state) {

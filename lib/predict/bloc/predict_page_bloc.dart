@@ -11,12 +11,12 @@ part 'predict_page_event.dart';
 part 'predict_page_state.dart';
 
 class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
-  PredictPageBloc(
-      {required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
-      required EventMarketRepository eventMarketRepository,
-      required GetPredictionMarketInfoUseCase getPredictionMarketInfoUseCase,
-      required this.getPredictionMarketDataUseCase})
-      : _streamAppDataChanges = streamAppDataChangesUseCase,
+  PredictPageBloc({
+    required StreamAppDataChangesUseCase streamAppDataChangesUseCase,
+    required EventMarketRepository eventMarketRepository,
+    required GetPredictionMarketInfoUseCase getPredictionMarketInfoUseCase,
+    required this.getPredictionMarketDataUseCase,
+  })  : _streamAppDataChanges = streamAppDataChangesUseCase,
         _eventMarketRepository = eventMarketRepository,
         _getPredictionMarketInfoUseCase = getPredictionMarketInfoUseCase,
         super(const PredictPageState()) {
