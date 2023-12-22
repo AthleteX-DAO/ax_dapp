@@ -4,8 +4,11 @@ import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:flutter/material.dart';
 
 class PredictionPageWebView extends StatelessWidget {
-  const PredictionPageWebView(
-      {super.key, required this.predictionModel, required this.chartStats});
+  const PredictionPageWebView({
+    super.key,
+    required this.predictionModel,
+    required this.chartStats,
+  });
 
   final PredictionModel predictionModel;
   final List<GraphData> chartStats;
