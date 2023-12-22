@@ -75,12 +75,10 @@ class GraphSide extends StatelessWidget {
                         ),
                         child: (chartStats.isEmpty)
                             ? const Loader(dimension: 36)
-                            : BlocSelector<PredictionPageBloc,
-                                PredictionPageState, AptType>(
-                                selector: (state) => state.aptTypeSelection,
+                            : BlocBuilder<PredictionPageBloc,
+                                PredictionPageState>(
                                 builder: (context, aptTypeSelection) {
-                                  return IndexedStack(
-                                    index: aptTypeSelection.index - 1,
+                                  return Stack(
                                     children: [
                                       PredictionPageYesGraph(
                                         chartStats: chartStats,
