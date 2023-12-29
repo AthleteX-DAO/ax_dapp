@@ -74,7 +74,10 @@ class GraphSide extends StatelessWidget {
                           top: 14,
                         ),
                         child: (chartStats.isEmpty)
-                            ? const Loader(dimension: 36)
+                            ? const Center(
+                                child:
+                                    Text('Graph Stats Currently Unavailable'),
+                              )
                             : BlocBuilder<PredictionPageBloc,
                                 PredictionPageState>(
                                 builder: (context, aptTypeSelection) {
