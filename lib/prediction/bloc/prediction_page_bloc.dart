@@ -176,8 +176,6 @@ class PredictionPageBloc
   ) {
     final yesHistory = marketPriceRecord.yesRecord.priceHistory;
     final noHistory = marketPriceRecord.noRecord.priceHistory;
-    // final yesHistory = emptyHistory;
-    // final noHistory = emptyHistory2;
 
     final graphStats = <String, GraphData>{};
     for (final record in yesHistory) {
