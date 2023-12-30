@@ -206,8 +206,11 @@ class PredictionPageBloc
           ),
         );
       } else {
-        graphStats[dateStr] =
-            GraphData(date, 0, shortMarketPrice: record.price);
+        graphStats[dateStr] = GraphData(
+          date,
+          0,
+          shortMarketPrice: record.price,
+        );
       }
     }
 
