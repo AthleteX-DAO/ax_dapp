@@ -28,7 +28,8 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
         context.goNamed('predict');
         break;
       case 1:
-        context.goNamed('scout');
+        // context.goNamed('scout'); // Removing Access to the markets page
+        context.goNamed('predict');
         break;
       case 2:
         context.goNamed('trade');
@@ -73,11 +74,15 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
               label: 'Predict',
               tooltip: 'Make a prediction',
             ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 24),
-              label: 'Markets',
-              tooltip: 'Trade Live Markets',
-            ),
+
+            ///@user2745 This section removes the Markets Page
+            ///
+            ///
+            // BottomNavigationBarItem(
+            //   icon: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 24),
+            //   label: 'Markets',
+            //   tooltip: 'Trade Live Markets',
+            // ),
             BottomNavigationBarItem(
                 icon: FaIcon(
                   FontAwesomeIcons.arrowRightArrowLeft,
