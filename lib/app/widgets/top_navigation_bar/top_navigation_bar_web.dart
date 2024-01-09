@@ -80,7 +80,7 @@ class TopNavigationBarWeb extends StatelessWidget {
                     ),
                     TopNavigationBarItem(
                       routeName: 'farm',
-                      buttonName: 'Farm',
+                      buttonName: 'Earn',
                       isSelected: selectedButton == 'farm',
                       onPressed: () {
                         bloc.add(const SelectButtonEvent(buttonName: 'farm'));

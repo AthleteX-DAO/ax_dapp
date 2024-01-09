@@ -71,29 +71,30 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
                 size: 24,
               ),
               label: 'Predict',
-              tooltip: 'Make a prediction',
+              tooltip: 'Trade on athlete prediction markets',
             ),
             BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 24),
               label: 'Markets',
-              tooltip: 'Trade Live Markets',
+              tooltip: 'Trade on crypto & sports betting markets',
             ),
             BottomNavigationBarItem(
-                icon: FaIcon(
-                  FontAwesomeIcons.arrowRightArrowLeft,
-                  size: 24,
-                ),
-                label: 'Trade',
-                tooltip: 'Swap betwen your favorite coins'),
+              icon: FaIcon(
+                FontAwesomeIcons.arrowRightArrowLeft,
+                size: 24,
+              ),
+              label: 'Trade',
+              tooltip: 'Swap betwen your favorite coins',
+            ),
             BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.coins),
               label: 'Pool',
-              tooltip: 'Pool Tokens together and Add Liquidity',
+              tooltip: 'Earn Fees by adding liquidity to markets',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.agriculture_rounded),
-              label: 'Farm',
-              tooltip: 'Earn rewards for depositing your money',
+              label: 'Earn',
+              tooltip: 'Put your crypto to work and earn rewards',
             ),
             BottomNavigationBarItem(
               icon: FaIcon(
@@ -101,7 +102,7 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
                 size: 24,
               ),
               label: 'League',
-              tooltip: 'Start a cross-sport fantasy league',
+              tooltip: 'cross-sport fantasy league, what else?',
             ),
           ],
           currentIndex: selectedIndex,

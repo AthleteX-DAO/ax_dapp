@@ -25,14 +25,14 @@ class ToggleFarmButton extends StatelessWidget {
     final isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return Container(
-      width: isWeb ? 200 : layoutWidth,
+      width: isWeb ? 250 : layoutWidth,
       height: 40,
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            width: isWeb ? 90 : (layoutWidth / 2) - 5,
+            width: isWeb ? 120 : (layoutWidth / 2) - 5,
             decoration: isAllFarmsSelection
                 ? boxDecoration(
                     Colors.grey[600]!,
@@ -56,7 +56,7 @@ class ToggleFarmButton extends StatelessWidget {
                 }
               },
               child: Text(
-                'All Farms',
+                'Active Farms',
                 style: textStyle(
                   Colors.white,
                   16,
@@ -67,7 +67,7 @@ class ToggleFarmButton extends StatelessWidget {
             ),
           ),
           Container(
-            width: isWeb ? 90 : (layoutWidth / 2) - 5,
+            width: isWeb ? 120 : (layoutWidth / 2) - 5,
             decoration: isAllFarmsSelection
                 ? boxDecoration(
                     Colors.transparent,
