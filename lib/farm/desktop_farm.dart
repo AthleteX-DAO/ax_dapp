@@ -116,7 +116,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
                         children: [
                           FittedBox(
                             child: Text(
-                              isAllFarms ? 'Participating Farms' : 'My Farms',
+                              isAllFarms
+                                  ? 'Earn rewards for staking your crypto'
+                                  : 'My Farms',
                               style: isWeb
                                   ? textStyle(
                                       Colors.white,
