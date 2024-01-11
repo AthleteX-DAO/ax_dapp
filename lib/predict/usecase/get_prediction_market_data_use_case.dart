@@ -68,44 +68,7 @@ class GetPredictionMarketDataUseCase {
       case SupportedPredictionMarkets.college:
         final time = DateTime.now().toString();
 
-        predictionMarkets = <PredictionModel>[
-          PredictionModel(
-            id: 0002,
-            prompt: 'Did Jake Paul rightfully win?',
-            details: 'If this market resolves to yes, Jake paul won',
-            marketAddress: kEmptyAddress,
-            supportedPredictionMarkets: SupportedPredictionMarkets.college,
-            yesTokenAddress: kEmptyAddress,
-            noTokenAddress: kEmptyAddress,
-            yesName: 'Jake Paul',
-            noName: 'Someone August',
-            time: time,
-            longTokenPrice: 91.2,
-            shortTokenPrice: 8.8,
-            longTokenPercentage: 1.22,
-            shortTokenPercentage: 9.2,
-            longTokenPriceUsd: 91.2,
-            shortTokenPriceUsd: 8.8,
-          ),
-          PredictionModel(
-            id: 0002,
-            prompt: 'Will you make it?',
-            details: 'If this market resolves to yes, Jake paul won',
-            marketAddress: kEmptyAddress,
-            supportedPredictionMarkets: SupportedPredictionMarkets.college,
-            yesTokenAddress: kEmptyAddress,
-            noTokenAddress: kEmptyAddress,
-            yesName: 'Yes',
-            noName: 'No',
-            time: time,
-            longTokenPrice: 91.2,
-            shortTokenPrice: 8.8,
-            longTokenPercentage: 1.22,
-            shortTokenPercentage: 9.2,
-            longTokenPriceUsd: 91.2,
-            shortTokenPriceUsd: 8.8,
-          ),
-        ];
+        predictionMarkets = <PredictionModel>[];
         break;
       case SupportedPredictionMarkets.exotic:
         predictionMarkets = [];
@@ -114,48 +77,10 @@ class GetPredictionMarketDataUseCase {
         predictionMarkets = [];
         break;
       case SupportedPredictionMarkets.hockey:
-        predictionMarkets = [
-          PredictionModel(
-            id: 0005,
-            prompt: 'prompt',
-            details: 'If this market is yes by 0000, then the ',
-            marketAddress: kEmptyAddress,
-            supportedPredictionMarkets: supportedPredictionMarkets,
-            yesTokenAddress: kEmptyAddress,
-            noTokenAddress: kEmptyAddress,
-            yesName: 'Yes',
-            noName: 'No',
-            time: '-',
-            longTokenPrice: 0.2,
-            shortTokenPrice: 0.5,
-            longTokenPercentage: 4,
-            shortTokenPercentage: 2,
-            longTokenPriceUsd: 0.34,
-            shortTokenPriceUsd: 0.66,
-          ),
-        ];
+        predictionMarkets = [];
         break;
       case SupportedPredictionMarkets.soccer:
-        predictionMarkets = [
-          PredictionModel(
-            id: 0005,
-            prompt: 'prompt',
-            details: 'If this market is yes by 0000, then the ',
-            marketAddress: kEmptyAddress,
-            supportedPredictionMarkets: supportedPredictionMarkets,
-            yesTokenAddress: kEmptyAddress,
-            noTokenAddress: kEmptyAddress,
-            yesName: 'Yes',
-            noName: 'No',
-            time: '-',
-            longTokenPrice: 0.2,
-            shortTokenPrice: 0.5,
-            longTokenPercentage: 4,
-            shortTokenPercentage: 2,
-            longTokenPriceUsd: 0.34,
-            shortTokenPriceUsd: 0.66,
-          ),
-        ];
+        predictionMarkets = [];
         break;
       case SupportedPredictionMarkets.voted:
         predictionMarkets = [];
