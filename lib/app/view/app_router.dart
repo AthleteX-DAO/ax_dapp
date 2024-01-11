@@ -57,7 +57,7 @@ class AppRouter {
       GoRoute(
         name: '/',
         path: '/',
-        redirect: (context, state) => '/scout',
+        redirect: (context, state) => '/predict',
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
