@@ -1,5 +1,6 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/widgets/widget_factories/widget_factories.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
 class FootballPredictionsDetailsWidget implements PredictionDetailsWidget {
@@ -8,7 +9,8 @@ class FootballPredictionsDetailsWidget implements PredictionDetailsWidget {
   final PredictionModel predictionModel;
 
   @override
-  Widget predictionDetailsCardsForMobile(double prdNameBx, {
+  Widget predictionDetailsCardsForMobile(
+    double prdNameBx, {
     required bool showIcon,
   }) {
     // TODO: implement predictionDetailsCardsForMobile
@@ -17,8 +19,36 @@ class FootballPredictionsDetailsWidget implements PredictionDetailsWidget {
 
   @override
   Widget predictionDetailsCardsForWeb(double _width) {
-    // TODO: implement predictionDetailsCardsForWeb
-    throw UnimplementedError();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          width: 50,
+          child: Icon(
+            Icons.sports_football,
+            color: Colors.grey[700],
+          ),
+        ),
+        SizedBox(
+          width: _width * 0.1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                predictionModel.prompt,
+                style: textStyle(
+                  Colors.white,
+                  18,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   @override
