@@ -51,15 +51,15 @@ class TopNavigationBarWeb extends StatelessWidget {
                         context.goNamed('predict');
                       },
                     ),
-                    TopNavigationBarItem(
-                      routeName: 'scout',
-                      buttonName: 'Markets',
-                      isSelected: selectedButton == 'scout',
-                      onPressed: () {
-                        bloc.add(const SelectButtonEvent(buttonName: 'scout'));
-                        context.goNamed('scout');
-                      },
-                    ),
+                    // TopNavigationBarItem(
+                    //   routeName: 'scout',
+                    //   buttonName: 'Markets',
+                    //   isSelected: selectedButton == 'scout',
+                    //   onPressed: () {
+                    //     bloc.add(const SelectButtonEvent(buttonName: 'scout'));
+                    //     context.goNamed('scout');
+                    //   },
+                    // ),
                     TopNavigationBarItem(
                       routeName: 'trade',
                       buttonName: 'Trade',

@@ -28,7 +28,8 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
         context.goNamed('predict');
         break;
       case 1:
-        context.goNamed('scout');
+        // context.goNamed('scout'); // Removing Access to the markets page
+        context.goNamed('predict');
         break;
       case 2:
         context.goNamed('trade');
@@ -73,11 +74,11 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
               label: 'Predict',
               tooltip: 'Trade on athlete prediction markets',
             ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 24),
-              label: 'Markets',
-              tooltip: 'Trade on crypto & sports betting markets',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 24),
+            //   label: 'Markets',
+            //   tooltip: 'Trade on crypto & sports betting markets',
+            // ),
             BottomNavigationBarItem(
               icon: FaIcon(
                 FontAwesomeIcons.arrowRightArrowLeft,
