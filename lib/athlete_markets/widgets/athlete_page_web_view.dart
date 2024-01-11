@@ -1,4 +1,3 @@
-import 'package:ax_dapp/athlete_markets/widgets/graph_side.dart';
 import 'package:ax_dapp/athlete_markets/widgets/widgets.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';

@@ -1,7 +1,7 @@
-import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/predict/widgets/prediction_prompt.dart';
-import 'package:ax_dapp/predict/widgets/view_button.dart';
-import 'package:ax_dapp/prediction/widgets/buttons.dart';
+import 'package:ax_dapp/predict/predict.dart';
+import 'package:ax_dapp/predict/widgets/price.dart';
+import 'package:ax_dapp/predict/widgets/widget_factories/prediction_details_widget.dart';
+import 'package:ax_dapp/prediction/widgets/prediction_buy_button.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -25,19 +25,28 @@ class DesktopPredictionCard extends StatelessWidget {
           context.goNamed(
             'prediction',
             params: {
-              'id': predictionModel.id,
+              'id': predictionModel.id.toString() + predictionModel.prompt,
             },
           );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            PredictionPrompt(predictionModel: predictionModel),
+            // Prediction Prompt
+            PredictionDetailsWidget(predictionModel)
+                .predictionDetailsCardsForWeb(_width),
+
+            // Yes Price
+            MarketPrice(predictionModel: predictionModel, isYesToken: true),
+            // No Price
+            MarketPrice(predictionModel: predictionModel, isYesToken: false),
+
+            // price
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                LongButton(
-                  prompt: predictionModel,
+                PredictionBuyButton(
+                  predictionModel: predictionModel,
                 ),
                 if (_width >= 1090) ...[
                   const SizedBox(
@@ -51,10 +60,10 @@ class DesktopPredictionCard extends StatelessWidget {
                     child: ViewButton(
                       predictionModel: predictionModel,
                     ),
-                  )
-                ]
+                  ),
+                ],
               ],
-            )
+            ),
           ],
         ),
       ),

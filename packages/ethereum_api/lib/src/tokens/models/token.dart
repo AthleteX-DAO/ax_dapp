@@ -1,5 +1,6 @@
 import 'package:ethereum_api/src/config/models/apt_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
+import 'package:ethereum_api/src/config/models/event_config.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:shared/shared.dart';
@@ -7,6 +8,10 @@ import 'package:shared/shared.dart';
 part 'apt.dart';
 part 'apt_pair.dart';
 part 'apt_type.dart';
+
+part 'event.dart';
+part 'event_type.dart';
+part 'event_pair.dart';
 
 /// {@template token}
 /// Represents an `Ethereum` token.

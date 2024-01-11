@@ -21,11 +21,19 @@ class GetPredictionMarketInfoUseCase {
         id: model.id,
         prompt: model.prompt,
         details: model.details,
-        address: '',
+        marketAddress: '',
         yesTokenAddress: predictionInfo.isEmpty ? '' : predictionInfo[0],
         noTokenAddress: predictionInfo.isEmpty ? '' : predictionInfo[1],
         yesName: predictionInfo.isEmpty ? '' : predictionInfo[2],
         noName: predictionInfo.isEmpty ? '' : predictionInfo[3],
+        time: '',
+        longTokenPrice: 0,
+        shortTokenPrice: 0,
+        longTokenPercentage: 0,
+        shortTokenPercentage: 0,
+        longTokenPriceUsd: 0,
+        shortTokenPriceUsd: 0,
+        supportedPredictionMarkets: SupportedPredictionMarkets.voted,
       );
       markets.add(predictionModel);
     }

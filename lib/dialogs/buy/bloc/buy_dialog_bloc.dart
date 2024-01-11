@@ -28,14 +28,16 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     required this.repo,
     required this.wallet,
     required this.swapRepository,
-    required int athleteId,
+    int? athleteId,
+    int? predictionId,
   })  : _streamAppDataChanges = streamAppDataChanges,
         _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
         super(
           // setting the apt corresponding to the default aptType which is long
+          // TODO: refactor this so this can be nullable
           BuyDialogState(
-            longApt: tokensRepository.currentAptPair(athleteId).longApt,
+            longApt: tokensRepository.currentAptPair(athleteId!).longApt,
           ),
         ) {
     on<WatchAptPairStarted>(_onWatchAptPairStarted);

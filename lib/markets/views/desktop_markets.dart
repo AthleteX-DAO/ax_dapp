@@ -1,4 +1,4 @@
-import 'package:ax_dapp/athlete_markets/view/athlete_markets.dart';
+import 'package:ax_dapp/athlete_markets/athlete.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/markets/widgets/desktop_headers.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -69,7 +69,7 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                     boxConstraints: constraints,
                   ),
                   if (state.status == BlocStatus.success &&
-                      state.selectedMarket == SupportedMarkets.Athlete)
+                      state.selectedMarket == SupportedMarkets.athlete)
                     const DesktopHeaders(),
                   Stack(
                     alignment: Alignment.center,
@@ -98,18 +98,18 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                           ),
                         ),
                       if (state.status == BlocStatus.success &&
-                          state.selectedMarket == SupportedMarkets.Athlete)
+                          state.selectedMarket == SupportedMarkets.athlete)
                         AthleteMarkets(
                           boxConstraints: constraints,
                         ),
                       if (state.status == BlocStatus.success &&
-                          state.selectedMarket == SupportedMarkets.Sports)
+                          state.selectedMarket == SupportedMarkets.sports)
                         SportsMarkets(
                           sportsMarkets: liveSports,
                           boxConstraints: constraints,
                         ),
                       if (state.status == BlocStatus.success &&
-                          state.selectedMarket == SupportedMarkets.Crypto)
+                          state.selectedMarket == SupportedMarkets.crypto)
                         CryptoMarkets(
                           filteredMarkets: const [],
                           boxConstraints: constraints,

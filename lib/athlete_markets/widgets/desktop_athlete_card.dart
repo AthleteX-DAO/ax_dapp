@@ -1,7 +1,4 @@
-import 'package:ax_dapp/athlete_markets/widgets/athlete_view_button.dart';
-import 'package:ax_dapp/athlete_markets/widgets/desktop_book_value.dart';
-import 'package:ax_dapp/athlete_markets/widgets/desktop_market_value.dart';
-import 'package:ax_dapp/athlete_markets/widgets/widget_factories/athlete_details_widget.dart';
+import 'package:ax_dapp/athlete_markets/widgets/widgets.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';

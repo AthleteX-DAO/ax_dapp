@@ -1,5 +1,4 @@
 import 'package:ax_dapp/markets/models/models.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
 class TokenMarketModel extends MarketModel {
   const TokenMarketModel({
@@ -13,7 +12,7 @@ class TokenMarketModel extends MarketModel {
           id: 0,
           name: '',
           marketHash: '',
-          typeOfMarket: SupportedMarkets.Athlete,
+          typeOfMarket: SupportedMarkets.athlete,
         );
 
   final double marketPrice;

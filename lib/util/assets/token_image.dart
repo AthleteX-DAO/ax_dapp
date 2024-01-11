@@ -35,6 +35,7 @@ AssetImage tokenImage(Token token) {
 }
 
 // TODO(Rolly): gen assets & move to ui package
+// TODO(anyone): create image assets for yes and no tokens
 AssetImage aptImage(Apt apt) {
   String tokenAssetName;
   switch (apt.type) {

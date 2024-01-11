@@ -14,7 +14,6 @@ import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.da
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';

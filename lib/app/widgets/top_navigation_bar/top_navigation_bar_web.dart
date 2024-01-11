@@ -47,19 +47,20 @@ class TopNavigationBarWeb extends StatelessWidget {
                       isSelected: selectedButton == 'predict',
                       onPressed: () {
                         bloc.add(
-                            const SelectButtonEvent(buttonName: 'predict'));
+                          const SelectButtonEvent(buttonName: 'predict'),
+                        );
                         context.goNamed('predict');
                       },
                     ),
-                    TopNavigationBarItem(
-                      routeName: 'scout',
-                      buttonName: 'Markets',
-                      isSelected: selectedButton == 'scout',
-                      onPressed: () {
-                        bloc.add(const SelectButtonEvent(buttonName: 'scout'));
-                        context.goNamed('scout');
-                      },
-                    ),
+                    // TopNavigationBarItem(
+                    //   routeName: 'scout',
+                    //   buttonName: 'Markets',
+                    //   isSelected: selectedButton == 'scout',
+                    //   onPressed: () {
+                    //     bloc.add(const SelectButtonEvent(buttonName: 'scout'));
+                    //     context.goNamed('scout');
+                    //   },
+                    // ),
                     TopNavigationBarItem(
                       routeName: 'trade',
                       buttonName: 'Trade',
@@ -80,7 +81,7 @@ class TopNavigationBarWeb extends StatelessWidget {
                     ),
                     TopNavigationBarItem(
                       routeName: 'farm',
-                      buttonName: 'Farm',
+                      buttonName: 'Earn',
                       isSelected: selectedButton == 'farm',
                       onPressed: () {
                         bloc.add(const SelectButtonEvent(buttonName: 'farm'));

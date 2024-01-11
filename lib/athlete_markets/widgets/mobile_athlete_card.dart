@@ -1,5 +1,4 @@
-import 'package:ax_dapp/athlete_markets/widgets/mobile_market_book_price.dart';
-import 'package:ax_dapp/athlete_markets/widgets/widget_factories/athlete_details_widget.dart';
+import 'package:ax_dapp/athlete_markets/widgets/widgets.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

@@ -1,6 +1,7 @@
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/app_scaffold.dart';
+import 'package:ax_dapp/athlete_markets/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/athlete_markets/view/athlete_page.dart';
 import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/farm/desktop_farm.dart';
@@ -16,10 +17,9 @@ import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
 import 'package:ax_dapp/predict/view/desktop_predict.dart';
-import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
-import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/prediction/view/prediction_page.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -57,7 +57,7 @@ class AppRouter {
       GoRoute(
         name: '/',
         path: '/',
-        redirect: (context, state) => '/scout',
+        redirect: (context, state) => '/predict',
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
@@ -76,6 +76,8 @@ class AppRouter {
                   eventMarketRepository: context.read<EventMarketRepository>(),
                   getPredictionMarketInfoUseCase:
                       context.read<GetPredictionMarketInfoUseCase>(),
+                  getPredictionMarketDataUseCase:
+                      context.read<GetPredictionMarketDataUseCase>(),
                 ),
                 child: const DesktopPredict(),
               );
@@ -85,20 +87,8 @@ class AppRouter {
                 name: 'prediction',
                 path: 'prediction/:id',
                 builder: (BuildContext context, GoRouterState state) {
-                  return BlocProvider(
-                    create: (context) => PredictionPageBloc(
-                      walletRepository: context.read<WalletRepository>(),
-                      eventMarketRepository:
-                          context.read<EventMarketRepository>(),
-                      streamAppDataChangesUseCase:
-                          context.read<StreamAppDataChangesUseCase>(),
-                      predictionAddressRepository:
-                          context.read<PredictionAddressRepository>(),
-                      predictionModelId: _toPrediction(state.params['id']!)!.id,
-                    ),
-                    child: PredictionPage(
-                      predictionModel: _toPrediction(state.params['id']!)!,
-                    ),
+                  return PredictionPage(
+                    predictionModel: _toPrediction(state.params['id']!)!,
                   );
                 },
               ),
@@ -114,7 +104,8 @@ class AppRouter {
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChanges:
                       context.read<StreamAppDataChangesUseCase>(),
-                  getSportsMarketsDataUseCase: context.read<GetSportsMarketsDataUseCase>(),
+                  getSportsMarketsDataUseCase:
+                      context.read<GetSportsMarketsDataUseCase>(),
                   repo: GetScoutAthletesDataUseCase(
                     tokensRepository: context.read<TokensRepository>(),
                     graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
@@ -261,10 +252,11 @@ class AppRouter {
       // These fix redirects a page back to the markest list if a user refreshes
       if (state.location.contains('/athlete') && Global().athleteList.isEmpty) {
         return '/scout';
-      } else if (state.location.contains('/prediction') &&
-          Global().predictions.isEmpty) {
-        return '/predict';
       }
+      // if (state.location.contains('/prediction') &&
+      //     Global().predictions.isEmpty) {
+      //   return '/predict';
+      // }
       return null;
     },
     errorPageBuilder: (context, state) => MaterialPage(
@@ -297,7 +289,7 @@ AthleteScoutModel _findAthleteById(String id) {
 PredictionModel? _toPrediction(String id) {
   final predictions = Global().predictions;
   return predictions.firstWhere(
-    (prediction) => prediction.id == id,
+    (prediction) => prediction.id.toString() + prediction.prompt == id,
     orElse: () => PredictionModel.empty,
   );
 }

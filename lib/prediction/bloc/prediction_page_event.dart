@@ -42,3 +42,14 @@ class PredictionPageLoaded extends PredictionPageEvent {
 class LoadMarketAddress extends PredictionPageEvent {}
 
 class ToggleAdvanceFeatures extends PredictionPageEvent {}
+
+class GetEventStatsRequested extends PredictionPageEvent {
+  const GetEventStatsRequested(this.predictionId);
+
+  final int predictionId;
+
+  @override
+  List<Object?> get props => [predictionId];
+}
+
+class OnGraphRefresh extends PredictionPageEvent {}

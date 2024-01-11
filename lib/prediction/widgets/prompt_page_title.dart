@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 class PromptPageTitle extends StatelessWidget {
@@ -21,6 +22,7 @@ class PromptPageTitle extends StatelessWidget {
           height: 100,
           child: Row(
             children: [
+              // Back Button
               SizedBox(
                 width: 70,
                 child: TextButton(
@@ -34,9 +36,10 @@ class PromptPageTitle extends StatelessWidget {
                   ),
                 ),
               ),
-              FittedBox(
+              // Prompt Title
+              Expanded(
                 child: SizedBox(
-                  width: constraints.maxWidth / 2,
+                  width: constraints.maxWidth / 2.5,
                   child: Text(
                     prompt,
                     style: textStyle(
@@ -44,6 +47,29 @@ class PromptPageTitle extends StatelessWidget {
                       23,
                       isBold: false,
                       isUline: false,
+                    ),
+                  ),
+                ),
+              ),
+              // Share Button
+              SizedBox(
+                width: 50,
+                child: TextButton(
+                  onPressed: () {
+                    final path = Uri.base.toString();
+
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: path,
+                      ),
+                    );
+                  },
+                  child: const Tooltip(
+                    message: 'Share a link to this market',
+                    child: Icon(
+                      Icons.share,
+                      size: 25,
+                      color: Colors.white,
                     ),
                   ),
                 ),

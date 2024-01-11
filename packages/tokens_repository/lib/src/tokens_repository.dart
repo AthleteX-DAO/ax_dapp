@@ -22,7 +22,7 @@ class TokensRepository {
   final ValueStream<LongShortPair> _reactiveLspClient;
   LongShortPair get _lspClient => _reactiveLspClient.value;
 
-  final CoinGeckoAPI _coinGeckoApiClient;
+  final CoinGeckoAPI _coinGeckoApiClient; // Note: this can be removed
 
   /// Allows listening to changes to the current [Token]s.
   Stream<List<Token>> get tokensChanges => _tokensApiClient.tokensChanges;
@@ -43,13 +43,25 @@ class TokensRepository {
   Stream<List<Apt>> get aptsChanges =>
       tokensChanges.map((tokens) => tokens.whereType<Apt>().toList());
 
+  /// Allows listening to changes to the current [Event]s
+  Stream<List<Event>> get eventsChanges =>
+      tokensChanges.map((tokens) => tokens.whereType<Event>().toList());
+
   /// Returns the current [Apt]s synchronously. The returned [Apt]s are
   /// based on the current [EthereumChain].
   List<Apt> get currentApts => currentTokens.whereType<Apt>().toList();
 
+  /// Returns the current [Event]s synchronously.  The returned [Event]s
+  /// based on the current [EthereumChain].
+  List<Event> get currentEvents => currentTokens.whereType<Event>().toList();
+
   /// Returns the previous [Apt]s synchronously. The returned [Apt]s are
   /// based on the previous [EthereumChain].
   List<Apt> get previousApts => previousTokens.whereType<Apt>().toList();
+
+  /// Returns the previous [Event]s synchronously.  The returned [Event]s
+  /// based on the previous [EthereumChain].
+  List<Event> get previousEvents => previousTokens.whereType<Event>().toList();
 
   /// Allows listening to changes to the [Apt]s (long and short) for the
   /// athlete identified by [athleteId].
@@ -62,6 +74,11 @@ class TokensRepository {
   /// The returned [AptPair] is based on the current [EthereumChain].
   AptPair currentAptPair(int athleteId) =>
       currentApts.findPairByAthleteId(athleteId);
+
+  /// Returns the current [EventPair] for the given [eventId] synchronously.
+  /// The returned [EventPair] is based on the current [EthereumChain]
+  EventPair currentEventPair(int eventId) =>
+      currentEvents.findPairByEventId(eventId);
 
   /// Allows listening to changes to the [Token.ax] associated with the current
   /// [EthereumChain].
