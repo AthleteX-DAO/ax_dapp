@@ -70,14 +70,15 @@ class EthereumAddressConfig {
     required this.arbitriumOne,
   });
 
-  /// Configuration for [] client.
-  const EthereumAddressConfig.event()
-      : polygonMainnet = kNullAddress,
-        goerliTestNet = kNullAddress,
-        sportxMainnet = '0x990898a024ecE7E1CA39FbDed9244001d4ec0c6d',
-        sportxTestnet = kNullAddress,
-        optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+  /// Configuration for [EventMarket] client.
+  const EthereumAddressConfig.event({
+    required this.polygonMainnet,
+    required this.goerliTestNet,
+    required this.sportxMainnet,
+    required this.sportxTestnet,
+    required this.optimism,
+    required this.arbitriumOne,
+  });
 
   /// Configuration for [APTRouter] client.
   const EthereumAddressConfig.dexRouterAddress()

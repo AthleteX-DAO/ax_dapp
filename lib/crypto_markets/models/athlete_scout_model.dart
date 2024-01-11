@@ -26,7 +26,7 @@ class AthleteScoutModel extends MarketModel {
   }) : super(
           id: id,
           name: name,
-          typeOfMarket: SupportedMarkets.Athlete,
+          typeOfMarket: SupportedMarkets.athlete,
           marketHash: athleteTokenAddress,
         );
 

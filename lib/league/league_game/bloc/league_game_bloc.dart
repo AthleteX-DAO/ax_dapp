@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ax_dapp/athlete_markets/athlete.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';

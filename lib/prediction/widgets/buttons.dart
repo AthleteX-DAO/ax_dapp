@@ -1,25 +1,27 @@
-import 'package:ax_dapp/dialogs/predict_long/bloc/long_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_long/long_dialog.dart';
-import 'package:ax_dapp/dialogs/predict_mint/bloc/mint_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_redeem/bloc/redeem_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_short/bloc/short_button_bloc.dart';
-import 'package:ax_dapp/dialogs/predict_short/short_dialog.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/buy/prediction_buy_dialog.dart';
+import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/sell/prediction_sell_dialog.dart';
+
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
-import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
+import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-class GenericMintButton extends StatelessWidget {
-  const GenericMintButton({
+class MintPredictionButton extends StatelessWidget {
+  const MintPredictionButton({
     super.key,
     required this.prompt,
   });
@@ -37,20 +39,21 @@ class GenericMintButton extends StatelessWidget {
           final isWalletConnected =
               context.read<WalletBloc>().state.isWalletConnected;
           if (isWalletConnected) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => BlocProvider(
-                create: (context) => MintButtonBloc(
-                  eventMarketRepository: context.read<EventMarketRepository>(),
-                  streamAppDataChangesUseCase:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  walletRepository: context.read<WalletRepository>(),
-                ),
-                child: LongDialog(
-                  predictionModel: prompt,
-                ),
-              ),
-            );
+            // showDialog<void>(
+            //   context: context,
+            //   builder: (context) => BlocProvider(
+            //     create: (context) => MintDialogBloc(
+            //       eventMarketRepository: context.read<EventMarketRepository>(),
+            //       streamAppDataChangesUseCase:
+            //           context.read<StreamAppDataChangesUseCase>(),
+            //       walletRepository: context.read<WalletRepository>(),
+            //     ),
+            //     child: MintPredictionDialog(
+            //       predictionModel: prompt,
+            //     ),
+            //   ),
+            // );
+            context.showWalletWarningToast();
           } else {
             context.showWalletWarningToast();
           }
@@ -69,86 +72,8 @@ class GenericMintButton extends StatelessWidget {
   }
 }
 
-class ShortButton extends StatelessWidget {
-  const ShortButton({
-    super.key,
-    required this.prompt,
-  });
-
-  final PredictionModel prompt;
-  @override
-  Widget build(BuildContext context) {
-    final invalidAddr = GoRouter.of(context).location.contains('prediction') &&
-        prompt.yesTokenAddress.isEmpty;
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.20,
-      height: 36,
-      decoration: invalidAddr
-          ? boxDecoration(
-              secondaryGreyColor,
-              100,
-              0,
-              primaryWhiteColor,
-            )
-          : boxDecoration(
-              primaryGreenColor,
-              100,
-              0,
-              Colors.white,
-            ),
-      child: TextButton(
-        onPressed: () {
-          if (invalidAddr) {
-            context.showWarningToast(
-              title: 'Invalid Address',
-              description: 'Addresses not valid!',
-            );
-          }
-          final isWalletConnected =
-              context.read<WalletBloc>().state.isWalletConnected;
-          if (isWalletConnected) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => BlocProvider(
-                create: (context) => ShortButtonBloc(
-                  repo: context.read<GetBuyInfoUseCase>(),
-                  eventMarketRepository: context.read<EventMarketRepository>(),
-                  streamAppDataChangesUseCase:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  walletRepository: context.read<WalletRepository>(),
-                ),
-                child: ShortDialog(
-                  predictionModel: prompt,
-                ),
-              ),
-            );
-          } else {
-            context.showWalletWarningToast();
-          }
-        },
-        child: Text(
-          'Short',
-          style: invalidAddr
-              ? textStyle(
-                  Colors.black,
-                  20,
-                  isBold: false,
-                  isUline: false,
-                )
-              : textStyle(
-                  Colors.white,
-                  20,
-                  isBold: false,
-                  isUline: false,
-                ),
-        ),
-      ),
-    );
-  }
-}
-
-class GenericRedeemButton extends StatelessWidget {
-  const GenericRedeemButton({
+class RedeemPredictionButton extends StatelessWidget {
+  const RedeemPredictionButton({
     super.key,
     required this.prompt,
   });
@@ -167,20 +92,21 @@ class GenericRedeemButton extends StatelessWidget {
           final isWalletConnected =
               context.read<WalletBloc>().state.isWalletConnected;
           if (isWalletConnected) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => BlocProvider(
-                create: (context) => RedeemButtonBloc(
-                  eventMarketRepository: context.read<EventMarketRepository>(),
-                  streamAppDataChangesUseCase:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  walletRepository: context.read<WalletRepository>(),
-                ),
-                child: LongDialog(
-                  predictionModel: prompt,
-                ),
-              ),
-            );
+            // showDialog<void>(
+            //   context: context,
+            //   builder: (context) => BlocProvider(
+            //     create: (context) => RedeemDialogBloc(
+            //       eventMarketRepository: context.read<EventMarketRepository>(),
+            //       streamAppDataChangesUseCase:
+            //           context.read<StreamAppDataChangesUseCase>(),
+            //       walletRepository: context.read<WalletRepository>(),
+            //     ),
+            //     child: RedeemPredictionsDialog(
+            //       predictionModel: prompt,
+            //     ),
+            //   ),
+            // );
+            context.showWalletWarningToast();
           } else {
             context.showWalletWarningToast();
           }
@@ -199,56 +125,52 @@ class GenericRedeemButton extends StatelessWidget {
   }
 }
 
-class LongButton extends StatelessWidget {
-  const LongButton({
+class BuyEventButton extends StatelessWidget {
+  const BuyEventButton({
     super.key,
-    required this.prompt,
+    required this.predictionModel,
+    required this.isPortraitMode,
+    required this.containerWdt,
   });
 
-  final PredictionModel prompt;
+  final PredictionModel predictionModel;
+  final bool isPortraitMode;
+  final double containerWdt;
+  // final bool isLongApt;
+
   @override
   Widget build(BuildContext context) {
-    final invalidAddr = GoRouter.of(context).location.contains('prediction') &&
-        prompt.yesTokenAddress.isEmpty;
     return Container(
-      width: MediaQuery.of(context).size.width * 0.20,
-      height: 36,
-      decoration: invalidAddr
-          ? boxDecoration(
-              secondaryGreyColor,
-              100,
-              0,
-              primaryWhiteColor,
-            )
-          : boxDecoration(
-              primaryRedColor,
-              100,
-              0,
-              primaryWhiteColor,
-            ),
+      width: isPortraitMode ? containerWdt / 3 : 175,
+      height: 50,
+      decoration: boxDecoration(primaryOrangeColor, 100, 0, primaryWhiteColor),
       child: TextButton(
         onPressed: () {
-          if (invalidAddr) {
-            context.showWarningToast(
-              title: 'Invalid Address',
-              description: 'Addresses not valid!',
-            );
-          }
           final isWalletConnected =
               context.read<WalletBloc>().state.isWalletConnected;
           if (isWalletConnected) {
             showDialog<void>(
               context: context,
-              builder: (context) => BlocProvider(
-                create: (context) => LongButtonBloc(
-                  repo: context.read<GetSwapInfoUseCase>(),
-                  eventMarketRepository: context.read<EventMarketRepository>(),
-                  streamAppDataChangesUseCase:
-                      context.read<StreamAppDataChangesUseCase>(),
+              builder: (BuildContext context) => BlocProvider(
+                create: (context) => BuyDialogBloc(
                   walletRepository: context.read<WalletRepository>(),
+                  streamAppDataChanges:
+                      context.read<StreamAppDataChangesUseCase>(),
+                  wallet: GetTotalTokenBalanceUseCase(
+                    walletRepository: context.read<WalletRepository>(),
+                    tokensRepository: context.read<TokensRepository>(),
+                  ),
+                  tokensRepository: context.read<TokensRepository>(),
+                  repo: RepositoryProvider.of<GetBuyInfoUseCase>(
+                    context,
+                  ),
+                  swapRepository: context.read<SwapRepository>(),
+                  // TODO: Setup some catch for the AthleteID
+                  athleteId: 0,
+                  predictionId: predictionModel.id,
                 ),
-                child: LongDialog(
-                  predictionModel: prompt,
+                child: BuyPredictionDialog(
+                  predictionModel: predictionModel,
                 ),
               ),
             );
@@ -257,13 +179,105 @@ class LongButton extends StatelessWidget {
           }
         },
         child: Text(
-          'Long',
+          'Buy',
           style: textStyle(
             Colors.black,
             20,
             isBold: false,
             isUline: false,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class SellEventButton extends StatelessWidget {
+  const SellEventButton({
+    super.key,
+    required this.predictionModel,
+    required this.isPortraitMode,
+    required this.containerWdt,
+  });
+
+  final PredictionModel predictionModel;
+  final bool isPortraitMode;
+  final double containerWdt;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
+      height: 50,
+      decoration: boxDecoration(Colors.white, 100, 0, Colors.white),
+      child: TextButton(
+        onPressed: () {
+          final isWalletConnected =
+              context.read<WalletBloc>().state.isWalletConnected;
+
+          if (isWalletConnected) {
+            showDialog<void>(
+              context: context,
+              builder: (BuildContext context) => BlocProvider(
+                create: (BuildContext context) => SellDialogBloc(
+                  walletRepository: context.read<WalletRepository>(),
+                  streamAppDataChanges:
+                      context.read<StreamAppDataChangesUseCase>(),
+                  tokensRepository: context.read<TokensRepository>(),
+                  repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
+                  wallet: GetTotalTokenBalanceUseCase(
+                    walletRepository: context.read<WalletRepository>(),
+                    tokensRepository: context.read<TokensRepository>(),
+                  ),
+                  swapRepository: context.read<SwapRepository>(),
+                  athleteId: 0,
+                ),
+                child: SellPredictionDialog(
+                  predictionModel: predictionModel,
+                ),
+              ),
+            );
+          } else {
+            context.showWalletWarningToast();
+          }
+        },
+        child: Text(
+          'Sell',
+          style: textStyle(
+            Colors.black,
+            20,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ProposeButton extends StatelessWidget {
+  const ProposeButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 175,
+      height: 25,
+      decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
+      child: TextButton(
+        onPressed: () {
+          const urlString = 'https://oracle.uma.xyz/';
+          launchUrl(Uri.parse(urlString));
+        },
+        child: AutoSizeText(
+          'Propose Resolution',
+          style: textStyle(
+            Colors.white,
+            20,
+            isBold: true,
+            isUline: false,
+          ),
+          maxLines: 1,
         ),
       ),
     );

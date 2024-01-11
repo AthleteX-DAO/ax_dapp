@@ -8,39 +8,86 @@ class DesktopHeaders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: OutlinedButton(
-        style: ButtonStyle(
-          overlayColor: MaterialStateProperty.all(
-            Colors.transparent,
-          ),
-          side: MaterialStateProperty.resolveWith<BorderSide>(
-            (_) => BorderSide.none,
-          ),
-          mouseCursor: MaterialStateProperty.resolveWith<MouseCursor>(
-            (_) => MouseCursor.defer,
-          ),
-        ),
-        onPressed: () {},
-        child: Row(
-          children: <Widget>[
-            const SizedBox(
-              width: 50,
-            ),
-            SizedBox(
-              child: Text(
-                'Prediction',
-                style: textStyle(
-                  Colors.grey[400]!,
-                  12,
-                  isBold: false,
-                  isUline: false,
-                ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          child: OutlinedButton(
+            style: ButtonStyle(
+              overlayColor: MaterialStateProperty.all(
+                Colors.transparent,
+              ),
+              side: MaterialStateProperty.resolveWith<BorderSide>(
+                (_) => BorderSide.none,
+              ),
+              mouseCursor: MaterialStateProperty.resolveWith<MouseCursor>(
+                (_) => MouseCursor.defer,
               ),
             ),
-          ],
-        ),
-      ),
+            onPressed: () {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  child: Text(
+                    'Prompt',
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      12,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+                SizedBox(
+                  child: Text(
+                    'Yes Price',
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      12,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 100,
+                ),
+                SizedBox(
+                  child: Text(
+                    'No Price',
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      12,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 80,
+                ),
+                SizedBox(
+                  child: Text(
+                    'Action Items',
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      12,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

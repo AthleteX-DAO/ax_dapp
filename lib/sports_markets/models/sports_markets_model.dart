@@ -1,5 +1,5 @@
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:shared/shared.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
 class SportsMarketsModel extends Equatable {
   const SportsMarketsModel({
@@ -21,7 +21,7 @@ class SportsMarketsModel extends Equatable {
   static const empty = SportsMarketsModel(
     id: '0',
     name: '',
-    typeOfMarket: SupportedMarkets.Sports,
+    typeOfMarket: SupportedMarkets.sports,
     marketHash: '',
     line: 0,
     mainLine: true,

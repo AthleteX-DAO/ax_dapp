@@ -51,10 +51,10 @@ class AdvancedFeatures extends StatelessWidget {
                   thickness: 1,
                   color: greyTextColor,
                 ),
-                GenericMintButton(
+                MintPredictionButton(
                   prompt: model,
                 ),
-                GenericRedeemButton(
+                RedeemPredictionButton(
                   prompt: model,
                 ),
               ],

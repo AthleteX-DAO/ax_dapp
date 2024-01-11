@@ -42,6 +42,17 @@ class OnNewAxInput extends BuyDialogEvent {
   final double axInputAmount;
 }
 
+class BuyAPTRequested extends BuyDialogEvent {
+  const BuyAPTRequested({
+    required this.addressToApprove,
+  });
+
+  final String addressToApprove;
+
+  @override
+  List<Object?> get props => [addressToApprove];
+}
+
 class OnMaxBuyTap extends BuyDialogEvent {}
 
 class OnConfirmBuy extends BuyDialogEvent {

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/sports_markets/models/sports_markets_model.dart';
 import 'package:ax_dapp/sports_markets/models/sx_markets_models/sx_market.dart';
 import 'package:http/http.dart' as http;
-import 'package:tokens_repository/tokens_repository.dart';
 
 class SXMarketsRepository {
   Future<List<SportsMarketsModel>> fetchSXMarkets() async {
@@ -24,7 +24,7 @@ class SXMarketsRepository {
         final id = markets.sportId;
         final name =
             '${markets.leagueLabel}| ${markets.outcomeOneName} & ${markets.outcomeTwoName}';
-        const typeOfMarket = SupportedMarkets.Sports;
+        const typeOfMarket = SupportedMarkets.sports;
         final marketHash = markets.marketHash;
         final marketLine = markets.line;
         final isMainLine = markets.mainLine;

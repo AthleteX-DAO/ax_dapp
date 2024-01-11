@@ -54,3 +54,14 @@ class Token1AmountChanged extends AddLiquidityEvent {
 class SwapTokensRequested extends AddLiquidityEvent {
   const SwapTokensRequested();
 }
+
+class TokenSearchChanged extends AddLiquidityEvent {
+  const TokenSearchChanged({
+    required this.searchedName,
+  });
+
+  final String searchedName;
+
+  @override
+  List<Object?> get props => [searchedName];
+}

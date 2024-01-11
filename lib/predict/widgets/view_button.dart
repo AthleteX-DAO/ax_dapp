@@ -18,8 +18,7 @@ class ViewButton extends StatelessWidget {
         context.goNamed(
           'prediction',
           params: {
-            'prompt': predictionModel.prompt,
-            'details': predictionModel.details,
+            'id': predictionModel.id.toString() + predictionModel.prompt,
           },
         );
       },
