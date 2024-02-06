@@ -24,6 +24,13 @@ class AccountAssetCard extends StatelessWidget {
               .read<AccountBloc>()
               .add(AccountTokenViewRequested(token: token));
         },
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+          ),
+        ),
         child: Row(
           children: <Widget>[
             Container(
