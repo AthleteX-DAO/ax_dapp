@@ -33,8 +33,6 @@ import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_
 import 'package:ax_dapp/sports_markets/repository/overtime_markets_repository.dart';
 import 'package:ax_dapp/sports_markets/repository/sx_markets_repository.dart';
 import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
-import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
-import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,6 +52,7 @@ import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:tracking_repository/tracking_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:user_authentication/user_authentication.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 void main() async {

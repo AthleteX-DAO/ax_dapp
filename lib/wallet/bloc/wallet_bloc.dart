@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import 'package:ax_dapp/wallet/exceptions/exceptions.dart';
 import 'package:ax_dapp/wallet/models/models.dart';
-import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
-import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:user_authentication/user_authentication.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 export 'package:wallet_repository/wallet_repository.dart' hide WalletRepository;

@@ -1,0 +1,25 @@
+name: user_authentication
+description: "Manages user auth"
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: '>=2.19.0 <3.0.0'
+
+dependencies:
+  cloud_firestore: ^4.3.1
+  encrypt: ^5.0.3
+  firebase_auth: ^4.11.1
+  firebase_core: ^2.4.1
+  flutter:
+    sdk: flutter
+  wallet_repository:
+    path: ../wallet_repository
+
+dependency_overrides:
+  meta: 1.8.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0

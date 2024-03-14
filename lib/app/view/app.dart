@@ -8,8 +8,6 @@ import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
-import 'package:ax_dapp/wallet/repository/firebase_auth_repository.dart';
-import 'package:ax_dapp/wallet/repository/firestore_credentials_repository.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:config_repository/config_repository.dart';
@@ -19,6 +17,7 @@ import 'package:league_repository/league_repository.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:tracking_repository/tracking_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:user_authentication/user_authentication.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class App extends StatelessWidget {

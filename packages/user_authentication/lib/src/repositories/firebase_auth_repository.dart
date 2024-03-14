@@ -1,5 +1,5 @@
-import 'package:ax_dapp/wallet/exceptions/exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:user_authentication/src/exceptions/exceptions.dart';
 
 class FireBaseAuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
