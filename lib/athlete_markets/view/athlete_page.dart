@@ -1,6 +1,4 @@
 import 'package:ax_dapp/athlete_markets/athlete.dart';
-import 'package:ax_dapp/athlete_markets/bloc/athlete_page_bloc.dart';
-import 'package:ax_dapp/athlete_markets/widgets/athlete_page_web_view.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';

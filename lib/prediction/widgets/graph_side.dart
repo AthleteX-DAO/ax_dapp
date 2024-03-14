@@ -9,7 +9,6 @@ import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
 class GraphSide extends StatelessWidget {
   const GraphSide({

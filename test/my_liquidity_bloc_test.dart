@@ -41,7 +41,7 @@ void main() {
       token1LpAmount: 'testToken1LpAmount',
       shareOfPool: 'testShareOfPool',
       apy: 'testApy',
-    )
+    ),
   ];
 
   MyLiquidityBloc createSubject() => MyLiquidityBloc(
@@ -74,7 +74,7 @@ void main() {
           isA<MyLiquidityState>(),
           predicate<MyLiquidityState>(
             (state) => state.cards == testMyLiquidityItemInfo,
-          )
+          ),
         ]),
       );
     });

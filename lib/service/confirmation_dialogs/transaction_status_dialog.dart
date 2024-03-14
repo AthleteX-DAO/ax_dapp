@@ -65,7 +65,7 @@ class TransactionStatusDialog extends StatelessWidget {
                           ),
                           onPressed: () => Navigator.pop(context),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -50,7 +50,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -73,7 +73,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -96,7 +96,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -119,7 +119,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -142,7 +142,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
         ],
@@ -343,7 +343,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ],
@@ -390,7 +390,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -413,7 +413,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -436,7 +436,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -459,7 +459,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -482,7 +482,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -505,7 +505,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
         ],
@@ -548,7 +548,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -576,7 +576,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                     isBold: false,
                     isUline: false,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -623,7 +623,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
         ),

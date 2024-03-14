@@ -93,7 +93,7 @@ class _StakeDialogState extends State<StakeDialog> {
                         size: 30,
                         color: Colors.white,
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Row(
@@ -279,7 +279,7 @@ class _StakeDialogState extends State<StakeDialog> {
                           isUline: false,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Row(
@@ -334,12 +334,12 @@ class _StakeDialogState extends State<StakeDialog> {
                             .read<WalletBloc>()
                             .state
                             .formattedWalletAddress,
-                      )
+                      ),
                     ] else ...[
                       const WarningTextButton(
                         warningTitle: 'Insufficient Balance',
-                      )
-                    ]
+                      ),
+                    ],
                   ],
                 ),
               ],

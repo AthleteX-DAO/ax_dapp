@@ -1,6 +1,6 @@
 import 'package:ethereum_api/event_markets_api.dart';
-import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
+import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
 import 'package:shared/shared.dart';
 

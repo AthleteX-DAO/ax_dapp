@@ -276,7 +276,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                 );
                               },
                             ),
-                          )
+                          ),
                       ],
                     ),
                   ),

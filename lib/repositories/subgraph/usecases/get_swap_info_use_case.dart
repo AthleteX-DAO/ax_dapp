@@ -78,7 +78,7 @@ class GetSwapInfoUseCase {
         return Either.right(const Error(noSwapInfoErrorMessage));
       }
     } catch (e) {
-      return Either.right(Error('Error occurred: ${e.toString()}'));
+      return Either.right(Error('Error occurred: $e'));
     }
   }
 }

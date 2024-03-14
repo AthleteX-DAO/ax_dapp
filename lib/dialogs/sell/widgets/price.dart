@@ -59,7 +59,7 @@ class Price extends StatelessWidget {
                     ),
                   );
           },
-        )
+        ),
       ],
     );
   }

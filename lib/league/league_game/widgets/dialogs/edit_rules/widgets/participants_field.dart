@@ -44,7 +44,7 @@ class _ParticipantsFieldState extends State<ParticipantsField> {
             onChanged: (value) => {
               context
                   .read<EditRulesBloc>()
-                  .add(UpdateParticipants(participants: int.parse(value)))
+                  .add(UpdateParticipants(participants: int.parse(value))),
             },
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.allow(

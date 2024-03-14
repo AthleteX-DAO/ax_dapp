@@ -5,7 +5,7 @@ class ConnectWalletButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = 180.0;
+    const width = 180.0;
     return Container(
       height: 37.5,
       width: width,

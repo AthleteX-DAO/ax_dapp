@@ -72,7 +72,7 @@ class _TrackEvents extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                         child: Text(state.loggedEvents[index].name),
-                      )
+                      ),
                     ] +
                     state.loggedEvents[index].params.entries
                         .map(

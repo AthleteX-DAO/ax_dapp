@@ -220,7 +220,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               isBold: false,
                               isUline: false,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -248,7 +248,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               isBold: false,
                               isUline: false,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -276,11 +276,11 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               isBold: false,
                               isUline: false,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -364,7 +364,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -422,10 +422,10 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -487,7 +487,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

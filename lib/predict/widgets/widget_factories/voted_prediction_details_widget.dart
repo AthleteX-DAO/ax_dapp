@@ -44,7 +44,7 @@ class VotedPredictionsDetailsWidget implements PredictionDetailsWidget {
             ),
           ),
           Divider(thickness: 1, color: greyTextColor),
-          Row(),
+          const Row(),
         ],
       ),
     );

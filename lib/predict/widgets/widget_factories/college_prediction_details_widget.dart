@@ -1,5 +1,5 @@
-import 'package:ax_dapp/predict/widgets/widget_factories/widget_factories.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/widgets/widget_factories/widget_factories.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -66,8 +66,8 @@ class CollegePredictionsDetailsWidget implements PredictionDetailsWidget {
 
   @override
   Widget predictionPageKeyStatisticsForMobile() {
-    return Row(
-      children: [],
+    return const Row(
+      
     );
   }
 }

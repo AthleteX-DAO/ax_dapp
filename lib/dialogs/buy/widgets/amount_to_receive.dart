@@ -33,7 +33,7 @@ class AmountToReceive extends StatelessWidget {
                     style: _textStyle,
                   );
           },
-        )
+        ),
       ],
     );
   }

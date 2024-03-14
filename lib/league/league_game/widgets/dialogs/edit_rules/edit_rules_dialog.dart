@@ -61,7 +61,7 @@ class _EditRulesDialog extends State<EditRulesDialog> {
               LockToggle(
                 league: league,
               ),
-              const ConfirmEdit()
+              const ConfirmEdit(),
             ],
           ),
         ),

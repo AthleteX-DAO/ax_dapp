@@ -8,7 +8,6 @@ import 'package:ethereum_api/src/config/models/events/exotic_events_list.dart';
 import 'package:ethereum_api/src/config/models/events/football_events_list.dart';
 import 'package:ethereum_api/src/config/models/events/hockey_events_list.dart';
 import 'package:ethereum_api/src/config/models/events/soccer_events_list.dart';
-import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 import 'package:shared/shared.dart';
 

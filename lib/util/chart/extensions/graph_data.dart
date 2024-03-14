@@ -13,6 +13,6 @@ class GraphData {
 
   @override
   String toString() {
-    return '${date.toString()}, $price, $longMarketPrice, $shortMarketPrice';
+    return '$date, $price, $longMarketPrice, $shortMarketPrice';
   }
 }

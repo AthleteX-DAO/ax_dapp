@@ -1,6 +1,6 @@
+import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/config/models/models.dart';
-import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/event_markets/event_markets.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';

@@ -52,7 +52,7 @@ class GetPairInfoUseCase {
         );
       }
     } catch (e) {
-      return Either.right(Error('Error occurred: ${e.toString()}'));
+      return Either.right(Error('Error occurred: $e'));
     }
   }
 }

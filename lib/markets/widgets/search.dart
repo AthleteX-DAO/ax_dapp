@@ -16,8 +16,8 @@ class Search extends StatelessWidget {
     var input = '';
     final myController = TextEditingController(text: input);
     final bloc = context.read<MarketsPageBloc>();
-    var _selectedSport = SupportedSport.all;
-    var isLongToken = true;
+    const _selectedSport = SupportedSport.all;
+    const isLongToken = true;
     const sportFilterTxSz = 14.0;
     return // Search Bar
         Container(
@@ -70,7 +70,7 @@ class Search extends StatelessWidget {
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
                   RegExp('[a-zA-z. ]'),
-                )
+                ),
               ],
             ),
           ),

@@ -261,7 +261,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 isBold: false,
                                 isUline: false,
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Row(
@@ -284,7 +284,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 isBold: false,
                                 isUline: false,
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Row(
@@ -307,7 +307,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 isBold: false,
                                 isUline: false,
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Row(
@@ -330,9 +330,9 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                 isBold: false,
                                 isUline: false,
                               ),
-                            )
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -410,7 +410,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                     ),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -463,10 +463,10 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                                     ),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -524,7 +524,7 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

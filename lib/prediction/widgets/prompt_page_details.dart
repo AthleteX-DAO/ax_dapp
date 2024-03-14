@@ -24,7 +24,7 @@ class PromptPageDetails extends StatelessWidget {
             children: [
               ShowDetails(
                 promptDetails: promptDetails,
-              )
+              ),
             ],
           ),
         );

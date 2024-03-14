@@ -502,11 +502,11 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       ] else ...[
                         const WarningTextButton(
                           warningTitle: 'Insufficient Balance',
-                        )
-                      ]
+                        ),
+                      ],
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

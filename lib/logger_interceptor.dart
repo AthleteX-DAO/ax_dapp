@@ -35,7 +35,7 @@ class LoggingInterceptor extends Interceptor {
 
     logPrint('URI: ${err.requestOptions.uri}');
     if (err.response != null) {
-      logPrint('STATUS CODE: ${err.response?.statusCode?.toString()}');
+      logPrint('STATUS CODE: ${err.response?.statusCode}');
     }
     logPrint('$err');
     if (err.response != null) {

@@ -138,7 +138,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
           ),
         );
       } else {
-        // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
             status: BlocStatus.noData,
@@ -193,7 +192,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
           ),
         );
       } else {
-        // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
             status: BlocStatus.noData,
@@ -245,7 +243,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
           ),
         );
       } else {
-        // TODO(aynone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
             status: BlocStatus.noData,
@@ -299,7 +296,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
           ),
         );
       } else {
-        // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
             status: BlocStatus.noData,
@@ -354,7 +350,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
           ),
         );
       } else {
-        // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
             status: BlocStatus.noData,
@@ -417,7 +412,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     }
   }
 
-  void _onTokenSearchChanged(
+  Future<void> _onTokenSearchChanged(
     TokenSearchChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {

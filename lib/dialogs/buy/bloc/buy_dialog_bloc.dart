@@ -29,7 +29,6 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     required this.wallet,
     required this.swapRepository,
     int? athleteId,
-    int? predictionId,
   })  : _streamAppDataChanges = streamAppDataChanges,
         _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,

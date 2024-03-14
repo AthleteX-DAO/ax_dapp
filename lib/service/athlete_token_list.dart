@@ -164,7 +164,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

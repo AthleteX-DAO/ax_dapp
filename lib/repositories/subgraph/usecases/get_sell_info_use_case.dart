@@ -41,7 +41,7 @@ class GetSellInfoUseCase {
         return Either.right(const Error(_noSellInfoErrorMessage));
       }
     } catch (e) {
-      return Either.right(Error('Error occurred: ${e.toString()}'));
+      return Either.right(Error('Error occurred: $e'));
     }
   }
 }

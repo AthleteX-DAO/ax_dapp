@@ -167,7 +167,6 @@ class BuyEventButton extends StatelessWidget {
                   swapRepository: context.read<SwapRepository>(),
                   // TODO: Setup some catch for the AthleteID
                   athleteId: 0,
-                  predictionId: predictionModel.id,
                 ),
                 child: BuyPredictionDialog(
                   predictionModel: predictionModel,

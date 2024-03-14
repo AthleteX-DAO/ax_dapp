@@ -49,7 +49,7 @@ class MobileMarketBookPrice extends StatelessWidget {
                     isBold: false,
                     isUline: false,
                   ),
-                )
+                ),
               ],
             ),
             if (_width > 355) ...[
@@ -86,10 +86,10 @@ class MobileMarketBookPrice extends StatelessWidget {
                   ),
                   const SizedBox(
                     height: 26,
-                  )
+                  ),
                 ],
               ),
-            ]
+            ],
           ],
         ),
         // Book
@@ -119,7 +119,7 @@ class MobileMarketBookPrice extends StatelessWidget {
                     isBold: false,
                     isUline: false,
                   ),
-                )
+                ),
               ],
             ),
             if (_width > 355) ...[
@@ -156,10 +156,10 @@ class MobileMarketBookPrice extends StatelessWidget {
                   ),
                   const SizedBox(
                     height: 26,
-                  )
+                  ),
                 ],
               ),
-            ]
+            ],
           ],
         ),
       ],

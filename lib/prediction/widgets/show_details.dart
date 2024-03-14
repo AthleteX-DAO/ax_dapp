@@ -38,7 +38,7 @@ class ShowDetails extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

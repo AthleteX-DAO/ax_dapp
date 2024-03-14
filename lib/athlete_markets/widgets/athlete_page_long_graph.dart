@@ -75,7 +75,7 @@ class AthletePageLongGraph extends StatelessWidget {
           width: 2,
           opacity: 1,
           dashArray: <double>[5, 5],
-        )
+        ),
       ],
       primaryXAxis: DateTimeAxis(
         dateFormat: DateFormat.Md(),

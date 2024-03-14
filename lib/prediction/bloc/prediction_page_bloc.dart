@@ -4,7 +4,6 @@ import 'package:ax_dapp/predict/models/models.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
-import 'package:ax_dapp/service/prediction_models/price_record.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:intl/intl.dart';
@@ -162,7 +161,7 @@ class PredictionPageBloc
 
     emit(state.copyWith(status: BlocStatus.loading));
 
-    final startDate = '2023-12-01';
+    const startDate = '2023-12-01';
     final marketRecords = await getPredictionMarketDataUseCase
         .getMarketPriceHistory(startDate, eventId);
     updatePriceGraphData(marketRecords, emit);

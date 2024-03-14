@@ -86,7 +86,7 @@ class LongShort extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

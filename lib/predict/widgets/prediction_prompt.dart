@@ -50,10 +50,10 @@ class PredictionPrompt extends StatelessWidget {
                       isUline: false,
                     ),
                     textAlign: TextAlign.left,
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         );
       },

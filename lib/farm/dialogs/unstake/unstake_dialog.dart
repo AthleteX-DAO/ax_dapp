@@ -92,7 +92,7 @@ class _UnStakeDialogState extends State<UnStakeDialog> {
                         size: 30,
                         color: Colors.white,
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Row(
@@ -254,7 +254,7 @@ class _UnStakeDialogState extends State<UnStakeDialog> {
                           isUline: false,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Row(
@@ -314,7 +314,7 @@ class _UnStakeDialogState extends State<UnStakeDialog> {
                       const WarningTextButton(
                         warningTitle: 'Insufficient Balance',
                       ),
-                    ]
+                    ],
                   ],
                 ),
               ],

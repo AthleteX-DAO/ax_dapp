@@ -166,7 +166,7 @@ class LeagueDraftBloc extends Bloc<LeagueDraftEvent, LeagueDraftState> {
         .getDecimals('0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909');
 
     final roster = {
-      for (var e in myTeam) e.id: [e.name, e.bookPrice.toString()]
+      for (final e in myTeam) e.id: [e.name, e.bookPrice.toString()],
     };
     try {
       if (isEditing) {

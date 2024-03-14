@@ -59,7 +59,7 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                           ),
                           onPressed: () => Navigator.pop(context),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -87,7 +87,7 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Column(

@@ -204,7 +204,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
           emit(state.copyWith(
               status: BlocStatus.error,
               failure: InSufficientFailure(),
-              errorMessage: 'Insufficient balance'));
+              errorMessage: 'Insufficient balance',),);
         } else {
           if (swapRepository.amount1.value != aptInputAmount) {
             swapRepository.fromAmount = aptInputAmount;

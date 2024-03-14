@@ -46,8 +46,8 @@ class LeagueRepository {
       teamsStream,
       (List<League> leagues, List<List<LeagueTeam>> teams) {
         return [
-          for (var pair in IterableZip([leagues, teams]))
-            Pair(first: pair[0] as League, second: pair[1] as List<LeagueTeam>)
+          for (final pair in IterableZip([leagues, teams]))
+            Pair(first: pair[0] as League, second: pair[1] as List<LeagueTeam>),
         ];
       },
     );

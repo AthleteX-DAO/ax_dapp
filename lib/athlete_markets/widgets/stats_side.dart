@@ -182,7 +182,7 @@ class StatsSide extends StatelessWidget {
                           );
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Row(

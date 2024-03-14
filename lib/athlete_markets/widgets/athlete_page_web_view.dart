@@ -76,11 +76,11 @@ class AthletePageWebView extends StatelessWidget {
                     child: StatsSide(
                       athlete: athlete,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

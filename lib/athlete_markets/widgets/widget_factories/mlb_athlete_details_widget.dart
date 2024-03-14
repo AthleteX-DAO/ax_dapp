@@ -50,7 +50,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -73,7 +73,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -96,7 +96,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -119,7 +119,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -142,7 +142,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
         ],
@@ -343,7 +343,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                     // ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ],
@@ -437,7 +437,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           Row(
@@ -460,7 +460,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
           // Row(
@@ -529,7 +529,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -557,7 +557,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                     isBold: false,
                     isUline: false,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -605,7 +605,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                   isBold: false,
                   isUline: false,
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -46,7 +46,7 @@ class MobileMarketBookText extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
-        )
+        ),
       ],
     );
   }

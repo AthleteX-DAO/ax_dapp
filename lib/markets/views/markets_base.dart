@@ -19,7 +19,7 @@ class Scout extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth >= 715) {
-          return DesktopMarkets();
+          return const DesktopMarkets();
         } else {
           return const MobileMarkets();
         }

@@ -33,6 +33,6 @@ class TokenSwapInfo extends Equatable {
         minimumReceived,
         priceImpact,
         receiveAmount,
-        totalFee
+        totalFee,
       ];
 }

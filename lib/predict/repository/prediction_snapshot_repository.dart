@@ -19,7 +19,7 @@ class PredictionSnapshotRepository {
             body
           }
         }
-      '''
+      ''',
       });
       final response = await http.post(url, headers: headers, body: body);
       final result = jsonDecode(response.body);
@@ -36,9 +36,9 @@ class PredictionSnapshotRepository {
           )
           .toList();
       for (final proposal in proposalMap) {
-        final id = proposal['id'] as int;
-        final title = proposal['title'] as String;
-        final body = proposal['body'] as String;
+        final id = proposal['id']! as int;
+        final title = proposal['title']!;
+        final body = proposal['body']!;
         predictions.add(
           PredictionModel(
             id: id,

@@ -47,7 +47,7 @@ class AthleteViewButton extends StatelessWidget {
               Icons.arrow_right,
               size: 25,
               color: Colors.white,
-            )
+            ),
           ],
         ),
       ),

@@ -184,7 +184,7 @@ class AthletePageTitle extends StatelessWidget {
                                 );
                               },
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -420,7 +420,7 @@ class AthletePageTitle extends StatelessWidget {
                                 );
                               },
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
