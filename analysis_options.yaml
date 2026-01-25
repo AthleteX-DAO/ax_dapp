@@ -5,6 +5,11 @@ linter:
     public_member_api_docs: false
 
 analyzer:
-  exclude: [lib/**.g.dart, test/**.mocks.dart, test_resources/**]
+  exclude:
+    - lib/**.g.dart
+    - test/**.mocks.dart
+    - test_resources/**
+    - "Building Your First Synthetic Asset on Synthetix v3_ Developer's Guide _ Markaicode.html"
+    - "**/*.html"
   errors:
     lines_longer_than_80_chars: ignore
