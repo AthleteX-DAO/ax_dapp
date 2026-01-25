@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "621355421546",
+    "project_id": "athletex-prod",
+    "storage_bucket": "athletex-prod.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621355421546:android:050b47f0d9618a991adf13",
+        "android_client_info": {
+          "package_name": "com.athletexmarkets.athletexdapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621355421546-jat8ae60pg9tnlj7cd7r6mceho9f7okc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXLWkDp3w6fn6CjLo7ZVfa2y735f2ozac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621355421546-jat8ae60pg9tnlj7cd7r6mceho9f7okc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "621355421546-a5tqifis8b6q0ep7st1ra31pcpn87on4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.athletexmarkets.athletexdapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
