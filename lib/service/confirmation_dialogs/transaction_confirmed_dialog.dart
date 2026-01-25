@@ -43,13 +43,9 @@ class LinkButton extends StatelessWidget {
 class LinkButtons extends StatelessWidget {
   const LinkButtons({
     super.key,
-    required this.isTrade,
-    required this.isPool,
     required this.isFarm,
   });
 
-  final bool isTrade;
-  final bool isPool;
   final bool isFarm;
 
   @override
@@ -57,16 +53,6 @@ class LinkButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        if (isTrade)
-          const LinkButton(
-            pageName: 'Trade',
-            page: 'trade',
-          ),
-        if (isPool)
-          const LinkButton(
-            pageName: 'Pool',
-            page: 'pool',
-          ),
         if (isFarm)
           const LinkButton(
             pageName: 'Farm',
@@ -81,13 +67,11 @@ class TransactionConfirmed extends StatelessWidget {
   const TransactionConfirmed({
     super.key,
     required this.context,
-    this.isTrade = false,
-    this.isPool = false,
     this.isFarm = false,
   });
 
   final BuildContext context;
-  final bool isTrade, isPool, isFarm;
+  final bool isFarm;
 
   @override
   Widget build(BuildContext context) {
@@ -185,8 +169,6 @@ class TransactionConfirmed extends StatelessWidget {
                   height: 15,
                 ),
                 LinkButtons(
-                  isTrade: isTrade,
-                  isPool: isPool,
                   isFarm: isFarm,
                 ),
               ],

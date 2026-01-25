@@ -16,6 +16,12 @@ extension EthereumChainLocalizationImageX on EthereumChain {
         return 'assets/images/SX_Small.png';
       case EthereumChain.sxTestnet:
         return 'assets/images/SX_Small.png';
+      case EthereumChain.ethereumMainnet:
+        return 'assets/images/ethereum.png';
+      case EthereumChain.ethereumSepolia:
+        return 'assets/images/ethereum.png';
+      case EthereumChain.baseSepolia:
+        return 'assets/images/ethereum.png';
     }
   }
 }

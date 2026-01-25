@@ -52,8 +52,16 @@ class BasketballPredictionsDetailsWidget implements PredictionDetailsWidget {
 
   @override
   Widget predictionPageDetails() {
-    // TODO: implement predictionPageDetails
-    throw UnimplementedError();
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Text(
+        predictionModel.details.isNotEmpty
+            ? predictionModel.details
+            : 'No additional details available for this market.',
+        style: const TextStyle(color: Colors.white70, fontSize: 14),
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 
   @override

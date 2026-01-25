@@ -28,20 +28,16 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
         context.goNamed('predict');
         break;
       case 1:
-        // context.goNamed('scout'); // Removing Access to the markets page
-        context.goNamed('predict');
+        context.goNamed('league');
         break;
       case 2:
-        context.goNamed('trade');
+        context.goNamed('spot-markets');
         break;
       case 3:
-        context.goNamed('pool');
+        context.goNamed('earn');
         break;
       case 4:
-        context.goNamed('farm');
-        break;
-      case 5:
-        context.goNamed('league');
+        context.goNamed('perpetuals');
         break;
     }
   }
@@ -74,29 +70,6 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
               label: 'Predict',
               tooltip: 'Trade on athlete prediction markets',
             ),
-            // BottomNavigationBarItem(
-            //   icon: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 24),
-            //   label: 'Markets',
-            //   tooltip: 'Trade on crypto & sports betting markets',
-            // ),
-            BottomNavigationBarItem(
-              icon: FaIcon(
-                FontAwesomeIcons.arrowRightArrowLeft,
-                size: 24,
-              ),
-              label: 'Trade',
-              tooltip: 'Swap betwen your favorite coins',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.coins),
-              label: 'Pool',
-              tooltip: 'Earn Fees by adding liquidity to markets',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.agriculture_rounded),
-              label: 'Earn',
-              tooltip: 'Put your crypto to work and earn rewards',
-            ),
             BottomNavigationBarItem(
               icon: FaIcon(
                 FontAwesomeIcons.trophy,
@@ -104,6 +77,21 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
               ),
               label: 'League',
               tooltip: 'cross-sport fantasy league, what else?',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.chartLine),
+              label: 'Spot',
+              tooltip: 'Trade spot markets',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.vault),
+              label: 'Vaults',
+              tooltip: 'Earn yield on your assets',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.arrowTrendUp),
+              label: 'Perps',
+              tooltip: 'Trade perpetual futures',
             ),
           ],
           currentIndex: selectedIndex,

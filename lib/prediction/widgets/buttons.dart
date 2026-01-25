@@ -1,24 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
-import 'package:ax_dapp/dialogs/buy/prediction_buy_dialog.dart';
-import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
-import 'package:ax_dapp/dialogs/sell/prediction_sell_dialog.dart';
-
+import 'package:ax_dapp/dialogs/modern_trading_dialog.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
-import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
-import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:use_cases/stream_app_data_changes_use_case.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 class MintPredictionButton extends StatelessWidget {
   const MintPredictionButton({
@@ -131,60 +120,81 @@ class BuyEventButton extends StatelessWidget {
     required this.predictionModel,
     required this.isPortraitMode,
     required this.containerWdt,
+    this.initialOutcome = 'Yes',
   });
 
   final PredictionModel predictionModel;
   final bool isPortraitMode;
   final double containerWdt;
+  final String initialOutcome;
   // final bool isLongApt;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: isPortraitMode ? containerWdt / 3 : 175,
       height: 50,
-      decoration: boxDecoration(primaryOrangeColor, 100, 0, primaryWhiteColor),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            primaryOrangeColor,
+            primaryOrangeColor.withOpacity(0.8),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: primaryOrangeColor.withOpacity(0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: TextButton(
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
         onPressed: () {
           final isWalletConnected =
               context.read<WalletBloc>().state.isWalletConnected;
           if (isWalletConnected) {
             showDialog<void>(
               context: context,
-              builder: (BuildContext context) => BlocProvider(
-                create: (context) => BuyDialogBloc(
-                  walletRepository: context.read<WalletRepository>(),
-                  streamAppDataChanges:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  wallet: GetTotalTokenBalanceUseCase(
-                    walletRepository: context.read<WalletRepository>(),
-                    tokensRepository: context.read<TokensRepository>(),
-                  ),
-                  tokensRepository: context.read<TokensRepository>(),
-                  repo: RepositoryProvider.of<GetBuyInfoUseCase>(
-                    context,
-                  ),
-                  swapRepository: context.read<SwapRepository>(),
-                  // TODO: Setup some catch for the AthleteID
-                  athleteId: 0,
-                ),
-                child: BuyPredictionDialog(
-                  predictionModel: predictionModel,
-                ),
+              builder: (context) => ModernTradingDialog(
+                predictionModel: predictionModel,
+                isBuy: true,
+                yesPrice: predictionModel.longTokenPrice ?? 0.0,
+                noPrice: predictionModel.shortTokenPrice ?? 0.0,
+                initialOutcome: initialOutcome,
               ),
             );
           } else {
             context.showWalletWarningToast();
           }
         },
-        child: Text(
-          'Buy',
-          style: textStyle(
-            Colors.black,
-            20,
-            isBold: false,
-            isUline: false,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.add_shopping_cart,
+              color: Colors.black,
+              size: 18,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'Buy',
+              style: textStyle(
+                Colors.black,
+                16,
+                isBold: true,
+                isUline: false,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -197,19 +207,40 @@ class SellEventButton extends StatelessWidget {
     required this.predictionModel,
     required this.isPortraitMode,
     required this.containerWdt,
+    this.initialOutcome = 'Yes',
   });
 
   final PredictionModel predictionModel;
   final bool isPortraitMode;
   final double containerWdt;
+  final String initialOutcome;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: isPortraitMode ? containerWdt / 3 : 175,
       height: 50,
-      decoration: boxDecoration(Colors.white, 100, 0, Colors.white),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: primaryOrangeColor.withOpacity(0.3),
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: TextButton(
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
         onPressed: () {
           final isWalletConnected =
               context.read<WalletBloc>().state.isWalletConnected;
@@ -217,37 +248,37 @@ class SellEventButton extends StatelessWidget {
           if (isWalletConnected) {
             showDialog<void>(
               context: context,
-              builder: (BuildContext context) => BlocProvider(
-                create: (BuildContext context) => SellDialogBloc(
-                  walletRepository: context.read<WalletRepository>(),
-                  streamAppDataChanges:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  tokensRepository: context.read<TokensRepository>(),
-                  repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
-                  wallet: GetTotalTokenBalanceUseCase(
-                    walletRepository: context.read<WalletRepository>(),
-                    tokensRepository: context.read<TokensRepository>(),
-                  ),
-                  swapRepository: context.read<SwapRepository>(),
-                  athleteId: 0,
-                ),
-                child: SellPredictionDialog(
-                  predictionModel: predictionModel,
-                ),
+              builder: (context) => ModernTradingDialog(
+                predictionModel: predictionModel,
+                isBuy: false,
+                yesPrice: predictionModel.longTokenPrice ?? 0.0,
+                noPrice: predictionModel.shortTokenPrice ?? 0.0,
+                initialOutcome: initialOutcome,
               ),
             );
           } else {
             context.showWalletWarningToast();
           }
         },
-        child: Text(
-          'Sell',
-          style: textStyle(
-            Colors.black,
-            20,
-            isBold: false,
-            isUline: false,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.sell,
+              color: Colors.black87,
+              size: 18,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'Sell',
+              style: textStyle(
+                Colors.black87,
+                16,
+                isBold: true,
+                isUline: false,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -260,23 +291,46 @@ class ProposeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 175,
-      height: 25,
-      decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
+      height: 40,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.5),
+          width: 2,
+        ),
+      ),
       child: TextButton(
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
         onPressed: () {
           const urlString = 'https://oracle.uma.xyz/';
           launchUrl(Uri.parse(urlString));
         },
-        child: AutoSizeText(
-          'Propose Resolution',
-          style: textStyle(
-            Colors.white,
-            20,
-            isBold: true,
-            isUline: false,
-          ),
-          maxLines: 1,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.gavel,
+              color: Colors.white70,
+              size: 16,
+            ),
+            const SizedBox(width: 8),
+            AutoSizeText(
+              'Propose Resolution',
+              style: textStyle(
+                Colors.white,
+                14,
+                isBold: true,
+                isUline: false,
+              ),
+              maxLines: 1,
+            ),
+          ],
         ),
       ),
     );

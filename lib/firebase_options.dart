@@ -21,39 +21,19 @@ class DefaultFirebaseOptions {
       FirebaseOptions firebaseConfigs;
       try {
         firebaseConfigs =
-            (buildConfig == BuildConfig.release) ? webRelease : webStaging;
+            (buildConfig == BuildConfig.release) ? webRelease : webRelease;
       } catch (e) {
-        firebaseConfigs = webStaging;
+        firebaseConfigs = webRelease;
       }
       return firebaseConfigs;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return webRelease;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
-      // ignore: no_default_cases
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -61,23 +41,14 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions webStaging = FirebaseOptions(
-    apiKey: 'AIzaSyAXLczaG5purYtDjbDRbV_llu4H6M8Ghr0',
-    authDomain: 'athlete-x-e6490.firebaseapp.com',
-    projectId: 'athlete-x-e6490',
-    storageBucket: 'athlete-x-e6490.appspot.com',
-    messagingSenderId: '153040185513',
-    appId: '1:153040185513:web:5802a6f61dc7c7601b21b8',
-    measurementId: 'G-DQXRN83F4G',
-  );
 
   static const FirebaseOptions webRelease = FirebaseOptions(
-    apiKey: 'AIzaSyBybCxOPZ5t3ZFuif-GvSClsW5bg4HT3Mk',
-    authDomain: 'athletex-web-production.firebaseapp.com',
-    projectId: 'athletex-web-production',
-    storageBucket: 'athletex-web-production.appspot.com',
-    messagingSenderId: '439639532274',
-    appId: '1:439639532274:web:44b258b37204910b39266b',
-    measurementId: 'G-MK53MBP9DP',
+    apiKey: 'AIzaSyBev41Rd-3rxDdqfc7mceAix785rVzIMPY',
+    authDomain: 'athletex-prod.firebaseapp.com',
+    projectId: 'athletex-prod',
+    storageBucket: 'athletex-prod.firebasestorage.app',
+    messagingSenderId: '621355421546',
+    appId: '1:621355421546:web:410b581282fb92241adf13',
+    measurementId: 'G-QG8RMDHJTE',
   );
 }

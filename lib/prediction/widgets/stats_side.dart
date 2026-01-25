@@ -1,16 +1,11 @@
-import 'package:ax_dapp/athlete_markets/widgets/ticker_symbol.dart';
 import 'package:ax_dapp/predict/predict.dart';
-import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
-import 'package:ax_dapp/prediction/widgets/widget.dart';
+import 'package:ax_dapp/prediction/widgets/buttons.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/gold_theme.dart';
 import 'package:ax_dapp/util/colors.dart';
-import 'package:ax_dapp/util/percent_helper.dart';
-import 'package:ax_dapp/util/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
-class StatsSide extends StatelessWidget {
+class StatsSide extends StatefulWidget {
   const StatsSide({
     super.key,
     required this.predictionModel,
@@ -19,261 +14,249 @@ class StatsSide extends StatelessWidget {
   final PredictionModel predictionModel;
 
   @override
+  State<StatsSide> createState() => _StatsSideState();
+}
+
+class _StatsSideState extends State<StatsSide> {
+  bool _isYesSelected = true;
+
+  @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.sizeOf(context).width;
-    final _isPortraitMode =
-        MediaQuery.of(context).orientation == Orientation.portrait;
     var wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
+
     return Container(
       width: wid,
-      height: 580,
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Price Overview section
-          SizedBox(
-            height: 180,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.all(16),
+      decoration: GoldTheme.panel(radius: 24),
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Market Header
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Price Overview',
+                      'Market Info',
                       style: textStyle(
                         Colors.white,
-                        24,
-                        isBold: false,
+                        20,
+                        isBold: true,
                         isUline: false,
                       ),
                     ),
-                    const Spacer(),
-                    SizedBox(
-                      width: 100,
-                      height: 20,
-                      child: BlocSelector<PredictionPageBloc,
-                          PredictionPageState, String>(
-                        selector: (state) =>
-                            state.predictionModel.marketAddress,
-                        builder: (context, selectedAptAddress) {
-                          return FutureBuilder<String>(
-                            future:
-                                context.read<TokensRepository>().getTokenSymbol(
-                                      selectedAptAddress,
-                                    ),
-                            builder: (context, snapshot) {
-                              //Check API response data
-                              if (snapshot.hasError) {
-                                // can't get symbol
-                                return const TickerSymbol(symbol: '---');
-                              } else if (snapshot.hasData) {
-                                // got the balance
-                                return TickerSymbol(symbol: snapshot.data!);
-                              } else {
-                                // loading
-                                return const Loader(dimension: 10);
-                              }
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    const Spacer(),
+                    const SizedBox(height: 12),
+                    // Yes/No toggle
                     Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'Current',
-                        style: textStyle(
-                          greyTextColor,
-                          14,
-                          isBold: false,
-                          isUline: false,
+                      padding: const EdgeInsets.all(6),
+                      decoration: GoldTheme.emphasis(radius: 12),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildToggleChip(
+                              label: 'Yes',
+                              selected: _isYesSelected,
+                              onTap: () {
+                                setState(() => _isYesSelected = true);
+                              }),
+                          const SizedBox(width: 8),
+                          _buildToggleChip(
+                              label: 'No',
+                              selected: !_isYesSelected,
+                              onTap: () {
+                                setState(() => _isYesSelected = false);
+                              }),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Yes Price',
+                          style: textStyle(
+                            Colors.white.withOpacity(0.7),
+                            14,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
-                      ),
+                        Text(
+                          '${widget.predictionModel.longTokenPrice?.toStringAsFixed(4) ?? '0.00'}',
+                          style: textStyle(
+                            _isYesSelected ? Colors.white : Colors.white70,
+                            14,
+                            isBold: true,
+                            isUline: false,
+                          ),
+                        ),
+                      ],
                     ),
-                    // TODO(anyone): get the all time high book value and \
-                    // market value prices
-                    // Container(
-                    //     alignment: Alignment.bottomRight,
-                    //     child: Text("All-Time High",
-                    //         style: textStyle(greyTextColor,
-                    //             14, false, false)))
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'No Price',
+                          style: textStyle(
+                            Colors.white.withOpacity(0.7),
+                            14,
+                            isBold: false,
+                            isUline: false,
+                          ),
+                        ),
+                        Text(
+                          '${widget.predictionModel.shortTokenPrice?.toStringAsFixed(4) ?? '0.00'}',
+                          style: textStyle(
+                            !_isYesSelected ? Colors.white : Colors.white70,
+                            14,
+                            isBold: true,
+                            isUline: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Volume',
+                          style: textStyle(
+                            Colors.white.withOpacity(0.7),
+                            14,
+                            isBold: false,
+                            isUline: false,
+                          ),
+                        ),
+                        Text(
+                          '${widget.predictionModel.tradingVolume.toStringAsFixed(2)}',
+                          style: textStyle(
+                            Colors.white,
+                            14,
+                            isBold: true,
+                            isUline: false,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                Divider(thickness: 1, color: greyTextColor),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              const SizedBox(height: 24),
+              // Trade Info Message
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: primaryOrangeColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: primaryOrangeColor.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    'Click "Buy" or "Sell" buttons below to trade',
+                    style: textStyle(
+                      primaryOrangeColor,
+                      13,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Buy/Sell buttons
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
                   children: [
-                    Text(
-                      'Yes Price',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
+                    Expanded(
+                      child: _buildBuyButton(context, wid),
                     ),
-                    SizedBox(
-                      width: 200,
-                      child: BlocSelector<PredictionPageBloc,
-                          PredictionPageState, AptType>(
-                        selector: (state) => state.aptTypeSelection,
-                        builder: (context, aptTypeSelection) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                aptTypeSelection.isLong
-                                    ? '''${predictionModel.longTokenPrice!.toStringAsFixed(2)} AX'''
-                                    : '''${predictionModel.shortTokenPrice!.toStringAsFixed(2)} AX''',
-                                style: textStyle(
-                                  Colors.white,
-                                  14,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 2),
-                                child: Text(
-                                  aptTypeSelection.isLong
-                                      ? getPercentageDesc(
-                                          predictionModel.longTokenPercentage!,
-                                        )
-                                      : getPercentageDesc(
-                                          predictionModel.shortTokenPercentage!,
-                                        ),
-                                  style: aptTypeSelection.isLong
-                                      ? textStyle(
-                                          getPercentageColor(
-                                            predictionModel
-                                                .longTokenPercentage!,
-                                          ),
-                                          12,
-                                          isBold: false,
-                                          isUline: false,
-                                        )
-                                      : textStyle(
-                                          getPercentageColor(
-                                            predictionModel
-                                                .shortTokenPercentage!,
-                                          ),
-                                          12,
-                                          isBold: false,
-                                          isUline: false,
-                                        ),
-                                ),
-                              ),
-                              // TODO(anyone): get the all time high book value
-                              // and
-                              // market value prices
-                              // Text("4.24 AX",
-                              //     style: textStyle(greyTextColor, 14,
-                              //         false, false))
-                            ],
-                          );
-                        },
-                      ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildSellButton(context, wid),
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'No Price',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    ),
-                    BlocSelector<PredictionPageBloc, PredictionPageState,
-                        AptType>(
-                      selector: (state) => state.aptTypeSelection,
-                      builder: (context, aptTypeSelection) {
-                        return Row(
-                          children: [
-                            Text(
-                              aptTypeSelection.isLong ? '''0 AX''' : '''0 AX''',
-                              style: textStyle(
-                                Colors.white,
-                                14,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                            Text(
-                              aptTypeSelection.isLong
-                                  ? getPercentageDesc(
-                                      predictionModel.longTokenPercentage!,
-                                    )
-                                  : getPercentageDesc(
-                                      predictionModel.shortTokenPercentage!,
-                                    ),
-                              style: aptTypeSelection.isLong
-                                  ? textStyle(
-                                      getPercentageColor(
-                                        predictionModel.longTokenPercentage!,
-                                      ),
-                                      12,
-                                      isBold: false,
-                                      isUline: false,
-                                    )
-                                  : textStyle(
-                                      getPercentageColor(
-                                        predictionModel.shortTokenPercentage!,
-                                      ),
-                                      12,
-                                      isBold: false,
-                                      isUline: false,
-                                    ),
-                            ),
-                            // TODO(anyone): get the all time high book value
-                            // and market value prices
-                            // Text(shortBookValue, style: textStyle
-                            // (greyTextColor, 14, false, false))
-                          ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-
-          /// Buttons Sections
-          SizedBox(
-            width: wid * 0.875,
-            height: 150,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    BuyEventButton(
-                      predictionModel: predictionModel,
-                      isPortraitMode: _isPortraitMode,
-                      containerWdt: wid,
-                    ),
-                    SellEventButton(
-                      predictionModel: predictionModel,
-                      isPortraitMode: _isPortraitMode,
-                      containerWdt: wid,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildToggleChip({
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: selected
+              ? primaryOrangeColor.withOpacity(0.2)
+              : Colors.white.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color:
+                selected ? primaryOrangeColor : Colors.white.withOpacity(0.12),
+            width: 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: textStyle(
+            selected ? primaryOrangeColor : Colors.white70,
+            12,
+            isBold: true,
+            isUline: false,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBuyButton(BuildContext context, double wid) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final initialOutcome = _isYesSelected ? 'Yes' : 'No';
+    return BuyEventButton(
+      predictionModel: widget.predictionModel,
+      isPortraitMode: isPortrait,
+      containerWdt: wid,
+      initialOutcome: initialOutcome,
+    );
+  }
+
+  Widget _buildSellButton(BuildContext context, double wid) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final initialOutcome = _isYesSelected ? 'Yes' : 'No';
+    return SellEventButton(
+      predictionModel: widget.predictionModel,
+      isPortraitMode: isPortrait,
+      containerWdt: wid,
+      initialOutcome: initialOutcome,
     );
   }
 }

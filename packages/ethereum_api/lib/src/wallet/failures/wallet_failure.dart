@@ -1,5 +1,7 @@
-import 'package:flutter_web3/flutter_web3.dart';
 import 'package:shared/shared.dart';
+
+import 'flutter_web3_stub.dart'
+  if (dart.library.html) 'package:flutter_web3/flutter_web3.dart';
 
 part 'wallet_failures.dart';
 

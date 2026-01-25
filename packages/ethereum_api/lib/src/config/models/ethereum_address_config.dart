@@ -1,4 +1,3 @@
-import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 
@@ -13,7 +12,10 @@ class EthereumAddressConfig {
         sportxMainnet = '0xd9Fd6e207a2196e1C3FEd919fCFE91482f705909',
         sportxTestnet = kEmptyAddress,
         optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = kEmptyAddress;
 
   /// Configuration for [Token.sx].
   const EthereumAddressConfig.sxt()
@@ -22,7 +24,10 @@ class EthereumAddressConfig {
         sportxMainnet = '0xaa99be3356a11ee92c3f099bd7a038399633566f',
         sportxTestnet = kEmptyAddress,
         optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = kEmptyAddress;
 
   /// Configuration for [Token.wsx].
   const EthereumAddressConfig.wsxt()
@@ -31,7 +36,10 @@ class EthereumAddressConfig {
         sportxMainnet = '0xaa99be3356a11ee92c3f099bd7a038399633566f',
         sportxTestnet = kEmptyAddress,
         optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = kEmptyAddress;
 
   /// Configuration for [Token.matic].
   const EthereumAddressConfig.matic()
@@ -40,7 +48,10 @@ class EthereumAddressConfig {
         sportxMainnet = '0xfa6f64dfbad14e6883321c2f756f5b22ff658f9c',
         sportxTestnet = kEmptyAddress,
         optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = kEmptyAddress;
 
   /// Configuration for [Token.weth].
   const EthereumAddressConfig.weth()
@@ -49,7 +60,10 @@ class EthereumAddressConfig {
         sportxMainnet = '0xa173954cc4b1810c0dbdb007522adbc182dab380',
         sportxTestnet = kEmptyAddress,
         optimism = '0x4200000000000000000000000000000000000006',
-        arbitriumOne = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1';
+        arbitriumOne = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+        ethereumMainnet = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+        ethereumSepolia = '0xf531b8a05b5bead35016dcda52e32db424b02e2e',
+        baseSepolia = '0x4200000000000000000000000000000000000006';
 
   /// Configuration for [Token.usdc].
   const EthereumAddressConfig.usdc()
@@ -58,7 +72,10 @@ class EthereumAddressConfig {
         sportxMainnet = '0xe2aa35c2039bd0ff196a6ef99523cc0d3972ae3e',
         sportxTestnet = kEmptyAddress,
         optimism = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
-        arbitriumOne = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831';
+        arbitriumOne = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+        ethereumMainnet = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        ethereumSepolia = '0x1c7d4b196cb0c7b01d743fbc6116a902379c7238',
+        baseSepolia = '0xc43708f8987Df3f3681801e5e640667D86Ce3C30';
 
   /// Configuration for [Token.longApt] and [Token.shortApt].
   const EthereumAddressConfig.apt({
@@ -68,6 +85,9 @@ class EthereumAddressConfig {
     required this.sportxTestnet,
     required this.optimism,
     required this.arbitriumOne,
+    this.ethereumMainnet = kEmptyAddress,
+    this.ethereumSepolia = kEmptyAddress,
+    this.baseSepolia = kEmptyAddress,
   });
 
   /// Configuration for [EventMarket] client.
@@ -78,16 +98,58 @@ class EthereumAddressConfig {
     required this.sportxTestnet,
     required this.optimism,
     required this.arbitriumOne,
+    this.ethereumMainnet = kEmptyAddress,
+    this.ethereumSepolia = kEmptyAddress,
+    this.baseSepolia = kEmptyAddress,
   });
 
-  /// Configuration for [APTRouter] client.
+  /// Configuration for [Dex] router address.
   const EthereumAddressConfig.dexRouterAddress()
       : polygonMainnet = '0x15e4eb77713CD274472D95bDfcc7797F6a8C2D95',
         goerliTestNet = '0x003bA57020B97b282160e13A6D502aF9A5BA8ABd',
         sportxMainnet = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A',
         sportxTestnet = kEmptyAddress,
         optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = kEmptyAddress;
+
+  /// Configuration for Synthetix Perps Market Proxy (mainnet).
+  const EthereumAddressConfig.perpsMarketProxy()
+      : polygonMainnet = kEmptyAddress,
+        goerliTestNet = kEmptyAddress,
+        sportxMainnet = kEmptyAddress,
+        sportxTestnet = kEmptyAddress,
+        optimism = kEmptyAddress,
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = '0xa73167b266f824345e1eba0a5d4cb50e8f74a196',
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = '0xf53Ca60F031FAf0E347D44FbaA4870da68250c8d';
+
+  /// Configuration for Synthetix Spot Market Proxy (mainnet).
+  const EthereumAddressConfig.spotMarketProxy()
+      : polygonMainnet = kEmptyAddress,
+        goerliTestNet = kEmptyAddress,
+        sportxMainnet = kEmptyAddress,
+        sportxTestnet = kEmptyAddress,
+        optimism = kEmptyAddress,
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = '0xa65538a6b9a8442854decb6e3f85782c60757d60',
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = '0xaD2fE7cd224c58871f541DAE01202F93928FEF72';
+
+  /// Configuration for snxUSD collateral token (mainnet).
+  const EthereumAddressConfig.snxUSD()
+      : polygonMainnet = kEmptyAddress,
+        goerliTestNet = kEmptyAddress,
+        sportxMainnet = kEmptyAddress,
+        sportxTestnet = kEmptyAddress,
+        optimism = kEmptyAddress,
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = '0x0b1ba0af832d7c05fd64161e0db78e85978e8082',
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = '0x682f0d17feDC62b2a0B91f8992243Bf44cAfeaaE';
 
   /// Configuration for [Dex] client.
   const EthereumAddressConfig.dexFactoryAddress()
@@ -96,7 +158,10 @@ class EthereumAddressConfig {
         sportxMainnet = '0x668880Eb73AAd6474b8aE1C08D3310e765803717',
         sportxTestnet = kEmptyAddress,
         optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = kEmptyAddress;
 
   /// Configuration for farm owner.
   const EthereumAddressConfig.farmOwner()
@@ -105,7 +170,10 @@ class EthereumAddressConfig {
         sportxMainnet = kEmptyAddress,
         sportxTestnet = kEmptyAddress,
         optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = kEmptyAddress;
 
   /// Configuration for pool info.
   const EthereumAddressConfig.poolInfo()
@@ -114,7 +182,10 @@ class EthereumAddressConfig {
         sportxMainnet = kEmptyAddress,
         sportxTestnet = kEmptyAddress,
         optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = kEmptyAddress;
 
   /// Empty configuration.
   const EthereumAddressConfig.empty()
@@ -123,7 +194,34 @@ class EthereumAddressConfig {
         sportxMainnet = kEmptyAddress,
         sportxTestnet = kEmptyAddress,
         optimism = kEmptyAddress,
-        arbitriumOne = kEmptyAddress;
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = kEmptyAddress,
+        baseSepolia = kEmptyAddress;
+
+  /// Configuration for WBTC vault on Sepolia.
+  const EthereumAddressConfig.wbtcVault()
+      : polygonMainnet = kEmptyAddress,
+        goerliTestNet = kEmptyAddress,
+        sportxMainnet = kEmptyAddress,
+        sportxTestnet = kEmptyAddress,
+        optimism = kEmptyAddress,
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = '0x9d1c9376b89284dc8e23c31e50c5a77c4c3c2e96',
+        baseSepolia = kEmptyAddress;
+
+  /// Configuration for WETH vault on Sepolia.
+  const EthereumAddressConfig.wethVault()
+      : polygonMainnet = kEmptyAddress,
+        goerliTestNet = kEmptyAddress,
+        sportxMainnet = kEmptyAddress,
+        sportxTestnet = kEmptyAddress,
+        optimism = kEmptyAddress,
+        arbitriumOne = kEmptyAddress,
+        ethereumMainnet = kEmptyAddress,
+        ethereumSepolia = '0x5c5d3b8f3f58e0e5d3f5c5d3b8f3f58e0e5d3f5c',
+        baseSepolia = kEmptyAddress;
 
   /// Unkown configuration
   EthereumAddressConfig.unknown(String address, EthereumChain chain)
@@ -146,7 +244,10 @@ class EthereumAddressConfig {
             : kEmptyAddress,
         arbitriumOne = (chain.chainName == EthereumChain.arbitriumOne.chainName)
             ? address
-            : kEmptyAddress;
+            : kEmptyAddress,
+        ethereumMainnet = (chain.chainId == 1) ? address : kEmptyAddress,
+        ethereumSepolia = (chain.chainId == 11155111) ? address : kEmptyAddress,
+        baseSepolia = (chain.chainId == 84532) ? address : kEmptyAddress;
 
   /// Represents the object address on the [EthereumChain.polygonMainnet].
   final String polygonMainnet;
@@ -165,6 +266,15 @@ class EthereumAddressConfig {
 
   /// Represents the object address on the [EthereumChain.arbitriumOne]
   final String arbitriumOne;
+
+  /// Represents the object address on the [EthereumChain.ethereumMainnet]
+  final String ethereumMainnet;
+
+  /// Represents the object address on the [EthereumChain.ethereumSepolia]
+  final String ethereumSepolia;
+
+  /// Represents the object address on the [EthereumChain.baseSepolia]
+  final String baseSepolia;
 }
 
 /// [EthereumAddressConfig] extensions.
@@ -189,6 +299,12 @@ extension EthereumAddressConfigX on EthereumAddressConfig {
         return optimism;
       case EthereumChain.arbitriumOne:
         return arbitriumOne;
+      case EthereumChain.ethereumMainnet:
+        return ethereumMainnet;
+      case EthereumChain.ethereumSepolia:
+        return ethereumSepolia;
+      case EthereumChain.baseSepolia:
+        return baseSepolia;
     }
   }
 

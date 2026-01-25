@@ -26,6 +26,7 @@ class GetPredictionMarketInfoUseCase {
         noTokenAddress: predictionInfo.isEmpty ? '' : predictionInfo[1],
         yesName: predictionInfo.isEmpty ? '' : predictionInfo[2],
         noName: predictionInfo.isEmpty ? '' : predictionInfo[3],
+        tradingVolume: 0,
         time: '',
         longTokenPrice: 0,
         shortTokenPrice: 0,

@@ -1,6 +1,16 @@
-import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/app_scaffold.dart';
+import 'package:ax_dapp/earn/bloc/earn_page_bloc.dart';
+import 'package:ax_dapp/earn/view/desktop_earn_page.dart';
+import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
+import 'package:ax_dapp/athlete_markets/athlete.dart';
+import 'package:ax_dapp/perps/bloc/perps_page_bloc.dart';
+import 'package:ax_dapp/perps/bloc/perps_trading_bloc.dart';
+import 'package:ax_dapp/perps/view/desktop_perpetuals_page.dart';
+import 'package:ax_dapp/service/controller/perps/perps_repository.dart';
+import 'package:ax_dapp/service/controller/perps/base_sepolia_perps_service.dart';
+import 'package:ax_dapp/spot_markets/bloc/bloc.dart';
+import 'package:ax_dapp/spot_markets/view/view.dart';
 import 'package:ax_dapp/athlete_markets/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/athlete_markets/view/athlete_page.dart';
 import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
@@ -14,7 +24,6 @@ import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/markets/markets.dart';
-import 'package:ax_dapp/pool/view/desktop_pool.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
@@ -24,28 +33,24 @@ import 'package:ax_dapp/prediction/view/prediction_page.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
-import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';
-import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
-import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/sports_markets/models/sports_markets_model.dart';
 import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
 import 'package:ax_dapp/sports_markets/view/sports_page.dart';
-import 'package:ax_dapp/trade/bloc/trade_page_bloc.dart';
-import 'package:ax_dapp/trade/desktop_trade.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import 'package:league_repository/league_repository.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:web3dart/web3dart.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -87,8 +92,19 @@ class AppRouter {
                 name: 'prediction',
                 path: 'prediction/:id',
                 builder: (BuildContext context, GoRouterState state) {
+                  final predictionModel = state.extra as PredictionModel? ??
+                      _toPrediction(state.pathParameters['id']!);
+                  
+                  if (predictionModel == null || predictionModel == PredictionModel.empty) {
+                    return const Scaffold(
+                      body: Center(
+                        child: Text('Prediction market not found'),
+                      ),
+                    );
+                  }
+                  
                   return PredictionPage(
-                    predictionModel: _toPrediction(state.pathParameters['id']!)!,
+                    predictionModel: predictionModel,
                   );
                 },
               ),
@@ -135,49 +151,12 @@ class AppRouter {
                 path: 'sport/:name',
                 builder: (BuildContext context, GoRouterState state) {
                   return SportsPage(
-                    sport: _goToSportsMarketByName(state.pathParameters['name']!),
+                    sport:
+                        _goToSportsMarketByName(state.pathParameters['name']!),
                   );
                 },
               ),
             ],
-          ),
-          GoRoute(
-            name: 'trade',
-            path: '/trade',
-            builder: (BuildContext context, GoRouterState state) {
-              return BlocProvider(
-                create: (BuildContext context) => TradePageBloc(
-                  walletRepository: context.read<WalletRepository>(),
-                  streamAppDataChanges:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                  swapRepository: context.read<SwapRepository>(),
-                  isBuyAX: false,
-                ),
-                child: const DesktopTrade(),
-              );
-            },
-          ),
-          GoRoute(
-            name: 'pool',
-            path: '/pool',
-            builder: (BuildContext context, GoRouterState state) {
-              return BlocProvider(
-                create: (BuildContext context) => AddLiquidityBloc(
-                  walletRepository: context.read<WalletRepository>(),
-                  tokensRepository: context.read<TokensRepository>(),
-                  streamAppDataChanges:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-                  getAllLiquidityInfoUseCase:
-                      RepositoryProvider.of<GetAllLiquidityInfoUseCase>(
-                    context,
-                  ),
-                  poolRepository: context.read<PoolRepository>(),
-                ),
-                child: const DesktopPool(),
-              );
-            },
           ),
           GoRoute(
             name: 'farm',
@@ -245,12 +224,82 @@ class AppRouter {
               ),
             ],
           ),
+          GoRoute(
+            name: 'earn',
+            path: '/earn',
+            builder: (BuildContext context, GoRouterState state) {
+              final configRepo = context.read<AppBloc>().configRepository;
+              final appConfig = configRepo.initializeAppConfig();
+              
+              return MultiProvider(
+                providers: [
+                  RepositoryProvider(
+                    create: (context) => VaultRepository(
+                      chain: EthereumChain.ethereumSepolia,
+                      reactiveWeb3Client: appConfig.reactiveWeb3Client,
+                      walletRepository: context.read<WalletRepository>(),
+                    ),
+                  ),
+                  BlocProvider(
+                    create: (context) => EarnPageBloc(
+                      walletRepository: context.read<WalletRepository>(),
+                      vaultRepository: context.read<VaultRepository>(),
+                      configRepository: configRepo,
+                    ),
+                  ),
+                ],
+                child: const DesktopEarnPage(),
+              );
+            },
+          ),
+          GoRoute(
+            name: 'perpetuals',
+            path: '/perpetuals',
+            builder: (BuildContext context, GoRouterState state) {
+              final baseSepoliaWeb3Client = _getBaseSepoliaWeb3Client();
+              final walletRepository = context.read<WalletRepository>();
+              
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (BuildContext context) => PerpsPageBloc(
+                      perpsRepository: PerpsRepository(
+                        web3Client: _getWeb3Client(),
+                      ),
+                    ),
+                  ),
+                  BlocProvider(
+                    create: (BuildContext context) => PerpsTradingBloc(
+                      perpsService: BaseSepoliaPerpsService(
+                        web3Client: baseSepoliaWeb3Client,
+                        walletRepository: walletRepository,
+                      ),
+                    ),
+                  ),
+                ],
+                child: const DesktopPerpetualsPage(),
+              );
+            },
+          ),
+          GoRoute(
+            name: 'spot-markets',
+            path: '/spot-markets',
+            builder: (BuildContext context, GoRouterState state) {
+              return BlocProvider(
+                create: (BuildContext context) => SpotMarketsBloc(
+                  walletRepository: context.read<WalletRepository>(),
+                ),
+                child: const DesktopSpotMarketsPage(),
+              );
+            },
+          ),
         ],
       ),
     ],
     redirect: (context, state) async {
       // These fix redirects a page back to the markest list if a user refreshes
-      if (state.uri.toString().contains('/athlete') && Global().athleteList.isEmpty) {
+      if (state.uri.toString().contains('/athlete') &&
+          Global().athleteList.isEmpty) {
         return '/scout';
       }
       // if (state.location.contains('/prediction') &&
@@ -291,5 +340,19 @@ PredictionModel? _toPrediction(String id) {
   return predictions.firstWhere(
     (prediction) => prediction.id.toString() + prediction.prompt == id,
     orElse: () => PredictionModel.empty,
+  );
+}
+
+Web3Client _getWeb3Client() {
+  return Web3Client(
+    'https://eth.public.blastapi.io',
+    http.Client(),
+  );
+}
+
+Web3Client _getBaseSepoliaWeb3Client() {
+  return Web3Client(
+    'https://base-sepolia.infura.io/v3/295739f3c9f64796bccfc206fc476a88',
+    http.Client(),
   );
 }

@@ -9,6 +9,7 @@ class PredictionModel extends MarketModel {
     required this.details,
     required this.marketAddress,
     this.resolution,
+    this.tradingVolume = 0,
     required this.supportedPredictionMarkets,
     required this.yesTokenAddress,
     required this.noTokenAddress,
@@ -39,6 +40,7 @@ class PredictionModel extends MarketModel {
   final String noTokenAddress;
   final String yesName;
   final String noName;
+  final double tradingVolume;
   final SupportedPredictionMarkets supportedPredictionMarkets;
   final String time;
   final double? longTokenPrice;
@@ -57,6 +59,7 @@ class PredictionModel extends MarketModel {
     noTokenAddress: '',
     yesName: '',
     noName: '',
+    tradingVolume: 0,
     supportedPredictionMarkets: SupportedPredictionMarkets.all,
     time: '',
     longTokenPrice: 0,
@@ -75,6 +78,7 @@ class PredictionModel extends MarketModel {
         marketAddress,
         yesTokenAddress,
         noTokenAddress,
+        tradingVolume,
         resolution,
         yesName,
         noName,

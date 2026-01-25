@@ -22,16 +22,17 @@ class _AccountRecipentAddressInputState
       keyboardType: TextInputType.emailAddress,
       controller: recipentAddressController,
       textAlign: TextAlign.center,
-      onChanged: (_) {
+      onChanged: (value) {
         context.read<AccountBloc>().add(
               UpdateRecipentAddressRequested(
-                recipentAddress: recipentAddressController.text,
+                recipentAddress: value.trim(),
               ),
             );
       },
       decoration: kTextFieldDecoration.copyWith(
-        hintText: 'Enter Receiving Address',
-        labelText: 'Recipent Address',
+        hintText: 'Enter Receiving Address (0x...)',
+        labelText: 'Recipient Address',
+        helperText: 'Ethereum address (42 characters)',
       ),
     );
   }

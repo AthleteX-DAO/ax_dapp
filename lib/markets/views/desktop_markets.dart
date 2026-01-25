@@ -1,4 +1,3 @@
-import 'package:ax_dapp/athlete_markets/athlete.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/markets/widgets/desktop_headers.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -26,7 +25,6 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
   String allSportsTitle = 'All Sports';
   EthereumChain? _selectedChain;
   List<SportsMarketsModel> liveSports = [];
-  List<AthleteScoutModel> filteredAthletes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +39,6 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
           ..athleteList = state.athletes
           ..liveSportsMarkets = state.liveSports;
         liveSports = state.liveSports;
-        filteredAthletes = state.filteredAthletes;
 
         if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
@@ -52,7 +49,7 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             return Container(
-              margin: const EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 8),
               height: constraints.maxHeight * 0.90,
               width: constraints.maxWidth * 0.99,
               child: Column(
@@ -99,9 +96,7 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                         ),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.athlete)
-                        AthleteMarkets(
-                          boxConstraints: constraints,
-                        ),
+                        const _UnavailableMarkets(message: 'Athlete markets unavailable'),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.sports)
                         SportsMarkets(
@@ -110,10 +105,7 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
                         ),
                       if (state.status == BlocStatus.success &&
                           state.selectedMarket == SupportedMarkets.crypto)
-                        CryptoMarkets(
-                          filteredMarkets: const [],
-                          boxConstraints: constraints,
-                        ),
+                        const _UnavailableMarkets(message: 'Crypto markets unavailable'),
                       SizedBox(
                         height: constraints.maxHeight * 0.8 - 120,
                         child: const Center(
@@ -131,5 +123,39 @@ class _DesktopMarketsState extends State<DesktopMarkets> {
         );
       },
     );
+  }
+}
+
+class _UnavailableMarkets extends StatelessWidget {
+  const _UnavailableMarkets({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        message,
+        style: const TextStyle(color: Colors.grey),
+      ),
+    );
+  }
+}
+
+class ScoutLoadingError extends StatelessWidget {
+  const ScoutLoadingError({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('Unable to load scout data'));
+  }
+}
+
+class FilterMenuError extends StatelessWidget {
+  const FilterMenuError({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('No markets available'));
   }
 }

@@ -19,7 +19,6 @@ class DesktopPredict extends StatefulWidget {
 class _DesktopPredictState extends State<DesktopPredict> {
   Global global = Global();
   EthereumChain? _selectedChain;
-  List<PredictionModel> filteredPredictions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,6 @@ class _DesktopPredictState extends State<DesktopPredict> {
       builder: (context, state) {
         final bloc = context.read<PredictPageBloc>();
         global.predictions = state.filteredPredictions;
-        filteredPredictions = state.filteredPredictions;
         if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
           bloc.add(
@@ -42,83 +40,59 @@ class _DesktopPredictState extends State<DesktopPredict> {
         }
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return Container(
-              margin: const EdgeInsets.only(top: 20),
-              height: constraints.maxHeight * 0.90,
-              width: constraints.maxWidth * 0.99,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    child: const Divider(
-                      color: Colors.grey,
+            final isNarrow = constraints.maxWidth < 1100;
+            final heroHeight = isNarrow ? 240.0 : 320.0;
+            return Stack(
+              children: [
+                CustomScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 16),
+                        width: constraints.maxWidth * 0.97,
+                        child: const Divider(color: Colors.grey),
+                      ),
                     ),
-                  ),
-                  const PredictionMarketsFilterDesktop(),
-                  const DesktopHeaders(),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      if (state.status == BlocStatus.loading) const Loader(),
-                      if (state.status == BlocStatus.error)
-                        const PredictionLoadingStatus(
-                          message: 'Unable to load markets, please refresh',
-                        ),
-
-                      /// List of all available prediction markets
-                      if (state.status == BlocStatus.success &&
-                          state.selectedMarket ==
-                              SupportedPredictionMarkets.all)
-                        SizedBox(
-                          height: constraints.maxHeight * 0.8 - 120,
-                          child: const Center(
-                            child: SizedBox(
-                              height: 70,
-                              child: Text(
-                                'Select a market from the tabs above',
-                                style: TextStyle(
-                                  color: Colors.yellow,
-                                  fontSize: 30,
-                                  fontFamily: 'OpenSans',
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                      /// All Athletes Prediction Markets, filtered by Sport
-                      if (state.status == BlocStatus.success &&
-                          state.selectedMarket !=
-                              SupportedPredictionMarkets.all)
-                        SizedBox(
-                          height: constraints.maxHeight * 0.8 - 120,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.only(top: 10),
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: filteredPredictions.length,
-                            itemBuilder: (context, index) {
-                              return DesktopPredictionCard(
-                                predictionModel: filteredPredictions[index],
-                              );
-                            },
-                          ),
-                        ),
-
-                      /// Empty Space when loading markets
-                      SizedBox(
-                        height: constraints.maxHeight * 0.8 - 120,
-                        child: const Center(
-                          child: SizedBox(
-                            height: 70,
-                          ),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 80,
+                        child: PredictionMarketsFilterDesktop(),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: RepaintBoundary(
+                        child: SizedBox(
+                          height: heroHeight,
+                          child: const PredictionHeroCarouselPlaceholder(),
                         ),
                       ),
-                    ],
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isNarrow ? 12 : 0,
+                      ),
+                      sliver: PredictionMarketsSliverGrid(
+                        predictions: state.filteredPredictions,
+                      ),
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 40)),
+                  ],
+                ),
+                if (state.status == BlocStatus.loading)
+                  const Positioned.fill(
+                    child: Center(child: Loader()),
                   ),
-                ],
-              ),
+                if (state.status == BlocStatus.error)
+                  const Positioned.fill(
+                    child: Center(
+                      child: PredictionLoadingStatus(
+                        message: 'Unable to load markets, please refresh',
+                      ),
+                    ),
+                  ),
+              ],
             );
           },
         );

@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -17,61 +18,84 @@ class PromptPageTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return SizedBox(
+        return Container(
           width: wid,
           height: 100,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.black.withOpacity(0.4),
+                Colors.black.withOpacity(0.2),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: primaryOrangeColor.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
           child: Row(
             children: [
               // Back Button
-              SizedBox(
-                width: 70,
-                child: TextButton(
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: IconButton(
                   onPressed: () {
                     context.goNamed('predict');
                   },
-                  child: const Icon(
+                  icon: const Icon(
                     Icons.arrow_back,
-                    size: 50,
+                    size: 28,
                     color: Colors.white,
                   ),
+                  tooltip: 'Back to markets',
                 ),
               ),
+              const SizedBox(width: 16),
               // Prompt Title
               Expanded(
-                child: SizedBox(
-                  width: constraints.maxWidth / 2.5,
-                  child: Text(
-                    prompt,
-                    style: textStyle(
-                      Colors.white,
-                      23,
-                      isBold: false,
-                      isUline: false,
-                    ),
+                child: Text(
+                  prompt,
+                  style: textStyle(
+                    Colors.white,
+                    20,
+                    isBold: true,
+                    isUline: false,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: 16),
               // Share Button
-              SizedBox(
-                width: 50,
-                child: TextButton(
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: IconButton(
                   onPressed: () {
                     final path = Uri.base.toString();
-
-                    Clipboard.setData(
-                      ClipboardData(
-                        text: path,
+                    Clipboard.setData(ClipboardData(text: path));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Link copied to clipboard!'),
+                        duration: Duration(seconds: 2),
                       ),
                     );
                   },
-                  child: const Tooltip(
-                    message: 'Share a link to this market',
-                    child: Icon(
-                      Icons.share,
-                      size: 25,
-                      color: Colors.white,
-                    ),
+                  icon: const Icon(
+                    Icons.share,
+                    size: 24,
+                    color: Colors.white,
                   ),
+                  tooltip: 'Share a link to this market',
                 ),
               ),
             ],

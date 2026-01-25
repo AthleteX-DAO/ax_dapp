@@ -88,3 +88,65 @@ class UpdateWithdrawInput extends AccountEvent {
   @override
   List<Object?> get props => [tokenAmountInput];
 }
+
+class WithdrawChainSelected extends AccountEvent {
+  const WithdrawChainSelected({required this.chain});
+
+  final EthereumChain chain;
+
+  @override
+  List<Object?> get props => [chain];
+}
+
+// Synthetix V3 account events
+
+class FetchSynthetixAccountRequested extends AccountEvent {
+  const FetchSynthetixAccountRequested();
+}
+
+class CreateSynthetixAccountRequested extends AccountEvent {
+  const CreateSynthetixAccountRequested();
+}
+
+class DepositSynthetixCollateralRequested extends AccountEvent {
+  const DepositSynthetixCollateralRequested({
+    required this.collateralAddress,
+    required this.amount,
+  });
+
+  final String collateralAddress;
+  final BigInt amount;
+
+  @override
+  List<Object?> get props => [collateralAddress, amount];
+}
+
+class WithdrawSynthetixCollateralRequested extends AccountEvent {
+  const WithdrawSynthetixCollateralRequested({
+    required this.collateralAddress,
+    required this.amount,
+  });
+
+  final String collateralAddress;
+  final BigInt amount;
+
+  @override
+  List<Object?> get props => [collateralAddress, amount];
+}
+
+class DelegateSynthetixCollateralRequested extends AccountEvent {
+  const DelegateSynthetixCollateralRequested({
+    required this.poolId,
+    required this.collateralAddress,
+    required this.amount,
+    this.leverage,
+  });
+
+  final int poolId;
+  final String collateralAddress;
+  final BigInt amount;
+  final BigInt? leverage;
+
+  @override
+  List<Object?> get props => [poolId, collateralAddress, amount, leverage];
+}

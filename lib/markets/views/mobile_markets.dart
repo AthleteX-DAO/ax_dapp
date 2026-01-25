@@ -1,4 +1,3 @@
-import 'package:ax_dapp/athlete_markets/athlete.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/markets/widgets/markets_filter_mobile.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -29,9 +28,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
   String allSportsTitle = 'All Sports';
   int _widgetIndex = 0;
   EthereumChain? _selectedChain;
-  String selectedAthlete = '';
   List<SportsMarketsModel> liveSports = [];
-  List<AthleteScoutModel> filteredAthletes = [];
 
   @override
   void dispose() {
@@ -57,7 +54,6 @@ class _MobileMarketsState extends State<MobileMarkets> {
         global
           ..athleteList = state.athletes
           ..liveSportsMarkets = state.liveSports;
-        filteredAthletes = state.filteredAthletes;
         liveSports = state.liveSports;
         if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
@@ -267,7 +263,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                       children: [
                         if (state.status == BlocStatus.loading) const Loader(),
                         if (state.status == BlocStatus.noData)
-                          const FilterMenuError(),
+                          const _FilterMenuErrorPlaceholder(),
                         if (state.status == BlocStatus.success &&
                             state.selectedMarket == SupportedMarkets.all)
                           SizedBox(
@@ -294,7 +290,7 @@ class _MobileMarketsState extends State<MobileMarkets> {
                           ),
                         if (state.status == BlocStatus.success &&
                             state.selectedMarket == SupportedMarkets.athlete)
-                          AthleteMarkets(
+                          _AthleteMarketsPlaceholder(
                             boxConstraints: constraints,
                           ),
                         SizedBox(
@@ -314,6 +310,54 @@ class _MobileMarketsState extends State<MobileMarkets> {
           },
         );
       },
+    );
+  }
+}
+
+/// Temporary placeholder while athlete markets are unavailable.
+class _AthleteMarketsPlaceholder extends StatelessWidget {
+  const _AthleteMarketsPlaceholder({
+    required this.boxConstraints,
+  });
+
+  final BoxConstraints boxConstraints;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: boxConstraints.maxHeight * 0.8 - 120,
+      child: const Center(
+        child: Text(
+          'Athlete markets coming soon',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Temporary placeholder while filter data is unavailable.
+class _FilterMenuErrorPlaceholder extends StatelessWidget {
+  const _FilterMenuErrorPlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      height: 60,
+      child: Center(
+        child: Text(
+          'No markets found',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+      ),
     );
   }
 }

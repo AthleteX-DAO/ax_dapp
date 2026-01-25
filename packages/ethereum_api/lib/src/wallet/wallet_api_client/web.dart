@@ -83,7 +83,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     } on EthereumUserRejected catch (exception, stackTrace) {
       throw WalletFailure.fromOperationRejected(exception, stackTrace);
     } on EthereumException catch (exception, stackTrace) {
-      throw WalletFailure.fromEthereum(exception, stackTrace);
+      throw WalletFailure.fromError(exception, stackTrace);
     } catch (error, stackTrace) {
       throw WalletFailure.fromError(error, stackTrace);
     }
@@ -114,7 +114,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     } on EthereumUserRejected catch (exception, stackTrace) {
       throw WalletFailure.fromOperationRejected(exception, stackTrace);
     } on EthereumException catch (exception, stackTrace) {
-      throw WalletFailure.fromUnrecognizedChain(exception, stackTrace);
+      throw WalletFailure.fromError(exception, stackTrace);
     } catch (error, stackTrace) {
       throw WalletFailure.fromError(error, stackTrace);
     }
@@ -276,7 +276,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     } on EthereumUserRejected catch (exception, stackTrace) {
       throw WalletFailure.fromOperationRejected(exception, stackTrace);
     } on EthereumException catch (exception, stackTrace) {
-      throw WalletFailure.fromEthereum(exception, stackTrace);
+      throw WalletFailure.fromError(exception, stackTrace);
     } catch (error, stackTrace) {
       throw WalletFailure.fromError(error, stackTrace);
     }

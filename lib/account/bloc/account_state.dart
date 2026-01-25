@@ -1,7 +1,7 @@
 part of 'account_bloc.dart';
 
 class AccountState extends Equatable {
-  const AccountState({
+  AccountState({
     required this.chain,
     required this.walletAddress,
     this.selectedToken = Token.empty,
@@ -12,7 +12,23 @@ class AccountState extends Equatable {
     this.tokens = const [],
     this.tokenAmountInput = 0,
     this.recipentAddress = kEmptyAddress,
-  });
+    this.withdrawTargetChain = EthereumChain.polygonMainnet,
+    // Synthetix account data
+    this.synthetixAccountId = 0,
+    BigInt? synthetixCollateralDeposited,
+    BigInt? synthetixCollateralAssigned,
+    BigInt? synthetixCollateralAvailable,
+    BigInt? synthetixDebt,
+    BigInt? synthetixCollateralRatio,
+    this.hasSynthetixAccount = false,
+    this.isSynthetixAccountLoading = false,
+  })  : synthetixCollateralDeposited = synthetixCollateralDeposited ?? _zeroBigInt,
+        synthetixCollateralAssigned = synthetixCollateralAssigned ?? _zeroBigInt,
+        synthetixCollateralAvailable = synthetixCollateralAvailable ?? _zeroBigInt,
+        synthetixDebt = synthetixDebt ?? _zeroBigInt,
+        synthetixCollateralRatio = synthetixCollateralRatio ?? _zeroBigInt;
+
+  static final BigInt _zeroBigInt = BigInt.zero;
 
   final String walletAddress;
   final Token selectedToken;
@@ -24,6 +40,17 @@ class AccountState extends Equatable {
   final List<Token> tokens;
   final double tokenAmountInput;
   final String recipentAddress;
+  final EthereumChain withdrawTargetChain;
+  
+  // Synthetix V3 account data
+  final int synthetixAccountId;
+  final BigInt synthetixCollateralDeposited;
+  final BigInt synthetixCollateralAssigned;
+  final BigInt synthetixCollateralAvailable;
+  final BigInt synthetixDebt;
+  final BigInt synthetixCollateralRatio; // 18 decimals (e.g., 400e18 = 400%)
+  final bool hasSynthetixAccount;
+  final bool isSynthetixAccountLoading;
 
   @override
   List<Object?> get props => [
@@ -37,6 +64,15 @@ class AccountState extends Equatable {
         tokens,
         tokenAmountInput,
         recipentAddress,
+        withdrawTargetChain,
+        synthetixAccountId,
+        synthetixCollateralDeposited,
+        synthetixCollateralAssigned,
+        synthetixCollateralAvailable,
+        synthetixDebt,
+        synthetixCollateralRatio,
+        hasSynthetixAccount,
+        isSynthetixAccountLoading,
       ];
 
   AccountState copyWith({
@@ -50,6 +86,15 @@ class AccountState extends Equatable {
     List<Token>? tokens,
     double? tokenAmountInput,
     String? recipentAddress,
+    EthereumChain? withdrawTargetChain,
+    int? synthetixAccountId,
+    BigInt? synthetixCollateralDeposited,
+    BigInt? synthetixCollateralAssigned,
+    BigInt? synthetixCollateralAvailable,
+    BigInt? synthetixDebt,
+    BigInt? synthetixCollateralRatio,
+    bool? hasSynthetixAccount,
+    bool? isSynthetixAccountLoading,
   }) {
     return AccountState(
       chain: chain ?? this.chain,
@@ -62,6 +107,15 @@ class AccountState extends Equatable {
       tokens: tokens ?? this.tokens,
       tokenAmountInput: tokenAmountInput ?? this.tokenAmountInput,
       recipentAddress: recipentAddress ?? this.recipentAddress,
+      withdrawTargetChain: withdrawTargetChain ?? this.withdrawTargetChain,
+      synthetixAccountId: synthetixAccountId ?? this.synthetixAccountId,
+      synthetixCollateralDeposited: synthetixCollateralDeposited ?? this.synthetixCollateralDeposited,
+      synthetixCollateralAssigned: synthetixCollateralAssigned ?? this.synthetixCollateralAssigned,
+      synthetixCollateralAvailable: synthetixCollateralAvailable ?? this.synthetixCollateralAvailable,
+      synthetixDebt: synthetixDebt ?? this.synthetixDebt,
+      synthetixCollateralRatio: synthetixCollateralRatio ?? this.synthetixCollateralRatio,
+      hasSynthetixAccount: hasSynthetixAccount ?? this.hasSynthetixAccount,
+      isSynthetixAccountLoading: isSynthetixAccountLoading ?? this.isSynthetixAccountLoading,
     );
   }
 }

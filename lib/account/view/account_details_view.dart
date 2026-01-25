@@ -1,9 +1,11 @@
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/account/widgets/unified_balance.dart';
 import 'package:ax_dapp/account/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountDetails extends StatelessWidget {
   const AccountDetails({
@@ -48,7 +50,7 @@ class AccountDetails extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            const WalletBalance(),
+                            const UnifiedBalance(),
                             TextButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
@@ -104,6 +106,29 @@ class AccountDetails extends StatelessWidget {
               ),
             ),
             const WalletActionButtons(),
+            const Divider(
+              color: Colors.grey,
+            ),
+            // Synthetix V3 Account Info
+            BlocBuilder<AccountBloc, AccountState>(
+              builder: (context, state) {
+                return SynthetixAccountInfo(
+                  accountId: state.synthetixAccountId,
+                  collateralDeposited: state.synthetixCollateralDeposited,
+                  collateralAssigned: state.synthetixCollateralAssigned,
+                  collateralAvailable: state.synthetixCollateralAvailable,
+                  debt: state.synthetixDebt,
+                  collateralRatio: state.synthetixCollateralRatio,
+                  isLoading: state.isSynthetixAccountLoading,
+                  onCreateAccount: () {
+                    // Trigger account creation via AccountBloc to show loading
+                    context.read<AccountBloc>().add(
+                          const CreateSynthetixAccountRequested(),
+                        );
+                  },
+                );
+              },
+            ),
             const Divider(
               color: Colors.grey,
             ),

@@ -64,7 +64,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
               textSize = 12.0;
             }
             return Container(
-              margin: const EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 8),
               height: constraints.maxHeight * 0.85 + 41,
               width: constraints.maxWidth * 0.99,
               child: Column(

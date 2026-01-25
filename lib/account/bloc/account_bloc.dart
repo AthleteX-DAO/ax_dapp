@@ -43,6 +43,19 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<UpdateWithdrawInput>(_onUpdateWithdrawInput);
     on<AccountWithdrawConfirm>(_onAccountWithdrawConfirm);
     on<UpdateRecipentAddressRequested>(_onUpdateRecipentAddressRequested);
+    on<WithdrawChainSelected>(_onWithdrawChainSelected);
+    // Synthetix account handlers
+    on<FetchSynthetixAccountRequested>(_onFetchSynthetixAccountRequested);
+    on<DepositSynthetixCollateralRequested>(
+      _onDepositSynthetixCollateralRequested,
+    );
+    on<WithdrawSynthetixCollateralRequested>(
+      _onWithdrawSynthetixCollateralRequested,
+    );
+    on<DelegateSynthetixCollateralRequested>(
+      _onDelegateSynthetixCollateralRequested,
+    );
+    on<CreateSynthetixAccountRequested>(_onCreateSynthetixAccountRequested);
     add(const WatchAppDataChangesStarted());
   }
 
@@ -71,6 +84,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         );
 
         add(const FetchTokenInfoRequested());
+        add(const FetchSynthetixAccountRequested()); // Fetch Synthetix account data
       },
     );
   }
@@ -213,5 +227,201 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   ) async {
     final recipentAddress = event.recipentAddress;
     emit(state.copyWith(recipentAddress: recipentAddress));
+  }
+
+  Future<void> _onWithdrawChainSelected(
+    WithdrawChainSelected event,
+    Emitter<AccountState> emit,
+  ) async {
+    emit(state.copyWith(withdrawTargetChain: event.chain));
+  }
+
+  // ========== Synthetix V3 Account Event Handlers ==========
+
+  /// Fetches Synthetix account data (ID, collateral, debt, c-ratio)
+  Future<void> _onFetchSynthetixAccountRequested(
+    FetchSynthetixAccountRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    if (state.walletAddress.isEmpty || state.walletAddress == kEmptyAddress) {
+      return;
+    }
+
+    emit(state.copyWith(isSynthetixAccountLoading: true));
+
+    try {
+      // Get account IDs for this wallet
+      final accountIds = await _accountRepository.getSynthetixAccountIds(
+        state.walletAddress,
+      );
+
+      if (accountIds.isEmpty) {
+        emit(
+          state.copyWith(
+            hasSynthetixAccount: false,
+            isSynthetixAccountLoading: false,
+          ),
+        );
+        return;
+      }
+
+      // Use first account (primary account)
+      final accountId = accountIds.first.toInt();
+
+      // TODO(integration): Get collateral address from config - hardcoded for now
+      const collateralAddress = '0x...'; // Replace with actual USDC address
+      const poolId = 1; // Replace with actual pool ID
+
+      // Fetch account data in parallel
+      final collateralData = await _accountRepository
+          .getSynthetixAccountCollateral(
+        accountId: accountId,
+        collateralAddress: collateralAddress,
+      );
+
+      final availableCollateral = await _accountRepository
+          .getSynthetixAvailableCollateral(
+        accountId: accountId,
+        collateralAddress: collateralAddress,
+      );
+
+      final debt = await _accountRepository.getSynthetixPositionDebt(
+        accountId: accountId,
+        poolId: poolId,
+        collateralAddress: collateralAddress,
+      );
+
+      final cRatio = await _accountRepository.getSynthetixCollateralRatio(
+        accountId: accountId,
+        poolId: poolId,
+        collateralAddress: collateralAddress,
+      );
+
+      emit(
+        state.copyWith(
+          synthetixAccountId: accountId,
+          synthetixCollateralDeposited: collateralData['totalDeposited'],
+          synthetixCollateralAssigned: collateralData['totalAssigned'],
+          synthetixCollateralAvailable: availableCollateral,
+          synthetixDebt: debt,
+          synthetixCollateralRatio: cRatio,
+          hasSynthetixAccount: true,
+          isSynthetixAccountLoading: false,
+        ),
+      );
+    } catch (e) {
+      debugPrint('Error fetching Synthetix account: $e');
+      emit(
+        state.copyWith(
+          hasSynthetixAccount: false,
+          isSynthetixAccountLoading: false,
+        ),
+      );
+    }
+  }
+
+  /// Deposits collateral to Synthetix account
+  Future<void> _onDepositSynthetixCollateralRequested(
+    DepositSynthetixCollateralRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    if (!state.hasSynthetixAccount) return;
+
+    try {
+      emit(state.copyWith(isSynthetixAccountLoading: true));
+
+      await _accountRepository.depositSynthetixCollateral(
+        accountId: state.synthetixAccountId,
+        collateralAddress: event.collateralAddress,
+        amount: event.amount,
+      );
+
+      // Refresh account data after deposit
+      add(const FetchSynthetixAccountRequested());
+    } catch (e) {
+      debugPrint('Error depositing collateral: $e');
+      emit(state.copyWith(isSynthetixAccountLoading: false));
+    }
+  }
+
+  /// Withdraws collateral from Synthetix account
+  Future<void> _onWithdrawSynthetixCollateralRequested(
+    WithdrawSynthetixCollateralRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    if (!state.hasSynthetixAccount) return;
+
+    try {
+      emit(state.copyWith(isSynthetixAccountLoading: true));
+
+      await _accountRepository.withdrawSynthetixCollateral(
+        accountId: state.synthetixAccountId,
+        collateralAddress: event.collateralAddress,
+        amount: event.amount,
+      );
+
+      // Refresh account data after withdrawal
+      add(const FetchSynthetixAccountRequested());
+    } catch (e) {
+      debugPrint('Error withdrawing collateral: $e');
+      emit(state.copyWith(isSynthetixAccountLoading: false));
+    }
+  }
+
+  /// Delegates collateral to a pool for earning yield
+  Future<void> _onDelegateSynthetixCollateralRequested(
+    DelegateSynthetixCollateralRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    if (!state.hasSynthetixAccount) return;
+
+    try {
+      emit(state.copyWith(isSynthetixAccountLoading: true));
+
+      await _accountRepository.delegateSynthetixCollateral(
+        accountId: state.synthetixAccountId,
+        poolId: event.poolId,
+        collateralAddress: event.collateralAddress,
+        amount: event.amount,
+        leverage: event.leverage,
+      );
+
+      // Refresh account data after delegation
+      add(const FetchSynthetixAccountRequested());
+    } catch (e) {
+      debugPrint('Error delegating collateral: $e');
+      emit(state.copyWith(isSynthetixAccountLoading: false));
+    }
+  }
+
+  /// Creates a new Synthetix account and shows loading during tx
+  Future<void> _onCreateSynthetixAccountRequested(
+    CreateSynthetixAccountRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    if (state.walletAddress.isEmpty || state.walletAddress == kEmptyAddress) {
+      return;
+    }
+
+    emit(state.copyWith(isSynthetixAccountLoading: true));
+
+    try {
+      final accountId = _deriveAccountId(state.walletAddress);
+      await _accountRepository.createSynthetixAccount(accountId: accountId);
+
+      // After creation, fetch the account to display details
+      add(const FetchSynthetixAccountRequested());
+    } catch (e) {
+      debugPrint('Error creating Synthetix account: $e');
+      emit(state.copyWith(isSynthetixAccountLoading: false));
+    }
+  }
+
+  int _deriveAccountId(String walletAddress) {
+    final normalized = walletAddress.toLowerCase().replaceFirst('0x', '');
+    final trimmed = normalized.padLeft(8, '0').substring(0, normalized.length < 20 ? normalized.length : 20);
+    final hash = BigInt.parse(trimmed, radix: 16);
+    final mod = BigInt.from(1000000000000); // 1e12
+    return (hash % mod).toInt();
   }
 }

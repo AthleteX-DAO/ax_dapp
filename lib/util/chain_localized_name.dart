@@ -18,6 +18,12 @@ extension EthereumChainLocalizationX on EthereumChain {
         return 'SX Network';
       case EthereumChain.sxTestnet:
         return 'SX Test Network';
+      case EthereumChain.ethereumMainnet:
+        return 'Ethereum';
+      case EthereumChain.ethereumSepolia:
+        return 'Sepolia Testnet';
+      case EthereumChain.baseSepolia:
+        return 'Base Sepolia Testnet';
     }
   }
 }

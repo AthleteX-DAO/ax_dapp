@@ -1,25 +1,11 @@
-import 'package:ax_dapp/chat_box/views/chat_box.dart';
-import 'package:ax_dapp/live_chat_box/views/live_chat_box.dart';
 import 'package:flutter/material.dart';
 
+/// Temporary stub until chat wrapper is restored.
 class ChatWrapper extends StatelessWidget {
-  const ChatWrapper({
-    required this.home,
-    super.key,
-  });
-
-  final Widget home;
+  const ChatWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Stack(
-        children: [
-          home,
-          const ChatBox(),
-          const LiveChatBox(),
-        ],
-      ),
-    );
+    return const SizedBox.shrink();
   }
 }

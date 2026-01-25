@@ -7,14 +7,17 @@ class PredictPageState extends Equatable {
     this.selectedMarket = SupportedPredictionMarkets.all,
     this.filteredPredictions = const [],
     this.selectedChain = EthereumChain.polygonMainnet,
+    this.visiblePredictionIds = const {},
   });
 
   final List<PredictionModel> predictions;
   final List<PredictionModel> filteredPredictions;
   final SupportedPredictionMarkets selectedMarket;
-
   final EthereumChain selectedChain;
   final BlocStatus status;
+  
+  /// Set of prediction IDs currently visible on screen for efficient rendering
+  final Set<int> visiblePredictionIds;
 
   PredictPageState copyWith({
     List<PredictionModel>? predictions,
@@ -22,6 +25,7 @@ class PredictPageState extends Equatable {
     SupportedPredictionMarkets? selectedMarket,
     EthereumChain? selectedChain,
     BlocStatus? status,
+    Set<int>? visiblePredictionIds,
   }) {
     return PredictPageState(
       predictions: predictions ?? this.predictions,
@@ -29,6 +33,7 @@ class PredictPageState extends Equatable {
       selectedMarket: selectedMarket ?? this.selectedMarket,
       selectedChain: selectedChain ?? this.selectedChain,
       status: status ?? this.status,
+      visiblePredictionIds: visiblePredictionIds ?? this.visiblePredictionIds,
     );
   }
 
@@ -39,5 +44,6 @@ class PredictPageState extends Equatable {
         selectedMarket,
         selectedChain,
         status,
+        visiblePredictionIds,
       ];
 }

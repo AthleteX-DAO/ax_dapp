@@ -35,6 +35,15 @@ class _SignUpViewState extends State<SignUpView> {
           });
           bloc.add(AuthFailed(walletViewStatus: walletViewStatus));
         }
+        if (state.infoMessage != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.showWarningToast(
+              title: 'Heads up',
+              description: state.infoMessage!,
+            );
+          });
+          bloc.add(const InfoMessageCleared());
+        }
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(

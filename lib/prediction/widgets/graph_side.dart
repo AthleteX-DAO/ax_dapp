@@ -1,13 +1,12 @@
 import 'package:ax_dapp/predict/predict.dart';
-import 'package:ax_dapp/predict/widgets/widget_factories/prediction_details_widget.dart';
 import 'package:ax_dapp/prediction/prediction.dart';
+import 'package:ax_dapp/prediction/widgets/prediction_page_combined_graph.dart';
 import 'package:ax_dapp/prediction/widgets/prediction_page_tooltip.dart';
-
-import 'package:ax_dapp/service/custom_styles.dart';
+// import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/gold_theme.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
-import 'package:ax_dapp/util/util.dart';
+// import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class GraphSide extends StatelessWidget {
@@ -35,8 +34,7 @@ class GraphSide extends StatelessWidget {
       enablePanning: true,
       enablePinching: true,
     );
-    final _longToolTipBehavior = TooltipBehavior(enable: true);
-    final _shortToolTipBehavior = TooltipBehavior(enable: true);
+    final _tooltipBehavior = TooltipBehavior(enable: true);
     return Container(
       height: _height / 1.5,
       width: wid,
@@ -50,6 +48,7 @@ class GraphSide extends StatelessWidget {
             wid: wid,
             prompt: predictionModel.prompt,
           ),
+          const SizedBox(height: 5),
           SizedBox(
             width: wid,
             child: Column(
@@ -57,13 +56,9 @@ class GraphSide extends StatelessWidget {
               children: [
                 Container(
                   width: wid * .875,
-                  height: _height * .4,
-                  decoration: boxDecoration(
-                    Colors.transparent,
-                    10,
-                    1,
-                    greyTextColor,
-                  ),
+                  height: _height * .5,
+                  padding: const EdgeInsets.all(12),
+                  decoration: GoldTheme.panel(radius: 14),
                   child: Stack(
                     children: [
                       Padding(
@@ -74,29 +69,29 @@ class GraphSide extends StatelessWidget {
                         ),
                         child: (chartStats.isEmpty)
                             ? const Center(
-                                child:
-                                    Text('Graph Stats Currently Unavailable'),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.show_chart,
+                                      color: Colors.white38,
+                                      size: 48,
+                                    ),
+                                    SizedBox(height: 16),
+                                    Text(
+                                      'Price history will appear here',
+                                      style: TextStyle(
+                                        color: Colors.white54,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               )
-                            : BlocBuilder<PredictionPageBloc,
-                                PredictionPageState>(
-                                builder: (context, aptTypeSelection) {
-                                  return Stack(
-                                    children: [
-                                      PredictionPageYesGraph(
-                                        chartStats: chartStats,
-                                        longToolTipBehavior:
-                                            _longToolTipBehavior,
-                                        zoomPanBehavior: _zoomPanBehavior,
-                                      ),
-                                      PredictionPageNoGraph(
-                                        chartStats: chartStats,
-                                        shortToolTipBehavior:
-                                            _shortToolTipBehavior,
-                                        zoomPanBehavior: _zoomPanBehavior,
-                                      ),
-                                    ],
-                                  );
-                                },
+                            : PredictionPageCombinedGraph(
+                                chartStats: chartStats,
+                                tooltipBehavior: _tooltipBehavior,
+                                zoomPanBehavior: _zoomPanBehavior,
                               ),
                       ),
                     ],
@@ -120,44 +115,8 @@ class GraphSide extends StatelessWidget {
                     ],
                   ),
                 ),
-                ExpansionTile(
-                  title: Text(
-                    'About',
-                    style: textStyle(
-                      Colors.white,
-                      20,
-                      isBold: false,
-                      isUline: false,
-                    ),
-                  ),
-                  children: [
-                    Container(
-                      decoration: boxDecoration(
-                        Colors.transparent,
-                        10,
-                        1,
-                        greyTextColor,
-                      ),
-                      width: wid * .875,
-                      height: 128,
-                      child: Center(
-                        child: PredictionDetailsWidget(predictionModel)
-                            .predictionPageDetails(),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ProposeButton(),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                  ],
+                const SizedBox(
+                  height: 12,
                 ),
               ],
             ),

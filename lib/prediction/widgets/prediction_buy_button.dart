@@ -1,4 +1,3 @@
-import 'package:ax_dapp/athlete_markets/athlete.dart';
 import 'package:ax_dapp/dialogs/buy/prediction_buy_dialog.dart';
 import 'package:ax_dapp/dialogs/dialogs.dart';
 import 'package:ax_dapp/predict/predict.dart';
@@ -78,6 +77,23 @@ class PredictionBuyButton extends StatelessWidget {
           );
         },
         child: const BuyText(),
+      ),
+    );
+  }
+}
+
+class BuyText extends StatelessWidget {
+  const BuyText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Buy',
+      style: textStyle(
+        Colors.black,
+        14,
+        isBold: true,
+        isUline: false,
       ),
     );
   }

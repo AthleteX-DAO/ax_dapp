@@ -1,8 +1,10 @@
+import 'dart:math' as math;
 import 'package:ethereum_api/lsp_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:shared/shared.dart';
-import 'package:tokens_repository/src/api/coin_gecko_api.dart';
 import 'package:tokens_repository/src/models/models.dart';
+import 'package:http/http.dart' as http;
+import 'package:web3dart/web3dart.dart';
 
 /// {@template tokens_repository}
 /// Repository that manages the token domain.
@@ -12,17 +14,24 @@ class TokensRepository {
   TokensRepository({
     required TokensApiClient tokensApiClient,
     required ValueStream<LongShortPair> reactiveLspClient,
-    required CoinGeckoAPI coinGeckoApiClient,
+    http.Client? httpClient,
   })  : _tokensApiClient = tokensApiClient,
         _reactiveLspClient = reactiveLspClient,
-        _coinGeckoApiClient = coinGeckoApiClient;
+        _httpClient = httpClient ?? http.Client(),
+        _web3Client = Web3Client('https://polygon-rpc.com', httpClient ?? http.Client());
 
   final TokensApiClient _tokensApiClient;
 
   final ValueStream<LongShortPair> _reactiveLspClient;
   LongShortPair get _lspClient => _reactiveLspClient.value;
 
-  final CoinGeckoAPI _coinGeckoApiClient; // Note: this can be removed
+  final http.Client _httpClient;
+  final Web3Client _web3Client;
+
+  // Polygon Mainnet addresses for price oracle
+  static const String _axTokenAddress = '0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df';
+  static const String _usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
+  static const String _uniswapV3FactoryAddress = '0x1F98431c8aD98523631AE4a59f267346ea31F984';
 
   /// Allows listening to changes to the current [Token]s.
   Stream<List<Token>> get tokensChanges => _tokensApiClient.tokensChanges;
@@ -106,26 +115,106 @@ class TokensRepository {
     }
   }
 
-  /// Returns `AthleteX` market data: price, total supply and circulating
-  /// supply.
-  ///
-  /// Defaults to [AxMarketData.empty] if data fetch fails.
+  /// Get AX market data from Uniswap V3
   Future<AxMarketData> getAxMarketData() async {
     try {
-      final coinData = await _coinGeckoApiClient.getAthleteXCoinData();
-      final price = coinData.marketData?.currentPrice?['usd'];
-
+      final price = await _getAxPriceFromUniswap();
       return AxMarketData(
         price: price,
-        totalSupply: coinData.marketData?.totalSupply,
-        lastUpdated: coinData.lastUpdated,
-        circulatingSupply: coinData.marketData?.circulatingSupply,
+        totalSupply: null,
+        lastUpdated: DateTime.now().toIso8601String(),
+        circulatingSupply: null,
       );
     } catch (e) {
-      /// TODO: Replace empty marketdata with uniswap DEX market data
-
       return AxMarketData.empty;
     }
+  }
+
+  /// Get AX price from Uniswap V3 pool on Polygon
+  Future<double> _getAxPriceFromUniswap() async {
+    try {
+      final poolAddress = await _getUniswapPoolAddress();
+      if (poolAddress == null) {
+        throw Exception('No Uniswap V3 pool found for AX/USDC');
+      }
+      return await _getPriceFromPool(poolAddress);
+    } catch (e) {
+      throw Exception('Failed to get AX price from Uniswap: $e');
+    }
+  }
+
+  /// Find Uniswap V3 pool address for AX/USDC pair
+  Future<EthereumAddress?> _getUniswapPoolAddress() async {
+    final factory = DeployedContract(
+      ContractAbi.fromJson(
+        '[{"inputs":[{"internalType":"address","name":"tokenA","type":"address"},{"internalType":"address","name":"tokenB","type":"address"},{"internalType":"uint24","name":"fee","type":"uint24"}],"name":"getPool","outputs":[{"internalType":"address","name":"pool","type":"address"}],"stateMutability":"view","type":"function"}]',
+        'UniswapV3Factory',
+      ),
+      EthereumAddress.fromHex(_uniswapV3FactoryAddress),
+    );
+
+    final getPoolFunction = factory.function('getPool');
+    final axAddress = EthereumAddress.fromHex(_axTokenAddress);
+    final usdcAddress = EthereumAddress.fromHex(_usdcAddress);
+
+    // Try different fee tiers (0.3%, 0.05%, 1%)
+    final feeTiers = [3000, 500, 10000];
+
+    for (final fee in feeTiers) {
+      final result = await _web3Client.call(
+        contract: factory,
+        function: getPoolFunction,
+        params: [axAddress, usdcAddress, BigInt.from(fee)],
+      );
+
+      final poolAddress = result[0] as EthereumAddress;
+      if (poolAddress.hex != '0x0000000000000000000000000000000000000000') {
+        return poolAddress;
+      }
+    }
+
+    return null;
+  }
+
+  /// Get price from a Uniswap V3 pool
+  Future<double> _getPriceFromPool(EthereumAddress poolAddress) async {
+    final pool = DeployedContract(
+      ContractAbi.fromJson(
+        '[{"inputs":[],"name":"slot0","outputs":[{"internalType":"uint160","name":"sqrtPriceX96","type":"uint160"},{"internalType":"int24","name":"tick","type":"int24"},{"internalType":"uint16","name":"observationIndex","type":"uint16"},{"internalType":"uint16","name":"observationCardinality","type":"uint16"},{"internalType":"uint16","name":"observationCardinalityNext","type":"uint16"},{"internalType":"uint8","name":"feeProtocol","type":"uint8"},{"internalType":"bool","name":"unlocked","type":"bool"}],"stateMutability":"view","type":"function"}]',
+        'UniswapV3Pool',
+      ),
+      poolAddress,
+    );
+
+    final slot0Function = pool.function('slot0');
+    final result = await _web3Client.call(
+      contract: pool,
+      function: slot0Function,
+      params: [],
+    );
+
+    final sqrtPriceX96 = result[0] as BigInt;
+    return _calculatePriceFromSqrtPriceX96(sqrtPriceX96);
+  }
+
+  /// Convert Uniswap V3 sqrtPriceX96 to decimal price
+  double _calculatePriceFromSqrtPriceX96(BigInt sqrtPriceX96) {
+    // sqrtPriceX96 = sqrt(price) * 2^96
+    // price = (sqrtPriceX96 / 2^96)^2
+    final q96 = BigInt.from(2).pow(96);
+    final sqrtPrice = sqrtPriceX96.toDouble() / q96.toDouble();
+    final price = math.pow(sqrtPrice, 2).toDouble();
+
+    // Adjust for decimals: AX has 18 decimals, USDC has 6 decimals
+    // Price is in terms of token1/token0, need to check token order
+    // Typically: price_usdc_per_ax = price * 10^(18-6) = price * 10^12
+    final adjustedPrice = price * math.pow(10, 12).toDouble();
+
+    return adjustedPrice;
+  }
+
+  void dispose() {
+    _httpClient.close();
   }
 
   /// Returns the symbol for the [Token] identified by the [tokenAddress].

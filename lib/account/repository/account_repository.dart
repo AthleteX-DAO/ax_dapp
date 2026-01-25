@@ -1,10 +1,15 @@
 import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/service/synthetix_core_service.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:ethereum_api/erc20_api.dart';
 import 'package:shared/shared.dart' hide ERC20;
 
 class AccountRepository {
+  AccountRepository({SynthetixCoreService? synthetixCoreService})
+      : _synthetixCoreService = synthetixCoreService ?? SynthetixCoreService();
+
   Controller controller = Controller();
+  final SynthetixCoreService _synthetixCoreService;
 
   Future<void> transerTokens({
     required String toAddress,
@@ -27,5 +32,124 @@ class AccountRepository {
     } catch (_) {
       controller.transactionHash = '';
     }
+  }
+
+  // ========== Synthetix V3 Account Operations ==========
+
+  /// Get all Synthetix account IDs owned by a wallet
+  Future<List<BigInt>> getSynthetixAccountIds(String walletAddress) async {
+    return _synthetixCoreService.getUserAccounts(walletAddress);
+  }
+
+  /// Get collateral information for a Synthetix account
+  Future<Map<String, BigInt>> getSynthetixAccountCollateral({
+    required int accountId,
+    required String collateralAddress,
+  }) async {
+    return _synthetixCoreService.getAccountCollateral(
+      accountId,
+      collateralAddress,
+    );
+  }
+
+  /// Get available (withdrawable) collateral for a Synthetix account
+  Future<BigInt> getSynthetixAvailableCollateral({
+    required int accountId,
+    required String collateralAddress,
+  }) async {
+    return _synthetixCoreService.getAccountAvailableCollateral(
+      accountId,
+      collateralAddress,
+    );
+  }
+
+  /// Get debt position for a Synthetix account in a pool
+  Future<BigInt> getSynthetixPositionDebt({
+    required int accountId,
+    required int poolId,
+    required String collateralAddress,
+  }) async {
+    return _synthetixCoreService.getPositionDebt(
+      accountId,
+      poolId,
+      collateralAddress,
+    );
+  }
+
+  /// Get collateralization ratio for a Synthetix account position
+  Future<BigInt> getSynthetixCollateralRatio({
+    required int accountId,
+    required int poolId,
+    required String collateralAddress,
+  }) async {
+    return _synthetixCoreService.getPositionCollateralRatio(
+      accountId,
+      poolId,
+      collateralAddress,
+    );
+  }
+
+  /// Deposit collateral to a Synthetix account
+  Future<String> depositSynthetixCollateral({
+    required int accountId,
+    required String collateralAddress,
+    required BigInt amount,
+  }) async {
+    final txHash = await _synthetixCoreService.depositCollateral(
+      accountId: accountId,
+      collateralAddress: collateralAddress,
+      amount: amount,
+      credentials: controller.credentials,
+    );
+    controller.transactionHash = txHash;
+    return txHash;
+  }
+
+  /// Withdraw collateral from a Synthetix account
+  Future<String> withdrawSynthetixCollateral({
+    required int accountId,
+    required String collateralAddress,
+    required BigInt amount,
+  }) async {
+    final txHash = await _synthetixCoreService.withdrawCollateral(
+      accountId: accountId,
+      collateralAddress: collateralAddress,
+      amount: amount,
+      credentials: controller.credentials,
+    );
+    controller.transactionHash = txHash;
+    return txHash;
+  }
+
+  /// Delegate collateral to a pool
+  Future<String> delegateSynthetixCollateral({
+    required int accountId,
+    required int poolId,
+    required String collateralAddress,
+    required BigInt amount,
+    BigInt? leverage,
+  }) async {
+    final txHash = await _synthetixCoreService.delegateCollateral(
+      accountId: accountId,
+      poolId: poolId,
+      collateralAddress: collateralAddress,
+      amount: amount,
+      credentials: controller.credentials,
+      leverage: leverage,
+    );
+    controller.transactionHash = txHash;
+    return txHash;
+  }
+
+  /// Create a new Synthetix account (requires transaction)
+  Future<String> createSynthetixAccount({
+    required int accountId,
+  }) async {
+    final txHash = await _synthetixCoreService.createAccount(
+      accountId,
+      controller.credentials,
+    );
+    controller.transactionHash = txHash;
+    return txHash;
   }
 }

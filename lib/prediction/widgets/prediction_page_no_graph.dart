@@ -18,10 +18,18 @@ class PredictionPageNoGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
+      primaryXAxis: DateTimeAxis(),
+      primaryYAxis: NumericAxis(
+        minimum: 0,
+        maximum: 1,
+        interval: 0.2,
+      ),
       tooltipBehavior: _shortToolTipBehavior,
       legend: Legend(
         isVisible: true,
         position: LegendPosition.bottom,
+        itemPadding: 12,
+        overflowMode: LegendItemOverflowMode.wrap,
       ),
       zoomPanBehavior: _zoomPanBehavior,
       series: [
@@ -45,7 +53,7 @@ class PredictionPageNoGraph extends StatelessWidget {
             ),
           ),
           enableTooltip: true,
-          color: Colors.orange,
+          color: Colors.white,
           width: 2,
           opacity: 1,
           dashArray: <double>[5, 5],

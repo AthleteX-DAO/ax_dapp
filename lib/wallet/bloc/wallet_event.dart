@@ -119,3 +119,7 @@ class AuthFailed extends WalletEvent {
   @override
   List<Object?> get props => [walletViewStatus];
 }
+
+class InfoMessageCleared extends WalletEvent {
+  const InfoMessageCleared();
+}

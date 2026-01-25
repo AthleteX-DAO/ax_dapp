@@ -10,6 +10,7 @@ class EthereumUrlConfig {
       : polygonMainnet =
             'https://api.thegraph.com/subgraphs/name/nyamwaya/athletex-dex-subgraph-mainnet',
         goerliTestNet = kEmptyUrl,
+        ethereumMainnet = kEmptyUrl,
         optimism = kEmptyUrl,
         arbitriumOne = kEmptyUrl,
         sxMainnet =
@@ -21,6 +22,7 @@ class EthereumUrlConfig {
       : polygonMainnet =
             'https://api.thegraph.com/subgraphs/name/gysr-io/gysr-polygon',
         goerliTestNet = kEmptyUrl,
+        ethereumMainnet = kEmptyUrl,
         sxMainnet = kEmptyUrl,
         optimism = kEmptyUrl,
         arbitriumOne = kEmptyUrl,
@@ -30,6 +32,7 @@ class EthereumUrlConfig {
   const EthereumUrlConfig.empty()
       : polygonMainnet = kEmptyUrl,
         goerliTestNet = kEmptyUrl,
+        ethereumMainnet = kEmptyUrl,
         optimism = kEmptyUrl,
         arbitriumOne = kEmptyUrl,
         sxMainnet = kEmptyUrl,
@@ -46,6 +49,9 @@ class EthereumUrlConfig {
 
   /// Represents the object URL on the [EthereumChain.sxTestnet].
   final String sxTestnet;
+
+  /// Represents the object URL on the [EthereumChain.ethereumMainnet].
+  final String ethereumMainnet;
 
   /// Represents the object address on the [EthereumChain.optimism].
   final String optimism;
@@ -76,6 +82,12 @@ extension EthereumUrlConfigX on EthereumUrlConfig {
         return sxMainnet;
       case EthereumChain.sxTestnet:
         return sxTestnet;
+      case EthereumChain.ethereumMainnet:
+        return ethereumMainnet;
+      case EthereumChain.ethereumSepolia:
+        return kEmptyUrl;
+      case EthereumChain.baseSepolia:
+        return kEmptyUrl;
     }
   }
 }

@@ -1,0 +1,184 @@
+import 'package:ax_dapp/spot_markets/bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class SpotOrderForm extends StatefulWidget {
+  const SpotOrderForm({
+    super.key,
+    required this.selectedMarket,
+  });
+
+  final String selectedMarket;
+
+  @override
+  State<SpotOrderForm> createState() => _SpotOrderFormState();
+}
+
+class _SpotOrderFormState extends State<SpotOrderForm> {
+  late TextEditingController _quantityController;
+  late TextEditingController _priceController;
+
+  @override
+  void initState() {
+    super.initState();
+    _quantityController = TextEditingController();
+    _priceController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _quantityController.dispose();
+    _priceController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.grey[850],
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Trading Order - ${widget.selectedMarket}',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Synthetix v3 Spot Market',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[400],
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _quantityController,
+              decoration: InputDecoration(
+                labelText: 'Quantity',
+                labelStyle: TextStyle(color: Colors.grey[400]),
+                filled: true,
+                fillColor: Colors.grey[900],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.grey[700]!),
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _priceController,
+              decoration: InputDecoration(
+                labelText: 'Price (USD)',
+                labelStyle: TextStyle(color: Colors.grey[400]),
+                filled: true,
+                fillColor: Colors.grey[900],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.grey[700]!),
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    onPressed: () {
+                      if (_quantityController.text.isEmpty ||
+                          _priceController.text.isEmpty) {
+                        _showError(context,
+                            'Please enter both quantity and price');
+                        return;
+                      }
+
+                      context.read<SpotMarketsBloc>().add(
+                            SpotMarketBuyOrderPlaced(
+                              market: widget.selectedMarket,
+                              quantity:
+                                  double.parse(_quantityController.text),
+                              price: double.parse(_priceController.text),
+                            ),
+                          );
+
+                      _quantityController.clear();
+                      _priceController.clear();
+                    },
+                    child: const Text(
+                      'BUY',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    onPressed: () {
+                      if (_quantityController.text.isEmpty ||
+                          _priceController.text.isEmpty) {
+                        _showError(context,
+                            'Please enter both quantity and price');
+                        return;
+                      }
+
+                      context.read<SpotMarketsBloc>().add(
+                            SpotMarketSellOrderPlaced(
+                              market: widget.selectedMarket,
+                              quantity:
+                                  double.parse(_quantityController.text),
+                              price: double.parse(_priceController.text),
+                            ),
+                          );
+
+                      _quantityController.clear();
+                      _priceController.clear();
+                    },
+                    child: const Text(
+                      'SELL',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showError(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.redAccent,
+      ),
+    );
+  }
+}

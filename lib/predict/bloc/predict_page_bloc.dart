@@ -47,8 +47,12 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
 
     on<FetchPredictionInfoRequested>(_onFetchPredictionInfoRequested);
 
+    on<AllPredictionMarketsRequested>(_onAllPredictionMarketsRequested);
+
+    on<PredictionVisibilityChanged>(_onPredictionVisibilityChanged);
+
     add(const WatchAppDataChangesStarted());
-    add(const FetchPredictionInfoRequested());
+    add(const AllPredictionMarketsRequested());
   }
 
   final StreamAppDataChangesUseCase _streamAppDataChanges;
@@ -301,5 +305,40 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
       debugPrint('$e');
       emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
     }
+  }
+
+  Future<void> _onAllPredictionMarketsRequested(
+    AllPredictionMarketsRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    emit(
+      state.copyWith(status: BlocStatus.loading),
+    );
+    try {
+      final predictions = await getPredictionMarketDataUseCase
+          .fetchSupportedPredictionMarkets(SupportedPredictionMarkets.all);
+      emit(
+        state.copyWith(
+          status: BlocStatus.success,
+          filteredPredictions: predictions,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+      emit(state.copyWith(status: BlocStatus.error, filteredPredictions: []));
+    }
+  }
+
+  Future<void> _onPredictionVisibilityChanged(
+    PredictionVisibilityChanged event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    final updatedVisibility = Set<int>.from(state.visiblePredictionIds);
+    if (event.isVisible) {
+      updatedVisibility.add(event.predictionId);
+    } else {
+      updatedVisibility.remove(event.predictionId);
+    }
+    emit(state.copyWith(visiblePredictionIds: updatedVisibility));
   }
 }

@@ -1,0 +1,80 @@
+import 'package:flutter/material.dart';
+
+class SpotMarketChart extends StatelessWidget {
+  const SpotMarketChart({
+    super.key,
+    required this.symbol,
+    required this.price,
+    required this.change24h,
+  });
+
+  final String symbol;
+  final double price;
+  final double change24h;
+
+  @override
+  Widget build(BuildContext context) {
+    final changeColor = change24h >= 0 ? Colors.green : Colors.redAccent;
+
+    return Card(
+      color: Colors.grey[850],
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  symbol,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  change24h >= 0 ? '+${change24h.toStringAsFixed(2)}%' : '${change24h.toStringAsFixed(2)}%',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: changeColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Text(
+              '\$${price.toStringAsFixed(2)}',
+              style: const TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 40),
+            // TODO: Add TradingView chart widget here
+            Container(
+              height: 300,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[700]!),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: Text(
+                  'Chart Placeholder - Integrate TradingView or Lightweight Charts here',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -65,3 +65,16 @@ class VotedPredictionMarketsRequested extends PredictPageEvent {
 class ExoticPredictionMarketsRequested extends PredictPageEvent {
   const ExoticPredictionMarketsRequested();
 }
+
+class PredictionVisibilityChanged extends PredictPageEvent {
+  const PredictionVisibilityChanged({
+    required this.predictionId,
+    required this.isVisible,
+  });
+
+  final int predictionId;
+  final bool isVisible;
+
+  @override
+  List<Object?> get props => [predictionId, isVisible];
+}

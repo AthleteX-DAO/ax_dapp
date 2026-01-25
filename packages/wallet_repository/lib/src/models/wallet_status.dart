@@ -24,6 +24,9 @@ enum WalletStatus {
       case EthereumChain.arbitriumOne:
       case EthereumChain.sxMainnet:
       case EthereumChain.sxTestnet:
+      case EthereumChain.ethereumMainnet:
+      case EthereumChain.ethereumSepolia:
+      case EthereumChain.baseSepolia:
         return WalletStatus.connected;
     }
   }

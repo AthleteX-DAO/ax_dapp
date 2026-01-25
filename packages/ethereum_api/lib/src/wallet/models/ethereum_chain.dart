@@ -87,6 +87,42 @@ enum EthereumChain {
     currency: EthereumCurrency.weth,
     rpcUrls: ['https://arb1.arbitrum.io/rpc'],
     blockExplorerUrls: ['https://arbiscan.io'],
+  ),
+
+  /// Ethereum Mainnet
+  ethereumMainnet(
+    chainId: 1,
+    chainName: 'Ethereum',
+    currency: EthereumCurrency.weth,
+    rpcUrls: const [
+      'https://eth.public.blastapi.io',
+      'https://ethereum-rpc.publicnode.com'
+    ],
+    blockExplorerUrls: const ['https://etherscan.io'],
+  ),
+
+  /// Ethereum Sepolia Testnet (Synthetix V3)
+  ethereumSepolia(
+    chainId: 11155111,
+    chainName: 'Sepolia Testnet',
+    currency: EthereumCurrency.weth,
+    rpcUrls: const [
+      'https://eth-sepolia.public.blastapi.io',
+      'https://sepolia-rpc.publicnode.com'
+    ],
+    blockExplorerUrls: const ['https://sepolia.etherscan.io'],
+  ),
+
+  /// Base Sepolia Testnet (Synthetix V3 Andromeda)
+  baseSepolia(
+    chainId: 84532,
+    chainName: 'Base Sepolia',
+    currency: EthereumCurrency.weth,
+    rpcUrls: const [
+      'https://base-sepolia.infura.io/v3/295739f3c9f64796bccfc206fc476a88',
+      'https://sepolia.base.org'
+    ],
+    blockExplorerUrls: const ['https://sepolia.basescan.org'],
   );
 
   /// {@macro ethereum_chain}
@@ -140,7 +176,10 @@ extension ChainX on EthereumChain {
 
   /// Returns whether this [EthereumChain] is a testnet.
   bool get isTestnet =>
-      this == EthereumChain.goerliTestNet || this == EthereumChain.sxTestnet;
+      this == EthereumChain.goerliTestNet ||
+      this == EthereumChain.sxTestnet ||
+      this == EthereumChain.ethereumSepolia ||
+      this == EthereumChain.baseSepolia;
 
   /// Returns the RPC URL used to initialize a [Web3Client].
   String get rpcUrl => rpcUrls.firstOrNull ?? '';
@@ -234,7 +273,7 @@ extension ChainConfigX on EthereumChain {
     );
     return GraphQLClient(
       link: HttpLink(const EthereumUrlConfig.dex().url(this)),
-      cache: GraphQLCache(store: HiveStore()),
+      cache: GraphQLCache(store: InMemoryStore()),
       defaultPolicies: DefaultPolicies(
         query: policy,
         watchMutation: policy,
@@ -251,7 +290,7 @@ extension ChainConfigX on EthereumChain {
     final policy = Policies(fetch: FetchPolicy.networkOnly);
     return GraphQLClient(
       link: HttpLink(const EthereumUrlConfig.gysr().url(this)),
-      cache: GraphQLCache(store: HiveStore()),
+      cache: GraphQLCache(store: InMemoryStore()),
       defaultPolicies: DefaultPolicies(
         watchQuery: policy,
         query: policy,

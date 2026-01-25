@@ -161,9 +161,10 @@ class PredictionPageBloc
 
     emit(state.copyWith(status: BlocStatus.loading));
 
-    const startDate = '2023-12-01';
+    final startDate = DateFormat('yyyy-MM-dd')
+        .format(DateTime.now().subtract(const Duration(days: 30)));
     final marketRecords = await getPredictionMarketDataUseCase
-        .getMarketPriceHistory(startDate, eventId);
+        .getMockMarketPriceHistory(startDate, eventId);
     updatePriceGraphData(marketRecords, emit);
 
     /// Get event price stats as empty

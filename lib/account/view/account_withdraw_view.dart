@@ -1,5 +1,6 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/account/widgets/widgets.dart';
+import 'package:ax_dapp/account/widgets/withdraw_chain_selector.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/widgets/token_container.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
@@ -37,45 +38,39 @@ class AccountWithdrawView extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
-              width: wid - edge2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: _height * 0.18,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Center(
+              child: SizedBox(
+                width: wid - edge2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Select your Chain & Token Below',
-                              style: textStyle(
-                                Colors.grey[600]!,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            WalletAddress(),
-                          ],
-                        ),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            WalletChain(),
-                          ],
+                        Text(
+                          'Select your Chain & Token Below',
+                          style: textStyle(
+                            Colors.grey[600]!,
+                            13,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        WalletAddress(),
+                      ],
+                    ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        WithdrawChainSelector(),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(

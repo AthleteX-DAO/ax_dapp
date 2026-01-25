@@ -29,11 +29,12 @@ class _PredictionMarketsFilterDesktopState
             right: 20,
             bottom: 10,
           ),
-          height: 40,
+          height: 60,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Athlete Performance Markets',
+                'AthleteX Prediction Markets',
                 style: textStyle(
                   Colors.white,
                   18,
@@ -41,6 +42,7 @@ class _PredictionMarketsFilterDesktopState
                   isUline: false,
                 ),
               ),
+              const SizedBox(width: 8),
               Text(
                 '|',
                 style: textStyle(
@@ -50,6 +52,7 @@ class _PredictionMarketsFilterDesktopState
                   isUline: false,
                 ),
               ),
+              const SizedBox(width: 8),
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -342,6 +345,54 @@ class _PredictionMarketsFilterDesktopState
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              SizedBox(
+                width: 260,
+                child: TextField(
+                  controller: marketsSearchController,
+                  style: textStyle(
+                    Colors.white,
+                    14,
+                    isBold: false,
+                    isUline: false,
+                  ),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: 'Search markets',
+                    hintStyle: textStyle(
+                      Colors.grey[500]!,
+                      14,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                      size: 18,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.04),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Colors.white24,
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Colors.amber,
+                        width: 1.2,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                   ),
                 ),
               ),

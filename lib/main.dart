@@ -16,12 +16,14 @@ import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
+import 'package:ax_dapp/repositories/sx_markets_repository.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
+import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
@@ -30,9 +32,6 @@ import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
-import 'package:ax_dapp/sports_markets/repository/overtime_markets_repository.dart';
-import 'package:ax_dapp/sports_markets/repository/sx_markets_repository.dart';
-import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,6 +53,9 @@ import 'package:tracking_repository/tracking_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:user_authentication/user_authentication.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:ax_dapp/wallet/usecases/synthetix_account_bootstrap.dart';
+import 'package:ax_dapp/service/synthetix_core_service.dart';
+import 'package:ax_dapp/wallet/usecases/unified_portfolio_usecase.dart';
 
 void main() async {
   const defaultChain = EthereumChain.polygonMainnet;
@@ -62,7 +64,6 @@ void main() async {
   final dio = Dio()..interceptors.add(LoggingInterceptor());
   final mlbApi = MLBAthleteAPI(dio);
   final nflApi = NFLAthleteAPI(dio);
-  final coinApi = CoinGeckoAPI(dio);
   final cache = CacheClient();
 
   final httpClient = http.Client();
@@ -134,7 +135,7 @@ void main() async {
             create: (_) => TokensRepository(
               tokensApiClient: tokensApiClient,
               reactiveLspClient: reactiveLspClient,
-              coinGeckoApiClient: coinApi,
+              httpClient: httpClient,
             ),
           ),
           RepositoryProvider.value(value: gysrApiClient),
@@ -167,7 +168,7 @@ void main() async {
             ),
           ),
           RepositoryProvider(
-            create: (context) => GetPoolInfoUseCase(getPairInfoUseCase),
+            create: (context) => GetPoolInfoUseCase(),
           ),
           RepositoryProvider(
             create: (context) => GetAllLiquidityInfoUseCase(subGraphRepo),
@@ -210,16 +211,11 @@ void main() async {
             ),
           ),
           RepositoryProvider(
-            create: (context) => OverTimeMarketsRepository(),
-          ),
-          RepositoryProvider(
             create: (context) => SXMarketsRepository(),
           ),
           RepositoryProvider(
             create: (context) => GetSportsMarketsDataUseCase(
               sxMarketsRepository: context.read<SXMarketsRepository>(),
-              overTimeMarketsRepository:
-                  context.read<OverTimeMarketsRepository>(),
             ),
           ),
           RepositoryProvider(
@@ -240,6 +236,16 @@ void main() async {
           RepositoryProvider(
             create: (context) => CrossChainBalanceUseCase(
               walletRepository: context.read<WalletRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => UnifiedPortfolioUseCase(
+              walletRepository: context.read<WalletRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (_) => SynthetixAccountBootstrap(
+              SynthetixCoreService(),
             ),
           ),
           RepositoryProvider(

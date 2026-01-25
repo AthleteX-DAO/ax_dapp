@@ -1,6 +1,5 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/trade/widgets/widgets.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart';
@@ -136,14 +135,14 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                           Colors.grey[400]!,
                         ),
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: tokenBalance > 0 ? () {
                             bloc.add(
                               UpdateWithdrawInput(
                                 tokenAmountInput: tokenBalance,
                               ),
                             );
-                            tokenInputController.text = tokenBalance.toString();
-                          },
+                            tokenInputController.text = tokenBalance.toStringAsFixed(6);
+                          } : null,
                           child: FittedBox(
                             child: SizedBox(
                               child: Text(
@@ -168,13 +167,18 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                               decimal: true,
                             ),
                             controller: tokenInputController,
-                            onChanged: (value) => {
-                              bloc.add(
-                                UpdateWithdrawInput(
-                                  tokenAmountInput:
-                                      double.parse(tokenInputController.text),
-                                ),
-                              ),
+                            onChanged: (value) {
+                              if (tokenInputController.text.isEmpty) return;
+                              try {
+                                final parsed = double.parse(tokenInputController.text);
+                                bloc.add(
+                                  UpdateWithdrawInput(
+                                    tokenAmountInput: parsed,
+                                  ),
+                                );
+                              } catch (_) {
+                                // Silently ignore parse errors
+                              }
                             },
                             style: TextStyle(
                               color: Colors.grey[400],
@@ -202,10 +206,6 @@ class _TokenContainerWidgetState extends State<TokenContainerWidget> {
                     ],
                   ),
                 ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [Balance(balance: tokenBalance.toString())],
               ),
             ],
           ),

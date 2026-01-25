@@ -1,3 +1,4 @@
+import 'package:ax_dapp/athlete_markets/athlete.dart';
 import 'package:ax_dapp/athlete_markets/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/markets/markets.dart';
 import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';

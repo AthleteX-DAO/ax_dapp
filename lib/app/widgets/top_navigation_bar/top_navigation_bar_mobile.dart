@@ -1,3 +1,4 @@
+import 'package:ax_dapp/app/widgets/top_navigation_bar/top_navigation_bar.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class TopNavigationBarMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width,
+      height: kTopNavBarHeightMobile,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

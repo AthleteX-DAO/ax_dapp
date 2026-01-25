@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
+import 'package:ax_dapp/wallet/usecases/synthetix_account_bootstrap.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -20,10 +21,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     required TokensRepository tokensRepository,
     required FireStoreCredentialsRepository fireStoreCredentialsRepository,
     required FireBaseAuthRepository fireBaseAuthRepository,
+    required SynthetixAccountBootstrap synthetixAccountBootstrap,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
         _fireStoreCredentialsRepository = fireStoreCredentialsRepository,
         _fireBaseAuthRepository = fireBaseAuthRepository,
+        _synthetixAccountBootstrap = synthetixAccountBootstrap,
         super(WalletState.fromWallet(wallet: walletRepository.currentWallet)) {
     on<ConnectWalletRequested>(_onConnectWalletRequested);
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
@@ -45,6 +48,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<GetGasPriceRequested>(_onGetGasPriceRequested);
     on<WalletFailed>(_onWalletFailed);
     on<AuthFailed>(_onAuthFailed);
+    on<InfoMessageCleared>(_onInfoMessageCleared);
     on<FetchWalletBalanceRequested>(_onFetchWalletBalanceRequested);
 
     add(const WatchWalletChangesStarted());
@@ -58,6 +62,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final CrossChainBalanceUseCase crossChainBalanceUseCase;
   final FireStoreCredentialsRepository _fireStoreCredentialsRepository;
   final FireBaseAuthRepository _fireBaseAuthRepository;
+  final SynthetixAccountBootstrap _synthetixAccountBootstrap;
 
   Future<void> _onLoginSignUpViewRequested(
     LoginSignUpViewRequested _,
@@ -103,6 +108,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       final walletAddress = await _walletRepository.importWallet(hex);
       final privateKey = _walletRepository.privateKey;
       debugPrint(privateKey);
+      unawaited(_ensureSynthetixAccount(emit));
       emit(
         state.copyWith(
           walletAddress: walletAddress,
@@ -158,6 +164,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       );
       final walletAddress = await _walletRepository.createWallet();
       await _fireStoreCredentialsRepository.storeCredentials(email);
+      unawaited(_ensureSynthetixAccount(emit));
       emit(
         state.copyWith(
           walletAddress: walletAddress,
@@ -240,6 +247,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     try {
       final walletAddress = await _walletRepository.connectWallet();
+      unawaited(_ensureSynthetixAccount(emit));
       emit(
         state.copyWith(
           walletAddress: walletAddress,
@@ -342,6 +350,23 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
+  Future<void> _ensureSynthetixAccount(
+    Emitter<WalletState> emit,
+  ) async {
+    try {
+      await _synthetixAccountBootstrap.ensureAccount(
+        walletAddress: state.walletAddress,
+        walletRepository: _walletRepository,
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          infoMessage: 'We could not finish your account setup. You can retry from settings.',
+        ),
+      );
+    }
+  }
+
   Future<void> _onAuthFailed(
     AuthFailed event,
     Emitter<WalletState> emit,
@@ -354,4 +379,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       ),
     );
   }
+
+  void _onInfoMessageCleared(
+    InfoMessageCleared _,
+    Emitter<WalletState> emit,
+  ) {
+    emit(state.copyWith(infoMessage: null));
+  }
+
 }

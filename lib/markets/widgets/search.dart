@@ -17,8 +17,6 @@ class Search extends StatelessWidget {
     final myController = TextEditingController(text: input);
     final bloc = context.read<MarketsPageBloc>();
     const _selectedSport = SupportedSport.all;
-    const isLongToken = true;
-    const sportFilterTxSz = 14.0;
     return // Search Bar
         Container(
       width: (constraints.maxWidth > 800)

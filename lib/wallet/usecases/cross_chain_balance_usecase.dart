@@ -9,7 +9,8 @@ class CrossChainBalanceUseCase {
   final WalletRepository _walletRepository;
 
   Future<double> usdcBalance(EthereumChain chain) async {
-    final balance = await _walletRepository.getTokenBalance(Token.usdc(chain).address);
+    final balance =
+        await _walletRepository.getTokenBalance(Token.usdc(chain).address);
     return balance ?? 0;
   }
 
@@ -53,6 +54,21 @@ class CrossChainBalanceUseCase {
         gasBalance = balance ?? 0;
         break;
       case EthereumChain.arbitriumOne:
+        final balance =
+            await _walletRepository.getTokenBalance(Token.weth(chain).address);
+        gasBalance = balance ?? 0;
+        break;
+      case EthereumChain.ethereumMainnet:
+        final balance =
+            await _walletRepository.getTokenBalance(Token.weth(chain).address);
+        gasBalance = balance ?? 0;
+        break;
+      case EthereumChain.ethereumSepolia:
+        final balance =
+            await _walletRepository.getTokenBalance(Token.weth(chain).address);
+        gasBalance = balance ?? 0;
+        break;
+      case EthereumChain.baseSepolia:
         final balance =
             await _walletRepository.getTokenBalance(Token.weth(chain).address);
         gasBalance = balance ?? 0;

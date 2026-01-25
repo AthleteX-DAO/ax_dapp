@@ -5,15 +5,17 @@ import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete_stats.dart';
 import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class MLBAthleteAPI {
   MLBAthleteAPI(this.dio) {
-    initState();
+    _initFuture = initState();
   }
 
   final Dio dio;
   late String baseDataUrl;
+  late Future<void> _initFuture;
   final defaultFrom = '2023-01-01';
   final defaultUntil = '2023-12-31';
   final defaultInterval = 'Hour';
@@ -27,11 +29,14 @@ class MLBAthleteAPI {
       final cid = decodedData['directory'];
       baseDataUrl = 'https://$cid.ipfs.nftstorage.link';
     } catch (error) {
-      throw Exception('Failed to fetch data: $error');
+      baseDataUrl = '';
+      debugPrint('MLBAthleteAPI init failed: $error');
     }
   }
 
   Future<List<MLBAthlete>> getAllPlayers() async {
+    await _initFuture;
+    if (baseDataUrl.isEmpty) return [];
     final url = '$baseDataUrl/ALL_PLAYERS';
     final jsonString = (await dio.get<String>(url)).data!;
     final json = jsonDecode(jsonString) as Map<String, dynamic>;
@@ -42,11 +47,17 @@ class MLBAthleteAPI {
   }
 
   Future<List<MLBAthlete>> getPlayersById(List<int> ids) async {
+    await _initFuture;
+    if (baseDataUrl.isEmpty) return [];
     final athletes = await Future.wait(ids.map(getPlayer));
     return athletes;
   }
 
   Future<MLBAthlete> getPlayer(int id) async {
+    await _initFuture;
+    if (baseDataUrl.isEmpty) {
+      throw Exception('MLB data unavailable');
+    }
     final url = '$baseDataUrl/$id';
     return MLBAthlete.fromJson(
       await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>,
@@ -54,11 +65,13 @@ class MLBAthleteAPI {
   }
 
   Future<List<MLBAthlete>> getPlayersByTeam(String team) async {
+    await _initFuture;
     final athletes = await getAllPlayers();
     return athletes.where((athlete) => athlete.team == team).toList();
   }
 
   Future<List<MLBAthlete>> getPlayersByPosition(String position) async {
+    await _initFuture;
     final athletes = await getAllPlayers();
     return athletes.where((athlete) => athlete.position == position).toList();
   }
@@ -67,6 +80,7 @@ class MLBAthleteAPI {
     String team,
     String position,
   ) async {
+    await _initFuture;
     final athletes = await getAllPlayers();
     return athletes
         .where(
@@ -80,6 +94,10 @@ class MLBAthleteAPI {
     String from,
     String until,
   ) async {
+    await _initFuture;
+    if (baseDataUrl.isEmpty) {
+      throw Exception('MLB data unavailable');
+    }
     final url = '$baseDataUrl/$id';
     final response =
         await dio.get<Map<String, dynamic>>(url) as Map<String, dynamic>;
@@ -94,6 +112,10 @@ class MLBAthleteAPI {
     String? until,
     String? interval,
   ) async {
+    await _initFuture;
+    if (baseDataUrl.isEmpty) {
+      return AthletePriceRecord(id: id, name: '', priceHistory: const []);
+    }
     var timeInterval = '';
     switch (interval?.toLowerCase()) {
       case 'hour':
@@ -135,6 +157,8 @@ class MLBAthleteAPI {
     String from,
     String until,
   ) async {
+    await _initFuture;
+    if (baseDataUrl.isEmpty) return [];
     final playersHistory = await Future.wait(
       playerIds.map((id) => getPlayerHistory(id, from, until)),
     );
@@ -148,6 +172,8 @@ class MLBAthleteAPI {
     String? until,
     String interval,
   ) async {
+    await _initFuture;
+    if (baseDataUrl.isEmpty) return [];
     final playersHistory = await Future.wait(
       playerIds.map((id) => getPlayerPriceHistory(id, from, until, interval)),
     );

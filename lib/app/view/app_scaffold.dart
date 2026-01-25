@@ -10,24 +10,31 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final isWebLandscape =
+        kIsWeb && (mediaQuery.orientation == Orientation.landscape);
+    final navBarHeight =
+        isWebLandscape ? kTopNavBarHeightWeb : kTopNavBarHeightMobile;
+    final topInset = mediaQuery.padding.top + navBarHeight;
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        toolbarHeight: navBarHeight,
         automaticallyImplyLeading: false,
         actions: [
           Container(),
         ],
         title: kIsWeb &&
-                (MediaQuery.of(context).orientation == Orientation.landscape)
+                (mediaQuery.orientation == Orientation.landscape)
             ? const TopNavigationBarWeb()
             : const TopNavigationBarMobile(),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       bottomNavigationBar: kIsWeb &&
-              (MediaQuery.of(context).orientation == Orientation.landscape)
+              (mediaQuery.orientation == Orientation.landscape)
           ? const BottomNavigationBarWeb()
           : const BottomNavigationBarMobile(),
       body: Container(
@@ -38,7 +45,10 @@ class AppScaffold extends StatelessWidget {
             fit: BoxFit.fill,
           ),
         ),
-        child: child,
+        child: Padding(
+          padding: EdgeInsets.only(top: topInset),
+          child: child,
+        ),
       ),
       endDrawer: const DrawerView(),
     );

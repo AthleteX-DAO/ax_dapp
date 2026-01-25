@@ -18,10 +18,18 @@ class PredictionPageYesGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
+      primaryXAxis: DateTimeAxis(),
+      primaryYAxis: NumericAxis(
+        minimum: 0,
+        maximum: 1,
+        interval: 0.2,
+      ),
       tooltipBehavior: _longToolTipBehavior,
       legend: Legend(
         isVisible: true,
         position: LegendPosition.bottom,
+        itemPadding: 12,
+        overflowMode: LegendItemOverflowMode.wrap,
       ),
       zoomPanBehavior: _zoomPanBehavior,
       series: [
@@ -41,11 +49,11 @@ class PredictionPageYesGraph extends StatelessWidget {
           dataLabelSettings: const DataLabelSettings(
             textStyle: TextStyle(
               fontSize: 10,
-              color: Colors.white,
+              color: Color(0xFFFFD700),
             ),
           ),
           enableTooltip: true,
-          color: Colors.orange,
+          color: Color(0xFFFFD700),
           width: 2,
           opacity: 1,
           dashArray: <double>[5, 5],
@@ -66,11 +74,11 @@ class PredictionPageYesGraph extends StatelessWidget {
           dataLabelSettings: const DataLabelSettings(
             textStyle: TextStyle(
               fontSize: 10,
-              color: Colors.orange,
+              color: Color(0xFFFFD700),
             ),
           ),
           enableTooltip: true,
-          color: Colors.white,
+          color: Colors.black,
           width: 2,
           opacity: 1,
           dashArray: <double>[5, 5],

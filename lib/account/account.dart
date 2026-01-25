@@ -38,7 +38,7 @@ class Account extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'My Account Balances',
+                        'Portfolio',
                         style: textStyle(
                           Colors.white,
                           20,

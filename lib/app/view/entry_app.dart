@@ -1,5 +1,4 @@
 import 'package:ax_dapp/app/view/view.dart';
-import 'package:ax_dapp/chat_wrapper/chat_wrapper.dart';
 import 'package:ax_dapp/debug/views/debug_app_wrapper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,6 @@ class EntryApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWebMobile = kIsWeb &&
-        (defaultTargetPlatform == TargetPlatform.iOS ||
-            defaultTargetPlatform == TargetPlatform.android);
     final _appRouter = MaterialApp.router(
       title: 'AthleteX',
       debugShowCheckedModeBanner: false,
@@ -28,10 +24,6 @@ class EntryApp extends StatelessWidget {
 
     return kDebugMode
         ? DebugAppWrapper(home: _appRouter)
-        : (isWebMobile
-            ? _appRouter
-            : ChatWrapper(
-                home: _appRouter,
-              ));
+        : _appRouter;
   }
 }

@@ -14,6 +14,7 @@ class WalletState extends Equatable {
     this.email = '',
     this.password = '',
     this.tokens = const [],
+    this.infoMessage,
   });
 
   WalletState.fromWallet({
@@ -38,6 +39,7 @@ class WalletState extends Equatable {
   final String email;
   final String password;
   final List<Token> tokens;
+  final String? infoMessage;
 
   @override
   List<Object?> get props => [
@@ -53,6 +55,7 @@ class WalletState extends Equatable {
         email,
         password,
         tokens,
+        infoMessage,
       ];
 
   WalletState copyWith({
@@ -68,6 +71,7 @@ class WalletState extends Equatable {
     String? email,
     String? password,
     List<Token>? tokens,
+    String? infoMessage,
   }) {
     return WalletState(
       walletStatus: walletStatus ?? this.walletStatus,
@@ -82,6 +86,7 @@ class WalletState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       tokens: tokens ?? this.tokens,
+      infoMessage: infoMessage ?? this.infoMessage,
     );
   }
 

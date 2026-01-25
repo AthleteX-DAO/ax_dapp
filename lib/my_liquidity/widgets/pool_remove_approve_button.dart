@@ -1,8 +1,6 @@
 import 'package:ax_dapp/my_liquidity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
-import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
-import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -92,35 +90,11 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
-          final walletAddress =
-              context.read<WalletBloc>().state.formattedWalletAddress;
           if (isApproved) {
-            context.read<TrackingCubit>().onPoolRemovalConfirmClick(
-                  currencyOne: widget.currencyOne,
-                  currencyTwo: widget.currencyTwo,
-                  valueOne: widget.valueOne,
-                  valueTwo: widget.valueTwo,
-                  lpTokens: widget.lpTokens,
-                  shareOfPool: widget.shareOfPool,
-                  percentRemoval: widget.percentRemoval,
-                  walletId: walletAddress,
-                  lpTokenName: widget.lpTokenName,
-                );
+            // Pool tracking removed - page deprecated
             //Confirm button pressed
             widget.confirmCallback().then((value) {
-              final walletAddress =
-                  context.read<WalletBloc>().state.formattedWalletAddress;
-              context.read<TrackingCubit>().onPoolRemoval(
-                    currencyOne: widget.currencyOne,
-                    currencyTwo: widget.currencyTwo,
-                    valueOne: widget.valueOne,
-                    valueTwo: widget.valueTwo,
-                    lpTokens: widget.lpTokens,
-                    shareOfPool: widget.shareOfPool,
-                    percentRemoval: widget.percentRemoval,
-                    walletId: walletAddress,
-                    lpTokenName: widget.lpTokenName,
-                  );
+              // Pool tracking removed - page deprecated
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
@@ -149,17 +123,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
             });
           } else {
             //Approve button was pressed
-            context.read<TrackingCubit>().onPoolRemovalApproveClick(
-                  currencyOne: widget.currencyOne,
-                  currencyTwo: widget.currencyTwo,
-                  valueOne: widget.valueOne,
-                  valueTwo: widget.valueTwo,
-                  lpTokens: widget.lpTokens,
-                  shareOfPool: widget.shareOfPool,
-                  percentRemoval: widget.percentRemoval,
-                  walletId: walletAddress,
-                  lpTokenName: widget.lpTokenName,
-                );
+            // Pool tracking removed - page deprecated
             changeButton();
           }
         },

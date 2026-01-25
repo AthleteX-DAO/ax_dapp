@@ -16,6 +16,12 @@ extension ChainLocalizedErrorX on EthereumChain {
         return 'Change to Polygon Network for MLB Tokens';
       case EthereumChain.sxTestnet:
         return 'Change to Polygon Network for MLB Tokens';
+      case EthereumChain.ethereumMainnet:
+        return 'Etherscan unavailable';
+      case EthereumChain.ethereumSepolia:
+        return 'Sepolia Testnet';
+      case EthereumChain.baseSepolia:
+        return 'Base Sepolia Testnet';
     }
   }
 }

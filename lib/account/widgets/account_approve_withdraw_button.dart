@@ -1,6 +1,7 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 
 class AccountApproveWithdrawButton extends StatelessWidget {
   const AccountApproveWithdrawButton({super.key});
@@ -27,6 +28,32 @@ class AccountApproveWithdrawButton extends StatelessWidget {
               ),
             ),
             onPressed: () {
+              final state = context.read<AccountBloc>().state;
+              final recipientAddress = state.recipentAddress.trim();
+              final amount = state.tokenAmountInput;
+              final isValidAddress = recipientAddress.isNotEmpty && 
+                  (recipientAddress.startsWith('0x') && recipientAddress.length == 42);
+              
+              if (!isValidAddress) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please enter a valid Ethereum address'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+                return;
+              }
+              
+              if (amount <= 0) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please enter an amount greater than 0'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+                return;
+              }
+              
               context.read<AccountBloc>().add(const AccountWithdrawConfirm());
             },
             child: const Text(
