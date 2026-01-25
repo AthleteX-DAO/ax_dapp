@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 2.5.0
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 dependencies:
   auto_size_text: ^3.0.0
@@ -34,8 +34,8 @@ dependencies:
   ethereum_api:
     path: packages/ethereum_api
   firebase_analytics: ^10.1.0
-  firebase_auth: ^4.11.1
-  firebase_core: ^2.4.1
+  firebase_auth: ^4.19.0
+  firebase_core: ^2.27.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
@@ -45,7 +45,7 @@ dependencies:
   get: ^4.6.5
   go_router: ^14.1.1
   graphql_flutter: ^5.1.2
-  intl: ^0.17.0
+  intl: ^0.18.0
   league_repository:
     path: packages/league_repository
   local_auth: ^2.1.0
@@ -61,7 +61,7 @@ dependencies:
   shared:
     path: packages/shared
   shared_preferences: ^2.0.15
-  syncfusion_flutter_charts: ^21.2.4
+  syncfusion_flutter_charts: ^32.1.21
   toggle_switch: ^2.0.1
   tokens_repository:
     path: packages/tokens_repository
@@ -81,6 +81,7 @@ dependencies:
 
 dependency_overrides:
   async: 2.8.0
+  intl: ^0.18.0
   meta: 1.8.0
   web3dart:
     git:
@@ -96,7 +97,6 @@ dev_dependencies:
   json_serializable: ^6.3.1
   mockito: ^5.2.0
   retrofit_generator: ^4.0.2
-  test:
   very_good_analysis: ^5.1.0
 
 # For information on the generic Dart part of this file, see the
@@ -112,12 +112,19 @@ flutter:
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans-Regular.ttf
+          weight: 400
         - asset: assets/fonts/OpenSans-ExtraBold.ttf
-          weight: 600
+          weight: 800
+    - family: BebasNeuePro
+      fonts:
         - asset: assets/fonts/BebasNeuePro.ttf
 
   assets:
     - assets/images/apt.png
+    - lib/spot_markets/abi/
+    - lib/spot_markets/abi/spot_market_proxy_abi.json
+    - lib/spot_markets/abi/oracle_manager_abi.json
+    - lib/spot_markets/abi/erc20_abi.json
     - assets/images/axBackground.jpeg
     - assets/images/AXMarkets.png
     - assets/images/blurredBackground.png
@@ -147,3 +154,4 @@ flutter_icons:
   android: 'launcher_icon'
   ios: true
   image_path: 'assets/images/athletex_favicon.png'
+  remove_alpha_ios: true
