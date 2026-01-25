@@ -1,5 +1,5 @@
 import 'package:ax_dapp/util/user_input_norm.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('normalizeInput', () {

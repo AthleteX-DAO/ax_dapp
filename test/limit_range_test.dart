@@ -1,6 +1,6 @@
 import 'package:ax_dapp/util/limit_range.dart';
 import 'package:flutter/services.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('LimitRange formatter sets value within the specified range', () {

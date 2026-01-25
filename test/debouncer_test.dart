@@ -1,5 +1,5 @@
 import 'package:ax_dapp/util/debouncer.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('Debouncer runs action after specified milliseconds', () async {
