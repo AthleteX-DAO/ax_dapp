@@ -106,6 +106,178 @@ class BaseSepoliaPerpsService {
     };
   }
 
+  /// Gets the current market skew (net position imbalance)
+  /// Returns skew in USD, positive = more longs, negative = more shorts
+  Future<double> getMarketSkew(String symbol) async {
+    try {
+      final marketId = _marketIds[symbol];
+      if (marketId == null) {
+        throw Exception('Market not found for symbol: $symbol');
+      }
+
+      // TODO: Query from Synthetix subgraph or contract
+      // For now, return placeholder
+      return 0.0;
+    } catch (e) {
+      print('Error getting market skew: $e');
+      return 0.0;
+    }
+  }
+
+  /// Gets the total open interest for a market
+  Future<double> getOpenInterest(String symbol) async {
+    try {
+      final marketId = _marketIds[symbol];
+      if (marketId == null) {
+        throw Exception('Market not found for symbol: $symbol');
+      }
+
+      // TODO: Query from Synthetix subgraph or contract
+      // For now, return placeholder
+      return 0.0;
+    } catch (e) {
+      print('Error getting open interest: $e');
+      return 0.0;
+    }
+  }
+
+  /// Gets the user's available margin for trading
+  Future<double> getUserAvailableMargin() async {
+    try {
+      // TODO: Fetch from user's perps account
+      return 0.0;
+    } catch (e) {
+      print('Error getting available margin: $e');
+      return 0.0;
+    }
+  }
+
+  /// Calculates the fill price for a trade of given size
+  /// Uses Synthetix skew-based pricing formula:
+  /// fillPrice = price × ((1 + pd_before) + (1 + pd_after)) / 2
+  /// where pd = skew / skewScale
+  Future<double> calculateFillPrice({
+    required String symbol,
+    required double size,
+    required bool isLong,
+    required double currentPrice,
+  }) async {
+    try {
+      final skew = await getMarketSkew(symbol);
+      const skewScale = 1000000.0; // Default Synthetix skew scale
+
+      final direction = isLong ? 1.0 : -1.0;
+
+      // Premium/discount before trade
+      final pdBefore = skew / skewScale;
+
+      // Premium/discount after trade
+      final skewAfter = skew + (direction * size);
+      final pdAfter = skewAfter / skewScale;
+
+      // Average fill price
+      final fillPrice =
+          currentPrice * ((1 + pdBefore) + (1 + pdAfter)) / 2;
+
+      return fillPrice;
+    } catch (e) {
+      print('Error calculating fill price: $e');
+      return 0.0;
+    }
+  }
+
+  /// Gets the current funding rate for a market
+  /// Returns as decimal (e.g., 0.0001 for 0.01%)
+  Future<double> getMarketFundingRate(String symbol) async {
+    try {
+      final marketId = _marketIds[symbol];
+      if (marketId == null) {
+        throw Exception('Market not found for symbol: $symbol');
+      }
+
+      // TODO: Query from Synthetix subgraph or contract
+      // For now, return placeholder
+      return 0.0;
+    } catch (e) {
+      print('Error getting funding rate: $e');
+      return 0.0;
+    }
+  }
+
+  /// Gets user's open positions
+  /// Returns list of position maps with size, side, entryPrice, etc.
+  Future<List<Map<String, dynamic>>> getUserPositions(String symbol) async {
+    try {
+      final marketId = _marketIds[symbol];
+      if (marketId == null) {
+        throw Exception('Market not found for symbol: $symbol');
+      }
+
+      // TODO: Query from contract or subgraph
+      return [];
+    } catch (e) {
+      print('Error getting user positions: $e');
+      return [];
+    }
+  }
+
+  /// Gets user's open orders
+  /// Returns list of order maps with size, price, status, etc.
+  Future<List<Map<String, dynamic>>> getUserOpenOrders(String symbol) async {
+    try {
+      final marketId = _marketIds[symbol];
+      if (marketId == null) {
+        throw Exception('Market not found for symbol: $symbol');
+      }
+
+      // TODO: Query from subgraph
+      return [];
+    } catch (e) {
+      print('Error getting open orders: $e');
+      return [];
+    }
+  }
+
+  /// Gets user's order history with pagination
+  Future<List<Map<String, dynamic>>> getUserOrderHistory({
+    required String symbol,
+    required int offset,
+    required int limit,
+  }) async {
+    try {
+      final marketId = _marketIds[symbol];
+      if (marketId == null) {
+        throw Exception('Market not found for symbol: $symbol');
+      }
+
+      // TODO: Query from subgraph with pagination
+      return [];
+    } catch (e) {
+      print('Error getting order history: $e');
+      return [];
+    }
+  }
+
+  /// Gets user's trade history with pagination
+  Future<List<Map<String, dynamic>>> getUserTradeHistory({
+    required String symbol,
+    required int offset,
+    required int limit,
+  }) async {
+    try {
+      final marketId = _marketIds[symbol];
+      if (marketId == null) {
+        throw Exception('Market not found for symbol: $symbol');
+      }
+
+      // TODO: Query from subgraph with pagination
+      return [];
+    } catch (e) {
+      print('Error getting trade history: $e');
+      return [];
+    }
+  }
+
   /// Simplified ABI for PerpsMarketProxy (only the functions we need)
   static const String _perpsMarketAbi = '''
   [
