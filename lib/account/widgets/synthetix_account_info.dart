@@ -49,7 +49,7 @@ class SynthetixAccountInfo extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               const Text(
-                'No Synthetix Account',
+                'No AthleteX Account',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -57,7 +57,7 @@ class SynthetixAccountInfo extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               const Text(
-                'Create a Synthetix account to deposit collateral, earn yield, and access protocol features.',
+                'Create an AthleteX account to deposit collateral, earn yield, and access protocol features.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
@@ -65,7 +65,7 @@ class SynthetixAccountInfo extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: onCreateAccount,
                 icon: const Icon(Icons.add_circle_outline),
-                label: const Text('Create Synthetix Account'),
+                label: const Text('Create AthleteX Account'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
