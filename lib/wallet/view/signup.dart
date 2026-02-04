@@ -1,5 +1,6 @@
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,6 +16,7 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool _hasDispatchedAuthFailed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,9 @@ class _SignUpViewState extends State<SignUpView> {
         final bloc = context.read<WalletBloc>();
         final errorMessage = state.errorMessage;
         final walletViewStatus = state.walletViewStatus;
-        if (state.hasFailure) {
+        if (state.hasFailure && !_hasDispatchedAuthFailed) {
+          debugPrint('🟡 SignUpView: Detected failure, dispatching AuthFailed');
+          _hasDispatchedAuthFailed = true;
           WidgetsBinding.instance.addPostFrameCallback((_) {
             context.showWarningToast(
               title: 'Error',
@@ -34,6 +38,8 @@ class _SignUpViewState extends State<SignUpView> {
             );
           });
           bloc.add(AuthFailed(walletViewStatus: walletViewStatus));
+        } else if (!state.hasFailure) {
+          _hasDispatchedAuthFailed = false;
         }
         if (state.infoMessage != null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {

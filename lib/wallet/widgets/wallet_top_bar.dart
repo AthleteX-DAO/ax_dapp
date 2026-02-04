@@ -17,11 +17,14 @@ class WalletTopBar extends StatelessWidget {
           current.isWalletConnected,
       listener: (context, state) {
         final walletAddress = context.read<WalletBloc>().state.walletAddress;
-        context.read<TrackingCubit>().onConnectWalletSuccessful(
-              publicAddress: walletAddress,
-              axUnits: '"${toDecimal(state.axData.balance!, 6)} AX"',
-              walletType: 'MetaMask',
-            );
+        // Only track if balance is available
+        if (state.axData.balance != null) {
+          context.read<TrackingCubit>().onConnectWalletSuccessful(
+                publicAddress: walletAddress,
+                axUnits: '"${toDecimal(state.axData.balance!, 6)} AX"',
+                walletType: 'MetaMask',
+              );
+        }
       },
       child: BlocConsumer<WalletBloc, WalletState>(
         listenWhen: (previous, current) =>

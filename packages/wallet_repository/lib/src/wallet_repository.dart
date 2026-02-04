@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:cache/cache.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:ethereum_api/wallet_api.dart';
@@ -111,6 +113,74 @@ class WalletRepository {
     } catch (e) {
       await prefs.setBool(searchForWalletKey, false);
       return kNullAddress;
+    }
+  }
+
+  /// Creates a wallet with a recovery phrase (mnemonic)
+  /// Returns both the wallet address and 12-word recovery phrase
+  Future<WalletCreationResult> createWalletWithRecoveryPhrase() async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      // Generate 12-word mnemonic
+      final mnemonic = bip39.generateMnemonic();
+      
+      // Derive private key from mnemonic
+      final seed = bip39.mnemonicToSeed(mnemonic);
+      final privateKeyHex = _bytesToHex(seed.sublist(0, 32));
+      
+      // Import wallet with derived private key
+      _walletApiClient.addChainChangedListener();
+      final credentials = await _walletApiClient.importWalletCredentials(privateKeyHex);
+      await _walletApiClient.updateChain(defaultChain);
+      
+      _cacheWalletCredentials(credentials);
+      final walletAddress = credentials.value.address.hex;
+      
+      _walletChangeController.add(
+        Wallet(
+          status: WalletStatus.fromChain(currentChain),
+          assets: const [Token.empty],
+          address: walletAddress,
+          chain: currentChain,
+        ),
+      );
+      
+      return WalletCreationResult(
+        address: walletAddress,
+        privateKeyHex: privateKeyHex,
+        recoveryPhrase: mnemonic,
+      );
+    } catch (e) {
+      debugPrint('ERROR creating wallet with mnemonic: $e');
+      await prefs.setBool(searchForWalletKey, false);
+      return WalletCreationResult(
+        address: kNullAddress,
+        privateKeyHex: '',
+        recoveryPhrase: '',
+      );
+    }
+  }
+
+  /// Recovers a wallet from a 12-word recovery phrase
+  /// Returns the wallet address
+  Future<String> recoverWalletFromPhrase(String recoveryPhrase) async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      // Validate mnemonic
+      if (!bip39.validateMnemonic(recoveryPhrase.trim())) {
+        throw Exception('Invalid recovery phrase');
+      }
+      
+      // Derive private key from mnemonic
+      final seed = bip39.mnemonicToSeed(recoveryPhrase.trim());
+      final privateKeyHex = _bytesToHex(seed.sublist(0, 32));
+      
+      // Import wallet
+      return await importWallet(privateKeyHex);
+    } catch (e) {
+      debugPrint('ERROR recovering wallet from phrase: $e');
+      await prefs.setBool(searchForWalletKey, false);
+      rethrow;
     }
   }
 
@@ -264,4 +334,9 @@ class WalletRepository {
 
   /// Returns the amount typically needed to pay for one unit of gas(in gwei).
   Future<double> getGasPrice() => _walletApiClient.getGasPrice();
+
+  /// Helper to convert bytes to hex string without 0x prefix
+  String _bytesToHex(Uint8List bytes) {
+    return bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join('');
+  }
 }

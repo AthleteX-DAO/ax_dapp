@@ -25,6 +25,7 @@ class Token extends Equatable {
     required EthereumAddressConfig addressConfig,
     required EthereumChain chain,
     required this.currency,
+    this.balance,
   })  : _addressConfig = addressConfig,
         _chain = chain;
 
@@ -132,6 +133,9 @@ class Token extends Equatable {
   /// Represents [Token]'s currency.
   final EthereumCurrency currency;
 
+  /// Optional balance for this [Token] (null when unknown).
+  final double? balance;
+
   /// Represents an empty [Token].
   static const empty = Token(
     name: '__empty__',
@@ -147,6 +151,7 @@ class Token extends Equatable {
         sport,
         _addressConfig,
         _chain,
+      balance,
       ];
 }
 

@@ -4,6 +4,7 @@ import 'package:ethereum_api/src/config/models/models.dart';
 import 'package:ethereum_api/src/event_markets/event_markets.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 
@@ -25,13 +26,31 @@ class ConfigApiClient {
         _gysrGqlClientController = BehaviorSubject<GraphQLClient>.seeded(
           defaultChain.createGysrGraphQLClient(),
         ) {
-    _aptRouterClientController
-        .add(defaultChain.createAptRouterClient(_web3ClientController.value));
-    _aptFactoryClientController
-        .add(defaultChain.createAptFactoryClient(_web3ClientController.value));
-    _eventMarketClientController.add(
-      defaultChain.createEventMarketsClient(_web3ClientController.value),
-    );
+    // Only create APT clients if addresses are configured
+    try {
+      _aptRouterClientController
+          .add(defaultChain.createAptRouterClient(_web3ClientController.value));
+    } catch (e) {
+      // Skip if APT Router address not configured
+      debugPrint('APT Router not configured for $defaultChain');
+    }
+    
+    try {
+      _aptFactoryClientController
+          .add(defaultChain.createAptFactoryClient(_web3ClientController.value));
+    } catch (e) {
+      // Skip if APT Factory address not configured
+      debugPrint('APT Factory not configured for $defaultChain');
+    }
+    
+    try {
+      _eventMarketClientController.add(
+        defaultChain.createEventMarketsClient(_web3ClientController.value),
+      );
+    } catch (e) {
+      // Skip if Event Market address not configured
+      debugPrint('Event Market not configured for $defaultChain');
+    }
   }
 
   final http.Client _httpClient;
@@ -83,14 +102,27 @@ class ConfigApiClient {
     _web3ClientController.add(web3Client);
     previousWeb3Client?.dispose();
 
-    final aptRouterClient = chain.createAptRouterClient(web3Client);
-    _aptRouterClientController.add(aptRouterClient);
+    // Only create APT clients if addresses are configured
+    try {
+      final aptRouterClient = chain.createAptRouterClient(web3Client);
+      _aptRouterClientController.add(aptRouterClient);
+    } catch (e) {
+      debugPrint('APT Router not configured for $chain: $e');
+    }
 
-    final aptFactoryClient = chain.createAptFactoryClient(web3Client);
-    _aptFactoryClientController.add(aptFactoryClient);
+    try {
+      final aptFactoryClient = chain.createAptFactoryClient(web3Client);
+      _aptFactoryClientController.add(aptFactoryClient);
+    } catch (e) {
+      debugPrint('APT Factory not configured for $chain: $e');
+    }
 
-    final eventMarketsClient = chain.createEventMarketsClient(web3Client);
-    _eventMarketClientController.add(eventMarketsClient);
+    try {
+      final eventMarketsClient = chain.createEventMarketsClient(web3Client);
+      _eventMarketClientController.add(eventMarketsClient);
+    } catch (e) {
+      debugPrint('Event Market not configured for $chain: $e');
+    }
 
     final dexGqlClient = chain.createDexGraphQLClient();
     _dexGqlClientController.add(dexGqlClient);

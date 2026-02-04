@@ -234,20 +234,28 @@ extension ChainConfigX on EthereumChain {
       Web3Client(rpcUrl, httpClient);
 
   /// Creates an [APTRouter] client based on this [EthereumChain] configuration.
-  APTRouter createAptRouterClient(Web3Client client) => APTRouter(
-        address: EthereumAddress.fromHex(
-          const EthereumAddressConfig.dexRouterAddress().address(this),
-        ),
-        client: client,
-      );
+  APTRouter createAptRouterClient(Web3Client client) {
+    final address = const EthereumAddressConfig.dexRouterAddress().address(this);
+    if (address.isEmpty) {
+      throw UnsupportedError('DEX Router address not configured for $this');
+    }
+    return APTRouter(
+      address: EthereumAddress.fromHex(address),
+      client: client,
+    );
+  }
 
   /// Creates a [APTFactory] client based on this [EthereumChain] configuration.
-  APTFactory createAptFactoryClient(Web3Client client) => APTFactory(
-        address: EthereumAddress.fromHex(
-          const EthereumAddressConfig.dexFactoryAddress().address(this),
-        ),
-        client: client,
-      );
+  APTFactory createAptFactoryClient(Web3Client client) {
+    final address = const EthereumAddressConfig.dexFactoryAddress().address(this);
+    if (address.isEmpty) {
+      throw UnsupportedError('DEX Factory address not configured for $this');
+    }
+    return APTFactory(
+      address: EthereumAddress.fromHex(address),
+      client: client,
+    );
+  }
 
   EventBasedPredictionMarket createEventMarketsClient(Web3Client client) =>
       EventBasedPredictionMarket(

@@ -1,7 +1,9 @@
 import 'package:ax_dapp/account/account.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
+import 'package:ax_dapp/wallet/widgets/recovery_phrase_modal.dart';
 import 'package:ax_dapp/wallet/widgets/terms_and_conditions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,6 +19,8 @@ class DrawerView extends StatelessWidget {
       backgroundColor: Colors.black,
       child: BlocBuilder<WalletBloc, WalletState>(
         builder: (BuildContext context, state) {
+          debugPrint('🏗️ DrawerView building with walletViewStatus: ${state.walletViewStatus}');
+          
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -43,7 +47,9 @@ class DrawerView extends StatelessWidget {
           );
         },
         buildWhen: (previous, current) {
-          return previous.walletViewStatus != current.walletViewStatus;
+          final shouldRebuild = previous.walletViewStatus != current.walletViewStatus;
+          debugPrint('🏗️ DrawerView buildWhen: ${previous.walletViewStatus} → ${current.walletViewStatus}, shouldRebuild: $shouldRebuild');
+          return shouldRebuild;
         },
       ),
     );

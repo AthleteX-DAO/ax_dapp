@@ -8,11 +8,22 @@ class UnifiedPortfolioUseCase {
 
   final WalletRepository _walletRepository;
 
-  /// Total USDC across Ethereum Mainnet and Polygon Mainnet.
+  /// Total USDC on the user's current chain.
+  Future<double> totalUsdcOnCurrentChain() async {
+    final currentChain = _walletRepository.currentChain;
+    return _safeTokenBalance(Token.usdc(currentChain));
+  }
+
+  /// Total USDC across primary chains.
   Future<double> totalUsdcAcrossPrimaryChains() async {
-    final eth = await _safeTokenBalance(Token.usdc(EthereumChain.ethereumMainnet));
-    final poly = await _safeTokenBalance(Token.usdc(EthereumChain.polygonMainnet));
-    return eth + poly;
+    final primaryChains = EthereumChain.mainnetChains;
+    double total = 0.0;
+    for (final chain in primaryChains) {
+      final usdcToken = Token.usdc(chain);
+      final balance = await _safeTokenBalance(usdcToken);
+      total += balance;
+    }
+    return total;
   }
 
   Future<double> _safeTokenBalance(Token token) async {

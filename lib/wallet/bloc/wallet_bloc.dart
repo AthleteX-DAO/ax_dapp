@@ -52,7 +52,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<FetchWalletBalanceRequested>(_onFetchWalletBalanceRequested);
 
     add(const WatchWalletChangesStarted());
-    add(const WatchAxtChangesStarted());
     add(const WatchTokenChangesStarted());
   }
 
@@ -96,19 +95,36 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     ProfileViewRequestedFromLogin event,
     Emitter<WalletState> emit,
   ) async {
-    emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
+    emit(
+      state.copyWith(walletViewStatus: WalletViewStatus.loading));
+    debugPrint('========== LOGIN FLOW START ==========');
+    debugPrint('1. Emitted loading');
     final email = state.email;
     final password = state.password;
+    debugPrint('2. Email: $email, Password length: ${password.length}');
     try {
+      debugPrint('3. About to signIn to Firebase Auth');
       await _fireBaseAuthRepository.signIn(
         email: email,
         password: password,
       );
-      final hex = await _fireStoreCredentialsRepository.loadCredentials(email);
-      final walletAddress = await _walletRepository.importWallet(hex);
-      final privateKey = _walletRepository.privateKey;
-      debugPrint(privateKey);
+      debugPrint('4. SignIn succeeded');
+      
+      debugPrint('5. About to load and decrypt credentials from Firebase');
+      final privateKeyHex = await _fireStoreCredentialsRepository.loadCredentials(
+        email,
+        password,
+      );
+      debugPrint('6. Credentials decrypted, hex length: ${privateKeyHex.length}');
+      
+      debugPrint('7. About to import wallet');
+      final walletAddress = await _walletRepository.importWallet(privateKeyHex);
+      debugPrint('8. Imported wallet: $walletAddress');
+      
+      debugPrint('9. About to ensure Synthetix account');
       unawaited(_ensureSynthetixAccount(emit));
+      
+      debugPrint('10. About to emit profile');
       emit(
         state.copyWith(
           walletAddress: walletAddress,
@@ -116,8 +132,10 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           walletViewStatus: WalletViewStatus.profile,
         ),
       );
+      debugPrint('11. LOGIN COMPLETE: walletViewStatus=${state.walletViewStatus}');
+      debugPrint('========== LOGIN FLOW END ==========');
     } on LogInWithEmailAndPasswordFailure catch (e) {
-      debugPrint('ERROR: $e');
+      debugPrint('ERROR LoginFailure: $e');
       emit(
         state.copyWith(
           failure: WalletFailure.fromUnsuccessfulOperation(),
@@ -125,8 +143,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           walletViewStatus: WalletViewStatus.login,
         ),
       );
-    } catch (_) {
-      debugPrint('ERROR: $_');
+    } catch (e, st) {
+      debugPrint('ERROR Generic: $e\n$st');
       emit(
         state.copyWith(
           failure: WalletFailure.fromUnsuccessfulOperation(),
@@ -157,21 +175,65 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(state.copyWith(walletViewStatus: WalletViewStatus.loading));
     final email = state.email;
     final password = state.password;
+    debugPrint('========== SIGNUP FLOW START ==========');
+    debugPrint('1. Emitted loading');
+    debugPrint('2. Email: $email, Password length: ${password.length}');
     try {
+      debugPrint('3. About to createUser in Firebase Auth');
       await _fireBaseAuthRepository.createUser(
         email: email,
         password: password,
       );
-      final walletAddress = await _walletRepository.createWallet();
-      await _fireStoreCredentialsRepository.storeCredentials(email);
+      debugPrint('4. User created successfully in Firebase Auth');
+      
+      debugPrint('5. About to create wallet with recovery phrase');
+      final walletResult = await _walletRepository.createWalletWithRecoveryPhrase();
+      
+      if (!walletResult.isValid) {
+        throw Exception('Failed to create wallet');
+      }
+      
+      final walletAddress = walletResult.address;
+      final privateKeyHex = walletResult.privateKeyHex;
+      final recoveryPhrase = walletResult.recoveryPhrase;
+      
+      debugPrint('6. Wallet created: $walletAddress');
+      debugPrint('7. Recovery phrase generated (${walletResult.recoveryWords.length} words)');
+      
+      debugPrint('8. About to encrypt and store credentials in Firebase');
+      unawaited(
+        _fireStoreCredentialsRepository
+            .storeCredentials(email, password, privateKeyHex)
+            .then((_) => debugPrint('9. Credentials encrypted and stored successfully'))
+            .catchError((e) {
+          debugPrint('9. Credentials backup failed: $e');
+          if (!emit.isDone) {
+            emit(
+              state.copyWith(
+                infoMessage:
+                    'Backup failed. Please save your recovery phrase. You can retry backup from settings.',
+              ),
+            );
+          }
+        }),
+      );
+
+      debugPrint('10. About to ensure Synthetix account');
       unawaited(_ensureSynthetixAccount(emit));
+
+      debugPrint('11. About to emit profile with recovery phrase');
       emit(
         state.copyWith(
           walletAddress: walletAddress,
+          walletStatus: WalletStatus.connected,
           walletViewStatus: WalletViewStatus.profile,
+          recoveryPhrase: recoveryPhrase, // Add recovery phrase to state
         ),
       );
+      debugPrint('12. SIGNUP COMPLETE: walletViewStatus=${state.walletViewStatus}');
+      debugPrint('========== SIGNUP FLOW END ==========');
     } on SignUpWithEmailAndPasswordFailure catch (e) {
+      debugPrint('ERROR SignUpFailure: $e');
       emit(
         state.copyWith(
           failure: WalletFailure.fromUnsuccessfulOperation(),
@@ -179,10 +241,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           walletViewStatus: WalletViewStatus.signup,
         ),
       );
-    } catch (_) {
+    } catch (e, st) {
+      debugPrint('ERROR Generic SignUp: $e\n$st');
       emit(
         state.copyWith(
           failure: WalletFailure.fromUnsuccessfulOperation(),
+          errorMessage: 'Signup failed: ${e.toString()}',
           walletViewStatus: WalletViewStatus.signup,
         ),
       );
@@ -278,9 +342,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     await emit.forEach<Wallet>(
       _walletRepository.walletChanges,
-      onData: (wallet) => state.copyWithWallet(wallet),
+      onData: (wallet) {
+        debugPrint('WALLET CHANGED: address=${wallet.address} status=${wallet.status} walletviewstatus=${state.walletViewStatus}');
+        return state.copyWithWallet(wallet);
+      }
     );
   }
+
 
   Future<void> _onFetchWalletBalanceRequested(
     FetchWalletBalanceRequested event,
@@ -371,13 +439,21 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     AuthFailed event,
     Emitter<WalletState> emit,
   ) async {
+    debugPrint('🔴 AuthFailed dispatched! Current viewStatus: ${state.walletViewStatus}, Event viewStatus: ${event.walletViewStatus}');
     final walletViewStatus = event.walletViewStatus.currentStatus();
+    debugPrint('🔴 AuthFailed setting viewStatus to: $walletViewStatus');
+    
+    // Use copyWith to preserve existing state instead of creating brand new state
     emit(
-      WalletState.fromWallet(
+      state.copyWith(
         walletViewStatus: walletViewStatus,
-        wallet: const Wallet.disconnected(),
+        walletStatus: WalletStatus.disconnected,
+        walletAddress: kEmptyAddress,
+        failure: WalletFailure.none,
+        errorMessage: null,
       ),
     );
+    debugPrint('🔴 AuthFailed complete. New viewStatus: ${state.walletViewStatus}');
   }
 
   void _onInfoMessageCleared(
