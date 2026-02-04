@@ -82,20 +82,27 @@
   </style>
 </head>
 <body>
-  <!-- This script installs service_worker.js to provide PWA functionality to
-       application. For more information, see:
-       https://developers.google.com/web/fundamentals/primers/service-workers -->
   <div class="loading">
     <div class="loader"></div>
   </div>
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
-      });
-    }
+    var serviceWorkerVersion = null;
   </script>
-  <script src="main.dart.js" type="application/javascript"></script>
+  <script src="flutter.js" defer></script>
+  <script>
+    window.addEventListener('load', function (ev) {
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
+            appRunner.runApp();
+          });
+        },
+      });
+    });
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/web3@1.7.3/dist/web3.min.js"></script>
   <script src="./libraries/PrizePoolFactory.js"></script>
 </body>
