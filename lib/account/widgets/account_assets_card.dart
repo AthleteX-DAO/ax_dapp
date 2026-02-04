@@ -16,6 +16,7 @@ class AccountAssetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.sizeOf(context).width;
+    final balance = token.balance;
     return SizedBox(
       height: 40,
       child: OutlinedButton(
@@ -84,6 +85,32 @@ class AccountAssetCard extends StatelessWidget {
                 ],
               ),
             ),
+            const Spacer(),
+            if (balance != null)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    balance.toStringAsFixed(4),
+                    style: textStyle(
+                      Colors.white,
+                      12,
+                      isBold: true,
+                      isUline: false,
+                    ),
+                  ),
+                  Text(
+                    'Balance',
+                    style: textStyle(
+                      Colors.white54,
+                      9,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

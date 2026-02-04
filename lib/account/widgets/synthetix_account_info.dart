@@ -1,3 +1,5 @@
+import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 
 /// Displays Synthetix V3 account information including collateral, debt, and c-ratio
@@ -26,113 +28,173 @@ class SynthetixAccountInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Card(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Center(
-            child: CircularProgressIndicator(),
+      return Container(
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.white.withOpacity(0.08),
+              Colors.white.withOpacity(0.06),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.1),
+            width: 1.5,
+          ),
+        ),
+        child: const Center(
+          child: CircularProgressIndicator(),
         ),
       );
     }
 
     if (accountId == 0) {
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const Icon(
+      return Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.white.withOpacity(0.08),
+              Colors.white.withOpacity(0.06),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.1),
+            width: 1.5,
+          ),
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
                 Icons.account_balance_wallet_outlined,
                 size: 48,
-                color: Colors.grey,
+                color: Colors.white54,
               ),
-              const SizedBox(height: 16),
-              const Text(
-                'No AthleteX Account',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'No AthleteX Account',
+              style: textStyle(
+                Colors.white,
+                18,
+                isBold: true,
+                isUline: false,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Create an AthleteX account to deposit collateral, earn yield, and access protocol features.',
+              textAlign: TextAlign.center,
+              style: textStyle(
+                Colors.white54,
+                14,
+                isBold: false,
+                isUline: false,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: onCreateAccount,
+              icon: const Icon(Icons.add_circle_outline),
+              label: const Text('Create AthleteX Account'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryOrangeColor,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'Create an AthleteX account to deposit collateral, earn yield, and access protocol features.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: onCreateAccount,
-                icon: const Icon(Icons.add_circle_outline),
-                label: const Text('Create AthleteX Account'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Synthetix Account #$accountId',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                _buildHealthBadge(),
-              ],
-            ),
-            const SizedBox(height: 16),
-            _buildInfoRow(
-              'Total Deposited',
-              _formatCollateral(collateralDeposited),
-              Icons.account_balance_wallet,
-            ),
-            const Divider(height: 20),
-            _buildInfoRow(
-              'Delegated to Pools',
-              _formatCollateral(collateralAssigned),
-              Icons.pie_chart,
-            ),
-            const Divider(height: 20),
-            _buildInfoRow(
-              'Available to Withdraw',
-              _formatCollateral(collateralAvailable),
-              Icons.arrow_circle_down,
-              color: Colors.green,
-            ),
-            const Divider(height: 20),
-            _buildInfoRow(
-              'Current Debt',
-              _formatDebt(debt),
-              Icons.monetization_on,
-              color: debt > BigInt.zero ? Colors.red : Colors.grey,
-            ),
-            const Divider(height: 20),
-            _buildInfoRow(
-              'Collateral Ratio',
-              _formatCRatio(collateralRatio),
-              Icons.trending_up,
-              color: _getCRatioColor(),
-            ),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.08),
+            Colors.white.withOpacity(0.06),
           ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.1),
+          width: 1.5,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'AthleteX Account #$accountId',
+                style: textStyle(
+                  Colors.white,
+                  18,
+                  isBold: true,
+                  isUline: false,
+                ),
+              ),
+              _buildHealthBadge(),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _buildInfoRow(
+            'Total Deposited',
+            _formatCollateral(collateralDeposited),
+            Icons.account_balance_wallet,
+          ),
+          const Divider(color: Colors.white24, height: 24),
+          _buildInfoRow(
+            'Delegated to Pools',
+            _formatCollateral(collateralAssigned),
+            Icons.pie_chart,
+          ),
+          const Divider(color: Colors.white24, height: 24),
+          _buildInfoRow(
+            'Available to Withdraw',
+            _formatCollateral(collateralAvailable),
+            Icons.arrow_circle_down,
+            color: Colors.green,
+          ),
+          const Divider(color: Colors.white24, height: 24),
+          _buildInfoRow(
+            'Current Debt',
+            _formatDebt(debt),
+            Icons.monetization_on,
+            color: debt > BigInt.zero ? Colors.red : Colors.white54,
+          ),
+          const Divider(color: Colors.white24, height: 24),
+          _buildInfoRow(
+            'Collateral Ratio',
+            _formatCRatio(collateralRatio),
+            Icons.trending_up,
+            color: _getCRatioColor(),
+          ),
+        ],
       ),
     );
   }
@@ -148,11 +210,16 @@ class SynthetixAccountInfo extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(icon, size: 20, color: color ?? Colors.grey),
+            Icon(icon, size: 20, color: color ?? Colors.white54),
             const SizedBox(width: 8),
             Text(
               label,
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: textStyle(
+                Colors.white54,
+                14,
+                isBold: false,
+                isUline: false,
+              ),
             ),
           ],
         ),
@@ -161,7 +228,7 @@ class SynthetixAccountInfo extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: color,
+            color: color ?? Colors.white,
           ),
         ),
       ],
@@ -173,12 +240,21 @@ class SynthetixAccountInfo extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.grey.withValues(alpha: 0.2),
+          color: Colors.grey.withOpacity(0.2),
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.4),
+            width: 1,
+          ),
         ),
-        child: const Text(
+        child: Text(
           'No Debt',
-          style: TextStyle(fontSize: 12, color: Colors.grey),
+          style: textStyle(
+            Colors.white54,
+            12,
+            isBold: false,
+            isUline: false,
+          ),
         ),
       );
     }
@@ -204,18 +280,22 @@ class SynthetixAccountInfo extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: badgeColor.withValues(alpha: 0.2),
+        color: badgeColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: badgeColor.withOpacity(0.5),
+          width: 1,
+        ),
       ),
       child: Text(
         badgeText,
-        style: TextStyle(fontSize: 12, color: badgeColor),
+        style: TextStyle(fontSize: 12, color: badgeColor, fontWeight: FontWeight.w600),
       ),
     );
   }
 
   Color _getCRatioColor() {
-    if (debt == BigInt.zero) return Colors.grey;
+    if (debt == BigInt.zero) return Colors.white54;
 
     final safeRatio = BigInt.from(400) * BigInt.from(10).pow(18);
     final warningRatio = BigInt.from(300) * BigInt.from(10).pow(18);

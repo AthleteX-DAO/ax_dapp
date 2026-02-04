@@ -32,6 +32,7 @@ import 'package:ax_dapp/service/controller/pool/pool_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
 import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
+import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,7 +59,7 @@ import 'package:ax_dapp/service/synthetix_core_service.dart';
 import 'package:ax_dapp/wallet/usecases/unified_portfolio_usecase.dart';
 
 void main() async {
-  const defaultChain = EthereumChain.polygonMainnet;
+  const defaultChain = EthereumChain.ethereumSepolia;
 
   _setupLogging();
   final dio = Dio()..interceptors.add(LoggingInterceptor());
@@ -250,6 +251,13 @@ void main() async {
           ),
           RepositoryProvider(
             create: (context) => AccountRepository(),
+          ),
+          RepositoryProvider(
+            create: (context) => VaultRepository(
+              chain: defaultChain,
+              reactiveWeb3Client: appConfig.reactiveWeb3Client,
+              walletRepository: context.read<WalletRepository>(),
+            ),
           ),
         ],
         child: App(configRepository: configRepository),

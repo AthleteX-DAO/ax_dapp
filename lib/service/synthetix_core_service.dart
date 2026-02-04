@@ -13,6 +13,8 @@ class SynthetixCoreService {
     _initContracts();
   }
 
+  Web3Client get client => _client;
+
   void _initContracts() {
     // Core Proxy ABI
     final coreAbi = ContractAbi.fromJson('''

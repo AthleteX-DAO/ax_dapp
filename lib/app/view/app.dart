@@ -7,6 +7,7 @@ import 'package:ax_dapp/app/widgets/top_navigation_bar/bloc/top_navigation_bar_b
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
+import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:ax_dapp/wallet/usecases/synthetix_account_bootstrap.dart';
@@ -61,6 +62,7 @@ class App extends StatelessWidget {
             walletRepository: context.read<WalletRepository>(),
             streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
             accountRepository: context.read<AccountRepository>(),
+            vaultRepository: context.read<VaultRepository>(),
           ),
         ),
         BlocProvider(

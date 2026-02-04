@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/account/models/models.dart';
 import 'package:ax_dapp/account/repository/account_repository.dart';
+import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -19,10 +20,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     required WalletRepository walletRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required AccountRepository accountRepository,
+    required VaultRepository vaultRepository,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
         _streamAppDataChangesUseCase = streamAppDataChanges,
         _accountRepository = accountRepository,
+        _vaultRepository = vaultRepository,
         super(
           AccountState(
             chain: walletRepository.currentChain,
@@ -63,6 +66,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
   final AccountRepository _accountRepository;
+  final VaultRepository _vaultRepository;
 
   FutureOr<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted event,

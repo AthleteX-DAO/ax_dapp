@@ -62,7 +62,7 @@ class WalletAssetsList extends StatelessWidget {
                     );
                   }
                   if (state.selectedAssets == AccountAssets.nfts) {
-                    Center(
+                    return Center(
                       child: Text(
                         'Coming Soon!',
                         style: textStyle(

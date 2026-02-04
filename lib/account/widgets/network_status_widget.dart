@@ -1,0 +1,235 @@
+import 'package:flutter/material.dart';
+
+class NetworkStatusWidget extends StatefulWidget {
+  const NetworkStatusWidget({
+    required this.chainName,
+    required this.ethBalance,
+    required this.gasPrice,
+    super.key,
+  });
+
+  final String chainName;
+  final double ethBalance;
+  final double gasPrice; // in gwei
+
+  @override
+  State<NetworkStatusWidget> createState() => _NetworkStatusWidgetState();
+}
+
+class _NetworkStatusWidgetState extends State<NetworkStatusWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  bool _showDetails = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _toggleDetails() {
+    setState(() {
+      _showDetails = !_showDetails;
+      if (_showDetails) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  Color get _gasPriceColor {
+    if (widget.gasPrice < 10) return Colors.green;
+    if (widget.gasPrice < 30) return Colors.yellow;
+    return Colors.orange;
+  }
+
+  String get _gasPriceLabel {
+    if (widget.gasPrice < 10) return 'Low';
+    if (widget.gasPrice < 30) return 'Standard';
+    return 'High';
+  }
+
+  Color get _ethBalanceColor {
+    if (widget.ethBalance > 0.1) return Colors.green;
+    if (widget.ethBalance > 0.01) return Colors.orange;
+    return Colors.red;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.08),
+            Colors.white.withOpacity(0.06),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.1),
+          width: 1.5,
+        ),
+      ),
+      child: Column(
+        children: [
+          // Main row with network info
+          GestureDetector(
+            onTap: _toggleDetails,
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Chain info
+                  Row(
+                    children: [
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.green.withOpacity(0.5),
+                              blurRadius: 6,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.chainName,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Connected',
+                            style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  // Gas price indicator
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _gasPriceColor.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: _gasPriceColor.withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.local_gas_station,
+                          color: _gasPriceColor,
+                          size: 12,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${widget.gasPrice.toStringAsFixed(1)} gwei',
+                          style: TextStyle(
+                            color: _gasPriceColor,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Expandable details
+          if (_showDetails) ...[
+            const SizedBox(height: 12),
+            const Divider(color: Colors.white24, height: 1),
+            const SizedBox(height: 12),
+            FadeTransition(
+              opacity: _fadeAnimation,
+              child: Column(
+                children: [
+                  _buildDetailRow(
+                    'Gas Price',
+                    '${widget.gasPrice.toStringAsFixed(1)} gwei ($_gasPriceLabel)',
+                    _gasPriceColor,
+                  ),
+                  const SizedBox(height: 10),
+                  _buildDetailRow(
+                    'ETH for Gas',
+                    '${widget.ethBalance.toStringAsFixed(4)} ETH',
+                    _ethBalanceColor,
+                  ),
+                  const SizedBox(height: 10),
+                  _buildDetailRow(
+                    'RPC Status',
+                    'Healthy',
+                    Colors.green,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value, Color valueColor) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.white54,
+            fontSize: 11,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            color: valueColor,
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+}

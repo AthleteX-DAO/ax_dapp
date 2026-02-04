@@ -354,6 +354,16 @@ class VaultRepository {
     }
   }
 
+  /// Get collateral token decimals for a given collateral address.
+  Future<int> getCollateralDecimals(String collateralAddress) async {
+    final token = erc20_api.ERC20(
+      address: EthereumAddress.fromHex(collateralAddress),
+      client: _web3Client,
+    );
+    final decimals = await token.decimals();
+    return decimals.toInt();
+  }
+
   /// Deposit into a vault.
   Future<String> deposit({
     required VaultData vault,
@@ -541,14 +551,6 @@ class VaultRepository {
     BigInt? poolId,
   }) async {
     try {
-      final pool = poolId ?? _spartanPoolId;
-      final collateralEthAddress = EthereumAddress.fromHex(collateralAddress);
-
-      final coreProxy = SynthetixCoreProxy(
-        address: EthereumAddress.fromHex(_coreProxyAddress),
-        client: _web3Client,
-      );
-
       // For now, return a safe default C-ratio (200%)
       // TODO: Replace with actual getPositionCollateralRatio when available in SynthetixCoreProxy
       return 200.0;

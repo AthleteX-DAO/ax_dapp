@@ -2,8 +2,9 @@ import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/account/models/status.dart';
 import 'package:ax_dapp/account/view/view.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/util/colors.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Account extends StatelessWidget {
@@ -46,13 +47,26 @@ class Account extends StatelessWidget {
                           isUline: false,
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                          size: 26,
-                        ),
-                        onPressed: () => Navigator.pop(context),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.vpn_key,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            tooltip: 'Copy Private Key',
+                            onPressed: () => _copyPrivateKey(context),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 26,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -62,44 +76,51 @@ class Account extends StatelessWidget {
                       ? const EdgeInsets.symmetric(horizontal: 10)
                       : EdgeInsets.zero,
                   width: constraints.maxWidth - edge,
-                  height: constraints.maxHeight * 0.8,
-                  decoration: boxDecoration(
-                    Colors.transparent,
-                    14,
-                    .5,
-                    primaryOrangeColor,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.15),
+                      width: 1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.4),
+                        blurRadius: 20,
+                        spreadRadius: 5,
+                      ),
+                    ],
                   ),
                   child: BlocBuilder<AccountBloc, AccountState>(
                     builder: (BuildContext context, state) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          if (state.accountViewStatus ==
-                                  AccountViewStatus.initial ||
-                              state.accountViewStatus ==
-                                  AccountViewStatus.details ||
-                              state.accountViewStatus == AccountViewStatus.none)
-                            SizedBox(
-                              height: constraints.maxHeight * 0.6,
-                              child: const AccountDetails(),
-                            ),
-                          if (state.accountViewStatus ==
-                              AccountViewStatus.buySell)
-                            SizedBox(
-                              height: constraints.maxHeight * 0.7,
-                              child: const AccountBuyAndSell(),
-                            ),
-                          if (state.accountViewStatus ==
-                              AccountViewStatus.deposit)
-                            const AccountDepositView(),
-                          if (state.accountViewStatus ==
-                              AccountViewStatus.withdraw)
-                            const AccountWithdrawView(),
-                          if (state.accountViewStatus ==
-                              AccountViewStatus.token)
-                            const AccountTokenView(),
-                        ],
-                      );
+                        Widget content = const SizedBox.shrink();
+
+                        if (state.accountViewStatus ==
+                                AccountViewStatus.initial ||
+                            state.accountViewStatus ==
+                                AccountViewStatus.details ||
+                            state.accountViewStatus ==
+                                AccountViewStatus.none) {
+                          content = const AccountDetails();
+                        } else if (state.accountViewStatus ==
+                            AccountViewStatus.buySell) {
+                          content = const AccountBuyAndSell();
+                        } else if (state.accountViewStatus ==
+                            AccountViewStatus.deposit) {
+                          content = const AccountDepositView();
+                        } else if (state.accountViewStatus ==
+                            AccountViewStatus.withdraw) {
+                          content = const AccountWithdrawView();
+                        } else if (state.accountViewStatus ==
+                            AccountViewStatus.token) {
+                          content = const AccountTokenView();
+                        }
+
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 250),
+                          child: content,
+                        );
                     },
                   ),
                 ),
@@ -110,4 +131,32 @@ class Account extends StatelessWidget {
       },
     );
   }
+
+  Future<void> _copyPrivateKey(BuildContext context) async {
+    final walletState = context.read<WalletBloc>().state;
+    
+    if (walletState.recoveryPhrase != null && walletState.recoveryPhrase!.isNotEmpty) {
+      await Clipboard.setData(ClipboardData(text: walletState.recoveryPhrase!));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Recovery phrase copied to clipboard'),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Recovery phrase not available'),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
 }
+

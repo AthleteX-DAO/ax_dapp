@@ -242,6 +242,10 @@ class WalletRepository {
   /// used to display the amount of ether in a human-readable format, it should
   /// not be used for anything else.
   Future<double?> getTokenBalance(String tokenAddress) async {
+    // Guard against empty addresses (unsupported chains)
+    if (tokenAddress.isEmpty) {
+      return null;
+    }
     final rawBalance = await getRawTokenBalance(tokenAddress);
     final decimal = await _walletApiClient.getDecimals(tokenAddress);
     if (rawBalance == BigInt.zero) {
