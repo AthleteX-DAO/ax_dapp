@@ -44,6 +44,10 @@ class FetchTokenInfoRequested extends AccountEvent {
   const FetchTokenInfoRequested();
 }
 
+class FetchVaultSummariesRequested extends AccountEvent {
+  const FetchVaultSummariesRequested();
+}
+
 class SelectTokenRequested extends AccountEvent {
   const SelectTokenRequested({required this.token});
   final Token token;

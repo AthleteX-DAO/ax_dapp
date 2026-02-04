@@ -12,7 +12,10 @@ class AccountState extends Equatable {
     this.tokens = const [],
     this.tokenAmountInput = 0,
     this.recipentAddress = kEmptyAddress,
-    this.withdrawTargetChain = EthereumChain.polygonMainnet,
+    this.vaults = const [],
+    this.isVaultsLoading = false,
+    this.vaultsError,
+    EthereumChain? withdrawTargetChain,
     // Synthetix account data
     this.synthetixAccountId = 0,
     BigInt? synthetixCollateralDeposited,
@@ -22,7 +25,8 @@ class AccountState extends Equatable {
     BigInt? synthetixCollateralRatio,
     this.hasSynthetixAccount = false,
     this.isSynthetixAccountLoading = false,
-  })  : synthetixCollateralDeposited = synthetixCollateralDeposited ?? _zeroBigInt,
+  })  : withdrawTargetChain = withdrawTargetChain ?? chain,
+        synthetixCollateralDeposited = synthetixCollateralDeposited ?? _zeroBigInt,
         synthetixCollateralAssigned = synthetixCollateralAssigned ?? _zeroBigInt,
         synthetixCollateralAvailable = synthetixCollateralAvailable ?? _zeroBigInt,
         synthetixDebt = synthetixDebt ?? _zeroBigInt,
@@ -41,6 +45,9 @@ class AccountState extends Equatable {
   final double tokenAmountInput;
   final String recipentAddress;
   final EthereumChain withdrawTargetChain;
+  final List<VaultData> vaults;
+  final bool isVaultsLoading;
+  final String? vaultsError;
   
   // Synthetix V3 account data
   final int synthetixAccountId;
@@ -65,6 +72,9 @@ class AccountState extends Equatable {
         tokenAmountInput,
         recipentAddress,
         withdrawTargetChain,
+        vaults,
+        isVaultsLoading,
+        vaultsError,
         synthetixAccountId,
         synthetixCollateralDeposited,
         synthetixCollateralAssigned,
@@ -87,6 +97,9 @@ class AccountState extends Equatable {
     double? tokenAmountInput,
     String? recipentAddress,
     EthereumChain? withdrawTargetChain,
+    List<VaultData>? vaults,
+    bool? isVaultsLoading,
+    String? vaultsError,
     int? synthetixAccountId,
     BigInt? synthetixCollateralDeposited,
     BigInt? synthetixCollateralAssigned,
@@ -108,6 +121,9 @@ class AccountState extends Equatable {
       tokenAmountInput: tokenAmountInput ?? this.tokenAmountInput,
       recipentAddress: recipentAddress ?? this.recipentAddress,
       withdrawTargetChain: withdrawTargetChain ?? this.withdrawTargetChain,
+      vaults: vaults ?? this.vaults,
+      isVaultsLoading: isVaultsLoading ?? this.isVaultsLoading,
+      vaultsError: vaultsError ?? this.vaultsError,
       synthetixAccountId: synthetixAccountId ?? this.synthetixAccountId,
       synthetixCollateralDeposited: synthetixCollateralDeposited ?? this.synthetixCollateralDeposited,
       synthetixCollateralAssigned: synthetixCollateralAssigned ?? this.synthetixCollateralAssigned,

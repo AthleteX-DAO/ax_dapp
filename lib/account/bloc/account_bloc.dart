@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/account/models/models.dart';
 import 'package:ax_dapp/account/repository/account_repository.dart';
+import 'package:ax_dapp/config/athletex_synthetix_config.dart';
 import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
@@ -43,6 +44,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<SelectTokenRequested>(_onSelectTokenRequested);
     on<UpdateBalanceRequested>(_onUpdateBalanceRequested);
     on<FetchTokenInfoRequested>(_onFetchTokenInfoRequested);
+    on<FetchVaultSummariesRequested>(_onFetchVaultSummariesRequested);
     on<UpdateWithdrawInput>(_onUpdateWithdrawInput);
     on<AccountWithdrawConfirm>(_onAccountWithdrawConfirm);
     on<UpdateRecipentAddressRequested>(_onUpdateRecipentAddressRequested);
@@ -67,6 +69,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
   final AccountRepository _accountRepository;
   final VaultRepository _vaultRepository;
+  Timer? _vaultSummaryTimer;
 
   FutureOr<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted event,
@@ -89,7 +92,16 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
         add(const FetchTokenInfoRequested());
         add(const FetchSynthetixAccountRequested()); // Fetch Synthetix account data
+        add(const FetchVaultSummariesRequested());
+        _startVaultSummaryTimer();
       },
+    );
+  }
+
+  void _startVaultSummaryTimer() {
+    _vaultSummaryTimer ??= Timer.periodic(
+      const Duration(seconds: 45),
+      (_) => add(const FetchVaultSummariesRequested()),
     );
   }
 
@@ -108,6 +120,25 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         tokenBalance: balance,
       ),
     );
+  }
+
+  Future<void> _onFetchVaultSummariesRequested(
+    FetchVaultSummariesRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    emit(state.copyWith(isVaultsLoading: true, vaultsError: null));
+
+    try {
+      final vaults = await _vaultRepository.fetchVaults();
+      emit(state.copyWith(vaults: vaults, isVaultsLoading: false));
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isVaultsLoading: false,
+          vaultsError: e.toString(),
+        ),
+      );
+    }
   }
 
   Future<void> _onAccountDetailsViewRequested(
@@ -240,6 +271,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     emit(state.copyWith(withdrawTargetChain: event.chain));
   }
 
+  @override
+  Future<void> close() {
+    _vaultSummaryTimer?.cancel();
+    return super.close();
+  }
+
   // ========== Synthetix V3 Account Event Handlers ==========
 
   /// Fetches Synthetix account data (ID, collateral, debt, c-ratio)
@@ -251,12 +288,18 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       return;
     }
 
+    debugPrint(
+      'AccountBloc._onFetchSynthetixAccountRequested: wallet=${state.walletAddress}',
+    );
     emit(state.copyWith(isSynthetixAccountLoading: true));
 
     try {
       // Get account IDs for this wallet
       final accountIds = await _accountRepository.getSynthetixAccountIds(
         state.walletAddress,
+      );
+      debugPrint(
+        'AccountBloc._onFetchSynthetixAccountRequested: count=${accountIds.length}',
       );
 
       if (accountIds.isEmpty) {
@@ -272,9 +315,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       // Use first account (primary account)
       final accountId = accountIds.first.toInt();
 
-      // TODO(integration): Get collateral address from config - hardcoded for now
-      const collateralAddress = '0x...'; // Replace with actual USDC address
-      const poolId = 1; // Replace with actual pool ID
+        final collateralAddress =
+            AthleteXSynthetixConfig.primaryCollateralAddress;
+        final poolId = AthleteXSynthetixConfig.defaultPoolId;
 
       // Fetch account data in parallel
       final collateralData = await _accountRepository
@@ -407,11 +450,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       return;
     }
 
+    debugPrint(
+      'AccountBloc._onCreateSynthetixAccountRequested: wallet=${state.walletAddress}',
+    );
     emit(state.copyWith(isSynthetixAccountLoading: true));
 
     try {
-      final accountId = _deriveAccountId(state.walletAddress);
-      await _accountRepository.createSynthetixAccount(accountId: accountId);
+      await _accountRepository.createSynthetixAccount();
+      debugPrint('AccountBloc: createSynthetixAccount completed');
 
       // After creation, fetch the account to display details
       add(const FetchSynthetixAccountRequested());
@@ -419,13 +465,5 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       debugPrint('Error creating Synthetix account: $e');
       emit(state.copyWith(isSynthetixAccountLoading: false));
     }
-  }
-
-  int _deriveAccountId(String walletAddress) {
-    final normalized = walletAddress.toLowerCase().replaceFirst('0x', '');
-    final trimmed = normalized.padLeft(8, '0').substring(0, normalized.length < 20 ? normalized.length : 20);
-    final hash = BigInt.parse(trimmed, radix: 16);
-    final mod = BigInt.from(1000000000000); // 1e12
-    return (hash % mod).toInt();
   }
 }
