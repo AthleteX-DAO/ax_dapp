@@ -20,28 +20,48 @@ class SpotMarketsLoaded extends SpotMarketsState {
     required this.markets,
     required this.selectedMarket,
     required this.marketData,
+    required this.priceHistory,
+    required this.selectedRange,
     this.showSidebar = true,
+    this.pendingOrders = const [],
   });
 
   final List<String> markets;
   final String selectedMarket;
   final Map<String, SpotMarketModel> marketData;
+  final Map<String, List<GraphData>> priceHistory;
+  final SpotMarketChartRange selectedRange;
   final bool showSidebar;
+  final List<PendingOrder> pendingOrders;
 
   @override
-  List<Object?> get props => [markets, selectedMarket, marketData, showSidebar];
+  List<Object?> get props => [
+        markets,
+        selectedMarket,
+        marketData,
+        priceHistory,
+        selectedRange,
+        showSidebar,
+        pendingOrders,
+      ];
 
   SpotMarketsLoaded copyWith({
     List<String>? markets,
     String? selectedMarket,
     Map<String, SpotMarketModel>? marketData,
+    Map<String, List<GraphData>>? priceHistory,
+    SpotMarketChartRange? selectedRange,
     bool? showSidebar,
+    List<PendingOrder>? pendingOrders,
   }) {
     return SpotMarketsLoaded(
       markets: markets ?? this.markets,
       selectedMarket: selectedMarket ?? this.selectedMarket,
       marketData: marketData ?? this.marketData,
+      priceHistory: priceHistory ?? this.priceHistory,
+      selectedRange: selectedRange ?? this.selectedRange,
       showSidebar: showSidebar ?? this.showSidebar,
+      pendingOrders: pendingOrders ?? this.pendingOrders,
     );
   }
 }
@@ -67,6 +87,39 @@ class SpotMarketOrderPlaced extends SpotMarketsState {
 
   @override
   List<Object?> get props => [message, orderId];
+}
+
+class SpotMarketOrderAwaitingConfirmation extends SpotMarketsState {
+  const SpotMarketOrderAwaitingConfirmation({
+    required this.pendingOrder,
+  });
+
+  final PendingOrder pendingOrder;
+
+  @override
+  List<Object?> get props => [pendingOrder];
+}
+
+class SpotMarketOrderApprovalNeeded extends SpotMarketsState {
+  const SpotMarketOrderApprovalNeeded({
+    required this.pendingOrder,
+  });
+
+  final PendingOrder pendingOrder;
+
+  @override
+  List<Object?> get props => [pendingOrder];
+}
+
+class SpotMarketOrderProcessing extends SpotMarketsState {
+  const SpotMarketOrderProcessing({
+    required this.pendingOrder,
+  });
+
+  final PendingOrder pendingOrder;
+
+  @override
+  List<Object?> get props => [pendingOrder];
 }
 
 class SpotMarketsGasEstimate extends SpotMarketsState {
