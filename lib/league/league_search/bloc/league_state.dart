@@ -7,7 +7,7 @@ class LeagueState extends Equatable {
     this.allLeagues = const [],
     this.filteredLeagues = const [],
     this.sports = const [],
-    this.selectedChain = EthereumChain.polygonMainnet,
+    this.selectedChain = EthereumChain.none,
     this.selectedSport = SupportedSport.all,
     this.filteredLeagueTeams = const [],
     this.leagueTeams = const [],

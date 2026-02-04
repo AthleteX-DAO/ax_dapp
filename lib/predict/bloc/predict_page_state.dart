@@ -6,7 +6,7 @@ class PredictPageState extends Equatable {
     this.predictions = const [],
     this.selectedMarket = SupportedPredictionMarkets.all,
     this.filteredPredictions = const [],
-    this.selectedChain = EthereumChain.polygonMainnet,
+    this.selectedChain = EthereumChain.none,
     this.visiblePredictionIds = const {},
   });
 

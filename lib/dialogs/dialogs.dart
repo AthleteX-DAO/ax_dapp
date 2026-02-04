@@ -29,7 +29,7 @@ export 'sell/bloc/sell_dialog_bloc.dart'
         InSufficientFailure,
         exceptionMessage,
         UpdateSwapController;
-export 'sell/sell_dialog.dart' hide LongAptButton, ShortAptButton;
+export 'sell/sell_dialog.dart';
 export 'sell/widgets/widgets.dart'
     hide
         Balance,

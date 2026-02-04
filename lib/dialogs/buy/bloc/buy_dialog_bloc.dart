@@ -81,9 +81,13 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       _streamAppDataChanges.appDataChanges,
       onData: (appData) {
         final appConfig = appData.appConfig;
-        swapRepository
-          ..aptFactory = appConfig.reactiveAptFactoryClient.value
-          ..aptRouter = appConfig.reactiveAptRouterClient.value;
+        final aptFactory = appConfig.reactiveAptFactoryClient.valueOrNull;
+        final aptRouter = appConfig.reactiveAptRouterClient.valueOrNull;
+        if (aptFactory != null && aptRouter != null) {
+          swapRepository
+            ..aptFactory = aptFactory
+            ..aptRouter = aptRouter;
+        }
         swapRepository.controller.credentials =
             _walletRepository.credentials.value;
         swapRepository.factoryAddress.value =

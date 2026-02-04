@@ -69,14 +69,18 @@ class PredictionPageBloc
           ),
         );
         final appConfig = appData.appConfig;
-        _eventMarketRepository
-          ..aptFactory = appConfig.reactiveAptFactoryClient.value
-          ..aptRouter = appConfig.reactiveAptRouterClient.value
-          ..eventBasedPredictionMarket =
-              appConfig.reactiveEventMarketsClient.value
-          ..controller.client.value = appConfig.reactiveWeb3Client.value
-          ..controller.credentials = _walletRepository.credentials.value
-          ..marketAddress.value = state.predictionModel.marketAddress;
+        final aptFactory = appConfig.reactiveAptFactoryClient.valueOrNull;
+        final aptRouter = appConfig.reactiveAptRouterClient.valueOrNull;
+        if (aptFactory != null && aptRouter != null) {
+          _eventMarketRepository
+            ..aptFactory = aptFactory
+            ..aptRouter = aptRouter
+            ..eventBasedPredictionMarket =
+                appConfig.reactiveEventMarketsClient.value
+            ..controller.client.value = appConfig.reactiveWeb3Client.value
+            ..controller.credentials = _walletRepository.credentials.value
+            ..marketAddress.value = state.predictionModel.marketAddress;
+        }
       },
     );
   }

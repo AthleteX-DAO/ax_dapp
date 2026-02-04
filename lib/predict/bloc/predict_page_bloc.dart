@@ -68,9 +68,13 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
       _streamAppDataChanges.appDataChanges,
       onData: (appData) {
         final appConfig = appData.appConfig;
-        _eventMarketRepository
-          ..aptFactory = appConfig.reactiveAptFactoryClient.value
-          ..aptRouter = appConfig.reactiveAptRouterClient.value;
+        final aptFactory = appConfig.reactiveAptFactoryClient.valueOrNull;
+        final aptRouter = appConfig.reactiveAptRouterClient.valueOrNull;
+        if (aptFactory != null && aptRouter != null) {
+          _eventMarketRepository
+            ..aptFactory = aptFactory
+            ..aptRouter = aptRouter;
+        }
         if (appData.chain.chainId != state.selectedChain.chainId) {
           emit(
             state.copyWith(

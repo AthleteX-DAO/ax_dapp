@@ -8,7 +8,7 @@ class MarketsPageState extends Equatable {
     this.filteredAthletes = const [],
     this.selectedMarket = SupportedMarkets.all,
     this.selectedSport = SupportedSport.all,
-    this.selectedChain = EthereumChain.polygonMainnet,
+    this.selectedChain = EthereumChain.none,
     this.axPrice = 0.0,
   });
 

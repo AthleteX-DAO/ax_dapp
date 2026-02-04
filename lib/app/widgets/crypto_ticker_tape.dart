@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ax_dapp/repositories/market_price/market_price_repository.dart';
 import 'package:flutter/material.dart';
 
 /// Cryptocurrency ticker tape widget showing top 15 cryptos with scrolling animation
@@ -16,6 +17,9 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
   bool _isLoading = true;
   late ScrollController _scrollController2;
   Timer? _refreshTimer;
+  late MarketPriceRepository _marketPriceRepository;
+  DateTime _lastUserScroll = DateTime.fromMillisecondsSinceEpoch(0);
+  static const double _scrollSpeed = 0.6;
 
   @override
   void initState() {
@@ -23,9 +27,13 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
     _scrollController = AnimationController(
       duration: const Duration(seconds: 30),
       vsync: this,
-    )..repeat();
+    );
 
     _scrollController2 = ScrollController();
+    _marketPriceRepository = MarketPriceRepository();
+
+    _scrollController.addListener(_onAutoScrollTick);
+    _scrollController.repeat();
     
     _fetchCryptoData();
     
@@ -35,13 +43,65 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
     });
   }
 
+  void _onAutoScrollTick() {
+    if (!_scrollController2.hasClients) return;
+
+    final now = DateTime.now();
+    if (now.difference(_lastUserScroll).inSeconds < 2) return;
+
+    final maxScroll = _scrollController2.position.maxScrollExtent;
+    if (maxScroll == 0) return;
+
+    final halfScroll = maxScroll / 2;
+    final nextOffset = _scrollController2.offset + _scrollSpeed;
+
+    if (nextOffset >= halfScroll) {
+      _scrollController2.jumpTo(nextOffset - halfScroll);
+    } else {
+      _scrollController2.jumpTo(nextOffset);
+    }
+  }
+
   Future<void> _fetchCryptoData() async {
     try {
-      // For now, use mock data to avoid dependency issues
-      // In production, you'd fetch from TokensRepository or CoinGecko API
+      final symbols = <String>[
+        'BTC',
+        'ETH',
+        'SOL',
+        'XRP',
+        'ADA',
+        'DOT',
+        'LINK',
+        'MATIC',
+        'AVAX',
+        'OP',
+        'ARB',
+        'LDO',
+        'UNI',
+        'AAVE',
+        'USDC',
+      ];
+
+      final summaries =
+          await _marketPriceRepository.fetchMarketSummaries(symbols);
+
+      final cryptos = <CryptoTicker>[];
+      for (final symbol in symbols) {
+        final summary = summaries[symbol];
+        if (summary == null) continue;
+        cryptos.add(
+          CryptoTicker(
+            summary.symbol,
+            summary.name,
+            summary.price,
+            summary.change1h,
+          ),
+        );
+      }
+
       if (mounted) {
         setState(() {
-          _cryptos = _getMockCryptos();
+          _cryptos = cryptos.isNotEmpty ? cryptos : _getMockCryptos();
           _isLoading = false;
         });
       }
@@ -81,6 +141,7 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
     _scrollController.dispose();
     _scrollController2.dispose();
     _refreshTimer?.cancel();
+    _marketPriceRepository.dispose();
     super.dispose();
   }
 
@@ -109,14 +170,23 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
     return Container(
       height: 40,
       color: const Color(0xFF1a1a1a),
-      child: SingleChildScrollView(
-        controller: _scrollController2,
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            for (int i = 0; i < displayCryptos.length; i++)
-              _TickerItem(crypto: displayCryptos[i]),
-          ],
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification is UserScrollNotification) {
+            _lastUserScroll = DateTime.now();
+          }
+          return false;
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController2,
+          scrollDirection: Axis.horizontal,
+          physics: const ClampingScrollPhysics(),
+          child: Row(
+            children: [
+              for (int i = 0; i < displayCryptos.length; i++)
+                _TickerItem(crypto: displayCryptos[i]),
+            ],
+          ),
         ),
       ),
     );
@@ -172,7 +242,7 @@ class _TickerItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          // 24h change
+          // 1h change
           SizedBox(
             width: 60,
             child: Text(

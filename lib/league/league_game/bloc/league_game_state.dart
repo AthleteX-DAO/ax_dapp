@@ -8,7 +8,7 @@ class LeagueGameState extends Equatable {
     this.rosters = const {},
     this.athletes = const [],
     this.filteredAthletes = const [],
-    this.selectedChain = EthereumChain.polygonMainnet,
+    this.selectedChain = EthereumChain.none,
     this.startDate = '',
     this.endDate = '',
     this.differenceInDays = 0,
