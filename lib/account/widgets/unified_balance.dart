@@ -1,8 +1,8 @@
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/usecases/unified_portfolio_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 
 class UnifiedBalance extends StatefulWidget {
   const UnifiedBalance({super.key});

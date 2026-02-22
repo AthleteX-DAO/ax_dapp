@@ -1,4 +1,5 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/dialogs/delegate_collateral_dialog.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class AccountAssetCard extends StatelessWidget {
               .add(AccountTokenViewRequested(token: token));
         },
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),
@@ -111,6 +112,45 @@ class AccountAssetCard extends StatelessWidget {
                   ),
                 ],
               ),
+            const SizedBox(width: 8),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_upward, size: 18),
+                  color: Colors.green,
+                  tooltip: 'Delegate',
+                  onPressed: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (_) => BlocProvider.value(
+                        value: context.read<AccountBloc>(),
+                        child: DelegateCollateralDialog(
+                          token: token,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.arrow_downward, size: 18),
+                  color: Colors.red,
+                  tooltip: 'Undelegate',
+                  onPressed: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (_) => BlocProvider.value(
+                        value: context.read<AccountBloc>(),
+                        child: DelegateCollateralDialog(
+                          token: token,
+                          initialMode: DelegationMode.undelegate,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),

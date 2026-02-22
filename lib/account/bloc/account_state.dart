@@ -25,12 +25,25 @@ class AccountState extends Equatable {
     BigInt? synthetixCollateralRatio,
     this.hasSynthetixAccount = false,
     this.isSynthetixAccountLoading = false,
+    // axUSD tracking
+    BigInt? axUsdBalance,
+    BigInt? axUsdInAccount,
+    // collateral selection & mint UI
+    this.selectedCollateral,
+    this.mintSliderValue = 0.5,
+    this.synthetixTxStatus = SynthetixTxStatus.idle,
+    this.synthetixTxError,
   })  : withdrawTargetChain = withdrawTargetChain ?? chain,
-        synthetixCollateralDeposited = synthetixCollateralDeposited ?? _zeroBigInt,
-        synthetixCollateralAssigned = synthetixCollateralAssigned ?? _zeroBigInt,
-        synthetixCollateralAvailable = synthetixCollateralAvailable ?? _zeroBigInt,
+        synthetixCollateralDeposited =
+            synthetixCollateralDeposited ?? _zeroBigInt,
+        synthetixCollateralAssigned =
+            synthetixCollateralAssigned ?? _zeroBigInt,
+        synthetixCollateralAvailable =
+            synthetixCollateralAvailable ?? _zeroBigInt,
         synthetixDebt = synthetixDebt ?? _zeroBigInt,
-        synthetixCollateralRatio = synthetixCollateralRatio ?? _zeroBigInt;
+        synthetixCollateralRatio = synthetixCollateralRatio ?? _zeroBigInt,
+        axUsdBalance = axUsdBalance ?? _zeroBigInt,
+        axUsdInAccount = axUsdInAccount ?? _zeroBigInt;
 
   static final BigInt _zeroBigInt = BigInt.zero;
 
@@ -48,7 +61,7 @@ class AccountState extends Equatable {
   final List<VaultData> vaults;
   final bool isVaultsLoading;
   final String? vaultsError;
-  
+
   // Synthetix V3 account data
   final int synthetixAccountId;
   final BigInt synthetixCollateralDeposited;
@@ -58,6 +71,25 @@ class AccountState extends Equatable {
   final BigInt synthetixCollateralRatio; // 18 decimals (e.g., 400e18 = 400%)
   final bool hasSynthetixAccount;
   final bool isSynthetixAccountLoading;
+
+  /// axUSD balance sitting in the wallet (withdrawn from CoreProxy).
+  final BigInt axUsdBalance;
+
+  /// axUSD minted but still inside the CoreProxy account (not yet withdrawn).
+  final BigInt axUsdInAccount;
+
+  /// The collateral token currently selected in the deposit / wrap UI.
+  /// Null = use chain default (AX).
+  final CollateralInfo? selectedCollateral;
+
+  /// Fraction of safe-maximum axUSD to mint (0.0–1.0). Default 0.5 = 50%.
+  final double mintSliderValue;
+
+  /// Progress status of the current multi-step Synthetix transaction.
+  final SynthetixTxStatus synthetixTxStatus;
+
+  /// Non-null when [synthetixTxStatus] == [SynthetixTxStatus.error].
+  final String? synthetixTxError;
 
   @override
   List<Object?> get props => [
@@ -83,6 +115,12 @@ class AccountState extends Equatable {
         synthetixCollateralRatio,
         hasSynthetixAccount,
         isSynthetixAccountLoading,
+        axUsdBalance,
+        axUsdInAccount,
+        selectedCollateral,
+        mintSliderValue,
+        synthetixTxStatus,
+        synthetixTxError,
       ];
 
   AccountState copyWith({
@@ -108,6 +146,12 @@ class AccountState extends Equatable {
     BigInt? synthetixCollateralRatio,
     bool? hasSynthetixAccount,
     bool? isSynthetixAccountLoading,
+    BigInt? axUsdBalance,
+    BigInt? axUsdInAccount,
+    CollateralInfo? selectedCollateral,
+    double? mintSliderValue,
+    SynthetixTxStatus? synthetixTxStatus,
+    String? synthetixTxError,
   }) {
     return AccountState(
       chain: chain ?? this.chain,
@@ -125,13 +169,24 @@ class AccountState extends Equatable {
       isVaultsLoading: isVaultsLoading ?? this.isVaultsLoading,
       vaultsError: vaultsError ?? this.vaultsError,
       synthetixAccountId: synthetixAccountId ?? this.synthetixAccountId,
-      synthetixCollateralDeposited: synthetixCollateralDeposited ?? this.synthetixCollateralDeposited,
-      synthetixCollateralAssigned: synthetixCollateralAssigned ?? this.synthetixCollateralAssigned,
-      synthetixCollateralAvailable: synthetixCollateralAvailable ?? this.synthetixCollateralAvailable,
+      synthetixCollateralDeposited:
+          synthetixCollateralDeposited ?? this.synthetixCollateralDeposited,
+      synthetixCollateralAssigned:
+          synthetixCollateralAssigned ?? this.synthetixCollateralAssigned,
+      synthetixCollateralAvailable:
+          synthetixCollateralAvailable ?? this.synthetixCollateralAvailable,
       synthetixDebt: synthetixDebt ?? this.synthetixDebt,
-      synthetixCollateralRatio: synthetixCollateralRatio ?? this.synthetixCollateralRatio,
+      synthetixCollateralRatio:
+          synthetixCollateralRatio ?? this.synthetixCollateralRatio,
       hasSynthetixAccount: hasSynthetixAccount ?? this.hasSynthetixAccount,
-      isSynthetixAccountLoading: isSynthetixAccountLoading ?? this.isSynthetixAccountLoading,
+      isSynthetixAccountLoading:
+          isSynthetixAccountLoading ?? this.isSynthetixAccountLoading,
+      axUsdBalance: axUsdBalance ?? this.axUsdBalance,
+      axUsdInAccount: axUsdInAccount ?? this.axUsdInAccount,
+      selectedCollateral: selectedCollateral ?? this.selectedCollateral,
+      mintSliderValue: mintSliderValue ?? this.mintSliderValue,
+      synthetixTxStatus: synthetixTxStatus ?? this.synthetixTxStatus,
+      synthetixTxError: synthetixTxError ?? this.synthetixTxError,
     );
   }
 }

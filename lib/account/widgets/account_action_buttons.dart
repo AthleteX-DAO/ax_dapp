@@ -21,7 +21,7 @@ class WalletActionButtons extends StatelessWidget {
     return Column(
       children: [
         // Deposit/Withdraw split card
-        Container(
+        DecoratedBox(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -57,13 +57,12 @@ class WalletActionButtons extends StatelessWidget {
                       border: Border(
                         right: BorderSide(
                           color: Colors.white.withOpacity(0.1),
-                          width: 1,
                         ),
                       ),
                     ),
                     child: Column(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.arrow_downward_rounded,
                           color: Colors.green,
                           size: 28,
@@ -79,7 +78,7 @@ class WalletActionButtons extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
+                        const Text(
                           'Add funds',
                           style: TextStyle(
                             color: Colors.white54,
@@ -123,7 +122,7 @@ class WalletActionButtons extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
+                        const Text(
                           'Remove funds',
                           style: TextStyle(
                             color: Colors.white54,
@@ -171,7 +170,7 @@ class WalletActionButtons extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.swap_horiz_rounded,
                         color: Colors.blue,
                         size: 20,
@@ -220,7 +219,7 @@ class WalletActionButtons extends StatelessWidget {
                     width: 1.5,
                   ),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.open_in_new_rounded,
                   color: Colors.white70,
                   size: 20,

@@ -20,6 +20,8 @@ class WalletConnectionStatus extends StatelessWidget {
         return 'Base Mainnet';
       case 11155111:
         return 'Ethereum Sepolia';
+      case 421614:
+        return 'Arbitrum Sepolia';
       case 1:
         return 'Ethereum';
       default:
@@ -67,10 +69,9 @@ class WalletConnectionStatus extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: Colors.white.withOpacity(0.2),
-                      width: 1,
                     ),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.wallet,
                     color: Colors.white70,
                     size: 18,
@@ -83,7 +84,7 @@ class WalletConnectionStatus extends StatelessWidget {
                     children: [
                       Text(
                         walletType,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -95,7 +96,7 @@ class WalletConnectionStatus extends StatelessWidget {
                           Expanded(
                             child: Text(
                               _truncateAddress(walletAddress),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white54,
                                 fontSize: 10,
                                 fontFamily: 'monospace',
@@ -104,7 +105,7 @@ class WalletConnectionStatus extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 4),
-                          Icon(
+                          const Icon(
                             Icons.copy,
                             size: 12,
                             color: Colors.white30,
@@ -126,7 +127,6 @@ class WalletConnectionStatus extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: Colors.white.withOpacity(0.15),
-                width: 1,
               ),
             ),
             child: Column(
@@ -148,7 +148,7 @@ class WalletConnectionStatus extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   _getChainName(chainId),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 9,
                     fontWeight: FontWeight.w600,

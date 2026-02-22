@@ -29,7 +29,7 @@ class DepositWithdrawFlow extends StatefulWidget {
 
 class _DepositWithdrawFlowState extends State<DepositWithdrawFlow> {
   late TextEditingController _amountController;
-  double _amountUsd = 0.0;
+  double _amountUsd = 0;
   bool _showAdvanced = false;
   String? _errorMessage;
   String? _transactionHash;
@@ -86,7 +86,7 @@ class _DepositWithdrawFlowState extends State<DepositWithdrawFlow> {
         ? 1000.0 // TODO: Get max from wallet balance
         : (widget.maxWithdrawAmount /
                 BigInt.from(10).pow(_collateralDecimals))
-            .toDouble();
+            ;
     _amountController.text = maxAmount.toStringAsFixed(2);
   }
 
@@ -263,7 +263,7 @@ class _DepositWithdrawFlowState extends State<DepositWithdrawFlow> {
                     ),
                   ),
                   Text(
-                    '\$1.00',
+                    r'$1.00',
                     style: textStyle(
                       Colors.grey[400]!,
                       12,

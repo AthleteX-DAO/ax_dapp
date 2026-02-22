@@ -32,7 +32,8 @@ class SynthetixHealthGauge extends StatelessWidget {
   }
 
   double get _gaugeProgress {
-    if (debt == BigInt.zero) return 1.0;
+    if (debt == BigInt.zero) return 1;
+    if (collateralRatio >= _cRatioSentinel) return 1;
     // Target is 400%, warning is 300%
     // 0-300% = 0, 300-400% = 0-1, 400%+ = 1
     final ratio = collateralRatio.toDouble() /
@@ -42,8 +43,12 @@ class SynthetixHealthGauge extends StatelessWidget {
     return (ratio - 300) / 100;
   }
 
+  static final _cRatioSentinel =
+      BigInt.parse('115792089237316195423570985008687907853269984665640564039457584007913129639935') >> 64;
+
   String _formatCRatio(BigInt ratio) {
     if (ratio == BigInt.zero) return 'N/A';
+    if (ratio >= _cRatioSentinel) return '∞';
     final value = ratio.toDouble() / BigInt.from(10).pow(18).toDouble();
     return '${value.toStringAsFixed(0)}%';
   }
@@ -92,7 +97,6 @@ class SynthetixHealthGauge extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: _statusColor.withOpacity(0.5),
-                    width: 1,
                   ),
                 ),
                 child: Text(
@@ -116,21 +120,21 @@ class SynthetixHealthGauge extends StatelessWidget {
                   progress: _gaugeProgress,
                   statusColor: _statusColor,
                 ),
-                size: Size.fromHeight(120),
+                size: const Size.fromHeight(120),
               ),
             ),
             const SizedBox(height: 20),
           ] else ...[
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Column(
+              child: const Column(
                 children: [
                   Icon(
                     Icons.check_circle_outline,
                     size: 48,
                     color: Colors.green,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(
                     'No Debt',
                     style: TextStyle(
@@ -157,7 +161,7 @@ class SynthetixHealthGauge extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Current C-Ratio',
                       style: TextStyle(
                         color: Colors.white54,
@@ -175,7 +179,7 @@ class SynthetixHealthGauge extends StatelessWidget {
                     ),
                   ],
                 ),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
@@ -185,7 +189,7 @@ class SynthetixHealthGauge extends StatelessWidget {
                         fontSize: 11,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
                       '300% - 400%',
                       style: TextStyle(
@@ -206,13 +210,13 @@ class SynthetixHealthGauge extends StatelessWidget {
 }
 
 class _GaugePainter extends CustomPainter {
-  final double progress;
-  final Color statusColor;
 
   _GaugePainter({
     required this.progress,
     required this.statusColor,
   });
+  final double progress;
+  final Color statusColor;
 
   @override
   void paint(Canvas canvas, Size size) {

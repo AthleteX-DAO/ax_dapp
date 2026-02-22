@@ -77,7 +77,7 @@ class SynthetixAccountInfo extends StatelessWidget {
                 color: Colors.white.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.account_balance_wallet_outlined,
                 size: 48,
                 color: Colors.white54,
@@ -95,7 +95,7 @@ class SynthetixAccountInfo extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Create an AthleteX account to deposit collateral, earn yield, and access protocol features.',
+              'Create an AthleteX account to deposit collateral, earn yield, and access features.',
               textAlign: TextAlign.center,
               style: textStyle(
                 Colors.white54,
@@ -188,12 +188,6 @@ class SynthetixAccountInfo extends StatelessWidget {
             color: debt > BigInt.zero ? Colors.red : Colors.white54,
           ),
           const Divider(color: Colors.white24, height: 24),
-          _buildInfoRow(
-            'Collateral Ratio',
-            _formatCRatio(collateralRatio),
-            Icons.trending_up,
-            color: _getCRatioColor(),
-          ),
         ],
       ),
     );
@@ -244,7 +238,6 @@ class SynthetixAccountInfo extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: Colors.grey.withOpacity(0.4),
-            width: 1,
           ),
         ),
         child: Text(
@@ -284,7 +277,6 @@ class SynthetixAccountInfo extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: badgeColor.withOpacity(0.5),
-          width: 1,
         ),
       ),
       child: Text(
@@ -292,17 +284,6 @@ class SynthetixAccountInfo extends StatelessWidget {
         style: TextStyle(fontSize: 12, color: badgeColor, fontWeight: FontWeight.w600),
       ),
     );
-  }
-
-  Color _getCRatioColor() {
-    if (debt == BigInt.zero) return Colors.white54;
-
-    final safeRatio = BigInt.from(400) * BigInt.from(10).pow(18);
-    final warningRatio = BigInt.from(300) * BigInt.from(10).pow(18);
-
-    if (collateralRatio >= safeRatio) return Colors.green;
-    if (collateralRatio >= warningRatio) return Colors.orange;
-    return Colors.red;
   }
 
   String _formatCollateral(BigInt amount) {
@@ -317,12 +298,5 @@ class SynthetixAccountInfo extends StatelessWidget {
     // Debt is in sUSD (18 decimals)
     final value = amount.toDouble() / BigInt.from(10).pow(18).toDouble();
     return '\$${value.toStringAsFixed(2)}';
-  }
-
-  String _formatCRatio(BigInt ratio) {
-    if (ratio == BigInt.zero) return 'N/A';
-    // C-ratio has 18 decimals (e.g., 400e18 = 400%)
-    final value = ratio.toDouble() / BigInt.from(10).pow(18).toDouble();
-    return '${value.toStringAsFixed(0)}%';
   }
 }

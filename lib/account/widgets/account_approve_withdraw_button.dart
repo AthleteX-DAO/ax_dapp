@@ -1,7 +1,6 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ax_dapp/service/custom_styles.dart';
 
 class AccountApproveWithdrawButton extends StatelessWidget {
   const AccountApproveWithdrawButton({super.key});
@@ -14,13 +13,13 @@ class AccountApproveWithdrawButton extends StatelessWidget {
           width: constraints.maxWidth * 0.5,
           child: TextButton(
             style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
                   side: BorderSide(color: Colors.amber[400]!),
                 ),
               ),
-              minimumSize: MaterialStateProperty.all(
+              minimumSize: WidgetStateProperty.all(
                 const Size(
                   50,
                   35,

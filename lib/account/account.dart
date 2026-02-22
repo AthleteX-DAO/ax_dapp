@@ -2,9 +2,7 @@ import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/account/models/status.dart';
 import 'package:ax_dapp/account/view/view.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Account extends StatelessWidget {
@@ -47,26 +45,13 @@ class Account extends StatelessWidget {
                           isUline: false,
                         ),
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.vpn_key,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                            tooltip: 'Copy Private Key',
-                            onPressed: () => _copyPrivateKey(context),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 26,
-                            ),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ],
+                      IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                        onPressed: () => Navigator.pop(context),
                       ),
                     ],
                   ),
@@ -82,7 +67,6 @@ class Account extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: Colors.white.withOpacity(0.15),
-                      width: 1,
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -93,34 +77,43 @@ class Account extends StatelessWidget {
                     ],
                   ),
                   child: BlocBuilder<AccountBloc, AccountState>(
+                    buildWhen: (previous, current) =>
+                        previous.accountViewStatus !=
+                        current.accountViewStatus,
                     builder: (BuildContext context, state) {
-                        Widget content = const SizedBox.shrink();
+                      Widget content = const SizedBox.shrink();
 
-                        if (state.accountViewStatus ==
-                                AccountViewStatus.initial ||
-                            state.accountViewStatus ==
-                                AccountViewStatus.details ||
-                            state.accountViewStatus ==
-                                AccountViewStatus.none) {
+                      switch (state.accountViewStatus) {
+                        case AccountViewStatus.initial:
+                        case AccountViewStatus.details:
+                        case AccountViewStatus.none:
                           content = const AccountDetails();
-                        } else if (state.accountViewStatus ==
-                            AccountViewStatus.buySell) {
+                          break;
+                        case AccountViewStatus.buySell:
                           content = const AccountBuyAndSell();
-                        } else if (state.accountViewStatus ==
-                            AccountViewStatus.deposit) {
+                          break;
+                        case AccountViewStatus.deposit:
                           content = const AccountDepositView();
-                        } else if (state.accountViewStatus ==
-                            AccountViewStatus.withdraw) {
+                          break;
+                        case AccountViewStatus.withdraw:
                           content = const AccountWithdrawView();
-                        } else if (state.accountViewStatus ==
-                            AccountViewStatus.token) {
+                          break;
+                        case AccountViewStatus.wrap:
+                          content = const WrapFlowView();
+                          break;
+                        case AccountViewStatus.token:
                           content = const AccountTokenView();
-                        }
+                          break;
+                        case AccountViewStatus.loading:
+                        case AccountViewStatus.error:
+                          content = const SizedBox.shrink();
+                          break;
+                      }
 
-                        return AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 250),
-                          child: content,
-                        );
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 250),
+                        child: content,
+                      );
                     },
                   ),
                 ),
@@ -132,31 +125,5 @@ class Account extends StatelessWidget {
     );
   }
 
-  Future<void> _copyPrivateKey(BuildContext context) async {
-    final walletState = context.read<WalletBloc>().state;
-    
-    if (walletState.recoveryPhrase != null && walletState.recoveryPhrase!.isNotEmpty) {
-      await Clipboard.setData(ClipboardData(text: walletState.recoveryPhrase!));
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Recovery phrase copied to clipboard'),
-            duration: Duration(seconds: 2),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Recovery phrase not available'),
-            duration: Duration(seconds: 2),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
 }
 

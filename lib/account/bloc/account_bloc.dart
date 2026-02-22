@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:ax_dapp/account/models/models.dart';
 import 'package:ax_dapp/account/repository/account_repository.dart';
 import 'package:ax_dapp/config/athletex_synthetix_config.dart';
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
@@ -40,6 +41,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<AccountDepositViewRequested>(_onAccountDepositViewRequested);
     on<AccountBuyAndSellViewRequested>(_onAccountBuyAndSellViewRequested);
     on<AccountTokenViewRequested>(_onAccountTokenViewRequested);
+    on<AccountWrapViewRequested>(_onAccountWrapViewRequested);
     on<SelectedAccountAssetsChanged>(_onSelectedAccountAssetsChanged);
     on<SelectTokenRequested>(_onSelectTokenRequested);
     on<UpdateBalanceRequested>(_onUpdateBalanceRequested);
@@ -49,6 +51,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<AccountWithdrawConfirm>(_onAccountWithdrawConfirm);
     on<UpdateRecipentAddressRequested>(_onUpdateRecipentAddressRequested);
     on<WithdrawChainSelected>(_onWithdrawChainSelected);
+    on<CollateralTypeSelected>(_onCollateralTypeSelected);
+    on<MintSliderChanged>(_onMintSliderChanged);
     // Synthetix account handlers
     on<FetchSynthetixAccountRequested>(_onFetchSynthetixAccountRequested);
     on<DepositSynthetixCollateralRequested>(
@@ -60,7 +64,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<DelegateSynthetixCollateralRequested>(
       _onDelegateSynthetixCollateralRequested,
     );
+    on<UndelegateSynthetixCollateralRequested>(
+      _onUndelegateSynthetixCollateralRequested,
+    );
     on<CreateSynthetixAccountRequested>(_onCreateSynthetixAccountRequested);
+    on<MintAxUsdRequested>(_onMintAxUsdRequested);
+    on<WrapCollateralRequested>(_onWrapCollateralRequested);
     add(const WatchAppDataChangesStarted());
   }
 
@@ -91,7 +100,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         );
 
         add(const FetchTokenInfoRequested());
-        add(const FetchSynthetixAccountRequested()); // Fetch Synthetix account data
+        add(const FetchSynthetixAccountRequested());
         add(const FetchVaultSummariesRequested());
         _startVaultSummaryTimer();
       },
@@ -126,7 +135,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     FetchVaultSummariesRequested event,
     Emitter<AccountState> emit,
   ) async {
-    emit(state.copyWith(isVaultsLoading: true, vaultsError: null));
+    emit(state.copyWith(isVaultsLoading: true));
 
     try {
       final vaults = await _vaultRepository.fetchVaults();
@@ -145,49 +154,61 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     AccountDetailsViewRequested _,
     Emitter<AccountState> emit,
   ) async {
-    emit(
-      state.copyWith(accountViewStatus: AccountViewStatus.details),
-    );
+    emit(state.copyWith(accountViewStatus: AccountViewStatus.details));
   }
 
   Future<void> _onAccountWithdrawViewRequested(
     AccountWithdrawViewRequested _,
     Emitter<AccountState> emit,
   ) async {
-    emit(
-      state.copyWith(accountViewStatus: AccountViewStatus.withdraw),
-    );
+    emit(state.copyWith(accountViewStatus: AccountViewStatus.withdraw));
   }
 
   Future<void> _onAccountDepositViewRequested(
     AccountDepositViewRequested _,
     Emitter<AccountState> emit,
   ) async {
-    emit(
-      state.copyWith(accountViewStatus: AccountViewStatus.deposit),
-    );
+    emit(state.copyWith(accountViewStatus: AccountViewStatus.deposit));
   }
 
   Future<void> _onAccountBuyAndSellViewRequested(
     AccountBuyAndSellViewRequested _,
     Emitter<AccountState> emit,
   ) async {
-    emit(
-      state.copyWith(accountViewStatus: AccountViewStatus.buySell),
-    );
+    emit(state.copyWith(accountViewStatus: AccountViewStatus.buySell));
   }
 
   Future<void> _onAccountTokenViewRequested(
     AccountTokenViewRequested event,
     Emitter<AccountState> emit,
   ) async {
-    final token = event.token;
     emit(
       state.copyWith(
         accountViewStatus: AccountViewStatus.token,
-        selectedToken: token,
+        selectedToken: event.token,
       ),
     );
+  }
+
+  Future<void> _onAccountWrapViewRequested(
+    AccountWrapViewRequested _,
+    Emitter<AccountState> emit,
+  ) async {
+    emit(state.copyWith(accountViewStatus: AccountViewStatus.wrap));
+  }
+
+  Future<void> _onCollateralTypeSelected(
+    CollateralTypeSelected event,
+    Emitter<AccountState> emit,
+  ) async {
+    emit(state.copyWith(selectedCollateral: event.collateral));
+  }
+
+  Future<void> _onMintSliderChanged(
+    MintSliderChanged event,
+    Emitter<AccountState> emit,
+  ) async {
+    emit(state.copyWith(mintSliderValue: event.value.clamp(0.0, 1.0)));
   }
 
   Future<void> _onAccountWithdrawConfirm(
@@ -229,11 +250,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     Emitter<AccountState> emit,
   ) async {
     try {
-      emit(
-        state.copyWith(
-          selectedAssets: event.selectedAssets,
-        ),
-      );
+      emit(state.copyWith(selectedAssets: event.selectedAssets));
     } catch (e) {
       debugPrint('An error occured $e');
     }
@@ -252,16 +269,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     UpdateWithdrawInput event,
     Emitter<AccountState> emit,
   ) async {
-    final input = event.tokenAmountInput;
-    emit(state.copyWith(tokenAmountInput: input));
+    emit(state.copyWith(tokenAmountInput: event.tokenAmountInput));
   }
 
   Future<void> _onUpdateRecipentAddressRequested(
     UpdateRecipentAddressRequested event,
     Emitter<AccountState> emit,
   ) async {
-    final recipentAddress = event.recipentAddress;
-    emit(state.copyWith(recipentAddress: recipentAddress));
+    emit(state.copyWith(recipentAddress: event.recipentAddress));
   }
 
   Future<void> _onWithdrawChainSelected(
@@ -279,7 +294,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   // ========== Synthetix V3 Account Event Handlers ==========
 
-  /// Fetches Synthetix account data (ID, collateral, debt, c-ratio)
+  /// Fetches Synthetix account data (ID, collateral, debt, c-ratio, axUSD balance).
   Future<void> _onFetchSynthetixAccountRequested(
     FetchSynthetixAccountRequested event,
     Emitter<AccountState> emit,
@@ -298,9 +313,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       final accountIds = await _accountRepository.getSynthetixAccountIds(
         state.walletAddress,
       );
-      debugPrint(
-        'AccountBloc._onFetchSynthetixAccountRequested: count=${accountIds.length}',
-      );
 
       if (accountIds.isEmpty) {
         emit(
@@ -315,34 +327,55 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       // Use first account (primary account)
       final accountId = accountIds.first.toInt();
 
-        final collateralAddress =
-            AthleteXSynthetixConfig.primaryCollateralAddress;
-        final poolId = AthleteXSynthetixConfig.defaultPoolId;
+      const collateralAddress = AthleteXSynthetixConfig.primaryCollateralAddress;
+      const poolId = AthleteXSynthetixConfig.defaultPoolId;
+      const usdProxy = SynthetixConfig.usdProxy;
 
       // Fetch account data in parallel
-      final collateralData = await _accountRepository
-          .getSynthetixAccountCollateral(
-        accountId: accountId,
-        collateralAddress: collateralAddress,
-      );
+      final results = await Future.wait([
+        _accountRepository.getSynthetixAccountCollateral(
+          accountId: accountId,
+          collateralAddress: collateralAddress,
+        ),
+        _accountRepository.getSynthetixAvailableCollateral(
+          accountId: accountId,
+          collateralAddress: collateralAddress,
+        ),
+        _accountRepository.getSynthetixPositionDebt(
+          accountId: accountId,
+          poolId: poolId,
+          collateralAddress: collateralAddress,
+        ),
+        _accountRepository.getSynthetixCollateralRatio(
+          accountId: accountId,
+          poolId: poolId,
+          collateralAddress: collateralAddress,
+        ),
+        // axUSD in wallet (USD proxy ERC-20 balance)
+        _accountRepository.getSynthetixAccountCollateral(
+          accountId: accountId,
+          collateralAddress: usdProxy,
+        ),
+      ]);
 
-      final availableCollateral = await _accountRepository
-          .getSynthetixAvailableCollateral(
-        accountId: accountId,
-        collateralAddress: collateralAddress,
-      );
+      final collateralData = results[0] as Map<String, BigInt>;
+      final availableCollateral = results[1] as BigInt;
+      final debt = results[2] as BigInt;
+      final cRatio = results[3] as BigInt;
+      final axUsdAccountData = results[4] as Map<String, BigInt>;
 
-      final debt = await _accountRepository.getSynthetixPositionDebt(
-        accountId: accountId,
-        poolId: poolId,
-        collateralAddress: collateralAddress,
-      );
+      // axUSD in CoreProxy account (minted but not withdrawn)
+      final axUsdInAccount = axUsdAccountData['totalDeposited'] ?? BigInt.zero;
 
-      final cRatio = await _accountRepository.getSynthetixCollateralRatio(
-        accountId: accountId,
-        poolId: poolId,
-        collateralAddress: collateralAddress,
-      );
+      // axUSD in wallet: fetch ERC-20 balance directly
+      var axUsdWalletBalance = BigInt.zero;
+      try {
+        axUsdWalletBalance = await _walletRepository.getRawTokenBalance(
+          usdProxy,
+        );
+      } catch (_) {
+        // wallet repo may not support getRawTokenBalance — best-effort
+      }
 
       emit(
         state.copyWith(
@@ -354,6 +387,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
           synthetixCollateralRatio: cRatio,
           hasSynthetixAccount: true,
           isSynthetixAccountLoading: false,
+          axUsdBalance: axUsdWalletBalance,
+          axUsdInAccount: axUsdInAccount,
         ),
       );
     } catch (e) {
@@ -367,7 +402,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     }
   }
 
-  /// Deposits collateral to Synthetix account
+  /// Deposits collateral to Synthetix account, then auto-delegates the full
+  /// deposited balance to the default pool (LP path step 1+2 in one shot).
   Future<void> _onDepositSynthetixCollateralRequested(
     DepositSynthetixCollateralRequested event,
     Emitter<AccountState> emit,
@@ -375,7 +411,24 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     if (!state.hasSynthetixAccount) return;
 
     try {
-      emit(state.copyWith(isSynthetixAccountLoading: true));
+      // Step 1 — approve CoreProxy to spend the collateral token
+      emit(
+        state.copyWith(
+          isSynthetixAccountLoading: true,
+          synthetixTxStatus: SynthetixTxStatus.approving,
+        ),
+      );
+
+      await _accountRepository.approveErc20(
+        tokenAddress: event.collateralAddress,
+        spenderAddress: SynthetixConfig.coreProxy,
+        amount: event.amount,
+      );
+
+      // Step 2 — deposit
+      emit(
+        state.copyWith(synthetixTxStatus: SynthetixTxStatus.depositing),
+      );
 
       await _accountRepository.depositSynthetixCollateral(
         accountId: state.synthetixAccountId,
@@ -383,15 +436,44 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         amount: event.amount,
       );
 
-      // Refresh account data after deposit
+      // Step 3 — auto-delegate the full deposited balance to the default pool
+      emit(state.copyWith(synthetixTxStatus: SynthetixTxStatus.delegating));
+
+      // Compute total deposited after this deposit to set delegation
+      final collateralData = await _accountRepository
+          .getSynthetixAccountCollateral(
+        accountId: state.synthetixAccountId,
+        collateralAddress: event.collateralAddress,
+      );
+      final totalDeposited =
+          collateralData['totalDeposited'] ?? event.amount;
+
+      await _accountRepository.delegateSynthetixCollateral(
+        accountId: state.synthetixAccountId,
+        poolId: AthleteXSynthetixConfig.defaultPoolId,
+        collateralAddress: event.collateralAddress,
+        amount: totalDeposited,
+      );
+
+      emit(
+        state.copyWith(synthetixTxStatus: SynthetixTxStatus.done),
+      );
+
+      // Refresh account data
       add(const FetchSynthetixAccountRequested());
     } catch (e) {
-      debugPrint('Error depositing collateral: $e');
-      emit(state.copyWith(isSynthetixAccountLoading: false));
+      debugPrint('Error depositing + delegating collateral: $e');
+      emit(
+        state.copyWith(
+          isSynthetixAccountLoading: false,
+          synthetixTxStatus: SynthetixTxStatus.error,
+          synthetixTxError: e.toString(),
+        ),
+      );
     }
   }
 
-  /// Withdraws collateral from Synthetix account
+  /// Withdraws collateral from Synthetix account back to wallet.
   Future<void> _onWithdrawSynthetixCollateralRequested(
     WithdrawSynthetixCollateralRequested event,
     Emitter<AccountState> emit,
@@ -407,7 +489,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         amount: event.amount,
       );
 
-      // Refresh account data after withdrawal
       add(const FetchSynthetixAccountRequested());
     } catch (e) {
       debugPrint('Error withdrawing collateral: $e');
@@ -415,7 +496,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     }
   }
 
-  /// Delegates collateral to a pool for earning yield
+  /// Delegates collateral to a pool for earning yield.
   Future<void> _onDelegateSynthetixCollateralRequested(
     DelegateSynthetixCollateralRequested event,
     Emitter<AccountState> emit,
@@ -433,7 +514,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         leverage: event.leverage,
       );
 
-      // Refresh account data after delegation
       add(const FetchSynthetixAccountRequested());
     } catch (e) {
       debugPrint('Error delegating collateral: $e');
@@ -441,7 +521,31 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     }
   }
 
-  /// Creates a new Synthetix account and shows loading during tx
+  /// Undelegates collateral from a pool.
+  Future<void> _onUndelegateSynthetixCollateralRequested(
+    UndelegateSynthetixCollateralRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    if (!state.hasSynthetixAccount) return;
+
+    try {
+      emit(state.copyWith(isSynthetixAccountLoading: true));
+
+      await _accountRepository.undelegateSynthetixCollateral(
+        accountId: state.synthetixAccountId,
+        poolId: event.poolId,
+        collateralAddress: event.collateralAddress,
+        amount: event.amount,
+      );
+
+      add(const FetchSynthetixAccountRequested());
+    } catch (e) {
+      debugPrint('Error undelegating collateral: $e');
+      emit(state.copyWith(isSynthetixAccountLoading: false));
+    }
+  }
+
+  /// Creates a new Synthetix account and shows loading during tx.
   Future<void> _onCreateSynthetixAccountRequested(
     CreateSynthetixAccountRequested event,
     Emitter<AccountState> emit,
@@ -457,13 +561,169 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
     try {
       await _accountRepository.createSynthetixAccount();
-      debugPrint('AccountBloc: createSynthetixAccount completed');
-
-      // After creation, fetch the account to display details
       add(const FetchSynthetixAccountRequested());
     } catch (e) {
       debugPrint('Error creating Synthetix account: $e');
       emit(state.copyWith(isSynthetixAccountLoading: false));
+    }
+  }
+
+  /// Mint axUSD against delegated collateral (LP path step 3).
+  ///
+  /// Calculates amount from [event.sliderValue] × safe-maximum mintable.
+  /// Safe-max is derived from the on-chain position debt + c-ratio so that
+  /// minting keeps the position at or above [targetCollateralizationRatio].
+  /// After minting, immediately withdraws axUSD to the wallet.
+  Future<void> _onMintAxUsdRequested(
+    MintAxUsdRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    if (!state.hasSynthetixAccount) return;
+    if (state.synthetixCollateralAssigned == BigInt.zero) {
+      debugPrint('MintAxUsd: no delegated collateral');
+      return;
+    }
+
+    try {
+      emit(
+        state.copyWith(
+          isSynthetixAccountLoading: true,
+          synthetixTxStatus: SynthetixTxStatus.minting,
+        ),
+      );
+
+      // Derive safe-maximum mintable from on-chain data:
+      //   maxMint = (collateralValueUSD / targetCRatio) − existingDebt
+      //
+      // collateralValueUSD is approximated from the on-chain c-ratio and
+      // existing debt:  collateralValueUSD = existingDebt × cRatio
+      // When debt == 0 we fall back to a conservative fraction of the
+      // assigned collateral (treating 1 token unit ≈ 1 USD for AX peg).
+      final existingDebt = await _accountRepository.getSynthetixPositionDebt(
+        accountId: state.synthetixAccountId,
+        poolId: AthleteXSynthetixConfig.defaultPoolId,
+        collateralAddress: event.collateralAddress,
+      );
+
+      final BigInt maxMintable;
+      if (existingDebt > BigInt.zero && state.synthetixCollateralRatio > BigInt.zero) {
+        // collateralValueUSD = debt × cRatio (both in 18-dec)
+        final cRatioX18 = state.synthetixCollateralRatio;
+        final collateralValueX18 =
+            (existingDebt * cRatioX18) ~/ BigInt.from(10).pow(18);
+        final targetCRatioX18 = BigInt.from(
+          (AthleteXSynthetixConfig.targetCollateralizationRatio * 1e18).toInt(),
+        );
+        final maxDebtAtTarget =
+            collateralValueX18 * BigInt.from(10).pow(18) ~/ targetCRatioX18;
+        maxMintable = maxDebtAtTarget > existingDebt
+            ? maxDebtAtTarget - existingDebt
+            : BigInt.zero;
+      } else {
+        // No existing debt: use assigned collateral ÷ targetCRatio as estimate
+        final targetCRatioX18 = BigInt.from(
+          (AthleteXSynthetixConfig.targetCollateralizationRatio * 1e18).toInt(),
+        );
+        maxMintable = state.synthetixCollateralAssigned *
+            BigInt.from(10).pow(18) ~/
+            targetCRatioX18;
+      }
+
+      final mintAmount = BigInt.from(
+        (maxMintable.toDouble() * event.sliderValue).toInt(),
+      );
+
+      if (mintAmount == BigInt.zero) {
+        emit(
+          state.copyWith(
+            isSynthetixAccountLoading: false,
+            synthetixTxStatus: SynthetixTxStatus.idle,
+          ),
+        );
+        return;
+      }
+
+      debugPrint(
+        'MintAxUsd: minting ${mintAmount} axUSD (slider=${event.sliderValue})',
+      );
+
+      await _accountRepository.mintAxUsd(
+        accountId: state.synthetixAccountId,
+        poolId: AthleteXSynthetixConfig.defaultPoolId,
+        collateralAddress: event.collateralAddress,
+        amount: mintAmount,
+      );
+
+      // axUSD lands in CoreProxy account — withdraw it to wallet
+      await _accountRepository.withdrawAxUsd(
+        accountId: state.synthetixAccountId,
+        amount: mintAmount,
+        usdProxyAddress: SynthetixConfig.usdProxy,
+      );
+
+      emit(state.copyWith(synthetixTxStatus: SynthetixTxStatus.done));
+      add(const FetchSynthetixAccountRequested());
+    } catch (e) {
+      debugPrint('Error minting axUSD: $e');
+      emit(
+        state.copyWith(
+          isSynthetixAccountLoading: false,
+          synthetixTxStatus: SynthetixTxStatus.error,
+          synthetixTxError: e.toString(),
+        ),
+      );
+    }
+  }
+
+  /// Wrap real collateral (USDC / USDT / WETH) into its synth (Trader path).
+  Future<void> _onWrapCollateralRequested(
+    WrapCollateralRequested event,
+    Emitter<AccountState> emit,
+  ) async {
+    try {
+      // Step 1 — approve SpotMarketProxy to spend the collateral token
+      emit(
+        state.copyWith(
+          isSynthetixAccountLoading: true,
+          synthetixTxStatus: SynthetixTxStatus.approving,
+        ),
+      );
+
+      await _accountRepository.approveErc20(
+        tokenAddress: event.collateralAddress,
+        spenderAddress: SynthetixConfig.spotMarketProxy,
+        amount: event.amount,
+      );
+
+      // Step 2 — wrap
+      emit(
+        state.copyWith(synthetixTxStatus: SynthetixTxStatus.depositing),
+      );
+
+      // Compute minAmountReceived from slippageBps:
+      // minAmountReceived = amount × (10000 − slippageBps) / 10000
+      final bps = event.slippageBps.clamp(0, 9999);
+      final minAmountReceived =
+          event.amount * BigInt.from(10000 - bps) ~/ BigInt.from(10000);
+
+      await _accountRepository.wrapCollateral(
+        marketId: event.marketId,
+        collateralAddress: event.collateralAddress,
+        wrapAmount: event.amount,
+        minAmountReceived: minAmountReceived,
+      );
+
+      emit(state.copyWith(synthetixTxStatus: SynthetixTxStatus.done));
+      add(const FetchSynthetixAccountRequested());
+    } catch (e) {
+      debugPrint('Error wrapping collateral: $e');
+      emit(
+        state.copyWith(
+          isSynthetixAccountLoading: false,
+          synthetixTxStatus: SynthetixTxStatus.error,
+          synthetixTxError: e.toString(),
+        ),
+      );
     }
   }
 }

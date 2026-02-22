@@ -107,7 +107,7 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
+                  const Text(
                     'Choose your preferred payment method',
                     style: TextStyle(
                       color: Colors.white54,
@@ -250,7 +250,7 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
               Text(
                 subtitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white54,
                   fontSize: 10,
                 ),
@@ -314,7 +314,7 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
             Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white54,
                 fontSize: 14,
               ),
@@ -327,10 +327,9 @@ class _AccountBuyAndSellState extends State<AccountBuyAndSell> {
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: Colors.orange.withOpacity(0.3),
-                  width: 1,
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Coming Soon',
                 style: TextStyle(
                   color: Colors.orange,

@@ -28,6 +28,7 @@ class UnifiedAccountCard extends StatefulWidget {
     required this.onViewPerpsPositions,
     required this.onViewPredictionPositions,
     required this.onViewVaultYields,
+    this.axUsdBalance,
     super.key,
   });
 
@@ -46,6 +47,8 @@ class UnifiedAccountCard extends StatefulWidget {
   final VoidCallback onViewPerpsPositions;
   final VoidCallback onViewPredictionPositions;
   final VoidCallback onViewVaultYields;
+  /// axUSD balance held in the user's wallet (18-decimal BigInt).
+  final BigInt? axUsdBalance;
 
   @override
   State<UnifiedAccountCard> createState() => _UnifiedAccountCardState();
@@ -117,7 +120,7 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
       return _buildCreateAccountCard();
     }
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -179,7 +182,6 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
                                 color: _healthColor.withOpacity(0.5),
-                                width: 1,
                               ),
                             ),
                             child: Text(
@@ -418,9 +420,66 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
           Icons.trending_up_rounded,
           _healthColor,
         ),
+        if ((widget.axUsdBalance ?? BigInt.zero) > BigInt.zero) ...
+          _buildAxUsdRow(),
+        if ((widget.axUsdBalance ?? BigInt.zero) > BigInt.zero ||
+            widget.collateralAssigned > BigInt.zero) ...
+          _buildTradingCta(),
       ],
     );
   }
+
+  List<Widget> _buildAxUsdRow() => [
+        const SizedBox(height: 12),
+        _buildDetailRow(
+          'axUSD in Wallet',
+          _formatCurrency(widget.axUsdBalance ?? BigInt.zero),
+          Icons.attach_money_rounded,
+          Colors.greenAccent,
+        ),
+      ];
+
+  List<Widget> _buildTradingCta() => [
+        const SizedBox(height: 20),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: widget.onViewSpotPositions,
+            icon: const Icon(Icons.swap_horiz_rounded, size: 20),
+            label: const Text(
+              'Start Trading',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryOrangeColor,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () => context
+                .read<AccountBloc>()
+                .add(const AccountWrapViewRequested()),
+            icon: const Icon(Icons.currency_exchange_rounded, size: 18),
+            label: const Text('Wrap Token → axUSD'),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: Colors.purpleAccent,
+              side: const BorderSide(color: Colors.purpleAccent, width: 1.5),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ),
+      ];
 
   Widget _buildAssetsTab() {
     return Column(
@@ -489,7 +548,7 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : _buildMiniBadge(
-                  '${activeVaults} active',
+                  '$activeVaults active',
                   activeVaults > 0 ? Colors.green : Colors.white30,
                 ),
         ),
@@ -512,7 +571,6 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Colors.white.withOpacity(0.1),
-          width: 1,
         ),
       ),
       child: Column(
@@ -665,7 +723,7 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
           ),
           const SizedBox(height: 8),
           const Text(
-            'Create an account to deposit collateral, earn yield, and access protocol features.',
+            'Create an account to deposit collateral, earn yield, and access features.',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white54,
@@ -722,10 +780,17 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
     return '\$${value.toStringAsFixed(2)}';
   }
 
+  // Synthetix returns uint256.max (~1.15e77) when there is no debt.
+  static final _uint256Max =
+      BigInt.parse('115792089237316195423570985008687907853269984665640564039457584007913129639935');
+  static final _cRatioSentinel = _uint256Max >> 64; // anything above ~1e58 is sentinel
+
   String _formatCRatio(BigInt ratio) {
     if (ratio == BigInt.zero) return 'N/A';
+    if (ratio >= _cRatioSentinel) return '∞';
     final value = ratio.toDouble() / BigInt.from(10).pow(18).toDouble();
-    return '${value.toStringAsFixed(0)}%';
+    if (value == 0) return '0%';
+    return '${value.toStringAsFixed(1)}%';
   }
 
   String _formatCompactUsd(double value) {

@@ -17,25 +17,63 @@ class SmartContextualAlerts extends StatelessWidget {
   List<_Alert> _buildAlerts() {
     final alerts = <_Alert>[];
 
-    // Low collateral ratio alert
+    // Collateral ratio alerts — three tiers:
+    //   danger  : < 200%  → liquidation imminent  (severity 3)
+    //   at-risk : < 300%  → approaching threshold (severity 2)
+    //   warning : < 400%  → below target          (severity 1)
     if (debt > BigInt.zero) {
-      final warningRatio = BigInt.from(300) * BigInt.from(10).pow(18);
-      final safeRatio = BigInt.from(400) * BigInt.from(10).pow(18);
+      final e18 = BigInt.from(10).pow(18);
+      final dangerRatio  = BigInt.from(200) * e18; // 200% — liquidation risk
+      final warningRatio = BigInt.from(300) * e18; // 300% — approaching limit
+      final safeRatio    = BigInt.from(400) * e18; // 400% — target
 
       if (collateralRatio < safeRatio) {
         final ratioValue =
-            collateralRatio.toDouble() / BigInt.from(10).pow(18).toDouble();
-        alerts.add(
-          _Alert(
-            type: _AlertType.warning,
-            icon: Icons.trending_down,
-            title: 'Low Collateral Ratio',
-            description:
-                'Current: ${ratioValue.toStringAsFixed(0)}% (Target: 400%)',
-            actionLabel: 'Deposit More',
-            severity: collateralRatio < warningRatio ? 2 : 1,
-          ),
-        );
+            collateralRatio.toDouble() / e18.toDouble();
+
+        if (collateralRatio < dangerRatio) {
+          // ❗ Liquidation imminent
+          alerts.add(
+            _Alert(
+              type: _AlertType.danger,
+              icon: Icons.emergency_rounded,
+              title: '⚠️ Liquidation Risk!',
+              description:
+                  'C-ratio ${ratioValue.toStringAsFixed(0)}% is below the '
+                  '200% danger threshold. Add collateral immediately to avoid '
+                  'liquidation.',
+              actionLabel: 'Add Collateral',
+              severity: 3,
+            ),
+          );
+        } else if (collateralRatio < warningRatio) {
+          // 🔴 Below 300% — approaching liquidation
+          alerts.add(
+            _Alert(
+              type: _AlertType.warning,
+              icon: Icons.warning_rounded,
+              title: 'Collateral Ratio Critical',
+              description:
+                  'Current: ${ratioValue.toStringAsFixed(0)}% — '
+                  'below 300% threshold. Deposit more to stay safe.',
+              actionLabel: 'Deposit More',
+              severity: 2,
+            ),
+          );
+        } else {
+          // 🟠 Below 400% target
+          alerts.add(
+            _Alert(
+              type: _AlertType.warning,
+              icon: Icons.trending_down,
+              title: 'Low Collateral Ratio',
+              description:
+                  'Current: ${ratioValue.toStringAsFixed(0)}% (Target: 400%)',
+              actionLabel: 'Deposit More',
+              severity: 1,
+            ),
+          );
+        }
       }
     }
 
@@ -79,7 +117,8 @@ class SmartContextualAlerts extends StatelessWidget {
             child: _AlertCard(
               alert: alert,
               onAction: () {
-                if (alert.actionLabel == 'Deposit More') {
+                if (alert.actionLabel == 'Deposit More' ||
+                    alert.actionLabel == 'Add Collateral') {
                   onDepositTapped();
                 }
               },
@@ -91,15 +130,9 @@ class SmartContextualAlerts extends StatelessWidget {
   }
 }
 
-enum _AlertType { warning, info, success }
+enum _AlertType { danger, warning, info, success }
 
-class _Alert {
-  final _AlertType type;
-  final IconData icon;
-  final String title;
-  final String description;
-  final String actionLabel;
-  final int severity; // 0-2, higher = more severe
+class _Alert { // 0-3, higher = more severe
 
   _Alert({
     required this.type,
@@ -109,11 +142,19 @@ class _Alert {
     required this.actionLabel,
     required this.severity,
   });
+  final _AlertType type;
+  final IconData icon;
+  final String title;
+  final String description;
+  final String actionLabel;
+  final int severity;
 
   Color get backgroundColor {
     switch (type) {
+      case _AlertType.danger:
+        return Colors.red.withOpacity(0.18);
       case _AlertType.warning:
-        return severity == 2
+        return severity >= 2
             ? Colors.red.withOpacity(0.15)
             : Colors.orange.withOpacity(0.15);
       case _AlertType.info:
@@ -125,8 +166,10 @@ class _Alert {
 
   Color get borderColor {
     switch (type) {
+      case _AlertType.danger:
+        return Colors.red.withOpacity(0.7);
       case _AlertType.warning:
-        return severity == 2
+        return severity >= 2
             ? Colors.red.withOpacity(0.4)
             : Colors.orange.withOpacity(0.4);
       case _AlertType.info:
@@ -138,8 +181,10 @@ class _Alert {
 
   Color get iconColor {
     switch (type) {
+      case _AlertType.danger:
+        return Colors.red[300]!;
       case _AlertType.warning:
-        return severity == 2 ? Colors.red : Colors.orange;
+        return severity >= 2 ? Colors.red : Colors.orange;
       case _AlertType.info:
         return Colors.blue;
       case _AlertType.success:
@@ -168,8 +213,8 @@ class _AlertCardState extends State<_AlertCard>
   @override
   void initState() {
     super.initState();
-    if (widget.alert.severity == 2) {
-      // Pulse animation for critical alerts
+    if (widget.alert.severity >= 2) {
+      // Pulse animation for critical/danger alerts
       _pulseController = AnimationController(
         duration: const Duration(milliseconds: 1500),
         vsync: this,
@@ -202,7 +247,7 @@ class _AlertCardState extends State<_AlertCard>
               color: widget.alert.borderColor,
               width: 1.5,
             ),
-            boxShadow: widget.alert.severity == 2
+            boxShadow: widget.alert.severity >= 2
                 ? [
                     BoxShadow(
                       color: widget.alert.iconColor.withOpacity(0.2),
@@ -233,7 +278,7 @@ class _AlertCardState extends State<_AlertCard>
                   children: [
                     Text(
                       widget.alert.title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
@@ -242,7 +287,7 @@ class _AlertCardState extends State<_AlertCard>
                     const SizedBox(height: 2),
                     Text(
                       widget.alert.description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 11,
                       ),

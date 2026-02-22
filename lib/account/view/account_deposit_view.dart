@@ -1,325 +1,847 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/account/models/status.dart';
+import 'package:ax_dapp/config/athletex_synthetix_config.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class AccountDepositView extends StatelessWidget {
+/// Deposit screen with two tabs:
+///   Tab 1 – Receive crypto (QR code + address copy)
+///   Tab 2 – Synthetix LP path: deposit collateral → auto-delegate → mint axUSD
+class AccountDepositView extends StatefulWidget {
   const AccountDepositView({super.key});
 
   @override
+  State<AccountDepositView> createState() => _AccountDepositViewState();
+}
+
+class _AccountDepositViewState extends State<AccountDepositView>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    const edge = 40.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Back button row
+        Row(
+          children: [
+            IconButton(
+              alignment: Alignment.centerLeft,
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+              onPressed: () => context
+                  .read<AccountBloc>()
+                  .add(const AccountDetailsViewRequested()),
+            ),
+          ],
+        ),
+        // Tab bar
+        TabBar(
+          controller: _tabController,
+          indicatorColor: primaryOrangeColor,
+          labelColor: primaryOrangeColor,
+          unselectedLabelColor: Colors.white54,
+          labelStyle: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+          ),
+          tabs: const [
+            Tab(icon: Icon(Icons.qr_code_rounded, size: 18), text: 'Receive'),
+            Tab(
+              icon: Icon(Icons.account_balance_rounded, size: 18),
+              text: 'Earn (LP)',
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.72,
+          child: TabBarView(
+            controller: _tabController,
+            children: const [
+              _WalletReceiveTab(),
+              _SynthetixDepositTab(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tab 1 — Wallet receive (QR code + copy address)
+// ---------------------------------------------------------------------------
+
+class _WalletReceiveTab extends StatelessWidget {
+  const _WalletReceiveTab();
+
+  @override
+  Widget build(BuildContext context) {
+    const edge = 16.0;
     final walletAddress =
         context.select((WalletBloc bloc) => bloc.state.walletAddress);
     final chain = context.select((WalletBloc bloc) => bloc.state.chain);
 
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(edge),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Back button
-            Row(
+      padding: const EdgeInsets.all(edge),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Header
+          _Card(
+            child: Row(
               children: [
-                IconButton(
-                  alignment: Alignment.centerLeft,
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 20,
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  onPressed: () => context.read<AccountBloc>().add(
-                        const AccountDetailsViewRequested(),
-                      ),
+                  child: const Icon(
+                    Icons.arrow_downward_rounded,
+                    color: Colors.green,
+                    size: 28,
+                  ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // Header
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white.withOpacity(0.08),
-                    Colors.white.withOpacity(0.06),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.1),
-                  width: 1.5,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Icon(
-                          Icons.arrow_downward_rounded,
-                          color: Colors.green,
-                          size: 28,
+                      Text(
+                        'Deposit Crypto',
+                        style: textStyle(
+                          Colors.white,
+                          18,
+                          isBold: true,
+                          isUline: false,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Deposit Crypto',
-                              style: textStyle(
-                                Colors.white,
-                                20,
-                                isBold: true,
-                                isUline: false,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Send funds to your wallet',
-                              style: TextStyle(
-                                color: Colors.white54,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        'Send funds to your wallet',
+                        style: TextStyle(color: Colors.white54, fontSize: 13),
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Warning card
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Colors.orange.withOpacity(0.3),
-                  width: 1.5,
                 ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.warning_amber_rounded,
-                    color: Colors.orange,
-                    size: 24,
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          // Network warning
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: Colors.orange.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Colors.orange.withOpacity(0.3)),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Colors.orange,
+                  size: 20,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Only deposit from ${chain.name}. Sending from other networks may cause permanent loss.',
+                    style:
+                        const TextStyle(color: Colors.white70, fontSize: 12),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          // QR + address
+          _Card(
+            child: Column(
+              children: [
+                Text(
+                  'Scan QR Code',
+                  style: textStyle(
+                    Colors.white,
+                    15,
+                    isBold: true,
+                    isUline: false,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: QrImageView(
+                    data: walletAddress,
+                    size: 220,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Or copy your address',
+                  style: TextStyle(color: Colors.white54, fontSize: 12),
+                ),
+                const SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(text: walletAddress));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Address copied to clipboard'),
+                        backgroundColor: Colors.green,
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.white.withOpacity(0.1)),
+                    ),
+                    child: Row(
                       children: [
-                        Text(
-                          'Important',
-                          style: TextStyle(
-                            color: Colors.orange,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
+                        Icon(
+                          Icons.account_balance_wallet_rounded,
+                          color: primaryOrangeColor,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            walletAddress,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontFamily: 'monospace',
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Only deposit from ${chain.name}. Sending from other networks may result in permanent loss.',
+                        const SizedBox(width: 10),
+                        const Icon(
+                          Icons.content_copy_rounded,
+                          color: Colors.white70,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          // Network info
+          _Card(
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.info_outline_rounded,
+                  color: Colors.blue,
+                  size: 18,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Network: ${chain.name}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      const Text(
+                        'Deposits typically arrive in 1-2 minutes',
+                        style: TextStyle(color: Colors.white54, fontSize: 11),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tab 2 — Synthetix LP path: deposit collateral → auto-delegate → mint axUSD
+// ---------------------------------------------------------------------------
+
+class _SynthetixDepositTab extends StatefulWidget {
+  const _SynthetixDepositTab();
+
+  @override
+  State<_SynthetixDepositTab> createState() => _SynthetixDepositTabState();
+}
+
+class _SynthetixDepositTabState extends State<_SynthetixDepositTab> {
+  final _amountController = TextEditingController();
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountBloc, AccountState>(
+      builder: (context, state) {
+        final collaterals = AthleteXSynthetixConfig.collateralsForChain(
+          AthleteXSynthetixConfig.sepoliaChainId,
+        );
+        final selected = state.selectedCollateral ?? collaterals.first;
+        final txStatus = state.synthetixTxStatus;
+        final isLoading = state.isSynthetixAccountLoading;
+        final sliderValue = state.mintSliderValue;
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Info banner
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border:
+                      Border.all(color: Colors.blue.withOpacity(0.3)),
+                ),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'LP Path: Earn yield on your collateral',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      '1. Deposit  →  2. Auto-delegate to pool  →  3. Mint axUSD  →  4. Trade synths',
+                      style:
+                          TextStyle(color: Colors.white70, fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Collateral picker
+              _Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Select Collateral',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: collaterals
+                          .where((c) => !c.isWrappable) // LP path = non-wrap
+                          .map(
+                            (c) => _CollateralChip(
+                              collateral: c,
+                              isSelected: c == selected,
+                              onTap: () {
+                                context.read<AccountBloc>().add(
+                                      CollateralTypeSelected(c),
+                                    );
+                              },
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Amount input
+              _Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Amount to Deposit (${selected.symbol})',
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: _amountController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: '0.0',
+                        hintStyle:
+                            const TextStyle(color: Colors.white38),
+                        suffixText: selected.symbol,
+                        suffixStyle: TextStyle(
+                          color: primaryOrangeColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.05),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.white.withOpacity(0.1),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.white.withOpacity(0.1),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: primaryOrangeColor),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Mint slider
+              _Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Mint axUSD (% of safe maximum)',
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            // QR Code and Address
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white.withOpacity(0.08),
-                    Colors.white.withOpacity(0.06),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.1),
-                  width: 1.5,
-                ),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    'Scan QR Code',
-                    style: textStyle(
-                      Colors.white,
-                      16,
-                      isBold: true,
-                      isUline: false,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // QR Code
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: QrImageView(
-                      data: walletAddress,
-                      version: QrVersions.auto,
-                      size: 240,
-                      backgroundColor: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  // Wallet Address
-                  Text(
-                    'Or copy your address',
-                    style: TextStyle(
-                      color: Colors.white54,
-                      fontSize: 13,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  InkWell(
-                    onTap: () {
-                      Clipboard.setData(ClipboardData(text: walletAddress));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text('Address copied to clipboard'),
-                          backgroundColor: Colors.green,
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                    },
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.1),
-                          width: 1,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.account_balance_wallet_rounded,
-                            color: primaryOrangeColor,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Flexible(
-                            child: Text(
-                              walletAddress,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontFamily: 'monospace',
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Icon(
-                            Icons.content_copy_rounded,
-                            color: Colors.white70,
-                            size: 18,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Network info
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white.withOpacity(0.08),
-                    Colors.white.withOpacity(0.06),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.1),
-                  width: 1.5,
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.info_outline_rounded,
-                    color: Colors.blue,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Network: ${chain.name}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(height: 4),
                         Text(
-                          'Deposits typically arrive in 1-2 minutes',
+                          '${(sliderValue * 100).round()}%',
                           style: TextStyle(
-                            color: Colors.white54,
-                            fontSize: 11,
+                            color: primaryOrangeColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    Slider(
+                      value: sliderValue,
+                      divisions: 20,
+                      activeColor: primaryOrangeColor,
+                      inactiveColor: Colors.white24,
+                      onChanged: (v) => context
+                          .read<AccountBloc>()
+                          .add(MintSliderChanged(v)),
+                    ),
+                    const Text(
+                      '50% keeps c-ratio ~5× (safe). 80% is aggressive.',
+                      style: TextStyle(
+                        color: Colors.white38,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+              const SizedBox(height: 12),
+
+              // Tx stepper
+              if (txStatus != SynthetixTxStatus.idle)
+                _TxStepper(status: txStatus),
+              if (txStatus != SynthetixTxStatus.idle)
+                const SizedBox(height: 12),
+
+              // Error message
+              if (txStatus == SynthetixTxStatus.error &&
+                  state.synthetixTxError != null)
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Colors.red.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Text(
+                    state.synthetixTxError!,
+                    style: const TextStyle(
+                      color: Colors.redAccent,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              if (txStatus == SynthetixTxStatus.error &&
+                  state.synthetixTxError != null)
+                const SizedBox(height: 12),
+
+              // Deposit + Delegate button
+              ElevatedButton.icon(
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        final raw = double.tryParse(
+                          _amountController.text.trim(),
+                        );
+                        if (raw == null || raw <= 0) return;
+                        final amount = selected.toRaw(raw);
+                        context.read<AccountBloc>().add(
+                              DepositSynthetixCollateralRequested(
+                                collateralAddress: selected.address,
+                                amount: amount,
+                              ),
+                            );
+                      },
+                icon: isLoading
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Icon(Icons.savings_rounded),
+                label: Text(
+                  isLoading ? 'Processing…' : 'Deposit & Delegate',
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryOrangeColor,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // Mint axUSD button (only if delegated collateral exists)
+              if (state.synthetixCollateralAssigned > BigInt.zero)
+                OutlinedButton.icon(
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          context.read<AccountBloc>().add(
+                                MintAxUsdRequested(
+                                  collateralAddress: selected.address,
+                                  sliderValue: sliderValue,
+                                ),
+                              );
+                        },
+                  icon: const Icon(Icons.currency_exchange_rounded),
+                  label: const Text('Mint axUSD'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: primaryOrangeColor,
+                    side: BorderSide(color: primaryOrangeColor),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+
+              // axUSD balances
+              if (state.axUsdBalance > BigInt.zero ||
+                  state.axUsdInAccount > BigInt.zero) ...[
+                const SizedBox(height: 12),
+                _Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'axUSD Balances',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _BalanceRow(
+                        label: 'In wallet',
+                        amount: state.axUsdBalance,
+                        color: Colors.green,
+                      ),
+                      const SizedBox(height: 4),
+                      _BalanceRow(
+                        label: 'In account (pending withdrawal)',
+                        amount: state.axUsdInAccount,
+                        color: Colors.orange,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Shared helper widgets
+// ---------------------------------------------------------------------------
+
+class _Card extends StatelessWidget {
+  const _Card({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.08),
+            Colors.white.withOpacity(0.06),
           ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5),
+      ),
+      child: child,
+    );
+  }
+}
+
+class _CollateralChip extends StatelessWidget {
+  const _CollateralChip({
+    required this.collateral,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final CollateralInfo collateral;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? primaryOrangeColor.withOpacity(0.2)
+              : Colors.white.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected
+                ? primaryOrangeColor
+                : Colors.white.withOpacity(0.15),
+          ),
+        ),
+        child: Text(
+          collateral.symbol,
+          style: TextStyle(
+            color: isSelected ? primaryOrangeColor : Colors.white70,
+            fontWeight:
+                isSelected ? FontWeight.bold : FontWeight.normal,
+            fontSize: 13,
+          ),
         ),
       ),
     );
   }
 }
+
+class _BalanceRow extends StatelessWidget {
+  const _BalanceRow({
+    required this.label,
+    required this.amount,
+    required this.color,
+  });
+
+  final String label;
+  final BigInt amount;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final value = amount.toDouble() / BigInt.from(10).pow(18).toDouble();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: const TextStyle(color: Colors.white54, fontSize: 12)),
+        Text(
+          '${value.toStringAsFixed(4)} axUSD',
+          style: TextStyle(
+            color: color,
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Step indicator for the deposit → delegate → mint flow.
+class _TxStepper extends StatelessWidget {
+  const _TxStepper({required this.status});
+  final SynthetixTxStatus status;
+
+  static const _steps = [
+    _Step(SynthetixTxStatus.approving, 'Approve'),
+    _Step(SynthetixTxStatus.depositing, 'Deposit'),
+    _Step(SynthetixTxStatus.delegating, 'Delegate'),
+    _Step(SynthetixTxStatus.minting, 'Mint'),
+    _Step(SynthetixTxStatus.done, 'Done'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final curIdx =
+        _steps.indexWhere((s) => s.status == status);
+
+    return Row(
+      children: List.generate(_steps.length, (idx) {
+        final step = _steps[idx];
+        final isDone = idx < curIdx ||
+            (status == SynthetixTxStatus.done && idx == _steps.length - 1);
+        final isActive = step.status == status;
+        final isError = status == SynthetixTxStatus.error && isActive;
+
+        Color color;
+        if (isError) {
+          color = Colors.redAccent;
+        } else if (isDone) {
+          color = Colors.green;
+        } else if (isActive) {
+          color = primaryOrangeColor;
+        } else {
+          color = Colors.white24;
+        }
+
+        return Expanded(
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: color.withOpacity(0.2),
+                      border: Border.all(color: color),
+                    ),
+                    child: isActive && !isError
+                        ? Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: color,
+                            ),
+                          )
+                        : Icon(
+                            isDone
+                                ? Icons.check_rounded
+                                : isError
+                                    ? Icons.close_rounded
+                                    : Icons.circle_outlined,
+                            size: 14,
+                            color: color,
+                          ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    step.label,
+                    style: TextStyle(color: color, fontSize: 9),
+                  ),
+                ],
+              ),
+              if (idx < _steps.length - 1)
+                Expanded(
+                  child: Divider(
+                    color: idx < curIdx ? Colors.green : Colors.white24,
+                    thickness: 1.5,
+                  ),
+                ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+}
+
+class _Step {
+  const _Step(this.status, this.label);
+  final SynthetixTxStatus status;
+  final String label;
+}
+

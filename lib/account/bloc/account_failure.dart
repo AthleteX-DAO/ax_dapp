@@ -246,7 +246,7 @@ class AccountErrorHandler {
     // Timeout
     if (message.contains('TimeoutException') ||
         message.contains('deadline exceeded')) {
-      return TimeoutFailure(operation: 'Operation');
+      return const TimeoutFailure(operation: 'Operation');
     }
 
     // Default

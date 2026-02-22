@@ -154,3 +154,82 @@ class DelegateSynthetixCollateralRequested extends AccountEvent {
   @override
   List<Object?> get props => [poolId, collateralAddress, amount, leverage];
 }
+
+class UndelegateSynthetixCollateralRequested extends AccountEvent {
+  const UndelegateSynthetixCollateralRequested({
+    required this.poolId,
+    required this.collateralAddress,
+    required this.amount,
+  });
+
+  final int poolId;
+  final String collateralAddress;
+  final BigInt amount;
+
+  @override
+  List<Object?> get props => [poolId, collateralAddress, amount];
+}
+
+/// Mint axUSD against delegated collateral, then withdraw to wallet.
+///
+/// [sliderValue] is 0.0–1.0 representing fraction of max mintable amount.
+class MintAxUsdRequested extends AccountEvent {
+  const MintAxUsdRequested({
+    required this.collateralAddress,
+    required this.sliderValue,
+  });
+
+  final String collateralAddress;
+
+  /// Fraction of the safe-maximum mintable axUSD (0.0–1.0).
+  /// 0.5 means "mint 50% of the safe maximum" (c-ratio stays at ~5x).
+  final double sliderValue;
+
+  @override
+  List<Object?> get props => [collateralAddress, sliderValue];
+}
+
+/// Update the mint slider position without triggering a transaction.
+class MintSliderChanged extends AccountEvent {
+  const MintSliderChanged(this.value);
+  final double value;
+  @override
+  List<Object?> get props => [value];
+}
+
+/// Wrap a real token (USDC/USDT/WETH) into its synth equivalent.
+///
+/// Calls SpotMarket `wrap(marketId, amount, minAmountReceived)`.
+/// [slippageBps] is the maximum acceptable slippage in basis points
+/// (e.g. 50 = 0.5%). Defaults to 50 bps.
+class WrapCollateralRequested extends AccountEvent {
+  const WrapCollateralRequested({
+    required this.marketId,
+    required this.collateralAddress,
+    required this.amount,
+    this.slippageBps = 50,
+  });
+
+  final int marketId;
+  final String collateralAddress;
+  final BigInt amount;
+
+  /// Max slippage in basis points (1 bps = 0.01%). Default: 50 bps (0.5%).
+  final int slippageBps;
+
+  @override
+  List<Object?> get props => [marketId, collateralAddress, amount, slippageBps];
+}
+
+/// Switch the active collateral type shown in deposit/wrap flows.
+class CollateralTypeSelected extends AccountEvent {
+  const CollateralTypeSelected(this.collateral);
+  final CollateralInfo collateral;
+  @override
+  List<Object?> get props => [collateral];
+}
+
+/// Navigate to the wrap flow screen.
+class AccountWrapViewRequested extends AccountEvent {
+  const AccountWrapViewRequested();
+}

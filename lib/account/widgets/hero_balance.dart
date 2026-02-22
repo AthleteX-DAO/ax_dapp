@@ -104,7 +104,7 @@ class _HeroBalanceState extends State<HeroBalance>
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Text(
+                  const Text(
                     'Tap to see breakdown',
                     style: TextStyle(
                       color: Colors.white30,
@@ -157,7 +157,7 @@ class _HeroBalanceState extends State<HeroBalance>
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white70,
             fontSize: 13,
           ),

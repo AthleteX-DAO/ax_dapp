@@ -86,126 +86,113 @@ class _NetworkStatusWidgetState extends State<NetworkStatusWidget>
           width: 1.5,
         ),
       ),
-      child: Column(
-        children: [
-          // Main row with network info
-          GestureDetector(
-            onTap: _toggleDetails,
-            child: MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Chain info
-                  Row(
+      child: InkWell(
+        onTap: _toggleDetails,
+        borderRadius: BorderRadius.circular(16),
+        child: Column(
+          children: [
+            // Main row with network info
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Chain info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.green.withOpacity(0.5),
-                              blurRadius: 6,
-                            ),
-                          ],
+                      Text(
+                        widget.chainName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.chainName,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'Connected',
-                            style: TextStyle(
-                              color: Colors.white54,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 4),
+                      Text(
+                        '${widget.gasPrice.toStringAsFixed(1)} gwei',
+                        style: TextStyle(
+                          color: _gasPriceColor,
+                          fontSize: 10,
+                        ),
                       ),
                     ],
                   ),
-                  // Gas price indicator
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
+                ),
+                // Gas price indicator badge
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _gasPriceColor.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: _gasPriceColor.withOpacity(0.3),
                     ),
-                    decoration: BoxDecoration(
-                      color: _gasPriceColor.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: _gasPriceColor.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.local_gas_station,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
                           color: _gasPriceColor,
-                          size: 12,
+                          shape: BoxShape.circle,
                         ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${widget.gasPrice.toStringAsFixed(1)} gwei',
-                          style: TextStyle(
-                            color: _gasPriceColor,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        _gasPriceLabel,
+                        style: TextStyle(
+                          color: _gasPriceColor,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            // Expandable details
+            if (_showDetails) ...[
+              const SizedBox(height: 12),
+              Divider(
+                color: Colors.white.withOpacity(0.1),
+                height: 1,
+              ),
+              const SizedBox(height: 12),
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Column(
+                  children: [
+                    _buildDetailRow(
+                      'Gas Price',
+                      '${widget.gasPrice.toStringAsFixed(1)} gwei ($_gasPriceLabel)',
+                      _gasPriceColor,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    _buildDetailRow(
+                      'ETH for Gas',
+                      '${widget.ethBalance.toStringAsFixed(4)} ETH',
+                      _ethBalanceColor,
+                    ),
+                    const SizedBox(height: 10),
+                    _buildDetailRow(
+                      'RPC Status',
+                      'Healthy',
+                      Colors.green,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          // Expandable details
-          if (_showDetails) ...[
-            const SizedBox(height: 12),
-            const Divider(color: Colors.white24, height: 1),
-            const SizedBox(height: 12),
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: Column(
-                children: [
-                  _buildDetailRow(
-                    'Gas Price',
-                    '${widget.gasPrice.toStringAsFixed(1)} gwei ($_gasPriceLabel)',
-                    _gasPriceColor,
-                  ),
-                  const SizedBox(height: 10),
-                  _buildDetailRow(
-                    'ETH for Gas',
-                    '${widget.ethBalance.toStringAsFixed(4)} ETH',
-                    _ethBalanceColor,
-                  ),
-                  const SizedBox(height: 10),
-                  _buildDetailRow(
-                    'RPC Status',
-                    'Healthy',
-                    Colors.green,
-                  ),
-                ],
-              ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -216,7 +203,7 @@ class _NetworkStatusWidgetState extends State<NetworkStatusWidget>
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white54,
             fontSize: 11,
           ),

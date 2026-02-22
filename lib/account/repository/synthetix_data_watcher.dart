@@ -135,7 +135,7 @@ class SynthetixDataWatcher {
       await _fetchFreshAccountData(cacheKey);
     } catch (e) {
       _loadingStream.add(false);
-      _errorStream.add('Failed to fetch account data: ${e.toString()}');
+      _errorStream.add('Failed to fetch account data: ${e}');
     }
   }
 
@@ -175,7 +175,7 @@ class SynthetixDataWatcher {
         availableAmount: availableCollateral,
         lockedAmount: locked,
         depositedInUsd: _toDecimal(deposited, vaultConfig.decimals) *
-            100.0, // TODO: Get actual price from oracle
+            0.0, // TODO: Replace with Pyth oracle price feed once integrated
       );
 
       // Build position object
@@ -185,12 +185,12 @@ class SynthetixDataWatcher {
         collateralAddress: vaultConfig.collateralAddress,
         debt: snapshot.debt,
         debtInUsd: _toDecimal(snapshot.debt, vaultConfig.decimals) *
-            100.0, // TODO: Get actual price from oracle
+            0.0, // TODO: Replace with Pyth oracle price feed once integrated
         collateralizationRatio: cRatio,
         isLiquidatable: cRatio <
             AthleteXSynthetixConfig.minSafeCollateralizationRatio,
         unrealizedPnl: BigInt.zero, // TODO: Calculate from position
-        unrealizedPnlInUsd: 0.0, // TODO: Calculate from position
+        unrealizedPnlInUsd: 0, // TODO: Calculate from position
       );
 
       // Build complete account object
@@ -218,7 +218,7 @@ class SynthetixDataWatcher {
       _loadingStream.add(false);
     } catch (e) {
       _loadingStream.add(false);
-      _errorStream.add('RPC Error: ${e.toString()}');
+      _errorStream.add('RPC Error: ${e}');
       rethrow;
     }
   }

@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:ax_dapp/service/multicall3_service.dart';
-import 'package:web3dart/web3dart.dart';
 import 'package:web3dart/crypto.dart';
+import 'package:web3dart/web3dart.dart';
 
 class SynthetixBatchSnapshot {
   const SynthetixBatchSnapshot({
@@ -73,11 +73,11 @@ class SynthetixBatchQueries {
 
     final results = await _multicall3.aggregate3(calls);
 
-    BigInt deposited = BigInt.zero;
-    BigInt assigned = BigInt.zero;
-    BigInt available = BigInt.zero;
-    BigInt debt = BigInt.zero;
-    BigInt cRatio = BigInt.zero;
+    var deposited = BigInt.zero;
+    var assigned = BigInt.zero;
+    var available = BigInt.zero;
+    var debt = BigInt.zero;
+    var cRatio = BigInt.zero;
 
     if (results[0].success) {
       final decoded = getCollateralFn.decodeReturnValues(
