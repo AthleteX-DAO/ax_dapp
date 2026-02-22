@@ -1,42 +1,39 @@
 /// Enhanced Synthetix configuration for AthleteX protocol operations
 /// Extends SynthetixConfig with collateral, pool, and strategy settings
 class AthleteXSynthetixConfig {
-  /// Primary collateral token address (USDC on Base/Sepolia)
+  /// Primary collateral token address (AX on Sepolia)
   static const String primaryCollateralAddress =
-      '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'; // USDC on Base
-  
+      '0xDc5Aa90C7ce823cFBc62aBC3c035c609a97a0A3C'; // AX on Sepolia
+
   /// Primary collateral token decimals
-  static const int primaryCollateralDecimals = 6;
-  
+  static const int primaryCollateralDecimals = 18;
+
   /// Primary collateral symbol
-  static const String primaryCollateralSymbol = 'USDC';
+  static const String primaryCollateralSymbol = 'AX';
 
   /// Default pool ID for AthleteX operations (main liquidity pool)
   static const int defaultPoolId = 1;
 
   /// Pool name for display
-  static const String defaultPoolName = 'Spartan Council Pool';
+  static const String defaultPoolName = 'AthleteX Main Pool';
 
   /// Minimum collateral ratio before liquidation risk
-  /// C-ratio = collateral_value / debt_value
-  /// At 1.5, position can be liquidated
   static const double minSafeCollateralizationRatio = 1.5;
 
   /// Target collateral ratio for new deposits
-  /// Recommended safe target
   static const double targetCollateralizationRatio = 2.5;
 
   /// Maximum collateral ratio (diminishing returns)
-  static const double maxOptimalCollateralizationRatio = 5.0;
+  static const double maxOptimalCollateralizationRatio = 5;
 
   /// Multicall3 address (same on most EVM chains)
   static const String multicall3Address =
       '0xcA11bde05977b3631167028862bE2a173976CA11';
 
-  /// Poll interval for monitoring Synthetix account state (milliseconds)
+  /// Poll interval for monitoring Synthetix account state
   static const Duration accountPollingInterval = Duration(seconds: 10);
 
-  /// Cache TTL for Synthetix data (milliseconds)
+  /// Cache TTL for Synthetix data
   static const Duration cacheTTL = Duration(seconds: 10);
 
   /// Maximum number of retries for RPC calls
@@ -49,56 +46,167 @@ class AthleteXSynthetixConfig {
   static const Duration rpcTimeout = Duration(seconds: 10);
   static const Duration transactionTimeout = Duration(minutes: 2);
 
-  /// Map of supported collateral types (address => symbol)
-  static Map<String, String> get supportedCollaterals => {
-    primaryCollateralAddress: primaryCollateralSymbol,
-    // Future: add more collateral types here
-    // '0xOther': 'OTHER_SYMBOL',
+  // ======== Chain IDs ========
+  static const int sepoliaChainId = 11155111;
+  static const int polygonChainId = 137;
+
+  // ======== Collateral registries per chain ========
+
+  /// All supported collaterals keyed by chain ID then lower-cased address.
+  static const Map<int, List<CollateralInfo>> _collateralsByChain = {
+    sepoliaChainId: _sepoliaCollaterals,
+    polygonChainId: _polygonCollaterals,
   };
 
-  /// Get collateral info by address
-  static CollateralInfo? getCollateralInfo(String address) {
-    if (address.toLowerCase() == primaryCollateralAddress.toLowerCase()) {
-      return CollateralInfo(
-        address: primaryCollateralAddress,
-        symbol: primaryCollateralSymbol,
-        decimals: primaryCollateralDecimals,
-        isDefault: true,
-      );
+  static const List<CollateralInfo> _sepoliaCollaterals = [
+    CollateralInfo(
+      address: '0xDc5Aa90C7ce823cFBc62aBC3c035c609a97a0A3C',
+      symbol: 'AX',
+      decimals: 18,
+      isDefault: true,
+      isWrappable: false,
+    ),
+    CollateralInfo(
+      address: '0xC2567853F68299DeaFcB5B5c3b00a5a6bCA88f42',
+      symbol: 'USDC',
+      decimals: 6,
+      isDefault: false,
+      isWrappable: true,
+    ),
+    CollateralInfo(
+      address: '0x4E7374B31Aa01BdFd8A7d4cf929c02Ba4a2B70Be',
+      symbol: 'USDT',
+      decimals: 6,
+      isDefault: false,
+      isWrappable: true,
+    ),
+    CollateralInfo(
+      address: '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
+      symbol: 'WETH',
+      decimals: 18,
+      isDefault: false,
+      isWrappable: true,
+    ),
+  ];
+
+  /// AX token on Polygon mainnet.
+  /// Contract: https://polygonscan.com/token/0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df
+  static const String _axPolygonAddress =
+      '0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df';
+
+  static const List<CollateralInfo> _polygonCollaterals = [
+    CollateralInfo(
+      address: _axPolygonAddress,
+      symbol: 'AX',
+      decimals: 18,
+      isDefault: true,
+      isWrappable: false,
+    ),
+    CollateralInfo(
+      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+      symbol: 'USDC',
+      decimals: 6,
+      isDefault: false,
+      isWrappable: true,
+    ),
+    CollateralInfo(
+      address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+      symbol: 'USDT',
+      decimals: 6,
+      isDefault: false,
+      isWrappable: true,
+    ),
+    CollateralInfo(
+      address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+      symbol: 'WETH',
+      decimals: 18,
+      isDefault: false,
+      isWrappable: true,
+    ),
+    CollateralInfo(
+      address: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
+      symbol: 'WBTC',
+      decimals: 8,
+      isDefault: false,
+      isWrappable: true,
+    ),
+  ];
+
+  /// Returns all supported collaterals for [chainId].
+  /// Falls back to Sepolia list when chain is unknown.
+  static List<CollateralInfo> collateralsForChain(int chainId) =>
+      _collateralsByChain[chainId] ?? _sepoliaCollaterals;
+
+  /// Returns all wrappable collaterals for [chainId].
+  static List<CollateralInfo> wrappableCollateralsForChain(int chainId) =>
+      collateralsForChain(chainId)
+          .where((c) => c.isWrappable)
+          .toList(growable: false);
+
+  /// Get collateral info by address (case-insensitive) for [chainId].
+  static CollateralInfo? getCollateralInfo(
+    String address, {
+    int chainId = sepoliaChainId,
+  }) {
+    final lower = address.toLowerCase();
+    try {
+      return collateralsForChain(chainId)
+          .firstWhere((c) => c.address.toLowerCase() == lower);
+    } catch (_) {
+      return null;
     }
-    return null;
   }
 
-  /// Returns true if address is a supported collateral
-  static bool isSupportedCollateral(String address) {
-    return supportedCollaterals.keys
-        .any((addr) => addr.toLowerCase() == address.toLowerCase());
-  }
+  /// Returns true if address is a supported collateral on [chainId].
+  static bool isSupportedCollateral(
+    String address, {
+    int chainId = sepoliaChainId,
+  }) =>
+      getCollateralInfo(address, chainId: chainId) != null;
 }
 
-/// Information about a supported collateral token
+/// Information about a supported collateral token.
+///
+/// [isWrappable] means the token can be deposited via SpotMarket `wrap()`
+/// to mint a synthetic equivalent (e.g. USDC → axUSDC) without going
+/// through the LP deposit→delegate→mint path.
 class CollateralInfo {
   const CollateralInfo({
     required this.address,
     required this.symbol,
     required this.decimals,
     required this.isDefault,
+    required this.isWrappable,
   });
 
   final String address;
   final String symbol;
   final int decimals;
+
+  /// True if this is the default collateral shown on first launch.
   final bool isDefault;
 
-  /// Converts amount from decimal to raw (wei)
+  /// True if this token can be wrapped via SpotMarket (Trader path).
+  /// False = LP path only (deposit → delegate → mint → trade).
+  final bool isWrappable;
+
+  /// Converts a decimal [amount] to raw wei representation.
   BigInt toRaw(double amount) {
     final divisor = BigInt.from(10).pow(decimals);
-    return BigInt.from((amount * (divisor).toDouble()).toInt());
+    return BigInt.from((amount * divisor.toDouble()).truncate());
   }
 
-  /// Converts amount from raw (wei) to decimal
+  /// Converts a raw [amount] (wei) to a human-readable decimal.
   double toDecimal(BigInt amount) {
     final divisor = BigInt.from(10).pow(decimals);
     return amount.toDouble() / divisor.toDouble();
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is CollateralInfo &&
+      other.address.toLowerCase() == address.toLowerCase();
+
+  @override
+  int get hashCode => address.toLowerCase().hashCode;
 }

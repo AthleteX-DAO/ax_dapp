@@ -1,17 +1,17 @@
-import 'package:web3dart/web3dart.dart';
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:http/http.dart' as http;
-import '../config/synthetix_config.dart';
+import 'package:web3dart/web3dart.dart';
 
 /// Service for interacting with Synthetix V3 Core system
 class SynthetixCoreService {
-  late Web3Client _client;
-  late DeployedContract _coreProxy;
-  late DeployedContract _usdProxy;
 
   SynthetixCoreService() {
     _client = Web3Client(SynthetixConfig.rpcUrl, http.Client());
     _initContracts();
   }
+  late Web3Client _client;
+  late DeployedContract _coreProxy;
+  late DeployedContract _usdProxy;
 
   Web3Client get client => _client;
 
@@ -80,7 +80,19 @@ class SynthetixCoreService {
           {"internalType": "uint128", "name": "accountId", "type": "uint128"},
           {"internalType": "uint128", "name": "poolId", "type": "uint128"},
           {"internalType": "address", "name": "collateralType", "type": "address"},
-          {"internalType": "int256", "name": "amount", "type": "int256"}
+          {"internalType": "uint256", "name": "amount", "type": "uint256"}
+        ],
+        "name": "undelegateCollateral",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {"internalType": "uint128", "name": "accountId", "type": "uint128"},
+          {"internalType": "uint128", "name": "poolId", "type": "uint128"},
+          {"internalType": "address", "name": "collateralType", "type": "address"},
+          {"internalType": "uint256", "name": "amount", "type": "uint256"}
         ],
         "name": "mintUsd",
         "outputs": [],
@@ -146,7 +158,7 @@ class SynthetixCoreService {
         "type": "function"
       }
     ]
-    ''', 'CoreProxy');
+    ''', 'CoreProxy',);
 
     final usdAbi = ContractAbi.fromJson('''
     [
@@ -165,7 +177,7 @@ class SynthetixCoreService {
         "type": "function"
       }
     ]
-    ''', 'USDProxy');
+    ''', 'USDProxy',);
 
     _coreProxy = DeployedContract(
       coreAbi,
@@ -214,7 +226,7 @@ class SynthetixCoreService {
           "type": "function"
         }
       ]
-      ''', 'AccountToken');
+      ''', 'AccountToken',);
 
       final accountToken = DeployedContract(
         accountTokenAbi,
@@ -324,11 +336,7 @@ class SynthetixCoreService {
       parameters: [],
     );
 
-    final txHash = await _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    final txHash = await _sendWithGasBuffer(transaction, credentials);
     print('SynthetixCoreService.createAccount: txHash=$txHash');
     return txHash;
   }
@@ -350,11 +358,7 @@ class SynthetixCoreService {
       ],
     );
 
-    return await _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    return _sendWithGasBuffer(transaction, credentials);
   }
 
   /// Withdraw collateral from account
@@ -374,11 +378,7 @@ class SynthetixCoreService {
       ],
     );
 
-    return await _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    return _sendWithGasBuffer(transaction, credentials);
   }
 
   /// Delegate collateral to a liquidity pool
@@ -403,15 +403,32 @@ class SynthetixCoreService {
       ],
     );
 
-    return await _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
+    return _sendWithGasBuffer(transaction, credentials);
+  }
+
+  /// Undelegate collateral from a liquidity pool
+  Future<String> undelegateCollateral({
+    required int accountId,
+    required int poolId,
+    required String collateralAddress,
+    required BigInt amount,
+    required Credentials credentials,
+  }) async {
+    final transaction = Transaction.callContract(
+      contract: _coreProxy,
+      function: _coreProxy.function('undelegateCollateral'),
+      parameters: [
+        BigInt.from(accountId),
+        BigInt.from(poolId),
+        EthereumAddress.fromHex(collateralAddress),
+        amount,
+      ],
     );
+
+    return _sendWithGasBuffer(transaction, credentials);
   }
 
   /// Mint/borrow sUSD against delegated collateral
-  /// Positive amount = mint (borrow), negative = burn (repay)
   Future<String> mintUsd({
     required int accountId,
     required int poolId,
@@ -430,11 +447,7 @@ class SynthetixCoreService {
       ],
     );
 
-    return await _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    return _sendWithGasBuffer(transaction, credentials);
   }
 
   /// Burn/repay sUSD debt
@@ -456,11 +469,7 @@ class SynthetixCoreService {
       ],
     );
 
-    return await _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    return _sendWithGasBuffer(transaction, credentials);
   }
 
   /// Get available (unassigned) collateral that can be withdrawn
@@ -529,6 +538,30 @@ class SynthetixCoreService {
       print('Error getting c-ratio: $e');
       return BigInt.zero;
     }
+  }
+
+  /// Sends [transaction] with a 1.3× gas buffer applied to the web3dart
+  /// estimate, guarding against OOG failures on first-time storage writes
+  /// (common on Polygon mainnet).
+  Future<String> _sendWithGasBuffer(
+    Transaction transaction,
+    Credentials credentials,
+  ) async {
+    final estimatedGas = await _client.estimateGas(
+      sender: EthereumAddress.fromHex(
+        await credentials.extractAddress().then((a) => a.hex),
+      ),
+      to: transaction.to,
+      data: transaction.data,
+    );
+    // Apply 1.3× buffer (round up to nearest integer)
+    final bufferedGas = (estimatedGas * BigInt.from(13)) ~/ BigInt.from(10);
+    final txWithGas = transaction.copyWith(maxGas: bufferedGas.toInt());
+    return _client.sendTransaction(
+      credentials,
+      txWithGas,
+      chainId: SynthetixConfig.chainId,
+    );
   }
 
   void dispose() {
