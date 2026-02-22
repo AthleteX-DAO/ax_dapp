@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class PredictionPageToolTip extends StatelessWidget {
   const PredictionPageToolTip({super.key});
@@ -7,8 +8,7 @@ class PredictionPageToolTip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       triggerMode: TooltipTriggerMode.tap,
-      showDuration: const Duration(seconds: 3),
-      height: 20,
+      showDuration: const Duration(seconds: 3), constraints: BoxConstraints(minHeight: 20),
       preferBelow: true,
       decoration: BoxDecoration(
         color: Colors.grey[800],

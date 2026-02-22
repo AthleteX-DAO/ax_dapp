@@ -57,7 +57,7 @@ class _StatsSideState extends State<StatsSide> {
                     // Yes/No toggle
                     Container(
                       padding: const EdgeInsets.all(6),
-                      decoration: GoldTheme.emphasis(radius: 12),
+                      decoration: GoldTheme.emphasis(),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -66,14 +66,14 @@ class _StatsSideState extends State<StatsSide> {
                               selected: _isYesSelected,
                               onTap: () {
                                 setState(() => _isYesSelected = true);
-                              }),
+                              },),
                           const SizedBox(width: 8),
                           _buildToggleChip(
                               label: 'No',
                               selected: !_isYesSelected,
                               onTap: () {
                                 setState(() => _isYesSelected = false);
-                              }),
+                              },),
                         ],
                       ),
                     ),
@@ -91,7 +91,7 @@ class _StatsSideState extends State<StatsSide> {
                           ),
                         ),
                         Text(
-                          '${widget.predictionModel.longTokenPrice?.toStringAsFixed(4) ?? '0.00'}',
+                          widget.predictionModel.longTokenPrice?.toStringAsFixed(4) ?? '0.00',
                           style: textStyle(
                             _isYesSelected ? Colors.white : Colors.white70,
                             14,
@@ -115,7 +115,7 @@ class _StatsSideState extends State<StatsSide> {
                           ),
                         ),
                         Text(
-                          '${widget.predictionModel.shortTokenPrice?.toStringAsFixed(4) ?? '0.00'}',
+                          widget.predictionModel.shortTokenPrice?.toStringAsFixed(4) ?? '0.00',
                           style: textStyle(
                             !_isYesSelected ? Colors.white : Colors.white70,
                             14,
@@ -139,7 +139,7 @@ class _StatsSideState extends State<StatsSide> {
                           ),
                         ),
                         Text(
-                          '${widget.predictionModel.tradingVolume.toStringAsFixed(2)}',
+                          widget.predictionModel.tradingVolume.toStringAsFixed(2),
                           style: textStyle(
                             Colors.white,
                             14,
@@ -164,7 +164,6 @@ class _StatsSideState extends State<StatsSide> {
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: primaryOrangeColor.withOpacity(0.3),
-                      width: 1,
                     ),
                   ),
                   child: Text(
@@ -220,7 +219,6 @@ class _StatsSideState extends State<StatsSide> {
           border: Border.all(
             color:
                 selected ? primaryOrangeColor : Colors.white.withOpacity(0.12),
-            width: 1,
           ),
         ),
         child: Text(

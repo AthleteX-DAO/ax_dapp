@@ -123,7 +123,7 @@ class BaseballPredictionsDetailsWidget implements PredictionDetailsWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: stats.entries
               .map((entry) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -147,7 +147,7 @@ class BaseballPredictionsDetailsWidget implements PredictionDetailsWidget {
                         ),
                       ],
                     ),
-                  ))
+                  ),)
               .toList(),
         ),
       ),
@@ -178,7 +178,7 @@ class BaseballPredictionsDetailsWidget implements PredictionDetailsWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: stats.entries
               .map((entry) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6.0),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -193,7 +193,7 @@ class BaseballPredictionsDetailsWidget implements PredictionDetailsWidget {
                             ),
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Text(
                           entry.value,
                           style: textStyle(
@@ -205,7 +205,7 @@ class BaseballPredictionsDetailsWidget implements PredictionDetailsWidget {
                         ),
                       ],
                     ),
-                  ))
+                  ),)
               .toList(),
         ),
       ),

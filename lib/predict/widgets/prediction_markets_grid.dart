@@ -1,4 +1,3 @@
-import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/responsive_constants.dart';

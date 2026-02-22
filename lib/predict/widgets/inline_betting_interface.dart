@@ -87,7 +87,7 @@ class _InlineBettingInterfaceState extends State<InlineBettingInterface> {
                             controller: _amountController,
                             keyboardType:
                                 const TextInputType.numberWithOptions(
-                                    decimal: true),
+                                    decimal: true,),
                             style: textStyle(
                               Colors.white,
                               16,
@@ -148,7 +148,6 @@ class _InlineBettingInterfaceState extends State<InlineBettingInterface> {
                         ),
                         Slider(
                           value: _sliderValue,
-                          min: 0,
                           max: _maxBet,
                           onChanged: _updateAmount,
                           activeColor: widget.isYes

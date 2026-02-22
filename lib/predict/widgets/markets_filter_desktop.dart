@@ -15,6 +15,7 @@ class PredictionMarketsFilterDesktop extends StatefulWidget {
 class _PredictionMarketsFilterDesktopState
     extends State<PredictionMarketsFilterDesktop> {
   final marketsSearchController = TextEditingController();
+  bool _searchExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class _PredictionMarketsFilterDesktopState
     var _selectedMarket = context.read<PredictPageBloc>().state.selectedMarket;
     return LayoutBuilder(
       builder: (context, constraints) {
+        final isNarrow = constraints.maxWidth < 600;
         return Container(
           margin: const EdgeInsets.only(
             left: 20,
@@ -31,13 +33,12 @@ class _PredictionMarketsFilterDesktopState
           ),
           height: 60,
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'AthleteX Prediction Markets',
+                isNarrow ? 'AX Markets' : 'AthleteX Prediction Markets',
                 style: textStyle(
                   Colors.white,
-                  18,
+                  isNarrow ? 15 : 18,
                   isBold: false,
                   isUline: false,
                 ),
@@ -348,53 +349,83 @@ class _PredictionMarketsFilterDesktopState
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
-              SizedBox(
-                width: 260,
-                child: TextField(
-                  controller: marketsSearchController,
-                  style: textStyle(
-                    Colors.white,
-                    14,
-                    isBold: false,
-                    isUline: false,
-                  ),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    hintText: 'Search markets',
-                    hintStyle: textStyle(
-                      Colors.grey[500]!,
-                      14,
-                      isBold: false,
-                      isUline: false,
-                    ),
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: Colors.grey,
-                      size: 18,
-                    ),
-                    filled: true,
-                    fillColor: Colors.white.withOpacity(0.04),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Colors.white24,
-                        width: 1,
+              const SizedBox(width: 8),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeOutCubic,
+                width: _searchExpanded ? 260 : 40,
+                height: 40,
+                child: _searchExpanded
+                    ? TextField(
+                        controller: marketsSearchController,
+                        autofocus: true,
+                        onSubmitted: (_) {
+                          if (marketsSearchController.text.isEmpty) {
+                            setState(() => _searchExpanded = false);
+                          }
+                        },
+                        style: textStyle(
+                          Colors.white,
+                          14,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                        decoration: InputDecoration(
+                          isDense: true,
+                          hintText: 'Search markets',
+                          hintStyle: textStyle(
+                            Colors.grey[500]!,
+                            14,
+                            isBold: false,
+                            isUline: false,
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                            size: 18,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.grey,
+                              size: 16,
+                            ),
+                            onPressed: () {
+                              marketsSearchController.clear();
+                              setState(() => _searchExpanded = false);
+                            },
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.04),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Colors.white24,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Colors.amber,
+                              width: 1.2,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
+                        ),
+                      )
+                    : IconButton(
+                        icon: const Icon(
+                          Icons.search,
+                          color: Colors.grey,
+                          size: 22,
+                        ),
+                        onPressed: () {
+                          setState(() => _searchExpanded = true);
+                        },
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Colors.amber,
-                        width: 1.2,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                  ),
-                ),
               ),
             ],
           ),

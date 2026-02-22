@@ -49,7 +49,6 @@ class PredictionSnapshotRepository {
             noTokenAddress: '',
             yesName: '',
             noName: '',
-            tradingVolume: 0,
             time: '',
             longTokenPrice: 0,
             shortTokenPrice: 0,

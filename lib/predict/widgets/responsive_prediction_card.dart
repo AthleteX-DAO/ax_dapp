@@ -62,8 +62,8 @@ class _ResponsivePredictionCardState extends State<ResponsivePredictionCard>
           });
         }
       },
-      child: Container(
-        decoration: GoldTheme.panel(radius: 12),
+      child: DecoratedBox(
+        decoration: GoldTheme.panel(),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(padding),
@@ -236,7 +236,7 @@ class _UnifiedBetButton extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${priceStr}¢',
+                  '$priceStr¢',
                   style: textStyle(
                     Colors.white70,
                     isMobile ? 11 : 12,

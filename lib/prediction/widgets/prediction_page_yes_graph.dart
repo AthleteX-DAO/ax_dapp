@@ -18,14 +18,14 @@ class PredictionPageYesGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
-      primaryXAxis: DateTimeAxis(),
-      primaryYAxis: NumericAxis(
+      primaryXAxis: const DateTimeAxis(),
+      primaryYAxis: const NumericAxis(
         minimum: 0,
         maximum: 1,
         interval: 0.2,
       ),
       tooltipBehavior: _longToolTipBehavior,
-      legend: Legend(
+      legend: const Legend(
         isVisible: true,
         position: LegendPosition.bottom,
         itemPadding: 12,
@@ -52,11 +52,8 @@ class PredictionPageYesGraph extends StatelessWidget {
               color: Color(0xFFFFD700),
             ),
           ),
-          enableTooltip: true,
-          color: Color(0xFFFFD700),
-          width: 2,
-          opacity: 1,
-          dashArray: <double>[5, 5],
+          color: const Color(0xFFFFD700),
+          dashArray: const <double>[5, 5],
         ),
         FastLineSeries<GraphData, DateTime>(
           name: 'Market Value',
@@ -77,11 +74,8 @@ class PredictionPageYesGraph extends StatelessWidget {
               color: Color(0xFFFFD700),
             ),
           ),
-          enableTooltip: true,
           color: Colors.black,
-          width: 2,
-          opacity: 1,
-          dashArray: <double>[5, 5],
+          dashArray: const <double>[5, 5],
         ),
       ],
     );

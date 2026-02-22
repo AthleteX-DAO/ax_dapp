@@ -41,7 +41,7 @@ class _PredictionPlaceholderCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.04),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white24, width: 1),
+        border: Border.all(color: Colors.white24),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +54,7 @@ class _PredictionPlaceholderCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: secondaryOrangeColor.withOpacity(0.8),
-                  border: Border.all(color: Colors.white24, width: 1),
+                  border: Border.all(color: Colors.white24),
                 ),
                 child: const Icon(
                   Icons.sports_esports,
@@ -120,7 +120,7 @@ Widget _pill(String text) {
     decoration: BoxDecoration(
       color: Colors.white.withOpacity(0.06),
       borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Colors.white24, width: 1),
+      border: Border.all(color: Colors.white24),
     ),
     child: Text(
       text,

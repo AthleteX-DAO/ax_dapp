@@ -34,13 +34,12 @@ class PromptPageTitle extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: primaryOrangeColor.withOpacity(0.3),
-              width: 1,
             ),
           ),
           child: Row(
             children: [
               // Back Button
-              Container(
+              DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(10),
@@ -74,7 +73,7 @@ class PromptPageTitle extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               // Share Button
-              Container(
+              DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(10),

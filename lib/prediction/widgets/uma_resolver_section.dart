@@ -199,7 +199,6 @@ class _UmaResolverSectionState extends State<UmaResolverSection> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: primaryOrangeColor.withOpacity(0.3),
-              width: 1,
             ),
           ),
           child: Row(
@@ -287,7 +286,7 @@ class _UmaResolverSectionState extends State<UmaResolverSection> {
         ),
         const SizedBox(height: 12),
         // Propose Resolution button
-        SizedBox(
+        const SizedBox(
           width: double.infinity,
           child: ProposeButton(),
         ),
@@ -315,7 +314,6 @@ class _UmaResolverSectionState extends State<UmaResolverSection> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: primaryOrangeColor.withOpacity(0.35),
-              width: 1,
             ),
           ),
           child: Column(
@@ -378,7 +376,6 @@ class _UmaResolverSectionState extends State<UmaResolverSection> {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Colors.white.withOpacity(0.12),
-          width: 1,
         ),
       ),
       child: Column(
@@ -416,7 +413,6 @@ class _UmaResolverSectionState extends State<UmaResolverSection> {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: Colors.white.withOpacity(0.12),
-          width: 1,
         ),
       ),
       child: Text(

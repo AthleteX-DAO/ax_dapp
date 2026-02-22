@@ -32,7 +32,7 @@ class _VisiblePredictionTrackerState extends State<VisiblePredictionTracker> {
     final context = _key.currentContext;
     if (context == null) return;
 
-    final RenderObject? renderObject = context.findRenderObject();
+    final renderObject = context.findRenderObject();
     if (renderObject == null) return;
 
     // Simple visibility check based on render tree

@@ -116,9 +116,15 @@ class _HeroCardPlaceholder extends StatelessWidget {
     final primaryColor = _colorPalette[colorIndex];
     final secondaryColor = _colorPalette[(colorIndex + 1) % _colorPalette.length];
     final icon = _iconPalette[colorIndex];
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isMobile = screenWidth < 600;
+    final cardPadding = isMobile ? 16.0 : 28.0;
+    final iconSize = isMobile ? 52.0 : 80.0;
+    final iconInnerSize = isMobile ? 26.0 : 40.0;
+    final titleFontSize = isMobile ? 16.0 : 20.0;
 
     return Container(
-      padding: const EdgeInsets.all(28),
+      padding: EdgeInsets.all(cardPadding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
@@ -145,12 +151,11 @@ class _HeroCardPlaceholder extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Icon
               Container(
-                height: 80,
-                width: 80,
+                height: iconSize,
+                width: iconSize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
@@ -167,10 +172,10 @@ class _HeroCardPlaceholder extends StatelessWidget {
                 child: Icon(
                   icon,
                   color: Colors.white,
-                  size: 40,
+                  size: iconInnerSize,
                 ),
               ),
-              const SizedBox(width: 28),
+              SizedBox(width: isMobile ? 14 : 28),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,12 +197,12 @@ class _HeroCardPlaceholder extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: textStyle(
                         Colors.white,
-                        20,
+                        titleFontSize,
                         isBold: true,
                         isUline: false,
                       ),
                     ),
-                    const SizedBox(height: 14),
+                    SizedBox(height: isMobile ? 6 : 14),
                     Text(
                       'Coming soon: curated AthleteX prediction markets',
                       style: textStyle(
@@ -212,14 +217,14 @@ class _HeroCardPlaceholder extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          if (!isMobile) ...[          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              const Row(
                 children: [
                   _FeatureBadge(icon: Icons.flash_on, label: 'Live data'),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   _FeatureBadge(icon: Icons.trending_up, label: 'Market driven'),
                 ],
               ),
@@ -261,6 +266,7 @@ class _HeroCardPlaceholder extends StatelessWidget {
               ),
             ],
           ),
+          ],
         ],
       ),
     );
@@ -307,7 +313,7 @@ class _FeatureBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
+        border: Border.all(color: Colors.white.withOpacity(0.2)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

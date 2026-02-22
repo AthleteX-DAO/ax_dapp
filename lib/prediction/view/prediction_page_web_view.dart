@@ -33,18 +33,15 @@ class PredictionPageWebView extends StatelessWidget {
             child: SizedBox(
               width: _width * 0.9,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Left column: graph (top), market intel (bottom)
                   Expanded(
-                    flex: 1,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Top-left: Graph
                         Expanded(
-                          flex: 1,
                           child: GraphSide(
                             predictionModel: predictionModel,
                             chartStats: chartStats,
@@ -74,7 +71,6 @@ class PredictionPageWebView extends StatelessWidget {
                     child: SizedBox(
                       width: _width * 0.35,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const SizedBox(height: 60),
                           StatsSide(

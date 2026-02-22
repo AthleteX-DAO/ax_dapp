@@ -146,7 +146,7 @@ class GetPredictionMarketDataUseCase {
       const _MockPredictionMarket(
         id: 7,
         prompt: '2026 World Series Winner',
-        details: 'Which club lifts the Commissioner\'s Trophy in 2026.',
+        details: "Which club lifts the Commissioner's Trophy in 2026.",
         category: SupportedPredictionMarkets.baseball,
         endDate: '2026-11-05',
       ),
@@ -194,14 +194,14 @@ class GetPredictionMarketDataUseCase {
       ),
       const _MockPredictionMarket(
         id: 14,
-        prompt: '2026 Wimbledon Women\'s Champion',
-        details: 'Ladies\' singles outright at Wimbledon 2026.',
+        prompt: "2026 Wimbledon Women's Champion",
+        details: "Ladies' singles outright at Wimbledon 2026.",
         category: SupportedPredictionMarkets.exotic,
         endDate: '2026-07-11',
       ),
       const _MockPredictionMarket(
         id: 15,
-        prompt: '2026 US Open Men\'s Champion',
+        prompt: "2026 US Open Men's Champion",
         details: 'Mens singles outright at Flushing Meadows 2026.',
         category: SupportedPredictionMarkets.exotic,
         endDate: '2026-09-13',
@@ -258,7 +258,7 @@ class GetPredictionMarketDataUseCase {
       const _MockPredictionMarket(
         id: 23,
         prompt: 'Will Messi score 20+ MLS goals in 2026?',
-        details: 'Goal-scoring prop for Lionel Messi\'s 2026 MLS season.',
+        details: "Goal-scoring prop for Lionel Messi's 2026 MLS season.",
         category: SupportedPredictionMarkets.soccer,
         endDate: '2026-10-20',
       ),

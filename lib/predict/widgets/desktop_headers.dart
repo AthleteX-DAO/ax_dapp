@@ -13,13 +13,13 @@ class DesktopHeaders extends StatelessWidget {
         return SizedBox(
           child: OutlinedButton(
             style: ButtonStyle(
-              overlayColor: MaterialStateProperty.all(
+              overlayColor: WidgetStateProperty.all(
                 Colors.transparent,
               ),
-              side: MaterialStateProperty.resolveWith<BorderSide>(
+              side: WidgetStateProperty.resolveWith<BorderSide>(
                 (_) => BorderSide.none,
               ),
-              mouseCursor: MaterialStateProperty.resolveWith<MouseCursor>(
+              mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>(
                 (_) => MouseCursor.defer,
               ),
             ),

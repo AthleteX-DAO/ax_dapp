@@ -59,7 +59,6 @@ class PredictionModel extends MarketModel {
     noTokenAddress: '',
     yesName: '',
     noName: '',
-    tradingVolume: 0,
     supportedPredictionMarkets: SupportedPredictionMarkets.all,
     time: '',
     longTokenPrice: 0,
