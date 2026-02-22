@@ -76,7 +76,6 @@ class GoldTheme {
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(
         color: Colors.white.withOpacity(0.1),
-        width: 1,
       ),
     );
   }
@@ -86,7 +85,7 @@ class GoldTheme {
     double radius = 8,
   }) {
     return BoxDecoration(
-      gradient: LinearGradient(
+      gradient: const LinearGradient(
         colors: [
           gold,
           goldDark,

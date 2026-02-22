@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class AppToolTip extends StatelessWidget {
   const AppToolTip(this.message, this.child, {super.key});
@@ -9,8 +10,7 @@ class AppToolTip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       triggerMode: TooltipTriggerMode.tap,
-      showDuration: Duration.zero,
-      height: 20,
+      showDuration: Duration.zero, constraints: BoxConstraints(minHeight: 20),
       padding: const EdgeInsets.all(20),
       preferBelow: true,
       decoration: BoxDecoration(

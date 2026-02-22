@@ -35,7 +35,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
   String _selectedCurrency = 'USD';
   bool _limitOrderEnabled = false;
   late bool _isBuyLocal;
-  double _balance = 2500.0; // TODO: wire real balance
+  final double _balance = 2500; // TODO: wire real balance
 
   @override
   void initState() {
@@ -179,7 +179,6 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.12),
-                    width: 1,
                   ),
                 ),
                 child: Row(
@@ -190,14 +189,14 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
                         selected: _isBuyLocal,
                         onTap: () {
                           setState(() => _isBuyLocal = true);
-                        }),
+                        },),
                     const SizedBox(width: 8),
                     _buildHeaderTab(
                         label: 'Sell',
                         selected: !_isBuyLocal,
                         onTap: () {
                           setState(() => _isBuyLocal = false);
-                        }),
+                        },),
                   ],
                 ),
               ),
@@ -228,7 +227,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
   Widget _buildHeaderTab(
       {required String label,
       required bool selected,
-      required VoidCallback onTap}) {
+      required VoidCallback onTap,}) {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -241,7 +240,6 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: selected ? Colors.white : Colors.white.withOpacity(0.12),
-            width: 1,
           ),
         ),
         child: Text(
@@ -265,7 +263,6 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: Colors.white.withOpacity(0.1),
-          width: 1,
         ),
       ),
       child: Row(
@@ -356,7 +353,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
   }
 
   Widget _buildOutcomeButton(
-      {required String label, required Color color, required int priceCents}) {
+      {required String label, required Color color, required int priceCents,}) {
     final isSelected = _selectedOutcome == label;
     return GestureDetector(
       onTap: () => setState(() => _selectedOutcome = label),
@@ -403,7 +400,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  '${priceCents}¢',
+                  '$priceCents¢',
                   style: textStyle(
                     isSelected ? Colors.white : Colors.white70,
                     12,
@@ -440,7 +437,6 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: Colors.white.withOpacity(0.1),
-              width: 1,
             ),
           ),
           child: DropdownButton<String>(
@@ -490,7 +486,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
               ),
             ),
             Text(
-              'Balance: \$2,500.00',
+              r'Balance: $2,500.00',
               style: textStyle(
                 Colors.white54,
                 12,
@@ -567,7 +563,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
           setState(() => _inputAmount = (_balance * 0.50).toStringAsFixed(2));
         }),
         _buildQuickButton('Max', () {
-          setState(() => _inputAmount = (_balance).toStringAsFixed(2));
+          setState(() => _inputAmount = _balance.toStringAsFixed(2));
         }),
       ],
     );
@@ -583,7 +579,6 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: Colors.white.withOpacity(0.15),
-            width: 1,
           ),
         ),
         child: Text(
@@ -612,11 +607,11 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
       ),
       child: Column(
         children: [
-          _buildSummaryRow('You\'ll spend',
-              '\$${_inputAmount.isEmpty ? "0.00" : _inputAmount}'),
+          _buildSummaryRow("You'll spend",
+              '\$${_inputAmount.isEmpty ? "0.00" : _inputAmount}',),
           const SizedBox(height: 10),
-          _buildSummaryRow('You\'ll receive',
-              '${(_inputAmount.isNotEmpty ? double.parse(_inputAmount) * 1.14 : 0).toStringAsFixed(2)} shares'),
+          _buildSummaryRow("You'll receive",
+              '${(_inputAmount.isNotEmpty ? double.parse(_inputAmount) * 1.14 : 0).toStringAsFixed(2)} shares',),
           const SizedBox(height: 10),
           Container(
             height: 1,
@@ -625,7 +620,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
           const SizedBox(height: 10),
           _buildSummaryRow(
             'Est. Profit',
-            '${(_inputAmount.isNotEmpty ? double.parse(_inputAmount) * 0.14 : 0).toStringAsFixed(2)}',
+            (_inputAmount.isNotEmpty ? double.parse(_inputAmount) * 0.14 : 0).toStringAsFixed(2),
             isHighlight: true,
           ),
         ],
@@ -634,7 +629,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
   }
 
   Widget _buildSummaryRow(String label, String value,
-      {bool isHighlight = false}) {
+      {bool isHighlight = false,}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -670,7 +665,6 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: Colors.white.withOpacity(0.08),
-            width: 1,
           ),
         ),
         child: Row(
@@ -737,7 +731,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
             Switch(
               value: _limitOrderEnabled,
               onChanged: (value) => setState(() => _limitOrderEnabled = value),
-              activeColor: primaryOrangeColor,
+              activeThumbColor: primaryOrangeColor,
               inactiveTrackColor: Colors.white.withOpacity(0.1),
             ),
           ],
@@ -761,7 +755,6 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 color: Colors.white.withOpacity(0.1),
-                width: 1,
               ),
             ),
             child: TextField(
@@ -820,7 +813,6 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: Colors.white.withOpacity(0.1),
-            width: 1,
           ),
         ),
         child: Center(
@@ -863,7 +855,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
             ],
           ),
           child: Text(
-            '${_isBuyLocal ? "Buy" : "Sell"} ${_selectedOutcome}',
+            '${_isBuyLocal ? "Buy" : "Sell"} $_selectedOutcome',
             textAlign: TextAlign.center,
             style: textStyle(
               Colors.black,
