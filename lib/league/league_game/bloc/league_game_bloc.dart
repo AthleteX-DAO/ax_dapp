@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:ax_dapp/athlete_markets/athlete.dart';
+import 'package:ax_dapp/athlete_markets/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
-import 'package:ax_dapp/athlete_markets/athlete.dart';
-import 'package:ax_dapp/athlete_markets/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';

@@ -93,7 +93,7 @@ class DesktopLeagueDraft extends StatelessWidget {
                           padding: const EdgeInsets.all(8),
                           child: TextButton(
                             style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
+                              shape: WidgetStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(100),

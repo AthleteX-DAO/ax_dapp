@@ -132,7 +132,7 @@ class _DesktopLeagueState extends State<DesktopLeague> {
                       TextButton(
                         style: ButtonStyle(
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.amber[400]!),

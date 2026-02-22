@@ -16,7 +16,7 @@ class ClaimPrize extends StatelessWidget {
     return Center(
       child: TextButton(
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100),
               side: BorderSide(color: Colors.amber[400]!),

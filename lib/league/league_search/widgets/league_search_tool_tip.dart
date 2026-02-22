@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:league_repository/league_repository.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
@@ -16,7 +17,7 @@ class LeagueSearchPageToolTip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       triggerMode: TooltipTriggerMode.tap,
-      height: 50,
+      constraints: BoxConstraints(minHeight: 50),
       padding: const EdgeInsets.all(10),
       verticalOffset: -100,
       decoration: BoxDecoration(

@@ -105,7 +105,7 @@ class _SportSelectionState extends State<SportSelection> {
             ),
           ),
           onConfirm: (results) {
-            selectedSports = results as List<SupportedSport>;
+            selectedSports = results;
             context
                 .read<EditRulesBloc>()
                 .add(UpdateSports(selectedSports: selectedSports));

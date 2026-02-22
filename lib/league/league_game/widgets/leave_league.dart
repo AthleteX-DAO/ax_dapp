@@ -25,7 +25,7 @@ class LeaveLeague extends StatelessWidget {
         context.select((LeagueGameBloc bloc) => bloc.state.leagueTeams);
     return TextButton(
       style: ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
             side: BorderSide(color: Colors.amber[400]!),

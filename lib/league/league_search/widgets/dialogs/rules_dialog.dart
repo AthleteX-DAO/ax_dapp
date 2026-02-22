@@ -472,7 +472,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                       ),
                     ),
                     onConfirm: (results) {
-                      selectedSports = results as List<SupportedSport>;
+                      selectedSports = results;
                     },
                   ),
                 ],
@@ -602,7 +602,7 @@ class _LeagueDialog extends State<LeagueDialog> {
                     child: TextButton(
                       style: ButtonStyle(
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                            WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100),
                             side: BorderSide(color: Colors.amber[400]!),
