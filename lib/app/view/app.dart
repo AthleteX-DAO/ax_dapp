@@ -8,6 +8,7 @@ import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
 import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
+import 'package:ax_dapp/service/portfolio_balance_service.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:ax_dapp/wallet/usecases/synthetix_account_bootstrap.dart';
@@ -49,9 +50,8 @@ class App extends StatelessWidget {
             fireBaseAuthRepository: context.read<FireBaseAuthRepository>(),
             fireStoreCredentialsRepository:
                 context.read<FireStoreCredentialsRepository>(),
-            crossChainBalanceUseCase: CrossChainBalanceUseCase(
-              walletRepository: context.read<WalletRepository>(),
-            ),
+            crossChainBalanceUseCase: context.read<CrossChainBalanceUseCase>(),
+            portfolioBalanceService: context.read<PortfolioBalanceService>(),
             synthetixAccountBootstrap:
                 context.read<SynthetixAccountBootstrap>(),
           ),

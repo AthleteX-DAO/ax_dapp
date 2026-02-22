@@ -1,21 +1,11 @@
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/app_scaffold.dart';
-import 'package:ax_dapp/earn/bloc/earn_page_bloc.dart';
-import 'package:ax_dapp/earn/view/desktop_earn_page.dart';
-import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:ax_dapp/athlete_markets/athlete.dart';
-import 'package:ax_dapp/perps/bloc/perps_page_bloc.dart';
-import 'package:ax_dapp/perps/bloc/perps_trading_bloc.dart';
-import 'package:ax_dapp/perps/view/desktop_perpetuals_page.dart';
-import 'package:ax_dapp/service/controller/perps/perps_repository.dart';
-import 'package:ax_dapp/service/controller/perps/base_sepolia_perps_service.dart';
-import 'package:ax_dapp/spot_markets/bloc/bloc.dart';
-import 'package:ax_dapp/spot_markets/view/view.dart';
 import 'package:ax_dapp/athlete_markets/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/athlete_markets/view/athlete_page.dart';
-import 'package:ax_dapp/farm/bloc/farm_bloc.dart';
-import 'package:ax_dapp/farm/desktop_farm.dart';
-import 'package:ax_dapp/farm/usecases/get_farm_data_use_case.dart';
+import 'package:ax_dapp/config/synthetix_config.dart';
+import 'package:ax_dapp/earn/bloc/earn_page_bloc.dart';
+import 'package:ax_dapp/earn/view/desktop_earn_page.dart';
 import 'package:ax_dapp/league/league_game/bloc/league_game_bloc.dart';
 import 'package:ax_dapp/league/league_game/views/league_game.dart';
 import 'package:ax_dapp/league/league_search/bloc/league_bloc.dart';
@@ -24,29 +14,37 @@ import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/markets/markets.dart';
+import 'package:ax_dapp/perps/bloc/perps_page_bloc.dart';
+import 'package:ax_dapp/perps/bloc/perps_trading_bloc.dart';
+import 'package:ax_dapp/perps/view/desktop_perpetuals_page.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
 import 'package:ax_dapp/predict/view/desktop_predict.dart';
 import 'package:ax_dapp/prediction/view/prediction_page.dart';
+import 'package:ax_dapp/repositories/market_price/market_price_repository.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
+import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:ax_dapp/service/controller/markets/long_short_pair_repository.dart.dart';
+import 'package:ax_dapp/service/controller/perps/perps_repository.dart';
+import 'package:ax_dapp/service/controller/perps/perps_service.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/sports_markets/models/sports_markets_model.dart';
 import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case.dart';
 import 'package:ax_dapp/sports_markets/view/sports_page.dart';
+import 'package:ax_dapp/spot_markets/bloc/bloc.dart';
+import 'package:ax_dapp/spot_markets/view/view.dart';
 import 'package:ax_dapp/util/util.dart';
-import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:league_repository/league_repository.dart';
+import 'package:provider/provider.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -159,25 +157,6 @@ class AppRouter {
             ],
           ),
           GoRoute(
-            name: 'farm',
-            path: '/farm',
-            builder: (BuildContext context, GoRouterState state) {
-              return BlocProvider(
-                create: (BuildContext context) => FarmBloc(
-                  walletRepository: context.read<WalletRepository>(),
-                  tokensRepository: context.read<TokensRepository>(),
-                  configRepository: context.read<AppBloc>().configRepository,
-                  streamAppDataChanges:
-                      context.read<StreamAppDataChangesUseCase>(),
-                  repo: GetFarmDataUseCase(
-                    gysrApiClient: context.read<GysrApiClient>(),
-                  ),
-                ),
-                child: const DesktopFarm(),
-              );
-            },
-          ),
-          GoRoute(
             name: 'league',
             path: '/league',
             builder: (BuildContext context, GoRouterState state) {
@@ -235,7 +214,8 @@ class AppRouter {
                 providers: [
                   RepositoryProvider(
                     create: (context) => VaultRepository(
-                      chain: EthereumChain.ethereumSepolia,
+                      // Default to Polygon; EarnPageBloc will update on chain change.
+                      chain: EthereumChain.polygonMainnet,
                       reactiveWeb3Client: appConfig.reactiveWeb3Client,
                       walletRepository: context.read<WalletRepository>(),
                     ),
@@ -244,7 +224,8 @@ class AppRouter {
                     create: (context) => EarnPageBloc(
                       walletRepository: context.read<WalletRepository>(),
                       vaultRepository: context.read<VaultRepository>(),
-                      configRepository: configRepo,
+                      streamAppDataChanges:
+                          context.read<StreamAppDataChangesUseCase>(),
                     ),
                   ),
                 ],
@@ -256,7 +237,7 @@ class AppRouter {
             name: 'perpetuals',
             path: '/perpetuals',
             builder: (BuildContext context, GoRouterState state) {
-              final baseSepoliaWeb3Client = _getBaseSepoliaWeb3Client();
+              final ethSepoliaWeb3Client = _getEthSepoliaWeb3Client();
               final walletRepository = context.read<WalletRepository>();
               
               return MultiBlocProvider(
@@ -264,14 +245,14 @@ class AppRouter {
                   BlocProvider(
                     create: (BuildContext context) => PerpsPageBloc(
                       perpsRepository: PerpsRepository(
-                        web3Client: _getWeb3Client(),
+                        web3Client: ethSepoliaWeb3Client,
                       ),
                     ),
                   ),
                   BlocProvider(
                     create: (BuildContext context) => PerpsTradingBloc(
-                      perpsService: BaseSepoliaPerpsService(
-                        web3Client: baseSepoliaWeb3Client,
+                      perpsService: PerpsService(
+                        web3Client: ethSepoliaWeb3Client,
                         walletRepository: walletRepository,
                       ),
                     ),
@@ -285,11 +266,18 @@ class AppRouter {
             name: 'spot-markets',
             path: '/spot-markets',
             builder: (BuildContext context, GoRouterState state) {
-              return BlocProvider(
-                create: (BuildContext context) => SpotMarketsBloc(
-                  walletRepository: context.read<WalletRepository>(),
+              return RepositoryProvider(
+                create: (context) => MarketPriceRepository(),
+                child: Builder(
+                  builder: (context) => BlocProvider(
+                    create: (BuildContext context) => SpotMarketsBloc(
+                      walletRepository: context.read<WalletRepository>(),
+                      marketPriceRepository:
+                          context.read<MarketPriceRepository>(),
+                    ),
+                    child: const DesktopSpotMarketsPage(),
+                  ),
                 ),
-                child: const DesktopSpotMarketsPage(),
               );
             },
           ),
@@ -343,16 +331,13 @@ PredictionModel? _toPrediction(String id) {
   );
 }
 
-Web3Client _getWeb3Client() {
-  return Web3Client(
-    'https://eth.public.blastapi.io',
+/// Lazily cached Eth Sepolia Web3Client — reused across route rebuilds.
+Web3Client? _ethSepoliaWeb3Client;
+Web3Client _getEthSepoliaWeb3Client() {
+  return _ethSepoliaWeb3Client ??= Web3Client(
+    SynthetixConfig.rpcUrl,
     http.Client(),
   );
 }
 
-Web3Client _getBaseSepoliaWeb3Client() {
-  return Web3Client(
-    'https://base-sepolia.infura.io/v3/295739f3c9f64796bccfc206fc476a88',
-    http.Client(),
-  );
-}
+// TODO: Add _getPolygonMainnetWeb3Client() when Polygon mainnet is deployed

@@ -28,15 +28,12 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
         context.goNamed('predict');
         break;
       case 1:
-        context.goNamed('league');
-        break;
-      case 2:
         context.goNamed('spot-markets');
         break;
-      case 3:
+      case 2:
         context.goNamed('earn');
         break;
-      case 4:
+      case 3:
         context.goNamed('perpetuals');
         break;
     }
@@ -69,14 +66,6 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
               ),
               label: 'Predict',
               tooltip: 'Trade on athlete prediction markets',
-            ),
-            BottomNavigationBarItem(
-              icon: FaIcon(
-                FontAwesomeIcons.trophy,
-                size: 24,
-              ),
-              label: 'League',
-              tooltip: 'cross-sport fantasy league, what else?',
             ),
             BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.chartLine),

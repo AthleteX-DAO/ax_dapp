@@ -61,22 +61,23 @@ class TopNavigationBarWeb extends StatelessWidget {
                         context.goNamed('earn');
                       },
                     ),
-                    TopNavigationBarItem(
-                      routeName: 'league',
-                      buttonName: 'League',
-                      isSelected: selectedButton == 'league',
-                      onPressed: () {
-                        bloc.add(const SelectButtonEvent(buttonName: 'league'));
-                        context.goNamed('league');
-                      },
-                    ),
+                    // League hidden — not yet ready for production
+                    // TopNavigationBarItem(
+                    //   routeName: 'league',
+                    //   buttonName: 'League',
+                    //   isSelected: selectedButton == 'league',
+                    //   onPressed: () {
+                    //     bloc.add(const SelectButtonEvent(buttonName: 'league'));
+                    //     context.goNamed('league');
+                    //   },
+                    // ),
                     TopNavigationBarItem(
                       routeName: 'perpetuals',
                       buttonName: 'Perps',
                       isSelected: selectedButton == 'perpetuals',
                       onPressed: () {
                         bloc.add(
-                            const SelectButtonEvent(buttonName: 'perpetuals'));
+                            const SelectButtonEvent(buttonName: 'perpetuals'),);
                         context.goNamed('perpetuals');
                       },
                     ),
@@ -86,7 +87,7 @@ class TopNavigationBarWeb extends StatelessWidget {
                       isSelected: selectedButton == 'spot-markets',
                       onPressed: () {
                         bloc.add(
-                            const SelectButtonEvent(buttonName: 'spot-markets'));
+                            const SelectButtonEvent(buttonName: 'spot-markets'),);
                         context.goNamed('spot-markets');
                       },
                     ),

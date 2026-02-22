@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:ax_dapp/repositories/market_price/market_price_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Cryptocurrency ticker tape widget showing top 15 cryptos with scrolling animation
 class CryptoTickerTape extends StatefulWidget {
@@ -17,6 +18,7 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
   bool _isLoading = true;
   late ScrollController _scrollController2;
   Timer? _refreshTimer;
+  MarketPriceRepository? _ownedRepository;
   late MarketPriceRepository _marketPriceRepository;
   DateTime _lastUserScroll = DateTime.fromMillisecondsSinceEpoch(0);
   static const double _scrollSpeed = 0.6;
@@ -30,17 +32,30 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
     );
 
     _scrollController2 = ScrollController();
-    _marketPriceRepository = MarketPriceRepository();
 
     _scrollController.addListener(_onAutoScrollTick);
     _scrollController.repeat();
-    
-    _fetchCryptoData();
-    
-    // Refresh data every 30 seconds
-    _refreshTimer = Timer.periodic(const Duration(seconds: 30), (_) {
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Try to read shared MarketPriceRepository from widget tree.
+    // Fall back to creating our own if none is provided.
+    try {
+      _marketPriceRepository = context.read<MarketPriceRepository>();
+    } catch (_) {
+      _ownedRepository ??= MarketPriceRepository();
+      _marketPriceRepository = _ownedRepository!;
+    }
+
+    // Start fetching and polling (idempotent — timer is created once)
+    if (_refreshTimer == null) {
       _fetchCryptoData();
-    });
+      _refreshTimer = Timer.periodic(const Duration(seconds: 30), (_) {
+        _fetchCryptoData();
+      });
+    }
   }
 
   void _onAutoScrollTick() {
@@ -132,7 +147,7 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
       CryptoTicker('LDO', 'Lido', 18.90, -1.12),
       CryptoTicker('UNI', 'Uniswap', 12.35, 1.89),
       CryptoTicker('AAVE', 'Aave', 285.60, 2.76),
-      CryptoTicker('USDC', 'USD Coin', 1.00, 0.02),
+      CryptoTicker('USDC', 'USD Coin', 1, 0.02),
     ];
   }
 
@@ -141,7 +156,8 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
     _scrollController.dispose();
     _scrollController2.dispose();
     _refreshTimer?.cancel();
-    _marketPriceRepository.dispose();
+    // Only dispose the repository if we created it ourselves
+    _ownedRepository?.dispose();
     super.dispose();
   }
 
@@ -194,9 +210,9 @@ class _CryptoTickerTapeState extends State<CryptoTickerTape>
 }
 
 class _TickerItem extends StatelessWidget {
-  final CryptoTicker crypto;
 
   const _TickerItem({required this.crypto});
+  final CryptoTicker crypto;
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +225,6 @@ class _TickerItem extends StatelessWidget {
         border: Border(
           right: BorderSide(
             color: Colors.grey.withAlpha(30),
-            width: 1,
           ),
         ),
       ),
@@ -262,10 +277,10 @@ class _TickerItem extends StatelessWidget {
 }
 
 class CryptoTicker {
+
+  CryptoTicker(this.symbol, this.name, this.price, this.change24h);
   final String symbol;
   final String name;
   final double price;
   final double change24h;
-
-  CryptoTicker(this.symbol, this.name, this.price, this.change24h);
 }
