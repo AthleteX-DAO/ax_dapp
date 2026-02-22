@@ -100,11 +100,11 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                           );
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
+                          backgroundColor: WidgetStateProperty.all<Color>(
                             Colors.amber[400]!,
                           ),
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.amber[400]!),
@@ -129,7 +129,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                       child: TextButton(
                         style: ButtonStyle(
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.amber[400]!),

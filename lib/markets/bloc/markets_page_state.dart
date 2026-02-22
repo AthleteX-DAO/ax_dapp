@@ -52,6 +52,6 @@ class MarketsPageState extends Equatable {
         selectedSport,
         axPrice,
         status,
-        selectedChain
+        selectedChain,
       ];
 }
