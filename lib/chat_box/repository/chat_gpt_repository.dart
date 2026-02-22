@@ -1,3 +1,3 @@
 class ChatGPTRepository {
-  const ChatGPTRepository({Object? fireStore});
+  const ChatGPTRepository();
 }

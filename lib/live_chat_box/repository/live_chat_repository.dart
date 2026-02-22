@@ -1,3 +1,3 @@
 class LiveChatRepository {
-  const LiveChatRepository({Object? fireStore});
+  const LiveChatRepository();
 }
