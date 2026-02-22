@@ -26,11 +26,9 @@ class OracleRepository {
   })  : _stalenessDuration = stalenessDuration ?? OracleConfig.priceStalenessDuration,
         _chainlinkClient = ChainlinkOracleClient(
           rpcUrl: chainlinkRpcUrl ?? OracleConfig.sepoliaRpcUrl,
-          timeout: OracleConfig.chainlinkTimeout,
         ),
         _pythClient = PythOracleClient(
           pythApiUrl: pythApiUrl ?? 'https://hermes.pyth.network',
-          timeout: OracleConfig.pythTimeout,
         ),
         _optimisticZkClient = _createOptimisticZkClient(
           rpcUrl: chainlinkRpcUrl ?? OracleConfig.sepoliaRpcUrl,
@@ -41,7 +39,6 @@ class OracleRepository {
             ? CustomOracleClient(
                 baseUrl: customOracleBaseUrl,
                 apiKey: customOracleApiKey,
-                timeout: OracleConfig.customOracleTimeout,
               )
             : null {
     print('📊 [OracleRepository] Initializing with fallback priority: '
@@ -71,7 +68,6 @@ class OracleRepository {
     return OptimisticZkOracleClient(
       rpcUrl: rpcUrl,
       contractAddress: address,
-      timeout: OracleConfig.optimisticZkOracleTimeout,
     );
   }
 

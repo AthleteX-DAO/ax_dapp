@@ -1,8 +1,8 @@
 import 'dart:developer' as developer;
 import 'package:http/http.dart' as http;
 import 'package:web3dart/web3dart.dart' hide Credentials;
-import '../config/oracle_config.dart';
-import '../models/price_feed.dart';
+import 'package:ax_dapp/repositories/oracle/config/oracle_config.dart';
+import 'package:ax_dapp/repositories/oracle/models/price_feed.dart';
 
 /// Pure Dart Optimistic ZK oracle client
 /// No Flutter dependencies, no business logic
@@ -37,7 +37,8 @@ class OptimisticZkOracleClient {
 
       final address = EthereumAddress.fromHex(_contractAddress);
 
-      const abiJson = '''[
+      const abiJson = '''
+[
         {
           "name": "getPrice",
           "inputs": [{"type": "string", "name": "asset"}],

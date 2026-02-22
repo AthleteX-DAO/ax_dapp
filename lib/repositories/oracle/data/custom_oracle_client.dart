@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:http/http.dart' as http;
-import '../models/price_feed.dart';
+import 'package:ax_dapp/repositories/oracle/models/price_feed.dart';
 
 /// Pure Dart custom oracle client
 /// No Flutter dependencies, no business logic
@@ -151,7 +151,7 @@ class CustomOracleClient {
       '🔮 [CustomOracleClient] Fetching ${symbols.length} prices',
     );
 
-    final futures = symbols.map((symbol) => getLatestPrice(symbol));
+    final futures = symbols.map(getLatestPrice);
     return Future.wait(futures);
   }
 

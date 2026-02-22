@@ -22,6 +22,8 @@ extension ChainLocalizedErrorX on EthereumChain {
         return 'Sepolia Testnet';
       case EthereumChain.baseSepolia:
         return 'Base Sepolia Testnet';
+      case EthereumChain.arbitrumSepolia:
+        return 'Arbitrum Sepolia Testnet';
     }
   }
 }

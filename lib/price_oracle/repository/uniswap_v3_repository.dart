@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:ax_dapp/price_oracle/models/uniswap_price.dart';
 import 'package:http/http.dart' as http;
 import 'package:web3dart/web3dart.dart';
-import 'package:ax_dapp/price_oracle/models/uniswap_price.dart';
 
 /// {@template uniswap_v3_repository}
 /// Repository for fetching price data from Uniswap V3.
@@ -318,7 +319,7 @@ class UniswapV3Repository {
                   low: double.parse(hourData['low'].toString()),
                   close: double.parse(hourData['close'].toString()),
                   volume: double.parse(hourData['volumeUSD'].toString()),
-                ))
+                ),)
             .toList();
       }
 

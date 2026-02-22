@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+
 import 'package:ax_dapp/price_oracle/models/uniswap_price.dart';
 import 'package:ax_dapp/price_oracle/repository/uniswap_v3_repository.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
 // Events
 abstract class PriceOracleEvent extends Equatable {
@@ -112,7 +113,7 @@ class PriceOracleBloc extends Bloc<PriceOracleEvent, PriceOracleState> {
   ) async {
     try {
       // Get pool address first
-      final poolAddress = ''; // TODO: Get this from repository
+      const poolAddress = ''; // TODO: Get this from repository
 
       final historicalPrices = await _repository.getHistoricalPrices(
         poolAddress: poolAddress,

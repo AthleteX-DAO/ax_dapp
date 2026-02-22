@@ -22,6 +22,8 @@ extension EthereumChainLocalizationImageX on EthereumChain {
         return 'assets/images/geth.png';
       case EthereumChain.baseSepolia:
         return 'assets/images/geth.png';
+      case EthereumChain.arbitrumSepolia:
+        return 'assets/images/geth.png';
     }
   }
 }

@@ -45,7 +45,7 @@ class UniswapPrice extends Equatable {
     liquidity: 0,
   );
 
-  static final _kEmptyDateTime = DateTime.utc(1970, 1, 1);
+  static final _kEmptyDateTime = DateTime.utc(1970);
 
   @override
   List<Object?> get props => [

@@ -1,8 +1,8 @@
 import 'dart:developer' as developer;
 import 'package:web3dart/web3dart.dart' hide Credentials;
 import 'package:http/http.dart' as http;
-import '../config/oracle_config.dart';
-import '../models/price_feed.dart';
+import 'package:ax_dapp/repositories/oracle/config/oracle_config.dart';
+import 'package:ax_dapp/repositories/oracle/models/price_feed.dart';
 
 /// Pure Dart Chainlink oracle client
 /// No Flutter dependencies, no business logic
@@ -52,7 +52,8 @@ class ChainlinkOracleClient {
       // Chainlink aggregator ABI for latestRoundData
       // latestRoundData() returns:
       // (roundId, answer, startedAt, updatedAt, answeredInRound)
-      const abiJson = '''[
+      const abiJson = '''
+[
         {
           "name": "latestRoundData",
           "outputs": [
