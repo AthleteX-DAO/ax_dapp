@@ -121,9 +121,7 @@ class TokensRepository {
       final price = await _getAxPriceFromUniswap();
       return AxMarketData(
         price: price,
-        totalSupply: null,
         lastUpdated: DateTime.now().toIso8601String(),
-        circulatingSupply: null,
       );
     } catch (e) {
       return AxMarketData.empty;

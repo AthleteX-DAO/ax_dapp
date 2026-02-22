@@ -88,6 +88,8 @@ extension EthereumUrlConfigX on EthereumUrlConfig {
         return kEmptyUrl;
       case EthereumChain.baseSepolia:
         return kEmptyUrl;
+      case EthereumChain.arbitrumSepolia:
+        return kEmptyUrl;
     }
   }
 }

@@ -14,7 +14,7 @@ class EthereumAddressConfig {
         optimism = kEmptyAddress,
         arbitriumOne = kEmptyAddress,
         ethereumMainnet = kEmptyAddress,
-        ethereumSepolia = kEmptyAddress,
+        ethereumSepolia = '0xDc5Aa90C7ce823cFBc62aBC3c035c609a97a0A3C',
         baseSepolia = kEmptyAddress;
 
   /// Configuration for [Token.sx].
@@ -305,6 +305,8 @@ extension EthereumAddressConfigX on EthereumAddressConfig {
         return ethereumSepolia;
       case EthereumChain.baseSepolia:
         return baseSepolia;
+      case EthereumChain.arbitrumSepolia:
+        return kEmptyAddress;
     }
   }
 

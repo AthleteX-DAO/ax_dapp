@@ -1,7 +1,8 @@
-import 'package:shared/shared.dart';
-
-import 'flutter_web3_stub.dart'
+import 'package:ethereum_api/src/wallet/failures/flutter_web3_stub.dart'
   if (dart.library.html) 'package:flutter_web3/flutter_web3.dart';
+import 'package:flutter_web3/ethereum.dart' show Ethereum;
+import 'package:flutter_web3/flutter_web3.dart' show Ethereum;
+import 'package:shared/shared.dart';
 
 part 'wallet_failures.dart';
 

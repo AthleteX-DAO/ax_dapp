@@ -3,8 +3,9 @@
 import 'package:web3dart/web3dart.dart' as _i1;
 
 final _contractAbi = _i1.ContractAbi.fromJson(
-  '[{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultCollateral","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"value","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultDebt","outputs":[{"internalType":"int256","name":"debt","type":"int256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"}],"name":"getPoolConfiguration","outputs":[{"components":[{"internalType":"uint128","name":"marketId","type":"uint128"},{"internalType":"uint128","name":"weightD18","type":"uint128"},{"internalType":"int128","name":"maxDebtShareValueD18","type":"int128"}],"internalType":"struct MarketConfiguration.Data[]","name":"markets","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"}],"name":"getAccountCollateral","outputs":[{"internalType":"uint256","name":"totalDeposited","type":"uint256"},{"internalType":"uint256","name":"totalAssigned","type":"uint256"},{"internalType":"uint256","name":"totalLocked","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionCollateral","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultCollateralRatio","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"leverage","type":"uint256"}],"name":"delegateCollateral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"undelegateCollateral","outputs":[],"stateMutability":"nonpayable","type":"function"}]',
-  'SynthetixCoreProxy');
+  '[{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultCollateral","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"value","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultDebt","outputs":[{"internalType":"int256","name":"debt","type":"int256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"}],"name":"getPoolConfiguration","outputs":[{"components":[{"internalType":"uint128","name":"marketId","type":"uint128"},{"internalType":"uint128","name":"weightD18","type":"uint128"},{"internalType":"int128","name":"maxDebtShareValueD18","type":"int128"}],"internalType":"struct MarketConfiguration.Data[]","name":"markets","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getAccountCollateral","outputs":[{"internalType":"uint256","name":"totalDeposited","type":"uint256"},{"internalType":"uint256","name":"totalAssigned","type":"uint256"},{"internalType":"uint256","name":"totalLocked","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionCollateral","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultCollateralRatio","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"leverage","type":"uint256"}],"name":"delegateCollateral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"undelegateCollateral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionDebt","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionCollateralRatio","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]',
+  'SynthetixCoreProxy',
+);
 
 /// Synthetix V3 CoreProxy contract interface for vault operations
 class SynthetixCoreProxy extends _i1.GeneratedContract {
@@ -73,12 +74,13 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<GetAccountCollateralResult> getAccountCollateral(
-    BigInt accountId, {
+    BigInt accountId,
+    _i1.EthereumAddress collateralType, {
     _i1.BlockNum? atBlock,
   }) async {
     final function = self.abi.functions[3];
     assert(checkSignature(function, 'a0a6d21e'));
-    final params = [accountId];
+    final params = [accountId, collateralType];
     final response = await read(function, params, atBlock);
     return GetAccountCollateralResult(
       totalDeposited: response[0] as BigInt,
@@ -151,6 +153,34 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     assert(checkSignature(function, '10b22fa0'));
     final params = [accountId, poolId, collateralType, amount];
     return write(credentials, transaction, function, params);
+  }
+
+  /// Returns the debt (int256) for a specific account position.
+  /// A positive value means the account owes sUSD; negative means credit.
+  Future<BigInt> getPositionDebt(
+    BigInt accountId,
+    BigInt poolId,
+    _i1.EthereumAddress collateralType, {
+    _i1.BlockNum? atBlock,
+  }) async {
+    final function = self.abi.functions[8];
+    final params = [accountId, poolId, collateralType];
+    final response = await read(function, params, atBlock);
+    return response[0] as BigInt;
+  }
+
+  /// Returns the collateralization ratio (uint256, 18-decimal) for a specific
+  /// account position. E.g. 2e18 = 200% c-ratio.
+  Future<BigInt> getPositionCollateralRatio(
+    BigInt accountId,
+    BigInt poolId,
+    _i1.EthereumAddress collateralType, {
+    _i1.BlockNum? atBlock,
+  }) async {
+    final function = self.abi.functions[9];
+    final params = [accountId, poolId, collateralType];
+    final response = await read(function, params, atBlock);
+    return response[0] as BigInt;
   }
 }
 

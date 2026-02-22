@@ -94,11 +94,11 @@ enum EthereumChain {
     chainId: 1,
     chainName: 'Ethereum',
     currency: EthereumCurrency.weth,
-    rpcUrls: const [
+    rpcUrls: [
       'https://eth.public.blastapi.io',
-      'https://ethereum-rpc.publicnode.com'
+      'https://ethereum-rpc.publicnode.com',
     ],
-    blockExplorerUrls: const ['https://etherscan.io'],
+    blockExplorerUrls: ['https://etherscan.io'],
   ),
 
   /// Ethereum Sepolia Testnet (Synthetix V3)
@@ -106,11 +106,11 @@ enum EthereumChain {
     chainId: 11155111,
     chainName: 'Sepolia Testnet',
     currency: EthereumCurrency.weth,
-    rpcUrls: const [
+    rpcUrls: [
       'https://eth-sepolia.public.blastapi.io',
-      'https://sepolia-rpc.publicnode.com'
+      'https://sepolia-rpc.publicnode.com',
     ],
-    blockExplorerUrls: const ['https://sepolia.etherscan.io'],
+    blockExplorerUrls: ['https://sepolia.etherscan.io'],
   ),
 
   /// Base Sepolia Testnet (Synthetix V3 Andromeda)
@@ -118,11 +118,23 @@ enum EthereumChain {
     chainId: 84532,
     chainName: 'Base Sepolia',
     currency: EthereumCurrency.weth,
-    rpcUrls: const [
+    rpcUrls: [
       'https://base-sepolia.infura.io/v3/295739f3c9f64796bccfc206fc476a88',
-      'https://sepolia.base.org'
+      'https://sepolia.base.org',
     ],
-    blockExplorerUrls: const ['https://sepolia.basescan.org'],
+    blockExplorerUrls: ['https://sepolia.basescan.org'],
+  ),
+
+  /// Arbitrum Sepolia Testnet (Synthetix V3 Omnibus)
+  arbitrumSepolia(
+    chainId: 421614,
+    chainName: 'Arbitrum Sepolia',
+    currency: EthereumCurrency.weth,
+    rpcUrls: [
+      'https://sepolia-rollup.arbitrum.io/rpc',
+      'https://arbitrum-sepolia.public.blastapi.io',
+    ],
+    blockExplorerUrls: ['https://sepolia.arbiscan.io'],
   );
 
   /// {@macro ethereum_chain}

@@ -153,7 +153,7 @@ class WalletRepository {
     } catch (e) {
       debugPrint('ERROR creating wallet with mnemonic: $e');
       await prefs.setBool(searchForWalletKey, false);
-      return WalletCreationResult(
+      return const WalletCreationResult(
         address: kNullAddress,
         privateKeyHex: '',
         recoveryPhrase: '',
@@ -337,6 +337,6 @@ class WalletRepository {
 
   /// Helper to convert bytes to hex string without 0x prefix
   String _bytesToHex(Uint8List bytes) {
-    return bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join('');
+    return bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
   }
 }
