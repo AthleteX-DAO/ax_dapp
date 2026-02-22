@@ -1,6 +1,6 @@
+import 'package:ax_dapp/earn/bloc/earn_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/earn_page_bloc.dart';
 
 class BorrowStablecoinsTile extends StatefulWidget {
   const BorrowStablecoinsTile({super.key});
@@ -17,11 +17,11 @@ class _BorrowStablecoinsTileState extends State<BorrowStablecoinsTile> {
     return Column(
       children: [
         // Tab selector
-        Container(
+        DecoratedBox(
           decoration: BoxDecoration(
             color: Colors.grey[850],
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey[800]!, width: 1),
+            border: Border.all(color: Colors.grey[800]!),
           ),
           child: Row(
             children: [
@@ -112,7 +112,7 @@ class _MintSection extends StatefulWidget {
 
 class _MintSectionState extends State<_MintSection> {
   late TextEditingController _amountController;
-  double _collateralRatio = 0.0;
+  final double _collateralRatio = 0;
 
   @override
   void initState() {
@@ -139,7 +139,7 @@ class _MintSectionState extends State<_MintSection> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.grey[900],
-            border: Border.all(color: Colors.grey[700]!, width: 1),
+            border: Border.all(color: Colors.grey[700]!),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -313,7 +313,7 @@ class _MintSectionState extends State<_MintSection> {
           decoration: BoxDecoration(
             color: Colors.purple[400]!.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.purple[400]!, width: 1),
+            border: Border.all(color: Colors.purple[400]!),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,7 +349,7 @@ class _MintSectionState extends State<_MintSection> {
           decoration: BoxDecoration(
             color: Colors.grey[850],
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey[800]!, width: 1),
+            border: Border.all(color: Colors.grey[800]!),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -460,7 +460,7 @@ class _BurnSectionState extends State<_BurnSection> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.grey[900],
-            border: Border.all(color: Colors.grey[700]!, width: 1),
+            border: Border.all(color: Colors.grey[700]!),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -615,9 +615,9 @@ class _BurnSectionState extends State<_BurnSection> {
           decoration: BoxDecoration(
             color: Colors.green.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.green, width: 1),
+            border: Border.all(color: Colors.green),
           ),
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -627,8 +627,8 @@ class _BurnSectionState extends State<_BurnSection> {
                     color: Colors.green,
                     size: 16,
                   ),
-                  const SizedBox(width: 8),
-                  const Expanded(
+                  SizedBox(width: 8),
+                  Expanded(
                     child: Text(
                       'Repaying debt reduces interest accrual and improves your collateralization ratio.',
                       style: TextStyle(
@@ -651,12 +651,12 @@ class _BurnSectionState extends State<_BurnSection> {
           decoration: BoxDecoration(
             color: Colors.grey[850],
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey[800]!, width: 1),
+            border: Border.all(color: Colors.grey[800]!),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Your Debt Position',
                 style: TextStyle(
                   fontSize: 13,

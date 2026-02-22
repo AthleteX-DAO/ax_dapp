@@ -1,217 +1,166 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/earn_page_bloc.dart';
-import '../widgets/transaction_stepper_modal.dart';
-import 'earn_simple_tile.dart';
-import 'provide_liquidity_tile.dart';
-import 'borrow_stablecoins_tile.dart';
+import 'package:ax_dapp/earn/bloc/earn_page_bloc.dart';
+import 'package:ax_dapp/earn/widgets/transaction_stepper_modal.dart';
+import 'package:ax_dapp/earn/view/earn_simple_tile.dart';
+import 'package:ax_dapp/earn/view/provide_liquidity_tile.dart';
+import 'package:ax_dapp/earn/view/borrow_stablecoins_tile.dart';
 
-class EarnPage extends StatelessWidget {
+class EarnPage extends StatefulWidget {
   const EarnPage({super.key});
 
   @override
+  State<EarnPage> createState() => _EarnPageState();
+}
+
+class _EarnPageState extends State<EarnPage> {
+  final ScrollController _scrollController = ScrollController();
+  double _scrollOffset = 0;
+
+  static const double _headerMaxHeight = 200;
+  static const double _headerMinHeight = 90;
+  static const double _scrollRange = _headerMaxHeight - _headerMinHeight;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      setState(() {
+        _scrollOffset = _scrollController.offset;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // t: 0.0 = fully expanded, 1.0 = fully collapsed
+    final t = (_scrollOffset / _scrollRange).clamp(0.0, 1.0);
+    final titleSize = lerpDouble(34, 20, t)!;
+    final subtitleOpacity = (1.0 - t * 2.5).clamp(0.0, 1.0);
+    final tvlScale = lerpDouble(1.0, 0.8, t)!;
+    final topPadding = lerpDouble(24, 16, t)!;
+    final headerHeight = lerpDouble(_headerMaxHeight, _headerMinHeight, t)!;
+
     return Stack(
+      fit: StackFit.expand,
       children: [
-        Scaffold(
-          backgroundColor: Colors.black,
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
+        Column(
+          children: [
+            // ── Collapsible Header ──
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 50),
+              height: headerHeight,
+              color: Colors.black,
+              padding: EdgeInsets.only(
+                left: 24,
+                right: 24,
+                top: topPadding,
+                bottom: 12,
+              ),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header section with title and TVL
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Title and subtitle
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Earn with AthleteX',
-                              style: TextStyle(
-                                fontSize: 34,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                fontFamily: 'OpenSans',
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              'Pick a strategy and move through it in order — earn, provide liquidity, or borrow against your assets.',
+                  // Title + subtitle
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Earn with AthleteX',
+                          style: TextStyle(
+                            fontSize: titleSize,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                          ),
+                        ),
+                        if (subtitleOpacity > 0) ...[
+                          const SizedBox(height: 10),
+                          Opacity(
+                            opacity: subtitleOpacity,
+                            child: Text(
+                              'Pick a strategy and move through it in order — '
+                              'earn, provide liquidity, or borrow against your assets.',
                               style: TextStyle(
                                 fontSize: 16,
                                 height: 1.4,
                                 color: Colors.grey[300],
                                 fontFamily: 'OpenSans',
                               ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ],
-                        ),
-                      ),
-                      // Platform TVL Card
-                      BlocBuilder<EarnPageBloc, EarnPageState>(
-                        buildWhen: (previous, current) =>
-                            previous.platformTVL != current.platformTVL ||
-                            previous.isPlatformTVLLoading !=
-                                current.isPlatformTVLLoading,
-                        builder: (context, state) {
-                          return Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[900]!.withOpacity(0.7),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: Colors.blue[500]!.withOpacity(0.35),
-                                width: 1,
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  // Platform TVL
+                  Transform.scale(
+                    scale: tvlScale,
+                    alignment: Alignment.topRight,
+                    child: BlocBuilder<EarnPageBloc, EarnPageState>(
+                      buildWhen: (previous, current) =>
+                          previous.platformTVL != current.platformTVL ||
+                          previous.isPlatformTVLLoading !=
+                              current.isPlatformTVLLoading,
+                      builder: (context, state) {
+                        return Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900]!.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.blue[500]!.withOpacity(0.35),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Platform TVL',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  letterSpacing: 0.2,
+                                  color: Colors.grey[400],
+                                  fontFamily: 'OpenSans',
+                                ),
                               ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
+                              const SizedBox(height: 6),
+                              if (state.isPlatformTVLLoading)
+                                SizedBox(
+                                  width: 14,
+                                  height: 14,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation(
+                                      Colors.blue[400],
+                                    ),
+                                  ),
+                                )
+                              else
                                 Text(
-                                  'Platform TVL',
+                                  '\$${(state.platformTVL / 1e6).toStringAsFixed(2)}M',
                                   style: TextStyle(
-                                    fontSize: 12,
-                                    letterSpacing: 0.2,
-                                    color: Colors.grey[400],
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.blue[400],
                                     fontFamily: 'OpenSans',
                                   ),
                                 ),
-                                const SizedBox(height: 10),
-                                if (state.isPlatformTVLLoading)
-                                  SizedBox(
-                                    width: 140,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        SizedBox(
-                                          width: 14,
-                                          height: 14,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor: AlwaysStoppedAnimation(
-                                              Colors.blue[400],
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          'Loading...',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.blue[400],
-                                            fontFamily: 'OpenSans',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                else
-                                  Text(
-                                    '\$${(state.platformTVL / 1e6).toStringAsFixed(2)}M',
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.blue[400],
-                                      fontFamily: 'OpenSans',
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  // Tiles container (responsive, vertical stack)
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final screenWidth = constraints.maxWidth;
-                        return BlocBuilder<EarnPageBloc, EarnPageState>(
-                          buildWhen: (previous, current) =>
-                              previous.expandedTile != current.expandedTile,
-                          builder: (context, state) {
-                            final tiles = [
-                              _TileContainer(
-                                isExpanded:
-                                    state.expandedTile == TileType.earnSimple,
-                                onTap: () {
-                                  context.read<EarnPageBloc>().add(
-                                        const ExpandTile(TileType.earnSimple),
-                                      );
-                                },
-                                title: 'Earn Stablecoins',
-                                subtitle: 'Deposit and earn yield with a few taps.',
-                                icon: Icons.trending_up_rounded,
-                                accentColor: Colors.amber[400]!,
-                                content:
-                                    state.expandedTile == TileType.earnSimple
-                                        ? const EarnSimpleTile()
-                                        : null,
-                              ),
-                              _TileContainer(
-                                isExpanded: state.expandedTile ==
-                                    TileType.provideLiquidity,
-                                onTap: () {
-                                  context.read<EarnPageBloc>().add(
-                                        const ExpandTile(
-                                            TileType.provideLiquidity),
-                                      );
-                                },
-                                title: 'Provide Liquidity',
-                                subtitle:
-                                    'Deploy liquidity with leverage and delegate risk.',
-                                icon: Icons.water_drop_rounded,
-                                accentColor: Colors.blue[400]!,
-                                content: state.expandedTile ==
-                                        TileType.provideLiquidity
-                                    ? const ProvideLiquidityTile()
-                                    : null,
-                              ),
-                              _TileContainer(
-                                isExpanded: state.expandedTile ==
-                                    TileType.borrowStablecoins,
-                                onTap: () {
-                                  context.read<EarnPageBloc>().add(
-                                        const ExpandTile(
-                                            TileType.borrowStablecoins),
-                                      );
-                                },
-                                title: 'Borrow Stablecoins',
-                                subtitle: 'Use vault deposits as collateral to mint sUSD.',
-                                icon: Icons.account_balance_wallet_rounded,
-                                accentColor: Colors.purple[400]!,
-                                content: state.expandedTile ==
-                                        TileType.borrowStablecoins
-                                    ? const BorrowStablecoinsTile()
-                                    : null,
-                              ),
-                            ];
-
-                            return ListView.separated(
-                              padding: EdgeInsets.zero,
-                              physics: const ClampingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxWidth: screenWidth,
-                                    minWidth: screenWidth,
-                                  ),
-                                  child: tiles[index],
-                                );
-                              },
-                              separatorBuilder: (_, __) =>
-                                  const SizedBox(height: 18),
-                              itemCount: tiles.length,
-                            );
-                          },
+                            ],
+                          ),
                         );
                       },
                     ),
@@ -219,7 +168,84 @@ class EarnPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
+            // ── Scrollable Tile List ──
+            Expanded(
+              child: BlocBuilder<EarnPageBloc, EarnPageState>(
+                buildWhen: (previous, current) =>
+                    previous.expandedTile != current.expandedTile,
+                builder: (context, state) {
+                  return SingleChildScrollView(
+                    controller: _scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        _TileContainer(
+                          isExpanded:
+                              state.expandedTile == TileType.earnSimple,
+                          onTap: () {
+                            context.read<EarnPageBloc>().add(
+                                  const ExpandTile(TileType.earnSimple),
+                                );
+                          },
+                          title: 'Earn Stablecoins',
+                          subtitle:
+                              'Deposit and earn yield with a few taps.',
+                          icon: Icons.trending_up_rounded,
+                          accentColor: Colors.amber[400]!,
+                          content:
+                              state.expandedTile == TileType.earnSimple
+                                  ? const EarnSimpleTile()
+                                  : null,
+                        ),
+                        const SizedBox(height: 18),
+                        _TileContainer(
+                          isExpanded: state.expandedTile ==
+                              TileType.provideLiquidity,
+                          onTap: () {
+                            context.read<EarnPageBloc>().add(
+                                  const ExpandTile(
+                                      TileType.provideLiquidity,),
+                                );
+                          },
+                          title: 'Provide Liquidity',
+                          subtitle:
+                              'Deploy liquidity with leverage and delegate risk.',
+                          icon: Icons.water_drop_rounded,
+                          accentColor: Colors.blue[400]!,
+                          content: state.expandedTile ==
+                                  TileType.provideLiquidity
+                              ? const ProvideLiquidityTile()
+                              : null,
+                        ),
+                        const SizedBox(height: 18),
+                        _TileContainer(
+                          isExpanded: state.expandedTile ==
+                              TileType.borrowStablecoins,
+                          onTap: () {
+                            context.read<EarnPageBloc>().add(
+                                  const ExpandTile(
+                                      TileType.borrowStablecoins,),
+                                );
+                          },
+                          title: 'Borrow Stablecoins',
+                          subtitle:
+                              'Use vault deposits as collateral to mint sUSD.',
+                          icon: Icons.account_balance_wallet_rounded,
+                          accentColor: Colors.purple[400]!,
+                          content: state.expandedTile ==
+                                  TileType.borrowStablecoins
+                              ? const BorrowStablecoinsTile()
+                              : null,
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
         // Transaction Modal (overlaid)
         const TransactionStepperModal(),
@@ -343,7 +369,7 @@ class _TileContainer extends StatelessWidget {
                 ],
               ),
             ),
-            // Expanded content with scrolling (only show if expanded)
+            // Expanded content (only show if expanded)
             if (isExpanded && content != null)
               AnimatedSize(
                 duration: const Duration(milliseconds: 220),
@@ -351,7 +377,7 @@ class _TileContainer extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24)
                       .copyWith(bottom: 24),
-                  child: content!,
+                  child: content,
                 ),
               ),
           ],

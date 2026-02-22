@@ -4,6 +4,14 @@ abstract class EarnPageEvent extends Equatable {
   const EarnPageEvent();
 }
 
+/// Start listening to AppData stream for chain/wallet changes.
+class WatchAppDataChangesStarted extends EarnPageEvent {
+  const WatchAppDataChangesStarted();
+
+  @override
+  List<Object> get props => [];
+}
+
 /// Expand a specific tile and collapse others
 class ExpandTile extends EarnPageEvent {
   const ExpandTile(this.tileType);

@@ -1,6 +1,6 @@
+import 'package:ax_dapp/earn/bloc/earn_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/earn_page_bloc.dart';
 
 /// Transaction stepper modal with 4-step animated flow
 /// Approve → Confirm → Pending → Success with blockchain polling
@@ -27,7 +27,7 @@ class TransactionStepperModal extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.grey[900],
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.grey[700]!, width: 1),
+              border: Border.all(color: Colors.grey[700]!),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.3),

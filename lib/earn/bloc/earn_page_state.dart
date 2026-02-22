@@ -4,6 +4,7 @@ enum TransactionStep { approve, confirm, pending, success }
 
 class EarnPageState extends Equatable {
   const EarnPageState({
+    this.selectedChain = EthereumChain.polygonMainnet,
     this.expandedTile = TileType.earnSimple,
     this.currentAmount = 0.0,
     this.currentLeverage = 1.0,
@@ -17,6 +18,9 @@ class EarnPageState extends Equatable {
     this.platformTVL = 0.0,
     this.isPlatformTVLLoading = false,
   });
+
+  /// The currently active chain (drives which vaults are shown).
+  final EthereumChain selectedChain;
 
   /// Currently expanded tile (null if all collapsed)
   final TileType expandedTile;
@@ -55,6 +59,7 @@ class EarnPageState extends Equatable {
   final bool isPlatformTVLLoading;
 
   EarnPageState copyWith({
+    EthereumChain? selectedChain,
     TileType? expandedTile,
     double? currentAmount,
     double? currentLeverage,
@@ -69,6 +74,7 @@ class EarnPageState extends Equatable {
     bool? isPlatformTVLLoading,
   }) {
     return EarnPageState(
+      selectedChain: selectedChain ?? this.selectedChain,
       expandedTile: expandedTile ?? this.expandedTile,
       currentAmount: currentAmount ?? this.currentAmount,
       currentLeverage: currentLeverage ?? this.currentLeverage,
@@ -87,6 +93,7 @@ class EarnPageState extends Equatable {
 
   @override
   List<Object> get props => [
+        selectedChain,
         expandedTile,
         currentAmount,
         currentLeverage,

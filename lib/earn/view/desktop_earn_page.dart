@@ -1,5 +1,5 @@
+import 'package:ax_dapp/earn/view/earn_page.dart';
 import 'package:flutter/material.dart';
-import 'earn_page.dart';
 
 class DesktopEarnPage extends StatelessWidget {
   const DesktopEarnPage({super.key});

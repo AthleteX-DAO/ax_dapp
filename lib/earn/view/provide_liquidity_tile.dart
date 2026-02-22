@@ -1,7 +1,11 @@
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/dialogs/delegate_collateral_dialog.dart';
+import 'package:ethereum_api/wallet_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/earn_page_bloc.dart';
-import '../../service/controller/earn/vault_repository.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:ax_dapp/earn/bloc/earn_page_bloc.dart';
+import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 
 class ProvideLiquidityTile extends StatelessWidget {
   const ProvideLiquidityTile({super.key});
@@ -28,7 +32,7 @@ class ProvideLiquidityTile extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.blue[400]!.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue[400]!, width: 1),
+                border: Border.all(color: Colors.blue[400]!),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +76,7 @@ class ProvideLiquidityTile extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.grey[850],
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[800]!, width: 1),
+                border: Border.all(color: Colors.grey[800]!),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +150,7 @@ class ProvideLiquidityTile extends StatelessWidget {
             ...vaults.map((vault) => Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: _LeverageVaultCard(vault: vault),
-            )),
+            ),),
             const SizedBox(height: 8),
           ],
         );
@@ -166,7 +170,7 @@ class _LeverageVaultCard extends StatefulWidget {
 
 class _LeverageVaultCardState extends State<_LeverageVaultCard> {
   late TextEditingController _amountController;
-  double _leverage = 1.0;
+  double _leverage = 1;
 
   @override
   void initState() {
@@ -184,7 +188,7 @@ class _LeverageVaultCardState extends State<_LeverageVaultCard> {
     _amountController.clear();
     _leverage = 1.0;
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (_) => StatefulBuilder(
         builder: (context, setState) => Dialog(
@@ -195,7 +199,7 @@ class _LeverageVaultCardState extends State<_LeverageVaultCard> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: Colors.grey[900],
-              border: Border.all(color: Colors.grey[700]!, width: 1),
+              border: Border.all(color: Colors.grey[700]!),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -291,8 +295,8 @@ class _LeverageVaultCardState extends State<_LeverageVaultCard> {
                     const SizedBox(height: 12),
                     Slider(
                       value: _leverage,
-                      min: 1.0,
-                      max: 2.0,
+                      min: 1,
+                      max: 2,
                       divisions: 10,
                       onChanged: (value) {
                         setState(() => _leverage = value);
@@ -317,7 +321,7 @@ class _LeverageVaultCardState extends State<_LeverageVaultCard> {
                         ),
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.warning_rounded,
                               color: Colors.orange,
                               size: 16,
@@ -395,7 +399,7 @@ class _LeverageVaultCardState extends State<_LeverageVaultCard> {
       decoration: BoxDecoration(
         color: Colors.grey[850]!.withOpacity(0.5),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[800]!, width: 1),
+        border: Border.all(color: Colors.grey[800]!),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -431,7 +435,7 @@ class _LeverageVaultCardState extends State<_LeverageVaultCard> {
                 children: [
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.trending_up_rounded,
                         color: Colors.green,
                         size: 16,
@@ -462,27 +466,70 @@ class _LeverageVaultCardState extends State<_LeverageVaultCard> {
             ],
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _showDepositDialog,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue[400],
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: _showDepositDialog,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[400],
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text(
+                    'Delegate Collateral',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans',
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
               ),
-              child: const Text(
-                'Delegate Collateral',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans',
-                  fontSize: 12,
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Create a minimal Token object for the dialog
+                    final token = Token.unknown(
+                      widget.vault.symbol,
+                      widget.vault.symbol,
+                      widget.vault.collateralAddress,
+                      EthereumChain.ethereumSepolia,
+                    );
+                    showDialog<void>(
+                      context: context,
+                      builder: (_) => BlocProvider.value(
+                        value: context.read<AccountBloc>(),
+                        child: DelegateCollateralDialog(
+                          token: token,
+                          initialMode: DelegationMode.undelegate,
+                        ),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red[400],
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text(
+                    'Undelegate',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans',
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),

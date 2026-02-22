@@ -1,13 +1,13 @@
 import 'dart:math' as math;
 
-import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
-import 'package:ethereum_api/src/wallet/models/ethereum_chain.dart';
-import 'package:ethereum_api/synthetix_v3_api.dart';
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:ethereum_api/erc20_api.dart' as erc20_api;
+import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
+import 'package:ethereum_api/synthetix_v3_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-import 'package:web3dart/web3dart.dart';
+import 'package:web3dart/web3dart.dart' as web3;
 
 /// Data class for vault information.
 class VaultData {
@@ -73,20 +73,27 @@ class VaultData {
       'VaultData(symbol: $symbol, balance: $balance, tvl: $tvl, apy: $apy, poolId: $poolId)';
 }
 
-/// Repository for managing Synthetix V3 vault operations on Sepolia testnet.
+/// Repository for managing Synthetix V3 vault operations.
 class VaultRepository {
   VaultRepository({
-    required this.chain,
+    required EthereumChain chain,
     required ValueStream<Web3Client> reactiveWeb3Client,
     required WalletRepository walletRepository,
     this.userAddress,
     BigInt? accountId,
-  })  : _reactiveWeb3Client = reactiveWeb3Client,
+  })  : _chain = chain,
+        _reactiveWeb3Client = reactiveWeb3Client,
         _walletRepository = walletRepository,
         accountId = accountId ?? BigInt.from(1);
 
-  /// The Ethereum chain for vault operations.
-  final EthereumChain chain;
+  /// The Ethereum chain for vault operations. Mutable — updated on chain switch.
+  EthereumChain get chain => _chain;
+  EthereumChain _chain;
+
+  /// Update the active chain. Called by EarnPageBloc when AppData changes.
+  void updateChain(EthereumChain newChain) {
+    _chain = newChain;
+  }
 
   /// The reactive web3 client for blockchain calls.
   final ValueStream<Web3Client> _reactiveWeb3Client;
@@ -102,11 +109,9 @@ class VaultRepository {
 
   Web3Client get _web3Client => _reactiveWeb3Client.value;
 
-  // Synthetix V3 CoreProxy addresses
-  static const String _coreProxyAddressSepolia =
-      '0x76490713314fCEC173f44e99346F54c6e92a8E42';
-  static const String _coreProxyAddressBaseSepolia =
-      '0x764F4C95FDA0D6f8114faC54f6709b1B45f919a1';
+  // Synthetix V3 CoreProxy addresses per chain
+  static const String _coreProxyAddressPolygon = SynthetixConfig.coreProxy;
+  static const String _coreProxyAddressSepolia = SynthetixConfig.sepoliaCoreProxy;
 
   // Pool IDs for Spartan Council Pool (commonly used for testing)
   static final BigInt _spartanPoolId = BigInt.from(1);
@@ -116,52 +121,32 @@ class VaultRepository {
 
   // Collateral addresses on Sepolia
   static const String _wbtcSepolia =
-      '0x27c54aB10D69C852821e6Ff64292867C0e9c387c';
-
-  // Collateral addresses on Base Sepolia
-  static const String _fUSDCBaseSepolia =
-      '0xc43708f8987Df3f3681801e5e640667D86Ce3C30';
-  static const String _cbBTCBaseSepolia =
-      '0x8608d511E224180051A36d34121725D978064e6E';
-  static const String _cbETHBaseSepolia =
-      '0x00ab6b818652bB3bFE334983171edFD38184DbeD';
-  static const String _wstETHBaseSepolia =
-      '0x7Bf65af7EFBd0E933fb87dD2C9cE7A17d959b822';
-
-  // Reward Distributor addresses on Base Sepolia (Pool 1)
-  // From base-sepolia-contracts.json rewardDistributors.pool1
-  static const Map<String, String> _rewardDistributorAddresses = {
-    'fUSDC': '0xA28719DDDa6e129d5E8fd470A17Cd075cEf5d25A', // sUSDC_fUSDC
-    'cbBTC': '0xe51a5cEBFE24B6f50Cbf89B3F8B33d252E10FE3A', // scbBTC
-    'cbETH': '0x0148f0c84F6C44cfF24450d70BfdaBB9f46c69cf', // scbETH
-    'WETH': '0x4f908d36EC7A887b161B8745E8eA8aCBd60DB935', // sWETH
-    'wstETH': '0x517a744c28f26044c5D049125992E5d139b52284', // swstETH
-  };
+      '0x27c54ab10d69c852821e6ff64292867c0e9c387c';
 
   String get _coreProxyAddress {
-    if (chain == EthereumChain.baseSepolia) {
-      return _coreProxyAddressBaseSepolia;
-    }
-    return _coreProxyAddressSepolia;
+    return _chain == EthereumChain.polygonMainnet
+        ? _coreProxyAddressPolygon
+        : _coreProxyAddressSepolia;
   }
 
-  /// Fetch all available vaults (WBTC and WETH on Sepolia).
-  Future<List<VaultData>> fetchVaults() async {
+  /// Fetch all available vaults for the current chain.
+  ///
+  /// Pass [overrideAccountId] to load the user's deposited balance for a
+  /// specific Synthetix account (e.g. from AccountBloc.state.synthetixAccountId).
+  /// When null (or zero), balances are returned as 0.0 gracefully.
+  Future<List<VaultData>> fetchVaults({BigInt? overrideAccountId}) async {
     try {
       final coreProxy = SynthetixCoreProxy(
         address: EthereumAddress.fromHex(_coreProxyAddress),
         client: _web3Client,
       );
 
-      // Return different vaults based on the chain
-      if (chain == EthereumChain.baseSepolia) {
-        return _fetchBaseSepoliaVaults(coreProxy);
-      } else {
-        return _fetchSepoliaVaults(coreProxy);
+      if (_chain == EthereumChain.polygonMainnet) {
+        return _fetchPolygonVaults(coreProxy, overrideAccountId: overrideAccountId);
       }
+      return _fetchSepoliaVaults(coreProxy, overrideAccountId: overrideAccountId);
     } catch (e) {
       debugPrint('Error fetching vaults: $e');
-      // Return stubbed data as fallback
       return _getFallbackVaults();
     }
   }
@@ -170,28 +155,39 @@ class VaultRepository {
   Future<double> getPlatformTVL() async {
     try {
       final vaults = await fetchVaults();
-      return vaults.fold<double>(0.0, (sum, vault) => sum + vault.tvl);
+      return vaults.fold<double>(0, (sum, vault) => sum + vault.tvl);
     } catch (e) {
       debugPrint('Error calculating platform TVL: $e');
-      // Return fallback value
-      return 4100000.0; // Default fallback: sum of typical vault TVLs
+      return _chain == EthereumChain.polygonMainnet ? 1100000.0 : 4850000.0;
     }
   }
 
   /// Fetch vaults for Ethereum Sepolia
   Future<List<VaultData>> _fetchSepoliaVaults(
-      SynthetixCoreProxy coreProxy) async {
-    // WBTC and WETH addresses on Sepolia
-    final wbtcAddress = _wbtcSepolia;
+    SynthetixCoreProxy coreProxy, {
+    BigInt? overrideAccountId,
+  }) async {
+    // AX, WBTC, and WETH addresses on Sepolia
+    const axAddress = SynthetixConfig.axToken;
+    const wbtcAddress = _wbtcSepolia;
     final wethAddress = const EthereumAddressConfig.weth()
         .address(EthereumChain.ethereumSepolia);
 
-    // Fetch vault data for both collaterals
+    // Fetch vault data for all collaterals
+    final axVault = await _fetchVaultData(
+      coreProxy: coreProxy,
+      symbol: 'AX',
+      collateralAddress: axAddress,
+      poolId: _spartanPoolId,
+      overrideAccountId: overrideAccountId,
+    );
+
     final wbtcVault = await _fetchVaultData(
       coreProxy: coreProxy,
       symbol: 'WBTC',
       collateralAddress: wbtcAddress,
       poolId: _spartanPoolId,
+      overrideAccountId: overrideAccountId,
     );
 
     final wethVault = await _fetchVaultData(
@@ -199,54 +195,26 @@ class VaultRepository {
       symbol: 'WETH',
       collateralAddress: wethAddress,
       poolId: _spartanPoolId,
+      overrideAccountId: overrideAccountId,
     );
 
-    return [wbtcVault, wethVault];
+    return [axVault, wbtcVault, wethVault];
   }
 
-  /// Fetch vaults for Base Sepolia (Synthetix V3 Andromeda deployment)
-  Future<List<VaultData>> _fetchBaseSepoliaVaults(
-      SynthetixCoreProxy coreProxy) async {
-    final wethAddress =
-        const EthereumAddressConfig.weth().address(EthereumChain.baseSepolia);
-
-    // Fetch vault data for Base Sepolia collaterals
-    final fUSDCVault = await _fetchVaultData(
+  /// Fetch vaults for Polygon Mainnet — only AX collateral is active.
+  Future<List<VaultData>> _fetchPolygonVaults(
+    SynthetixCoreProxy coreProxy, {
+    BigInt? overrideAccountId,
+  }) async {
+    const axAddress = SynthetixConfig.axToken;
+    final axVault = await _fetchVaultData(
       coreProxy: coreProxy,
-      symbol: 'fUSDC',
-      collateralAddress: _fUSDCBaseSepolia,
+      symbol: 'AX',
+      collateralAddress: axAddress,
       poolId: _spartanPoolId,
+      overrideAccountId: overrideAccountId,
     );
-
-    final cbBTCVault = await _fetchVaultData(
-      coreProxy: coreProxy,
-      symbol: 'cbBTC',
-      collateralAddress: _cbBTCBaseSepolia,
-      poolId: _spartanPoolId,
-    );
-
-    final cbETHVault = await _fetchVaultData(
-      coreProxy: coreProxy,
-      symbol: 'cbETH',
-      collateralAddress: _cbETHBaseSepolia,
-      poolId: _spartanPoolId,
-    );
-
-    final wethVault = await _fetchVaultData(
-      coreProxy: coreProxy,
-      symbol: 'WETH',
-      collateralAddress: wethAddress,
-      poolId: _spartanPoolId,
-    );
-
-    final wstETHVault = await _fetchVaultData(
-      coreProxy: coreProxy,
-      symbol: 'wstETH',
-      collateralAddress: _wstETHBaseSepolia,
-      poolId: _spartanPoolId,
-    );
-
-    return [fUSDCVault, cbBTCVault, cbETHVault, wethVault, wstETHVault];
+    return [axVault];
   }
 
   /// Fetch data for a specific vault
@@ -255,6 +223,7 @@ class VaultRepository {
     required String symbol,
     required String collateralAddress,
     required BigInt poolId,
+    BigInt? overrideAccountId,
   }) async {
     try {
       final collateralEthAddress = EthereumAddress.fromHex(collateralAddress);
@@ -265,12 +234,14 @@ class VaultRepository {
         collateralEthAddress,
       );
 
-      // Get user balance if user is connected
-      double userBalance = 0.0;
-      if (userAddress != null) {
+      // Get user's deposited balance (on-chain via getAccountCollateral)
+      var userBalance = 0.0;
+      final resolvedAccountId = overrideAccountId ?? accountId;
+      if (resolvedAccountId != BigInt.zero) {
         userBalance = await getUserBalance(
           collateralAddress: collateralAddress,
           poolId: poolId,
+          overrideAccountId: resolvedAccountId,
         );
       }
 
@@ -303,8 +274,8 @@ class VaultRepository {
       // Return fallback data for this vault
       return VaultData(
         symbol: symbol,
-        balance: 0.0,
-        tvl: symbol == 'WBTC' ? 1250000.0 : 2850000.0,
+        balance: 0,
+        tvl: _fallbackTvlForSymbol(symbol),
         apy: _getFallbackAPY(symbol),
         vaultAddress: _coreProxyAddress,
         collateralAddress: collateralAddress,
@@ -324,32 +295,43 @@ class VaultRepository {
     }
   }
 
-  /// Get user balance in a vault (actual blockchain call).
+  /// Get user's deposited balance in a vault via Synthetix getAccountCollateral.
+  ///
+  /// Returns [totalAssigned] — the amount actively delegated to pools.
+  /// Returns 0.0 gracefully when [overrideAccountId] is zero (no account yet).
   Future<double> getUserBalance({
     required String collateralAddress,
     required BigInt poolId,
+    BigInt? overrideAccountId,
   }) async {
-    if (userAddress == null) {
+    final resolvedAccountId = overrideAccountId ?? accountId;
+
+    // No Synthetix account yet — return 0 gracefully
+    if (resolvedAccountId == BigInt.zero) {
       return 0.0;
     }
 
     try {
-      // For Synthetix V3, we need to query the user's position collateral
-      // This would require knowing the user's account ID
-      // For now, we'll query the ERC20 balance as a fallback
+      final coreProxy = SynthetixCoreProxy(
+        address: EthereumAddress.fromHex(_coreProxyAddress),
+        client: _web3Client,
+      );
+      final result = await coreProxy.getAccountCollateral(
+        resolvedAccountId,
+        EthereumAddress.fromHex(collateralAddress),
+      );
+
+      // Fetch token decimals for proper conversion
       final token = erc20_api.ERC20(
         address: EthereumAddress.fromHex(collateralAddress),
         client: _web3Client,
       );
-
-      final balanceWei = await token.balanceOf(
-        EthereumAddress.fromHex(userAddress!),
-      );
       final decimals = await token.decimals();
 
-      return _bigIntToDouble(balanceWei, decimals.toInt());
+      // totalAssigned = collateral currently delegated to pools
+      return _bigIntToDouble(result.totalAssigned, decimals.toInt());
     } catch (e) {
-      debugPrint('Error getting user balance: $e');
+      debugPrint('Error getting account collateral balance: $e');
       return 0.0;
     }
   }
@@ -388,7 +370,7 @@ class VaultRepository {
         await token.allowance(userEthAddress, coreProxyAddress);
     if (currentAllowance < amountWei) {
       await token.approve(coreProxyAddress, amountWei,
-          credentials: credentials);
+          credentials: credentials,);
     }
 
     // 2) Delegate collateral to the Spartan Council pool
@@ -454,7 +436,7 @@ class VaultRepository {
     final pool = poolId ?? _spartanPoolId;
 
     // sUSD decimals (typically 18)
-    const int susdDecimals = 18;
+    const susdDecimals = 18;
     final amountWei = _doubleToBigInt(amount, susdDecimals);
 
     // Use delegateCollateral pattern but call mintUsd
@@ -470,10 +452,10 @@ class VaultRepository {
       parameters: [accountId, pool, collateralEthAddress, amountWei],
     );
 
-    return await _web3Client.sendTransaction(
+    return _web3Client.sendTransaction(
       credentials,
       transaction,
-      chainId: chain == EthereumChain.baseSepolia ? 84532 : 11155111,
+      chainId: SynthetixConfig.chainId,
     );
   }
 
@@ -492,7 +474,7 @@ class VaultRepository {
     final collateralEthAddress = EthereumAddress.fromHex(collateralAddress);
     final pool = poolId ?? _spartanPoolId;
 
-    const int susdDecimals = 18;
+    const susdDecimals = 18;
     final amountWei = _doubleToBigInt(amount, susdDecimals);
 
     final coreProxy = SynthetixCoreProxy(
@@ -507,56 +489,104 @@ class VaultRepository {
       parameters: [accountId, pool, collateralEthAddress, amountWei],
     );
 
-    return await _web3Client.sendTransaction(
+    return _web3Client.sendTransaction(
       credentials,
       transaction,
-      chainId: chain == EthereumChain.baseSepolia ? 84532 : 11155111,
+      chainId: SynthetixConfig.chainId,
     );
   }
 
-  /// Get debt position for the account (placeholder - returns 0 for now)
+  /// Get per-position debt for the account via CoreProxy.getPositionDebt.
+  ///
+  /// Returns the signed int256 debt cast to BigInt (positive = owes sUSD).
+  /// Returns zero gracefully when accountId is unset.
   Future<BigInt> getPositionDebt({
     required String collateralAddress,
     BigInt? poolId,
+    BigInt? overrideAccountId,
   }) async {
+    final resolvedAccountId = overrideAccountId ?? accountId;
+    if (resolvedAccountId == BigInt.zero) return BigInt.zero;
+    final pool = poolId ?? _spartanPoolId;
     try {
-      // TODO: Implement via SynthetixCoreService when available
-      // For now, return placeholder
-      return BigInt.zero;
+      final coreProxy = SynthetixCoreProxy(
+        address: EthereumAddress.fromHex(_coreProxyAddress),
+        client: _web3Client,
+      );
+      return await coreProxy.getPositionDebt(
+        resolvedAccountId,
+        pool,
+        EthereumAddress.fromHex(collateralAddress),
+      );
     } catch (e) {
       debugPrint('Error getting position debt: $e');
       return BigInt.zero;
     }
   }
 
-  /// Get max borrow amount for the account (placeholder)
+  /// Get max sUSD borrow amount for the account.
+  ///
+  /// Derived from the position's assigned collateral and a minimum safe
+  /// c-ratio of 200% (2×). Formula:
+  ///   maxBorrow = getPositionCollateral.amount / 2  (in collateral tokens)
+  /// Returns zero gracefully when accountId is unset or position empty.
   Future<BigInt> getMaxBorrowAmount({
     required String collateralAddress,
     BigInt? poolId,
+    BigInt? overrideAccountId,
   }) async {
+    final resolvedAccountId = overrideAccountId ?? accountId;
+    if (resolvedAccountId == BigInt.zero) return BigInt.zero;
+    final pool = poolId ?? _spartanPoolId;
     try {
-      // TODO: Implement via collateral ratio calculation
-      // For now, return placeholder (500 sUSD = 500e18)
-      return _doubleToBigInt(500.0, 18);
+      final coreProxy = SynthetixCoreProxy(
+        address: EthereumAddress.fromHex(_coreProxyAddress),
+        client: _web3Client,
+      );
+      final positionAmount = await coreProxy.getPositionCollateral(
+        resolvedAccountId,
+        pool,
+        EthereumAddress.fromHex(collateralAddress),
+      );
+      // At 200% min c-ratio, max borrowable = 50% of collateral value
+      return positionAmount ~/ BigInt.two;
     } catch (e) {
-      debugPrint('Error getting max borrow: $e');
+      debugPrint('Error getting max borrow amount: $e');
       return BigInt.zero;
     }
   }
 
-  /// Get live collateralization ratio for the account.
-  /// Returns ratio as percentage (e.g., 200.0 = 200%)
+  /// Get live collateralization ratio for the account position.
+  ///
+  /// Calls CoreProxy.getPositionCollateralRatio which returns a uint256 in
+  /// 18-decimal precision (e.g. 2e18 = 200%). Converts to a plain percentage.
+  /// Returns 0.0 gracefully when accountId is unset or no position exists.
   Future<double> getCollateralRatio({
     required String collateralAddress,
     BigInt? poolId,
+    BigInt? overrideAccountId,
   }) async {
+    final resolvedAccountId = overrideAccountId ?? accountId;
+    if (resolvedAccountId == BigInt.zero) return 0.0;
+    final pool = poolId ?? _spartanPoolId;
     try {
-      // For now, return a safe default C-ratio (200%)
-      // TODO: Replace with actual getPositionCollateralRatio when available in SynthetixCoreProxy
-      return 200.0;
+      final coreProxy = SynthetixCoreProxy(
+        address: EthereumAddress.fromHex(_coreProxyAddress),
+        client: _web3Client,
+      );
+      final ratioRaw = await coreProxy.getPositionCollateralRatio(
+        resolvedAccountId,
+        pool,
+        EthereumAddress.fromHex(collateralAddress),
+      );
+      // ratioRaw is in 18 decimals: 1e18 = 100%
+      // Divide by 1e16 to convert to percentage (e.g. 2e18 / 1e16 = 200.0)
+      return ratioRaw == BigInt.zero
+          ? 0.0
+          : ratioRaw.toDouble() / 1e16;
     } catch (e) {
       debugPrint('Error getting collateral ratio: $e');
-      return 200.0; // Safe default
+      return 0.0;
     }
   }
 
@@ -582,106 +612,108 @@ class VaultRepository {
     return value / divisor;
   }
 
-  /// Calculate APY based on reward distributor data
+  /// Calculate APY for the given collateral symbol.
+  ///
+  /// On Polygon: reads the live reward rate from CoreProxy.getRewardRate() and
+  /// annualises it against the vault TVL. Returns 0.0 when the RewardsDistributor
+  /// has not yet been deployed or funded.
+  ///
+  /// On Sepolia: always returns 0.0 until a distributor is deployed there.
   Future<double> _calculateAPY({
     required String symbol,
     required double tvl,
   }) async {
+    if (_chain != EthereumChain.polygonMainnet) return 0.0;
+    const distributorAddress = SynthetixConfig.rewardsDistributor;
+    if (distributorAddress.isEmpty || tvl <= 0) return 0.0;
+
     try {
-      // Only Base Sepolia has reward distributors configured
-      if (chain != EthereumChain.baseSepolia) {
-        return _getFallbackAPY(symbol);
-      }
-
-      final distributorAddress = _rewardDistributorAddresses[symbol];
-      if (distributorAddress == null || tvl == 0) {
-        return _getFallbackAPY(symbol);
-      }
-
-      final distributor = RewardDistributor(
-        address: EthereumAddress.fromHex(distributorAddress),
-        client: _web3Client,
+      // getRewardRate(poolId, collateralType, distributor) → tokens/second in 18-dec precision
+      const getRewardRateAbi =
+          '[{"inputs":[{"name":"poolId","type":"uint128"},{"name":"collateralType","type":"address"},{"name":"distributor","type":"address"}],"name":"getRewardRate","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]';
+      final abi = web3.ContractAbi.fromJson(getRewardRateAbi, 'CoreProxy');
+      final contract = web3.DeployedContract(
+        abi,
+        EthereumAddress.fromHex(_coreProxyAddress),
       );
-
-      // Get total rewards amount and rewarded amount
-      final rewardsAmount = await distributor.rewardsAmount();
-      final rewardedAmount = await distributor.rewardedAmount();
-
-      // Calculate remaining rewards to be distributed
-      final remainingRewards = rewardsAmount - rewardedAmount;
-
-      // Get payout token to get decimals
-      final payoutTokenAddress = await distributor.payoutToken();
-      final payoutToken = erc20_api.ERC20(
-        address: payoutTokenAddress,
-        client: _web3Client,
+      final fn = contract.function('getRewardRate');
+      final result = await _web3Client.call(
+        contract: contract,
+        function: fn,
+        params: [
+          _spartanPoolId,
+          EthereumAddress.fromHex(SynthetixConfig.axToken),
+          EthereumAddress.fromHex(distributorAddress),
+        ],
       );
-      final decimals = await payoutToken.decimals();
-
-      // Convert to human-readable amount
-      final rewardsInToken =
-          _bigIntToDouble(remainingRewards, decimals.toInt());
-
-      // Assume rewards are distributed over ~30 days (typical distribution period)
-      // APY = (Annual Rewards / TVL) * 100
-      // Annual Rewards ≈ Monthly Rewards * 12
-      const distributionDays = 30.0;
-      const daysInYear = 365.0;
-      final annualRewards = (rewardsInToken / distributionDays) * daysInYear;
-
-      if (tvl > 0) {
-        final apy = (annualRewards / tvl) * 100;
-        // Cap APY at reasonable bounds (0.1% to 500%)
-        return apy.clamp(0.1, 500.0);
-      }
-
-      return _getFallbackAPY(symbol);
+      final rateRaw = result[0] as BigInt;
+      if (rateRaw == BigInt.zero) return 0.0;
+      // rateRaw is in 18-decimal axUSD per second; TVL is in AX tokens (oracle $1 each)
+      final ratePerSecond = rateRaw.toDouble() / 1e18;
+      final annualRewards = ratePerSecond * 365 * 24 * 3600;
+      return (annualRewards / tvl) * 100;
     } catch (e) {
-      debugPrint('Error calculating APY for $symbol: $e');
-      return _getFallbackAPY(symbol);
+      debugPrint('APY calculation error: $e');
+      return 0.0;
     }
   }
 
-  /// Fallback APY values when real calculation fails
-  double _getFallbackAPY(String symbol) {
-    // Conservative estimates as fallback
-    switch (symbol.toUpperCase()) {
-      case 'WBTC':
-        return 5.2;
-      case 'WETH':
-        return 4.8;
-      case 'FUSDC':
-        return 6.5;
-      case 'CBBTC':
-        return 5.5;
-      case 'CBETH':
-        return 5.0;
-      case 'WSTETH':
-        return 4.5;
-      default:
-        return 5.0;
+  /// Fallback APY when _calculateAPY throws.
+  double _getFallbackAPY(String symbol) => 0.0;
+
+  /// Fallback TVL for a single vault when the on-chain call fails.
+  double _fallbackTvlForSymbol(String symbol) {
+    if (_chain == EthereumChain.polygonMainnet) return 1100000.0;
+    switch (symbol) {
+      case 'WBTC': return 1250000.0;
+      case 'WETH': return 2850000.0;
+      default:     return 750000.0; // AX on Sepolia
     }
   }
 
-  /// Get fallback vault data when blockchain calls fail
+  /// Get fallback vault data when blockchain calls fail.
   List<VaultData> _getFallbackVaults() {
-    if (chain == EthereumChain.baseSepolia) {
-      return _getBaseSepoliaFallbackVaults();
-    }
+    if (_chain == EthereumChain.polygonMainnet) return _getPolygonFallbackVaults();
     return _getSepoliaFallbackVaults();
   }
 
+  List<VaultData> _getPolygonFallbackVaults() {
+    return [
+      VaultData(
+        symbol: 'AX',
+        balance: 0,
+        tvl: 1100000,
+        apy: 0,
+        vaultAddress: _coreProxyAddressPolygon,
+        collateralAddress: SynthetixConfig.axToken,
+        poolId: _spartanPoolId,
+        timestamp: DateTime.now(),
+      ),
+    ];
+  }
+
   List<VaultData> _getSepoliaFallbackVaults() {
-    final wbtcAddress = _wbtcSepolia;
+    const axAddress = SynthetixConfig.axToken;
+    const wbtcAddress = _wbtcSepolia;
     final wethAddress = const EthereumAddressConfig.weth()
         .address(EthereumChain.ethereumSepolia);
 
     return [
       VaultData(
+        symbol: 'AX',
+        balance: 0,
+        tvl: 750000,
+        apy: 0,
+        vaultAddress: _coreProxyAddressSepolia,
+        collateralAddress: axAddress,
+        poolId: _spartanPoolId,
+        timestamp: DateTime.now(),
+      ),
+      VaultData(
         symbol: 'WBTC',
-        balance: 0.0,
-        tvl: 1250000.0,
-        apy: 5.2,
+        balance: 0,
+        tvl: 1250000,
+        apy: 0,
         vaultAddress: _coreProxyAddressSepolia,
         collateralAddress: wbtcAddress,
         poolId: _spartanPoolId,
@@ -689,9 +721,9 @@ class VaultRepository {
       ),
       VaultData(
         symbol: 'WETH',
-        balance: 0.0,
-        tvl: 2850000.0,
-        apy: 4.8,
+        balance: 0,
+        tvl: 2850000,
+        apy: 0,
         vaultAddress: _coreProxyAddressSepolia,
         collateralAddress: wethAddress,
         poolId: _spartanPoolId,
@@ -700,61 +732,4 @@ class VaultRepository {
     ];
   }
 
-  List<VaultData> _getBaseSepoliaFallbackVaults() {
-    final wethAddress =
-        const EthereumAddressConfig.weth().address(EthereumChain.baseSepolia);
-
-    return [
-      VaultData(
-        symbol: 'fUSDC',
-        balance: 0.0,
-        tvl: 500000.0,
-        apy: 6.5,
-        vaultAddress: _coreProxyAddressBaseSepolia,
-        collateralAddress: _fUSDCBaseSepolia,
-        poolId: _spartanPoolId,
-        timestamp: DateTime.now(),
-      ),
-      VaultData(
-        symbol: 'cbBTC',
-        balance: 0.0,
-        tvl: 1500000.0,
-        apy: 5.5,
-        vaultAddress: _coreProxyAddressBaseSepolia,
-        collateralAddress: _cbBTCBaseSepolia,
-        poolId: _spartanPoolId,
-        timestamp: DateTime.now(),
-      ),
-      VaultData(
-        symbol: 'cbETH',
-        balance: 0.0,
-        tvl: 2000000.0,
-        apy: 5.0,
-        vaultAddress: _coreProxyAddressBaseSepolia,
-        collateralAddress: _cbETHBaseSepolia,
-        poolId: _spartanPoolId,
-        timestamp: DateTime.now(),
-      ),
-      VaultData(
-        symbol: 'WETH',
-        balance: 0.0,
-        tvl: 3500000.0,
-        apy: 4.8,
-        vaultAddress: _coreProxyAddressBaseSepolia,
-        collateralAddress: wethAddress,
-        poolId: _spartanPoolId,
-        timestamp: DateTime.now(),
-      ),
-      VaultData(
-        symbol: 'wstETH',
-        balance: 0.0,
-        tvl: 1800000.0,
-        apy: 4.5,
-        vaultAddress: _coreProxyAddressBaseSepolia,
-        collateralAddress: _wstETHBaseSepolia,
-        poolId: _spartanPoolId,
-        timestamp: DateTime.now(),
-      ),
-    ];
-  }
 }

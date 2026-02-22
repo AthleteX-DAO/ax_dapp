@@ -1,8 +1,11 @@
 import 'dart:async';
+
+import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/shared.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-import '../../service/controller/earn/vault_repository.dart';
 
 part 'earn_page_event.dart';
 part 'earn_page_state.dart';
@@ -11,10 +14,12 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
   EarnPageBloc({
     required WalletRepository walletRepository,
     VaultRepository? vaultRepository,
-    Object? configRepository,
+    StreamAppDataChangesUseCase? streamAppDataChanges,
   })  : _vaultRepository = vaultRepository,
         _walletRepository = walletRepository,
+        _streamAppDataChanges = streamAppDataChanges,
         super(const EarnPageState()) {
+    on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<ExpandTile>(_onExpandTile);
     on<CollapseAllTiles>(_onCollapseAllTiles);
     on<UpdateAmount>(_onUpdateAmount);
@@ -30,12 +35,16 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     on<CloseTransactionModal>(_onCloseTransactionModal);
     on<FetchPlatformTVL>(_onFetchPlatformTVL);
 
+    // Subscribe to chain changes (updates VaultRepository + re-fetches TVL).
+    if (_streamAppDataChanges != null) add(const WatchAppDataChangesStarted());
+
     // Fetch platform TVL on initialization
     add(const FetchPlatformTVL());
   }
 
   final VaultRepository? _vaultRepository;
   final WalletRepository _walletRepository;
+  final StreamAppDataChangesUseCase? _streamAppDataChanges;
 
   /// Debounce timer for C-ratio queries
   Timer? _debounceTimer;
@@ -48,6 +57,24 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
   double? _currentOperationAmount;
   String? _currentOperationCollateral;
 
+  /// Watch for chain/wallet changes and update VaultRepository accordingly.
+  Future<void> _onWatchAppDataChangesStarted(
+    WatchAppDataChangesStarted event,
+    Emitter<EarnPageState> emit,
+  ) async {
+    if (_streamAppDataChanges == null) return;
+    await emit.onEach<AppData>(
+      _streamAppDataChanges!.appDataChanges,
+      onData: (appData) {
+        // Propagate new chain + web3 client into VaultRepository.
+        _vaultRepository?.updateChain(appData.chain);
+        emit(state.copyWith(selectedChain: appData.chain));
+        // Re-fetch TVL for the newly active chain.
+        add(const FetchPlatformTVL());
+      },
+    );
+  }
+
   /// Fetch platform TVL
   Future<void> _onFetchPlatformTVL(
     FetchPlatformTVL event,
@@ -59,7 +86,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(
         platformTVL: tvl,
         isPlatformTVLLoading: false,
-      ));
+      ),);
     } catch (e) {
       emit(state.copyWith(isPlatformTVLLoading: false));
     }
@@ -104,7 +131,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           collateralRatio: cRatio,
           isCollateralRatioLoading: false,
-        ));
+        ),);
       } catch (e) {
         emit(state.copyWith(isCollateralRatioLoading: false));
       }
@@ -141,7 +168,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(
         collateralRatio: cRatio,
         isCollateralRatioLoading: false,
-      ));
+      ),);
     } catch (e) {
       emit(state.copyWith(isCollateralRatioLoading: false));
     }
@@ -157,7 +184,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         showTransactionModal: true,
         transactionStatus: TransactionStatus.pending,
         transactionStep: TransactionStep.approve,
-      ));
+      ),);
 
       // Store operation details
       _currentOperation = 'deposit';
@@ -167,7 +194,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault repository not available',
-        ));
+        ),);
         return;
       }
 
@@ -177,7 +204,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault not found',
-        ));
+        ),);
         return;
       }
 
@@ -197,14 +224,14 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(
         transactionStep: TransactionStep.pending,
         transactionHash: txHash,
-      ));
+      ),);
 
       add(PollTransaction(txHash));
     } catch (e) {
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
-      ));
+      ),);
     }
   }
 
@@ -218,7 +245,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         showTransactionModal: true,
         transactionStatus: TransactionStatus.pending,
         transactionStep: TransactionStep.confirm,
-      ));
+      ),);
 
       _currentOperation = 'withdraw';
       _currentOperationAmount = event.amount;
@@ -227,7 +254,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault repository not available',
-        ));
+        ),);
         return;
       }
 
@@ -236,7 +263,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault not found',
-        ));
+        ),);
         return;
       }
 
@@ -255,7 +282,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
-      ));
+      ),);
     }
   }
 
@@ -269,7 +296,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         showTransactionModal: true,
         transactionStatus: TransactionStatus.pending,
         transactionStep: TransactionStep.confirm,
-      ));
+      ),);
 
       _currentOperation = 'mint';
       _currentOperationAmount = event.amount;
@@ -286,7 +313,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Failed to initiate mint transaction',
-        ));
+        ),);
         return;
       }
 
@@ -296,7 +323,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
-      ));
+      ),);
     }
   }
 
@@ -310,7 +337,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         showTransactionModal: true,
         transactionStatus: TransactionStatus.pending,
         transactionStep: TransactionStep.confirm,
-      ));
+      ),);
 
       _currentOperation = 'burn';
       _currentOperationAmount = event.amount;
@@ -327,7 +354,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Failed to initiate burn transaction',
-        ));
+        ),);
         return;
       }
 
@@ -337,7 +364,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
-      ));
+      ),);
     }
   }
 
@@ -349,9 +376,9 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     // Cancel any existing polling timer
     _pollingTimer?.cancel();
 
-    int attempts = 0;
-    const int maxAttempts = 60; // 60 * 2s = 120s timeout
-    const Duration pollInterval = Duration(seconds: 2);
+    var attempts = 0;
+    const maxAttempts = 60; // 60 * 2s = 120s timeout
+    const pollInterval = Duration(seconds: 2);
 
     _pollingTimer = Timer.periodic(pollInterval, (_) async {
       attempts++;
@@ -367,7 +394,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
             emit(state.copyWith(
               transactionStep: TransactionStep.success,
               transactionStatus: TransactionStatus.success,
-            ));
+            ),);
 
             // Auto-dismiss after 2 seconds
             await Future.delayed(const Duration(seconds: 2));
@@ -378,7 +405,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
             emit(state.copyWith(
               transactionStatus: TransactionStatus.error,
               transactionError: 'Transaction failed on-chain',
-            ));
+            ),);
           }
         } else if (attempts >= maxAttempts) {
           // Timeout
@@ -386,7 +413,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
           emit(state.copyWith(
             transactionStatus: TransactionStatus.error,
             transactionError: 'Transaction confirmation timeout',
-          ));
+          ),);
         }
       } catch (e) {
         if (attempts >= maxAttempts) {
@@ -394,7 +421,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
           emit(state.copyWith(
             transactionStatus: TransactionStatus.error,
             transactionError: 'Error polling transaction: $e',
-          ));
+          ),);
         }
       }
     });
@@ -408,7 +435,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     emit(state.copyWith(
       transactionStatus: TransactionStatus.success,
       transactionStep: TransactionStep.success,
-    ));
+    ),);
   }
 
   /// Handle transaction failed
@@ -419,7 +446,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     emit(state.copyWith(
       transactionStatus: TransactionStatus.error,
       transactionError: event.error,
-    ));
+    ),);
   }
 
   /// Close transaction modal
@@ -434,9 +461,9 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       transactionStep: TransactionStep.confirm,
       transactionHash: '',
       transactionError: '',
-      currentAmount: 0.0,
-      currentLeverage: 1.0,
-    ));
+      currentAmount: 0,
+      currentLeverage: 1,
+    ),);
   }
 
   @override
