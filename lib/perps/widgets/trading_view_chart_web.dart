@@ -1,8 +1,9 @@
+import 'dart:async';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
-import 'dart:async';
 // Use web-specific ui registry (consistent with existing web code)
 import 'dart:ui_web' as ui_web;
+
 import 'package:flutter/material.dart';
 
 /// Web implementation using TradingView iframe embed with theme sync,
@@ -28,7 +29,7 @@ class TradingViewChart extends StatefulWidget {
 class _TradingViewChartState extends State<TradingViewChart> {
   late String _viewType;
   late String _effectiveTheme;
-  late double _effectiveHeight;
+  double? _effectiveHeight;
   bool _isLoaded = false;
   bool _hasError = false;
   Uri? _lastUri;
@@ -80,14 +81,16 @@ class _TradingViewChartState extends State<TradingViewChart> {
     final brightness = Theme.of(context).brightness;
     _effectiveTheme = widget.theme ?? (brightness == Brightness.dark ? 'dark' : 'light');
 
-    final mq = MediaQuery.of(context);
-    final width = mq.size.width;
-    // Responsive height: small screens get a smaller chart
-    _effectiveHeight = widget.height ?? (width < 700 ? 320 : 480);
+    // When height is explicit, use it; otherwise fill parent via 100% CSS.
+    _effectiveHeight = widget.height;
+
+    final heightCss = _effectiveHeight != null
+        ? '${_effectiveHeight}px'
+        : '100%';
 
     final uri = Uri.parse(
       'https://s.tradingview.com/widgetembed/?'
-      'frameElementId=${_viewType}'
+      'frameElementId=$_viewType'
       '&symbol=${Uri.encodeComponent(widget.symbol)}'
       '&interval=${Uri.encodeComponent(widget.interval)}'
       '&theme=${Uri.encodeComponent(_effectiveTheme)}'
@@ -106,7 +109,7 @@ class _TradingViewChartState extends State<TradingViewChart> {
           ..src = uri.toString()
           ..style.border = 'none'
           ..style.width = '100%'
-          ..style.height = '${_effectiveHeight}px'
+          ..style.height = heightCss
           ..allow = 'clipboard-write; fullscreen';
 
         // Mark as loaded once iframe loads; provide timeout fallback.
@@ -154,48 +157,51 @@ class _TradingViewChartState extends State<TradingViewChart> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: _effectiveHeight,
-      child: Stack(
-        children: [
-          HtmlElementView(viewType: _viewType),
-          if (!_isLoaded && !_hasError)
-            Positioned.fill(
-              child: Container(
-                color: Colors.transparent,
-                alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
+    final child = Stack(
+      children: [
+        HtmlElementView(viewType: _viewType),
+        if (!_isLoaded && !_hasError)
+          Positioned.fill(
+            child: Container(
+              color: Colors.transparent,
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator(),
+            ),
+          ),
+        if (_hasError)
+          Positioned.fill(
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.red, size: 32),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Unable to load chart. It may be blocked or offline.',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 12,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      ElevatedButton(onPressed: _retry, child: const Text('Retry')),
+                      TextButton(onPressed: _openInNewTab, child: const Text('Open in new tab')),
+                    ],
+                  ),
+                ],
               ),
             ),
-          if (_hasError)
-            Positioned.fill(
-              child: Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, color: Colors.red, size: 32),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Unable to load chart. It may be blocked or offline.',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 12,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        ElevatedButton(onPressed: _retry, child: const Text('Retry')),
-                        TextButton(onPressed: _openInNewTab, child: const Text('Open in new tab')),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-        ],
-      ),
+          ),
+      ],
     );
+
+    // If explicit height, constrain; otherwise fill parent.
+    if (_effectiveHeight != null) {
+      return SizedBox(height: _effectiveHeight, child: child);
+    }
+    return SizedBox.expand(child: child);
   }
 }

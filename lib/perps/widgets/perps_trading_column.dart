@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ax_dapp/perps/bloc/perps_trading_bloc.dart';
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 
 /// Trading column widget for placing market and limit orders
 class PerpsTradingColumn extends StatefulWidget {
   const PerpsTradingColumn({
-    Key? key,
+    super.key,
     required this.symbol,
-  }) : super(key: key);
+  });
 
   final String symbol;
 
@@ -32,50 +34,27 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      child: Container(
-        width: 320,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildHeader(),
-            const SizedBox(height: 16),
-            _buildOrderTypeSelector(),
-            const SizedBox(height: 16),
-            _buildDirectionSelector(),
-            const SizedBox(height: 16),
-            _buildSizeInput(),
-            if (!_isMarketOrder) ...[
-              const SizedBox(height: 12),
-              _buildPriceInput(),
-            ],
-            const SizedBox(height: 20),
-            _buildTradeButton(),
-            const SizedBox(height: 12),
-            _buildOrderInfo(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          'Trade ${widget.symbol}',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.settings, size: 20),
-          onPressed: () {},
-          tooltip: 'Trading Settings',
-        ),
+        // ── Long / Short toggle (prominent, like Synthetix Perps) ──
+        _buildDirectionSelector(),
+        const SizedBox(height: 14),
+        // ── Market / Limit tabs ──
+        _buildOrderTypeSelector(),
+        const SizedBox(height: 14),
+        // ── Size input ──
+        _buildSizeInput(),
+        if (!_isMarketOrder) ...[
+          const SizedBox(height: 12),
+          _buildPriceInput(),
+        ],
+        const SizedBox(height: 18),
+        // ── Place Order button ──
+        _buildTradeButton(),
+        const SizedBox(height: 12),
+        // ── Trade details / errors ──
+        _buildOrderInfo(),
       ],
     );
   }
@@ -103,9 +82,9 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
   }
 
   Widget _buildDirectionSelector() {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: Colors.grey.shade700),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -144,12 +123,12 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           color: isSelected
-              ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+              ? Colors.white.withOpacity(0.12)
               : Colors.transparent,
           border: Border.all(
             color: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Colors.grey.shade300,
+                ? Colors.white.withOpacity(0.3)
+                : Colors.grey.shade700,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
@@ -158,8 +137,8 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Colors.grey.shade600,
+                ? Colors.white
+                : Colors.grey.shade500,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
         ),
@@ -191,7 +170,7 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey.shade600,
+            color: isSelected ? Colors.white : Colors.grey.shade500,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
             fontSize: 16,
           ),
@@ -201,6 +180,12 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
   }
 
   Widget _buildSizeInput() {
+    final accountState = context.watch<AccountBloc>().state;
+    final availableCollateral = accountState.synthetixCollateralAvailable;
+    // Convert from wei (18 decimals) to USD
+    final availableUSD = availableCollateral / BigInt.from(10).pow(18);
+    final availableDisplay = availableUSD;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -208,15 +193,17 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Size',
+              'Position Size',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w500,
+                    color: Colors.white,
                   ),
             ),
             Text(
-              'Available: \$0.00',
+              'Available: \$${availableDisplay.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey.shade600,
+                    color: Colors.grey.shade500,
+                    fontSize: 11,
                   ),
             ),
           ],
@@ -228,44 +215,39 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
           inputFormatters: [
             FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
           ],
-          decoration: InputDecoration(
-            hintText: '0.00',
-            suffixText: 'USD',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 12,
-            ),
-          ),
+          decoration: _darkInputDecoration(hint: '0.00', suffix: 'USD'),
+          style: const TextStyle(color: Colors.white, fontSize: 15),
         ),
         const SizedBox(height: 8),
-        _buildPercentageButtons(),
+        _buildPercentageButtons(availableDisplay),
       ],
     );
   }
 
-  Widget _buildPercentageButtons() {
+  Widget _buildPercentageButtons(double available) {
     return Row(
       children: [
-        _buildPercentButton('25%'),
+        _buildPercentButton('25%', available * 0.25),
         const SizedBox(width: 4),
-        _buildPercentButton('50%'),
+        _buildPercentButton('50%', available * 0.50),
         const SizedBox(width: 4),
-        _buildPercentButton('75%'),
+        _buildPercentButton('75%', available * 0.75),
         const SizedBox(width: 4),
-        _buildPercentButton('100%'),
+        _buildPercentButton('100%', available),
       ],
     );
   }
 
-  Widget _buildPercentButton(String label) {
+  Widget _buildPercentButton(String label, double amount) {
     return Expanded(
       child: OutlinedButton(
-        onPressed: () {
-          // TODO: Calculate and set size based on percentage
-        },
+        onPressed: amount > 0
+            ? () {
+                setState(() {
+                  _sizeController.text = amount.toStringAsFixed(2);
+                });
+              }
+            : null,
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 4),
           minimumSize: const Size(0, 28),
@@ -286,6 +268,7 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
           'Limit Price',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
+                color: Colors.white,
               ),
         ),
         const SizedBox(height: 8),
@@ -295,23 +278,101 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
           inputFormatters: [
             FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
           ],
-          decoration: InputDecoration(
-            hintText: '0.00',
-            suffixText: 'USD',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 12,
-            ),
-          ),
+          decoration: _darkInputDecoration(hint: '0.00', suffix: 'USD'),
+          style: const TextStyle(color: Colors.white, fontSize: 15),
         ),
       ],
     );
   }
 
+  /// Shared dark input decoration for text fields
+  InputDecoration _darkInputDecoration({
+    required String hint,
+    String? suffix,
+  }) {
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: TextStyle(color: Colors.grey.shade600),
+      suffixText: suffix,
+      suffixStyle: TextStyle(color: Colors.grey.shade500, fontSize: 13),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+      ),
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.04),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+    );
+  }
+
   Widget _buildTradeButton() {
+    final walletState = context.watch<WalletBloc>().state;
+    final accountState = context.watch<AccountBloc>().state;
+
+    // Gate 1: Wallet not connected
+    if (walletState.isWalletDisconnected) {
+      return ElevatedButton(
+        onPressed: () {
+          Scaffold.of(context).openEndDrawer();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.amber.shade700,
+          foregroundColor: Colors.black,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child: const Text(
+          'Connect Wallet',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      );
+    }
+
+    // Gate 2: No Synthetix account
+    if (!accountState.hasSynthetixAccount) {
+      return ElevatedButton(
+        onPressed: accountState.isSynthetixAccountLoading
+            ? null
+            : () {
+                context
+                    .read<AccountBloc>()
+                    .add(const CreateSynthetixAccountRequested());
+              },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue.shade600,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child: accountState.isSynthetixAccountLoading
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : const Text(
+                'Create Synthetix Account',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+      );
+    }
+
+    // Gate 3: Normal trade button
     return BlocBuilder<PerpsTradingBloc, PerpsTradingState>(
       builder: (context, state) {
         final isLoading = state is PerpsTradingLoading;
@@ -355,19 +416,19 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
           return Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.red.shade50,
+              color: Colors.red.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.red.shade200),
+              border: Border.all(color: Colors.red.withOpacity(0.3)),
             ),
             child: Row(
               children: [
-                Icon(Icons.error_outline, color: Colors.red.shade700, size: 16),
+                Icon(Icons.error_outline, color: Colors.red.shade300, size: 16),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     state.message,
                     style: TextStyle(
-                      color: Colors.red.shade700,
+                      color: Colors.red.shade300,
                       fontSize: 12,
                     ),
                   ),
@@ -381,19 +442,19 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
           return Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.green.shade50,
+              color: Colors.green.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.green.shade200),
+              border: Border.all(color: Colors.green.withOpacity(0.3)),
             ),
             child: Row(
               children: [
-                Icon(Icons.check_circle_outline, color: Colors.green.shade700, size: 16),
+                Icon(Icons.check_circle_outline, color: Colors.green.shade300, size: 16),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'Order placed successfully',
                     style: TextStyle(
-                      color: Colors.green.shade700,
+                      color: Colors.green.shade300,
                       fontSize: 12,
                     ),
                   ),
@@ -405,9 +466,11 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
 
         return Column(
           children: [
-            _buildInfoRow('Entry Price', '--'),
-            _buildInfoRow('Est. Liq. Price', '--'),
-            _buildInfoRow('Fee', '~0.00%'),
+            _buildInfoRow('Est. Execution Price', '--'),
+            _buildInfoRow('Spread', '<0.001%'),
+            _buildInfoRow('Max Slippage', '1%'),
+            _buildInfoRow('Fees', '~0.07%'),
+            _buildInfoRow('Liq. Price', '--'),
           ],
         );
       },
@@ -416,21 +479,24 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
 
   Widget _buildInfoRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.shade600,
-                ),
+            style: TextStyle(
+              color: Colors.grey.shade500,
+              fontSize: 12,
+            ),
           ),
           Text(
             value,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
@@ -442,6 +508,22 @@ class _PerpsTradingColumnState extends State<PerpsTradingColumn> {
     if (size == null || size <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a valid size')),
+      );
+      return;
+    }
+
+    // Check available margin
+    final accountState = context.read<AccountBloc>().state;
+    final availableWei = accountState.synthetixCollateralAvailable;
+    final availableUSD =
+        (availableWei / BigInt.from(10).pow(18));
+    if (size > availableUSD && availableUSD > 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Insufficient margin. Available: \$${availableUSD.toStringAsFixed(2)}',
+          ),
+        ),
       );
       return;
     }

@@ -68,11 +68,11 @@ class PerpResponsive {
 /// Responsive layout builder that handles different screen sizes
 class ResponsiveLayout extends StatelessWidget {
   const ResponsiveLayout({
-    Key? key,
+    super.key,
     required this.mobile,
     required this.tablet,
     required this.desktop,
-  }) : super(key: key);
+  });
 
   final Widget mobile;
   final Widget tablet;
@@ -97,10 +97,10 @@ class ResponsiveLayout extends StatelessWidget {
 /// Helper to build responsive chart that scales to available space
 class ResponsiveChart extends StatelessWidget {
   const ResponsiveChart({
-    Key? key,
+    super.key,
     required this.child,
     this.minHeight = 200,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final double minHeight;
@@ -117,9 +117,9 @@ class ResponsiveChart extends StatelessWidget {
 /// Helper for responsive stat cards row
 class ResponsiveStatCardsRow extends StatelessWidget {
   const ResponsiveStatCardsRow({
-    Key? key,
+    super.key,
     required this.children,
-  }) : super(key: key);
+  });
 
   final List<Widget> children;
 
@@ -179,12 +179,12 @@ class ResponsiveStatCardsRow extends StatelessWidget {
 /// Helper for 3-column layout (desktop) or 2-column (tablet) or stacked (mobile)
 class ResponsivePerpsLayout extends StatelessWidget {
   const ResponsivePerpsLayout({
-    Key? key,
+    super.key,
     required this.chart,
     required this.visualizer,
     required this.trading,
     required this.tabsPanel,
-  }) : super(key: key);
+  });
 
   final Widget chart;
   final Widget visualizer;
@@ -272,11 +272,11 @@ double max(double a, double b) => a > b ? a : b;
 /// 3-column layout (desktop) or 2-column (tablet) or stacked (mobile) - WITHOUT side tabs
 class ResponsivePerpsLayoutWithoutTabs extends StatelessWidget {
   const ResponsivePerpsLayoutWithoutTabs({
-    Key? key,
+    super.key,
     required this.chart,
     required this.visualizer,
     required this.trading,
-  }) : super(key: key);
+  });
 
   final Widget chart;
   final Widget visualizer;

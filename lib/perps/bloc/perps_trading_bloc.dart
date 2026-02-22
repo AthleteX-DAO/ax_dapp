@@ -1,13 +1,13 @@
+import 'package:ax_dapp/service/controller/perps/perps_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ax_dapp/service/controller/perps/base_sepolia_perps_service.dart';
 
 part 'perps_trading_event.dart';
 part 'perps_trading_state.dart';
 
 class PerpsTradingBloc extends Bloc<PerpsTradingEvent, PerpsTradingState> {
   PerpsTradingBloc({
-    required BaseSepoliaPerpsService perpsService,
+    required PerpsService perpsService,
   })  : _perpsService = perpsService,
         super(const PerpsTradingInitial()) {
     on<PlacePerpsOrder>(_onPlacePerpsOrder);
@@ -15,7 +15,7 @@ class PerpsTradingBloc extends Bloc<PerpsTradingEvent, PerpsTradingState> {
     on<UpdatePerpsBalance>(_onUpdatePerpsBalance);
   }
 
-  final BaseSepoliaPerpsService _perpsService;
+  final PerpsService _perpsService;
 
   Future<void> _onPlacePerpsOrder(
     PlacePerpsOrder event,
@@ -34,7 +34,7 @@ class PerpsTradingBloc extends Bloc<PerpsTradingEvent, PerpsTradingState> {
       emit(PerpsTradingSuccess(
         transactionHash: txHash,
         message: 'Order placed successfully!',
-      ));
+      ),);
 
       // Auto-reset to initial after 3 seconds
       await Future<void>.delayed(const Duration(seconds: 3));
@@ -61,7 +61,7 @@ class PerpsTradingBloc extends Bloc<PerpsTradingEvent, PerpsTradingState> {
       emit(const PerpsTradingSuccess(
         transactionHash: 'cancelled',
         message: 'Order cancelled successfully',
-      ));
+      ),);
     } catch (e) {
       emit(PerpsTradingError(message: e.toString()));
     }
@@ -77,7 +77,7 @@ class PerpsTradingBloc extends Bloc<PerpsTradingEvent, PerpsTradingState> {
       emit(PerpsTradingBalanceUpdated(
         availableMargin: balance['availableMargin'] ?? 0.0,
         accountValue: balance['accountValue'] ?? 0.0,
-      ));
+      ),);
     } catch (e) {
       // Silently fail for balance updates
     }

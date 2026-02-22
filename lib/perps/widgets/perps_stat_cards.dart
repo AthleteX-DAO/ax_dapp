@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// Updates in real-time and on-demand based on data frequency
 class PerpStatCards extends StatelessWidget {
   const PerpStatCards({
-    Key? key,
+    super.key,
     required this.price,
     required this.pnlPercent,
     required this.fundingRate,
@@ -12,7 +12,7 @@ class PerpStatCards extends StatelessWidget {
     required this.openInterest,
     required this.availableMargin,
     this.isLoading = false,
-  }) : super(key: key);
+  });
 
   /// Current oracle price
   final double price;
@@ -116,9 +116,16 @@ class PerpStatCards extends StatelessWidget {
       width: 180,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade700),
-        borderRadius: BorderRadius.circular(8),
-        color: const Color(0xFF1a1a1a),
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.08),
+            Colors.white.withOpacity(0.06),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        border: Border.all(color: Colors.white.withOpacity(0.1), width: 1.5),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: isLoading
           ? const Center(

@@ -25,7 +25,7 @@ class TradingViewChart extends StatelessWidget {
       height: effectiveHeight,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(8),
       ),
       child: const Text('Chart is available on Web'),

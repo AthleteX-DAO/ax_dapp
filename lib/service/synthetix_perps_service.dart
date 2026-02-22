@@ -1,16 +1,16 @@
-import 'package:web3dart/web3dart.dart';
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:http/http.dart' as http;
-import '../config/synthetix_config.dart';
+import 'package:web3dart/web3dart.dart';
 
 /// Service for interacting with Synthetix V3 Perps Markets
 class SynthetixPerpsService {
-  late Web3Client _client;
-  late DeployedContract _perpsMarket;
 
   SynthetixPerpsService() {
     _client = Web3Client(SynthetixConfig.rpcUrl, http.Client());
     _initContracts();
   }
+  late Web3Client _client;
+  late DeployedContract _perpsMarket;
 
   void _initContracts() {
     final perpsAbi = ContractAbi.fromJson('''
@@ -76,7 +76,7 @@ class SynthetixPerpsService {
         "type": "function"
       }
     ]
-    ''', 'PerpsMarketProxy');
+    ''', 'PerpsMarketProxy',);
 
     _perpsMarket = DeployedContract(
       perpsAbi,
@@ -169,7 +169,7 @@ class SynthetixPerpsService {
       parameters: [BigInt.from(accountId)],
     );
 
-    return await _client.sendTransaction(
+    return _client.sendTransaction(
       credentials,
       transaction,
       chainId: SynthetixConfig.chainId,
@@ -193,7 +193,7 @@ class SynthetixPerpsService {
       ],
     );
 
-    return await _client.sendTransaction(
+    return _client.sendTransaction(
       credentials,
       transaction,
       chainId: SynthetixConfig.chainId,

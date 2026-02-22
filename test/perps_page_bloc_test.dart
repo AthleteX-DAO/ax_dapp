@@ -6,7 +6,8 @@ class _StubPerpsRepository extends PerpsRepository {
   _StubPerpsRepository() : super(web3Client: throw UnimplementedError());
 
   @override
-  Future<BtcPerpsData> getBtcPerpsData() async => BtcPerpsData(
+  Future<PerpsMarketData> getMarketData(String symbol) async => PerpsMarketData(
+        symbol: symbol,
         price: BigInt.zero,
         fundingRate: BigInt.zero,
         openInterest: BigInt.zero,

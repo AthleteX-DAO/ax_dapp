@@ -1,17 +1,18 @@
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:ax_dapp/perps/models/perps_order_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for persisting and retrieving orders from local cache
 /// Uses SharedPreferences for client-side storage of order history
 class PerpsOrderCacheService {
+
+  PerpsOrderCacheService(this._preferences);
   static const String _openOrdersKey = 'perps_open_orders';
   static const String _orderHistoryKey = 'perps_order_history';
   static const String _tradeHistoryKey = 'perps_trade_history';
 
   final SharedPreferences _preferences;
-
-  PerpsOrderCacheService(this._preferences);
 
   /// Save an open order to cache
   Future<void> saveOpenOrder(PerpsOrderModel order) async {
@@ -37,7 +38,7 @@ class PerpsOrderCacheService {
     if (json == null) return [];
 
     try {
-      final List<dynamic> decoded = (jsonDecode(json) as List<dynamic>);
+      final decoded = jsonDecode(json) as List<dynamic>;
       return decoded
           .map((item) => PerpsOrderModel.fromJson(item as Map<String, dynamic>))
           .toList();
@@ -85,7 +86,7 @@ class PerpsOrderCacheService {
     if (json == null) return [];
 
     try {
-      final List<dynamic> decoded = (jsonDecode(json) as List<dynamic>);
+      final decoded = jsonDecode(json) as List<dynamic>;
       final orders = decoded
           .map((item) => PerpsOrderModel.fromJson(item as Map<String, dynamic>))
           .toList();
@@ -106,7 +107,7 @@ class PerpsOrderCacheService {
     if (json == null) return 0;
 
     try {
-      final List<dynamic> decoded = (jsonDecode(json) as List<dynamic>);
+      final decoded = jsonDecode(json) as List<dynamic>;
       return decoded.length;
     } catch (e) {
       print('Error getting order history count: $e');
@@ -123,7 +124,7 @@ class PerpsOrderCacheService {
     if (json == null) return [];
 
     try {
-      final List<dynamic> decoded = (jsonDecode(json) as List<dynamic>);
+      final decoded = jsonDecode(json) as List<dynamic>;
       final trades = decoded
           .map((item) => PerpsOrderModel.fromJson(item as Map<String, dynamic>))
           .toList();
@@ -144,7 +145,7 @@ class PerpsOrderCacheService {
     if (json == null) return 0;
 
     try {
-      final List<dynamic> decoded = (jsonDecode(json) as List<dynamic>);
+      final decoded = jsonDecode(json) as List<dynamic>;
       return decoded.length;
     } catch (e) {
       print('Error getting trade history count: $e');

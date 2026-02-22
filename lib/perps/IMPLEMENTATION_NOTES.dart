@@ -1,6 +1,6 @@
 /// Perps Trading Implementation Reference
 /// 
-/// Market IDs (Base Sepolia):
+/// Market IDs:
 /// - BTC: 1, ETH: 2, SOL: 3, BNB: 4, XRP: 5, DOGE: 6, ADA: 7
 ///
 /// Key Contract Methods:
@@ -18,7 +18,7 @@
 ///
 /// Features Implemented:
 /// ✅ Long/Short buttons, Market/Limit selector, Size + price inputs
-/// ✅ Base Sepolia smart contract integration
+/// ✅ Synthetix V3 smart contract integration
 /// ✅ Transaction submission, Order status feedback
 ///
 /// Future TODOs:

@@ -21,6 +21,28 @@ class PerpsOrderModel extends Equatable {
     this.funding = 0.0,
   });
 
+  /// Deserialization from JSON
+  factory PerpsOrderModel.fromJson(Map<String, dynamic> json) {
+    return PerpsOrderModel(
+      orderId: json['orderId'] as String,
+      symbol: json['symbol'] as String,
+      side: json['side'] as String,
+      size: (json['size'] as num).toDouble(),
+      price: (json['price'] as num).toDouble(),
+      timestamp: DateTime.parse(json['timestamp'] as String),
+      status: json['status'] as String,
+      txHash: json['txHash'] as String,
+      realizedPnl: (json['realizedPnl'] as num?)?.toDouble() ?? 0.0,
+      unrealizedPnl: (json['unrealizedPnl'] as num?)?.toDouble() ?? 0.0,
+      collateral: (json['collateral'] as num?)?.toDouble() ?? 0.0,
+      leverage: (json['leverage'] as num?)?.toDouble() ?? 1.0,
+      liquidationPrice: (json['liquidationPrice'] as num?)?.toDouble() ?? 0.0,
+      entryPrice: (json['entryPrice'] as num?)?.toDouble() ?? 0.0,
+      markPrice: (json['markPrice'] as num?)?.toDouble() ?? 0.0,
+      funding: (json['funding'] as num?)?.toDouble() ?? 0.0,
+    );
+  }
+
   /// Unique order identifier
   final String orderId;
 
@@ -128,28 +150,6 @@ class PerpsOrderModel extends Equatable {
       'markPrice': markPrice,
       'funding': funding,
     };
-  }
-
-  /// Deserialization from JSON
-  factory PerpsOrderModel.fromJson(Map<String, dynamic> json) {
-    return PerpsOrderModel(
-      orderId: json['orderId'] as String,
-      symbol: json['symbol'] as String,
-      side: json['side'] as String,
-      size: (json['size'] as num).toDouble(),
-      price: (json['price'] as num).toDouble(),
-      timestamp: DateTime.parse(json['timestamp'] as String),
-      status: json['status'] as String,
-      txHash: json['txHash'] as String,
-      realizedPnl: (json['realizedPnl'] as num?)?.toDouble() ?? 0.0,
-      unrealizedPnl: (json['unrealizedPnl'] as num?)?.toDouble() ?? 0.0,
-      collateral: (json['collateral'] as num?)?.toDouble() ?? 0.0,
-      leverage: (json['leverage'] as num?)?.toDouble() ?? 1.0,
-      liquidationPrice: (json['liquidationPrice'] as num?)?.toDouble() ?? 0.0,
-      entryPrice: (json['entryPrice'] as num?)?.toDouble() ?? 0.0,
-      markPrice: (json['markPrice'] as num?)?.toDouble() ?? 0.0,
-      funding: (json['funding'] as num?)?.toDouble() ?? 0.0,
-    );
   }
 
   @override

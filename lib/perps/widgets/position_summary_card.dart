@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// Displays user's current position summary with P&L and risk metrics
 class PositionSummaryCard extends StatelessWidget {
   const PositionSummaryCard({
-    Key? key,
+    super.key,
     required this.hasPosition,
     this.size = 0.0,
     this.side = 'LONG',
@@ -16,7 +16,7 @@ class PositionSummaryCard extends StatelessWidget {
     this.collateral = 0.0,
     this.leverage = 1.0,
     this.funding = 0.0,
-  }) : super(key: key);
+  });
 
   final bool hasPosition;
   final double size;
@@ -37,9 +37,9 @@ class PositionSummaryCard extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade700),
-          borderRadius: BorderRadius.circular(8),
-          color: const Color(0xFF2a2a2a),
+          border: Border.all(color: Colors.white.withOpacity(0.1)),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white.withOpacity(0.05),
         ),
         child: Center(
           child: Text(
@@ -58,9 +58,9 @@ class PositionSummaryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade700),
-        borderRadius: BorderRadius.circular(8),
-        color: const Color(0xFF2a2a2a),
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white.withOpacity(0.05),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

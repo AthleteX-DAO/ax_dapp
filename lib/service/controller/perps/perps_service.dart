@@ -1,9 +1,11 @@
-import 'package:web3dart/web3dart.dart';
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:web3dart/web3dart.dart';
 
-/// Service for interacting with Synthetix V3 Perps contracts on Base Sepolia
-class BaseSepoliaPerpsService {
-  BaseSepoliaPerpsService({
+/// Service for interacting with Synthetix V3 Perps contracts.
+/// Configurable per-chain via [SynthetixConfig].
+class PerpsService {
+  PerpsService({
     required Web3Client web3Client,
     required WalletRepository walletRepository,
   })  : _web3Client = web3Client,
@@ -12,21 +14,25 @@ class BaseSepoliaPerpsService {
   final Web3Client _web3Client;
   final WalletRepository _walletRepository;
 
-  // Base Sepolia Contract Addresses
-  static const String _perpsMarketProxyAddress = '0xf53Ca60F031FAf0E347D44FbaA4870da68250c8d';
+  // Contract address from SynthetixConfig
+  static const String _perpsMarketProxyAddress = SynthetixConfig.perpsMarketProxy;
   
-  // Market IDs for different assets (from Synthetix V3)
+  // Market IDs — TODO: configure perps markets on Eth Sepolia deployment
+  // These IDs were from the Arb Sepolia omnibus and need to be updated
+  // once perps TOML is deployed on Eth Sepolia
   static const Map<String, int> _marketIds = {
-    'BTC': 100,
-    'ETH': 200,
+    'ETH': 100,
+    'BTC': 200,
     'SOL': 300,
-    'BNB': 400,
-    'XRP': 500,
-    'DOGE': 600,
-    'ADA': 700,
+    'LINK': 500,
+    'ARB': 600,
+    'DOGE': 700,
+    'BNB': 1700,
+    'XRP': 1200,
+    'ADA': 2500,
   };
 
-  /// Places a perps order on Base Sepolia
+  /// Places a perps order via Synthetix V3
   /// 
   /// [symbol] - The market symbol (e.g., 'BTC', 'ETH')
   /// [sizeDelta] - The size change (positive for long, negative for short) in USD
@@ -76,7 +82,7 @@ class BaseSepoliaPerpsService {
         final txHash = await _web3Client.sendTransaction(
           credentials,
           transaction,
-          chainId: 84532, // Base Sepolia chain ID
+          chainId: SynthetixConfig.chainId,
         );
 
         return txHash;

@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:ax_dapp/perps/models/perps_order_model.dart';
+import 'package:flutter/material.dart';
 
 /// Right-side collapsible tab panel for displaying trade data
 /// Slides in from the right edge with toggle button
 class PerpTabsPanel extends StatefulWidget {
   const PerpTabsPanel({
-    Key? key,
+    super.key,
     required this.openOrders,
     required this.orderHistory,
     required this.tradeHistory,
     required this.balances,
     required this.onTabChanged,
-  }) : super(key: key);
+  });
 
   final List<PerpsOrderModel> openOrders;
   final List<PerpsOrderModel> orderHistory;

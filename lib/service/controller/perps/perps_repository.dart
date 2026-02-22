@@ -1,10 +1,23 @@
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:ethereum_api/perps_market_api.dart';
-import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
-import 'package:ethereum_api/src/wallet/models/ethereum_chain.dart';
 import 'package:web3dart/web3dart.dart';
 
-/// Data transfer object for BTC Perps market data.
-class BtcPerpsData {
+/// Data transfer object for Perps market data (any symbol).
+class PerpsMarketData {
+
+  PerpsMarketData({
+    required this.symbol,
+    required this.price,
+    required this.fundingRate,
+    required this.openInterest,
+    required this.skew,
+    required this.makerFee,
+    required this.takerFee,
+    required this.timestamp,
+  });
+
+  /// Market symbol (e.g., 'BTC', 'ETH')
+  final String symbol;
   /// Current price in wei
   final BigInt price;
 
@@ -26,27 +39,26 @@ class BtcPerpsData {
   /// Last updated timestamp
   final DateTime timestamp;
 
-  BtcPerpsData({
-    required this.price,
-    required this.fundingRate,
-    required this.openInterest,
-    required this.skew,
-    required this.makerFee,
-    required this.takerFee,
-    required this.timestamp,
-  });
-
   /// Converts price from wei to readable format (with decimals).
   double get priceInUSD => price.toDouble() / 1e18;
 
-  /// Converts funding rate from wei to percentage (annualized).
+  /// Converts funding rate to percentage per 8h.
+  /// Synthetix V3 returns currentFundingRate scaled by 1e18 as a daily rate.
   double get fundingRatePercentage => (fundingRate.toDouble() / 1e18) * 100;
 
-  /// Converts open interest from wei to readable format.
-  double get openInterestUSD => openInterest.toDouble() / 1e18;
+  /// Open interest in USD (size is in native units, multiply by price).
+  double get openInterestUSD {
+    final nativeOI = openInterest.toDouble() / 1e18;
+    final px = price.toDouble() / 1e18;
+    return nativeOI * px;
+  }
 
-  /// Converts skew to readable format.
-  double get skewUSD => skew.toDouble() / 1e18;
+  /// Skew in USD (skew is in native units, multiply by price).
+  double get skewUSD {
+    final nativeSkew = skew.toDouble() / 1e18;
+    final px = price.toDouble() / 1e18;
+    return nativeSkew * px;
+  }
 
   /// Converts maker fee from wei to percentage.
   double get makerFeePercentage => (makerFee.toDouble() / 1e18) * 100;
@@ -56,7 +68,7 @@ class BtcPerpsData {
 
   @override
   String toString() {
-    return 'BtcPerpsData(price: ${priceInUSD.toStringAsFixed(2)} USD, '
+    return 'PerpsMarketData($symbol: ${priceInUSD.toStringAsFixed(2)} USD, '
         'fundingRate: ${fundingRatePercentage.toStringAsFixed(4)}%, '
         'openInterest: ${openInterestUSD.toStringAsFixed(0)} USD, '
         'skew: ${skewUSD.toStringAsFixed(0)} USD, '
@@ -65,67 +77,78 @@ class BtcPerpsData {
   }
 }
 
-/// Repository for fetching Synthetix V3 BTC Perps data on Ethereum mainnet.
+/// Repository for fetching Synthetix V3 Perps market data.
+/// Chain configuration is driven by [SynthetixConfig].
 class PerpsRepository {
-  final Web3Client _web3Client;
-  late final PerpsMarket _perpsMarket;
 
   PerpsRepository({required Web3Client web3Client})
       : _web3Client = web3Client {
     final perpsAddress = EthereumAddress.fromHex(
-      const EthereumAddressConfig.perpsMarketProxy()
-          .address(EthereumChain.values.firstWhere((c) => c.chainId == 1)),
+      SynthetixConfig.perpsMarketProxy,
     );
     _perpsMarket = PerpsMarket(
       address: perpsAddress,
       client: _web3Client,
     );
   }
+  final Web3Client _web3Client;
+  late final PerpsMarket _perpsMarket;
 
-  /// Fetches live BTC Perps data (price, funding, OI, skew, fees) from mainnet.
-  /// Returns a [BtcPerpsData] object or throws on error.
-  Future<BtcPerpsData> getBtcPerpsData() async {
+  /// Market IDs — delegates to canonical mapping in PerpsMarket.
+  static Map<String, int> get marketIds => PerpsMarket.marketIds;
+
+  /// Fetches perps data for any supported [symbol].
+  /// Uses `getMarketSummary()` for a single RPC call per market.
+  Future<PerpsMarketData> getMarketData(String symbol) async {
+    final marketId = marketIds[symbol];
+    if (marketId == null) {
+      throw ArgumentError('Unsupported perps market: $symbol');
+    }
     try {
-      // Fetch all data concurrently
-      final futures = await Future.wait([
-        _perpsMarket.getPrice(PerpsMarket.BTC_MARKET_ID),
-        _perpsMarket.getFundingRate(PerpsMarket.BTC_MARKET_ID),
-        _perpsMarket.getOpenInterest(PerpsMarket.BTC_MARKET_ID),
-        _perpsMarket.getSkew(PerpsMarket.BTC_MARKET_ID),
-      ]);
+      final summary = await _perpsMarket.getMarketSummary(marketId);
 
-      final price = futures[0];
-      final fundingRate = futures[1];
-      final openInterest = futures[2];
-      final skew = futures[3];
+      if (summary == null) {
+        // Oracle stale (ERC-7412) — return zeroed data so UI shows "--"
+        return PerpsMarketData(
+          symbol: symbol,
+          price: BigInt.zero,
+          fundingRate: BigInt.zero,
+          openInterest: BigInt.zero,
+          skew: BigInt.zero,
+          makerFee: BigInt.zero,
+          takerFee: BigInt.zero,
+          timestamp: DateTime.now(),
+        );
+      }
 
-      // TODO: Fetch actual maker/taker fees from contract when ABI is finalized
-      final BigInt makerFee = BigInt.zero; // Placeholder
-      final BigInt takerFee = BigInt.zero; // Placeholder
-
-      return BtcPerpsData(
-        price: price,
-        fundingRate: fundingRate,
-        openInterest: openInterest,
-        skew: skew,
-        makerFee: makerFee,
-        takerFee: takerFee,
+      return PerpsMarketData(
+        symbol: symbol,
+        price: summary.indexPrice,
+        fundingRate: summary.currentFundingRate,
+        openInterest: summary.size,
+        skew: summary.skew,
+        makerFee: BigInt.zero,
+        takerFee: BigInt.zero,
         timestamp: DateTime.now(),
       );
     } catch (e) {
-      // Return mock data for development/testing
-      print('Error fetching BTC Perps data, using mock data: $e');
-      return BtcPerpsData(
-        price: BigInt.from(95000) * BigInt.from(10).pow(18), // $95,000 BTC
-        fundingRate: BigInt.from(0) * BigInt.from(10).pow(16), // 0% funding rate
-        openInterest: BigInt.from(10000000) * BigInt.from(10).pow(18), // $10M OI
-        skew: BigInt.from(100000) * BigInt.from(10).pow(18), // $100k skew
-        makerFee: BigInt.from(1) * BigInt.from(10).pow(16), // 0.01% maker fee
-        takerFee: BigInt.from(5) * BigInt.from(10).pow(16), // 0.05% taker fee
+      print('Error fetching $symbol Perps data: $e');
+      // Return zeroed data on error — UI will show dashes
+      return PerpsMarketData(
+        symbol: symbol,
+        price: BigInt.zero,
+        fundingRate: BigInt.zero,
+        openInterest: BigInt.zero,
+        skew: BigInt.zero,
+        makerFee: BigInt.zero,
+        takerFee: BigInt.zero,
         timestamp: DateTime.now(),
       );
     }
   }
+
+  /// Convenience alias for BTC.
+  Future<PerpsMarketData> getBtcPerpsData() => getMarketData('BTC');
 
   /// Fetches only the BTC price from the Perps market.
   Future<double> getBtcPrice() async {
