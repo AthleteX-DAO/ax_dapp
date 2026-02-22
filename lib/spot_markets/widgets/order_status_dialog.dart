@@ -40,7 +40,6 @@ class OrderStatusDialog extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(32),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Status Icon
                   Container(
@@ -202,7 +201,7 @@ class OrderStatusDialog extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 6),
-                            Icon(
+                            const Icon(
                               Icons.open_in_new,
                               size: 12,
                               color: Colors.blue,

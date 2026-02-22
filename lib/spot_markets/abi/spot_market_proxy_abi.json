@@ -32,7 +32,8 @@
   {
     "inputs": [
       {"internalType": "uint128", "name": "synthMarketId", "type": "uint128"},
-      {"internalType": "uint256", "name": "synthAmount", "type": "uint256"}
+      {"internalType": "uint256", "name": "synthAmount", "type": "uint256"},
+      {"internalType": "uint8", "name": "stalenessTolerance", "type": "uint8"}
     ],
     "name": "quoteSellExactIn",
     "outputs": [
@@ -45,7 +46,8 @@
   {
     "inputs": [
       {"internalType": "uint128", "name": "synthMarketId", "type": "uint128"},
-      {"internalType": "uint256", "name": "usdAmount", "type": "uint256"}
+      {"internalType": "uint256", "name": "usdAmount", "type": "uint256"},
+      {"internalType": "uint8", "name": "stalenessTolerance", "type": "uint8"}
     ],
     "name": "quoteBuyExactIn",
     "outputs": [

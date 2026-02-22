@@ -22,106 +22,118 @@ class SpotMarketChart extends StatelessWidget {
     final changeColor = change24h >= 0 ? Colors.green : Colors.redAccent;
     // Strip 'sc' prefix if present (scBTC → BTC)
     final cleanSymbol = symbol.startsWith('sc') ? symbol.substring(2) : symbol;
-    
+
     // Generate flat price history if empty
     final chartData = priceHistory.isNotEmpty
         ? priceHistory
-      : _generateFallbackPriceHistory(price);
+        : _generateFallbackPriceHistory(price);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Market header with price
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isCompact = constraints.maxWidth < 400;
+        final priceFontSize = isCompact ? 20.0 : 28.0;
+        final symbolFontSize = isCompact ? 14.0 : 18.0;
+        final changeFontSize = isCompact ? 11.0 : 14.0;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Market header with price
+            Padding(
+              padding: EdgeInsets.only(bottom: isCompact ? 6 : 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    cleanSymbol,
-                    style: textStyle(
-                      Colors.white,
-                      18,
-                      isBold: true,
-                      isUline: false,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          cleanSymbol,
+                          style: textStyle(
+                            Colors.white,
+                            symbolFontSize,
+                            isBold: true,
+                            isUline: false,
+                          ),
+                        ),
+                        SizedBox(height: isCompact ? 3 : 6),
+                        Text(
+                          '\$${price.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontSize: priceFontSize,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    '\$${price.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isCompact ? 6 : 10,
+                      vertical: isCompact ? 3 : 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: changeColor.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: changeColor.withOpacity(0.3),
+                      ),
+                    ),
+                    child: Text(
+                      change24h >= 0
+                          ? '+${change24h.toStringAsFixed(2)}%'
+                          : '${change24h.toStringAsFixed(2)}%',
+                      style: TextStyle(
+                        fontSize: changeFontSize,
+                        color: changeColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: changeColor.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
+            ),
+            // Area Chart
+            Expanded(
+              child: SfCartesianChart(
+                plotAreaBorderWidth: 0,
+                primaryXAxis: const DateTimeAxis(
+                  isVisible: false,
+                  majorGridLines: MajorGridLines(width: 0),
+                ),
+                primaryYAxis: const NumericAxis(
+                  isVisible: false,
+                  majorGridLines: MajorGridLines(width: 0),
+                ),
+                tooltipBehavior: TooltipBehavior(
+                  enable: true,
+                  color: Colors.black.withOpacity(0.8),
+                  textStyle: const TextStyle(color: Colors.white),
+                ),
+                series: <CartesianSeries<GraphData, DateTime>>[
+                  SplineAreaSeries<GraphData, DateTime>(
+                    dataSource: chartData,
+                    xValueMapper: (GraphData data, _) => data.date,
+                    yValueMapper: (GraphData data, _) => data.price,
                     color: changeColor.withOpacity(0.3),
-                    width: 1,
+                    borderColor: changeColor,
+                    gradient: LinearGradient(
+                      colors: [
+                        changeColor.withOpacity(0.4),
+                        changeColor.withOpacity(0.05),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
-                ),
-                child: Text(
-                  change24h >= 0
-                      ? '+${change24h.toStringAsFixed(2)}%'
-                      : '${change24h.toStringAsFixed(2)}%',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: changeColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
-        // Area Chart
-        Expanded(
-          child: SfCartesianChart(
-            plotAreaBorderWidth: 0,
-            primaryXAxis: DateTimeAxis(
-              isVisible: false,
-              majorGridLines: const MajorGridLines(width: 0),
             ),
-            primaryYAxis: NumericAxis(
-              isVisible: false,
-              majorGridLines: const MajorGridLines(width: 0),
-            ),
-            tooltipBehavior: TooltipBehavior(
-              enable: true,
-              color: Colors.black.withOpacity(0.8),
-              textStyle: const TextStyle(color: Colors.white),
-            ),
-            series: <CartesianSeries<GraphData, DateTime>>[
-              SplineAreaSeries<GraphData, DateTime>(
-                dataSource: chartData,
-                xValueMapper: (GraphData data, _) => data.date,
-                yValueMapper: (GraphData data, _) => data.price,
-                color: changeColor.withOpacity(0.3),
-                borderColor: changeColor,
-                borderWidth: 2,
-                gradient: LinearGradient(
-                  colors: [
-                    changeColor.withOpacity(0.4),
-                    changeColor.withOpacity(0.05),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 
@@ -129,7 +141,7 @@ class SpotMarketChart extends StatelessWidget {
     final now = DateTime.now();
     final data = <GraphData>[];
 
-    for (int i = 0; i < 24; i++) {
+    for (var i = 0; i < 24; i++) {
       final timestamp = now.subtract(Duration(hours: 24 - i));
       data.add(GraphData(timestamp, currentPrice));
     }

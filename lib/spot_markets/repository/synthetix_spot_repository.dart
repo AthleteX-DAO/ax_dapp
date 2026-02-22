@@ -1,18 +1,10 @@
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:flutter/services.dart';
-import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart' as http;
+import 'package:web3dart/web3dart.dart';
 
-/// Repository for interacting with Synthetix v3 Spot Markets on Base Sepolia
+/// Repository for interacting with Synthetix v3 Spot Markets on Sepolia
 class SynthetixSpotRepository {
-  late Web3Client _web3Client;
-  final String rpcUrl;
-  final String spotMarketProxyAddress;
-  final String coreProxyAddress;
-  final String oracleManagerAddress;
-
-  late DeployedContract spotMarketContract;
-  late DeployedContract oracleManagerContract;
-  late ContractAbi erc20Abi;
 
   SynthetixSpotRepository({
     required this.rpcUrl,
@@ -20,6 +12,15 @@ class SynthetixSpotRepository {
     required this.coreProxyAddress,
     required this.oracleManagerAddress,
   });
+  late Web3Client _web3Client;
+  final String rpcUrl;
+  final String spotMarketProxyAddress;
+  final String coreProxyAddress;
+  final String oracleManagerAddress;
+
+  late DeployedContract spotMarketContract;
+  DeployedContract? oracleManagerContract;
+  late ContractAbi erc20Abi;
 
   Future<void> initialize() async {
     _web3Client = Web3Client(rpcUrl, http.Client());
@@ -43,10 +44,13 @@ class SynthetixSpotRepository {
       spotMarketAbi,
       EthereumAddress.fromHex(spotMarketProxyAddress),
     );
-    oracleManagerContract = DeployedContract(
-      oracleManagerAbi,
-      EthereumAddress.fromHex(oracleManagerAddress),
-    );
+    // OracleManager address may be empty (not yet resolved from on-chain)
+    if (oracleManagerAddress.isNotEmpty) {
+      oracleManagerContract = DeployedContract(
+        oracleManagerAbi,
+        EthereumAddress.fromHex(oracleManagerAddress),
+      );
+    }
   }
 
   void dispose() {
@@ -77,14 +81,19 @@ class SynthetixSpotRepository {
 
   /// Get current price from OracleManager via Pyth oracle
   Future<double> getCurrentPrice(String nodeId) async {
+    if (oracleManagerContract == null) {
+      throw Exception(
+        'OracleManager not available — address not configured in SynthetixConfig',
+      );
+    }
     try {
-      final processFunction = oracleManagerContract.function('process');
+      final processFunction = oracleManagerContract!.function('process');
       
       // Convert nodeId hex string to BigInt for bytes32
       final nodeIdBigInt = BigInt.parse(nodeId.replaceFirst('0x', ''), radix: 16);
       
       final result = await _web3Client.call(
-        contract: oracleManagerContract,
+        contract: oracleManagerContract!,
         function: processFunction,
         params: [nodeIdBigInt],
         atBlock: const BlockNum.current(),
@@ -140,7 +149,7 @@ class SynthetixSpotRepository {
       final result = await _web3Client.call(
         contract: spotMarketContract,
         function: quoteBuyFunction,
-        params: [BigInt.from(marketId), usdAmount],
+        params: [BigInt.from(marketId), usdAmount, BigInt.zero],
       );
 
       return {
@@ -163,7 +172,7 @@ class SynthetixSpotRepository {
       final result = await _web3Client.call(
         contract: spotMarketContract,
         function: quoteSellFunction,
-        params: [BigInt.from(marketId), synthAmount],
+        params: [BigInt.from(marketId), synthAmount, BigInt.zero],
       );
 
       return {
@@ -222,7 +231,7 @@ class SynthetixSpotRepository {
       final txHash = await _web3Client.sendTransaction(
         credentials,
         transaction,
-        chainId: 84532, // Base Sepolia
+        chainId: SynthetixConfig.chainId, // Sepolia
       );
 
       return txHash;
@@ -261,7 +270,7 @@ class SynthetixSpotRepository {
       final txHash = await _web3Client.sendTransaction(
         credentials,
         transaction,
-        chainId: 84532, // Base Sepolia
+        chainId: SynthetixConfig.chainId, // Sepolia
       );
 
       return txHash;
@@ -343,7 +352,7 @@ class SynthetixSpotRepository {
       final txHash = await _web3Client.sendTransaction(
         credentials,
         transaction,
-        chainId: 84532, // Base Sepolia
+        chainId: SynthetixConfig.chainId, // Sepolia
       );
 
       return txHash;
@@ -473,15 +482,6 @@ class SynthetixSpotRepository {
 
 /// Model for Synthetix v3 market data
 class SynthetixMarket {
-  final int marketId;
-  final String symbol;
-  final String synthTokenAddress;
-  final String collateralTokenAddress;
-  final int decimals;
-  final double currentPrice;
-  final BigInt totalVolume;
-  final double skew;
-  final DateTime lastUpdated;
 
   SynthetixMarket({
     required this.marketId,
@@ -494,17 +494,19 @@ class SynthetixMarket {
     required this.skew,
     required this.lastUpdated,
   });
+  final int marketId;
+  final String symbol;
+  final String synthTokenAddress;
+  final String collateralTokenAddress;
+  final int decimals;
+  final double currentPrice;
+  final BigInt totalVolume;
+  final double skew;
+  final DateTime lastUpdated;
 }
 
 /// Model for user's spot market position
-class SpotMarketPosition {
-  final String marketId;
-  final String symbol;
-  final BigInt quantity;
-  final double averageEntryPrice;
-  final BigInt collateralLocked;
-  final DateTime openedAt;
-  final String status; // 'open', 'closed', 'liquidated'
+class SpotMarketPosition { // 'open', 'closed', 'liquidated'
 
   SpotMarketPosition({
     required this.marketId,
@@ -515,4 +517,11 @@ class SpotMarketPosition {
     required this.openedAt,
     required this.status,
   });
+  final String marketId;
+  final String symbol;
+  final BigInt quantity;
+  final double averageEntryPrice;
+  final BigInt collateralLocked;
+  final DateTime openedAt;
+  final String status;
 }

@@ -1,16 +1,16 @@
-import 'package:web3dart/web3dart.dart';
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:http/http.dart' as http;
-import '../config/synthetix_config.dart';
+import 'package:web3dart/web3dart.dart';
 
 /// Service for interacting with Synthetix V3 Spot Markets
 class SynthetixSpotService {
-  late Web3Client _client;
-  late DeployedContract _spotMarket;
 
   SynthetixSpotService() {
     _client = Web3Client(SynthetixConfig.rpcUrl, http.Client());
     _initContracts();
   }
+  late Web3Client _client;
+  late DeployedContract _spotMarket;
 
   void _initContracts() {
     final spotAbi = ContractAbi.fromJson('''
@@ -77,9 +77,37 @@ class SynthetixSpotService {
         ],
         "stateMutability": "view",
         "type": "function"
+      },
+      {
+        "inputs": [
+          {"internalType": "uint128", "name": "marketId", "type": "uint128"},
+          {"internalType": "uint256", "name": "wrapAmount", "type": "uint256"},
+          {"internalType": "uint256", "name": "minAmountReceived", "type": "uint256"}
+        ],
+        "name": "wrap",
+        "outputs": [
+          {"internalType": "uint256", "name": "amountToMint", "type": "uint256"},
+          {"components": [{"internalType": "uint256", "name": "fixedFees", "type": "uint256"},{"internalType": "uint256", "name": "utilizationFees", "type": "uint256"},{"internalType": "int256", "name": "skewFees", "type": "int256"},{"internalType": "int256", "name": "wrapperFees", "type": "int256"}], "internalType": "struct OrderFees.Data", "name": "fees", "type": "tuple"}
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {"internalType": "uint128", "name": "marketId", "type": "uint128"},
+          {"internalType": "uint256", "name": "unwrapAmount", "type": "uint256"},
+          {"internalType": "uint256", "name": "minAmountReceived", "type": "uint256"}
+        ],
+        "name": "unwrap",
+        "outputs": [
+          {"internalType": "uint256", "name": "returnCollateralAmount", "type": "uint256"},
+          {"components": [{"internalType": "uint256", "name": "fixedFees", "type": "uint256"},{"internalType": "uint256", "name": "utilizationFees", "type": "uint256"},{"internalType": "int256", "name": "skewFees", "type": "int256"},{"internalType": "int256", "name": "wrapperFees", "type": "int256"}], "internalType": "struct OrderFees.Data", "name": "fees", "type": "tuple"}
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
       }
     ]
-    ''', 'SpotMarketProxy');
+    ''', 'SpotMarketProxy',);
 
     _spotMarket = DeployedContract(
       spotAbi,
@@ -122,7 +150,7 @@ class SynthetixSpotService {
 
   /// Get quote for selling synths for USD
   Future<Map<String, dynamic>> quoteSell(
-      int marketId, BigInt synthAmount) async {
+      int marketId, BigInt synthAmount,) async {
     try {
       final result = await _client.call(
         contract: _spotMarket,
@@ -155,11 +183,11 @@ class SynthetixSpotService {
         usdAmount,
         minSynthAmount,
         EthereumAddress.fromHex(
-            referrer ?? '0x0000000000000000000000000000000000000000'),
+            referrer ?? '0x0000000000000000000000000000000000000000',),
       ],
     );
 
-    return await _client.sendTransaction(
+    return _client.sendTransaction(
       credentials,
       transaction,
       chainId: SynthetixConfig.chainId,
@@ -182,11 +210,60 @@ class SynthetixSpotService {
         synthAmount,
         minUsdAmount,
         EthereumAddress.fromHex(
-            referrer ?? '0x0000000000000000000000000000000000000000'),
+            referrer ?? '0x0000000000000000000000000000000000000000',),
       ],
     );
 
-    return await _client.sendTransaction(
+    return _client.sendTransaction(
+      credentials,
+      transaction,
+      chainId: SynthetixConfig.chainId,
+    );
+  }
+
+  /// Wrap real collateral (e.g. USDC) into its synth equivalent (e.g. axUSDC).
+  ///
+  /// Requires the caller to have ERC-20 approved [wrapAmount] to SpotMarketProxy
+  /// before calling this. [minAmountReceived] protects against slippage.
+  Future<String> wrapCollateral({
+    required int marketId,
+    required BigInt wrapAmount,
+    required BigInt minAmountReceived,
+    required Credentials credentials,
+  }) async {
+    final transaction = Transaction.callContract(
+      contract: _spotMarket,
+      function: _spotMarket.function('wrap'),
+      parameters: [
+        BigInt.from(marketId),
+        wrapAmount,
+        minAmountReceived,
+      ],
+    );
+    return _client.sendTransaction(
+      credentials,
+      transaction,
+      chainId: SynthetixConfig.chainId,
+    );
+  }
+
+  /// Unwrap synth back to the underlying collateral.
+  Future<String> unwrapCollateral({
+    required int marketId,
+    required BigInt unwrapAmount,
+    required BigInt minAmountReceived,
+    required Credentials credentials,
+  }) async {
+    final transaction = Transaction.callContract(
+      contract: _spotMarket,
+      function: _spotMarket.function('unwrap'),
+      parameters: [
+        BigInt.from(marketId),
+        unwrapAmount,
+        minAmountReceived,
+      ],
+    );
+    return _client.sendTransaction(
       credentials,
       transaction,
       chainId: SynthetixConfig.chainId,

@@ -8,9 +8,11 @@ class SpotOrderForm extends StatefulWidget {
   const SpotOrderForm({
     super.key,
     required this.selectedMarket,
+    this.currentPrice = 0,
   });
 
   final String selectedMarket;
+  final double currentPrice;
 
   @override
   State<SpotOrderForm> createState() => _SpotOrderFormState();
@@ -18,26 +20,24 @@ class SpotOrderForm extends StatefulWidget {
 
 class _SpotOrderFormState extends State<SpotOrderForm> {
   late TextEditingController _quantityController;
-  late TextEditingController _priceController;
   double _selectedSlippage = 0.01; // Default 1%
 
   @override
   void initState() {
     super.initState();
     _quantityController = TextEditingController();
-    _priceController = TextEditingController();
+    _quantityController.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     _quantityController.dispose();
-    _priceController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -54,7 +54,7 @@ class _SpotOrderFormState extends State<SpotOrderForm> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(14.0),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -110,13 +110,8 @@ class _SpotOrderFormState extends State<SpotOrderForm> {
             ),
             const SizedBox(height: 10),
             
-            // Price input
-            _buildInputField(
-              controller: _priceController,
-              label: 'Price (USD)',
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-            ),
+            // Live market price (read-only)
+            _buildPriceDisplay(),
             const SizedBox(height: 16),
             
             // Slippage selector
@@ -155,13 +150,12 @@ class _SpotOrderFormState extends State<SpotOrderForm> {
     required String label,
     required TextInputType keyboardType,
   }) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.04),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Colors.white.withOpacity(0.1),
-          width: 1,
         ),
       ),
       child: TextField(
@@ -198,7 +192,7 @@ class _SpotOrderFormState extends State<SpotOrderForm> {
     required Color backgroundColor,
     required VoidCallback onPressed,
   }) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -241,8 +235,12 @@ class _SpotOrderFormState extends State<SpotOrderForm> {
   }
 
   void _handleBuyOrder(BuildContext context) {
-    if (_quantityController.text.isEmpty || _priceController.text.isEmpty) {
-      _showError(context, 'Please enter both quantity and price');
+    if (_quantityController.text.isEmpty) {
+      _showError(context, 'Please enter a quantity');
+      return;
+    }
+    if (widget.currentPrice <= 0) {
+      _showError(context, 'Market price not available');
       return;
     }
 
@@ -250,18 +248,21 @@ class _SpotOrderFormState extends State<SpotOrderForm> {
           SpotMarketBuyOrderPlaced(
             market: widget.selectedMarket,
             quantity: double.parse(_quantityController.text),
-            price: double.parse(_priceController.text),
+            price: widget.currentPrice,
             slippage: _selectedSlippage,
           ),
         );
 
     _quantityController.clear();
-    _priceController.clear();
   }
 
   void _handleSellOrder(BuildContext context) {
-    if (_quantityController.text.isEmpty || _priceController.text.isEmpty) {
-      _showError(context, 'Please enter both quantity and price');
+    if (_quantityController.text.isEmpty) {
+      _showError(context, 'Please enter a quantity');
+      return;
+    }
+    if (widget.currentPrice <= 0) {
+      _showError(context, 'Market price not available');
       return;
     }
 
@@ -269,13 +270,87 @@ class _SpotOrderFormState extends State<SpotOrderForm> {
           SpotMarketSellOrderPlaced(
             market: widget.selectedMarket,
             quantity: double.parse(_quantityController.text),
-            price: double.parse(_priceController.text),
+            price: widget.currentPrice,
             slippage: _selectedSlippage,
           ),
         );
 
     _quantityController.clear();
-    _priceController.clear();
+  }
+
+  Widget _buildPriceDisplay() {
+    final qty = double.tryParse(_quantityController.text) ?? 0;
+    final total = widget.currentPrice * qty;
+    final priceStr = widget.currentPrice > 0
+        ? '\$${widget.currentPrice.toStringAsFixed(2)}'
+        : '—';
+    final totalStr = total > 0 ? '\$${total.toStringAsFixed(2)}' : '';
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.04),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.1),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Market Price',
+                  style: textStyle(
+                    greyTextColor,
+                    11,
+                    isBold: false,
+                    isUline: false,
+                  ),
+                ),
+                Text(
+                  priceStr,
+                  style: textStyle(
+                    Colors.white,
+                    13,
+                    isBold: true,
+                    isUline: false,
+                  ),
+                ),
+              ],
+            ),
+            if (totalStr.isNotEmpty) ...[
+              const SizedBox(height: 6),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Est. Total',
+                    style: textStyle(
+                      greyTextColor,
+                      11,
+                      isBold: false,
+                      isUline: false,
+                    ),
+                  ),
+                  Text(
+                    totalStr,
+                    style: textStyle(
+                      primaryOrangeColor,
+                      13,
+                      isBold: true,
+                      isUline: false,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
   }
 
   void _showError(BuildContext context, String message) {

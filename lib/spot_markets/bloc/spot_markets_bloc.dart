@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:ax_dapp/repositories/market_price/market_price_repository.dart';
 import 'package:ax_dapp/repositories/oracle/oracle_repository.dart';
 import 'package:ax_dapp/spot_markets/models/spot_market_model.dart';
@@ -15,16 +16,13 @@ import 'package:wallet_repository/wallet_repository.dart';
 part 'spot_markets_event.dart';
 part 'spot_markets_state.dart';
 
-// Synthetix v3 Base Sepolia deployment constants
-const String SPOT_MARKET_PROXY = '0xaD2fE7cd224c58871f541DAE01202F93928FEF72';
-const String CORE_PROXY = '0x764F4C95FDA0D6f8114faC54f6709b1B45f919a1';
-const String ORACLE_MANAGER = '0xD4E93f8a0aBc321ECC5b4bFBb501cb968e121F21';
-const String PYTH_ERC7412_WRAPPER =
-    '0x21fDb21da8102DA4776e2de1AbD8901fF8c21a2A';
-const String BASE_SEPOLIA_RPC =
-    'https://base-sepolia.infura.io/v3/295739f3c9f64796bccfc206fc476a88';
-const int BASE_SEPOLIA_CHAIN_ID = 84532;
-const String USD_PROXY = '0x682f0d17feDC62b2a0B91f8992243Bf44cAfeaaE'; // sUSD
+// Synthetix v3 Ethereum Sepolia deployment constants (from SynthetixConfig)
+const String SPOT_MARKET_PROXY = SynthetixConfig.spotMarketProxy;
+const String CORE_PROXY = SynthetixConfig.coreProxy;
+const String ORACLE_MANAGER = SynthetixConfig.oracleManager;
+const String ETH_SEPOLIA_RPC = SynthetixConfig.rpcUrl;
+const int ETH_SEPOLIA_CHAIN_ID = SynthetixConfig.chainId;
+const String USD_PROXY = SynthetixConfig.usdProxy;
 
 enum SpotMarketChartRange {
   day,
@@ -33,167 +31,135 @@ enum SpotMarketChartRange {
   yearToDate,
 }
 
-// Synthetix v3 Spot Markets on Base Sepolia
+// Synthetix v3 Spot Markets on Ethereum Sepolia (AthleteX ax-branded markets)
+// Market IDs are dynamically assigned at deploy; synth addresses resolved on-chain
+// Polygon mainnet — 15 spot markets deployed via cannon build (Feb 19 2026)
+// IDs assigned alphabetically: ARB=1, AVAX=2, BTC=3, DXY=4, ETH=5, EUR=6,
+//   GBP=7, LINK=8, OP=9, POLY=10, SOL=11, SPY=12, USDC=13, USDT=14, XAU=15
+// synthAddress populated lazily on first load via getSynth(marketId)
 const Map<String, Map<String, dynamic>> SYNTHETIX_SPOT_MARKETS = {
-  'sUSDC': {
-    'symbol': 'sUSDC',
-    'synthAddress': '0x8069c44244e72443722cfb22DcE5492cba239d39',
-    'collateralAddress': '0xc43708f8987Df3f3681801e5e640667D86Ce3C30', // fUSDC
+  // ── CRYPTO ────────────────────────────────────────────────────────────────
+  'axARB': {
+    'symbol': 'axARB',
+    'synthAddress': '',
+    'collateralAddress': '', // pure synthetic — no wrap collateral
     'marketId': 1,
-    'decimals': 18,
-    'baseAsset': 'USDC',
-  },
-  'scbBTC': {
-    'symbol': 'scbBTC',
-    'synthAddress': '0x410EecB4b4CF7175352a472572492C1c9997a5e8',
-    'collateralAddress': '0x8608d511E224180051A36d34121725D978064e6E', // cbBTC
-    'marketId': 2,
-    'decimals': 8,
-    'baseAsset': 'BTC',
-  },
-  'scbETH': {
-    'symbol': 'scbETH',
-    'synthAddress': '0x1c6dfe3205334Fece6a9169c88bF698Ed4370107',
-    'collateralAddress': '0x00ab6b818652bB3bFE334983171edFD38184DbeD', // cbETH
-    'marketId': 3,
-    'decimals': 18,
-    'baseAsset': 'ETH',
-  },
-  'sWETH': {
-    'symbol': 'sWETH',
-    'synthAddress': '0x86B35F1b900B15C98049f68f4248815518e71985',
-    'collateralAddress': '0x4200000000000000000000000000000000000006', // WETH
-    'marketId': 4,
-    'decimals': 18,
-    'baseAsset': 'WETH',
-  },
-  'swstETH': {
-    'symbol': 'swstETH',
-    'synthAddress': '0x5dc2592d23f72833c559ACB35c7122995EA80486',
-    'collateralAddress': '0x7Bf65af7EFBd0E933fb87dD2C9cE7A17d959b822', // wstETH
-    'marketId': 5,
-    'decimals': 18,
-    'baseAsset': 'wstETH',
-  },
-  'sSOL': {
-    'symbol': 'sSOL',
-    'synthAddress': '0x1000000000000000000000000000000000000001',
-    'collateralAddress': '0x2000000000000000000000000000000000000001',
-    'marketId': 6,
-    'decimals': 18,
-    'baseAsset': 'SOL',
-  },
-  'sXRP': {
-    'symbol': 'sXRP',
-    'synthAddress': '0x1000000000000000000000000000000000000002',
-    'collateralAddress': '0x2000000000000000000000000000000000000002',
-    'marketId': 7,
-    'decimals': 18,
-    'baseAsset': 'XRP',
-  },
-  'sADA': {
-    'symbol': 'sADA',
-    'synthAddress': '0x1000000000000000000000000000000000000003',
-    'collateralAddress': '0x2000000000000000000000000000000000000003',
-    'marketId': 8,
-    'decimals': 18,
-    'baseAsset': 'ADA',
-  },
-  'sDOT': {
-    'symbol': 'sDOT',
-    'synthAddress': '0x1000000000000000000000000000000000000004',
-    'collateralAddress': '0x2000000000000000000000000000000000000004',
-    'marketId': 9,
-    'decimals': 18,
-    'baseAsset': 'DOT',
-  },
-  'sLINK': {
-    'symbol': 'sLINK',
-    'synthAddress': '0x1000000000000000000000000000000000000005',
-    'collateralAddress': '0x2000000000000000000000000000000000000005',
-    'marketId': 10,
-    'decimals': 18,
-    'baseAsset': 'LINK',
-  },
-  'sMATIC': {
-    'symbol': 'sMATIC',
-    'synthAddress': '0x1000000000000000000000000000000000000006',
-    'collateralAddress': '0x2000000000000000000000000000000000000006',
-    'marketId': 11,
-    'decimals': 18,
-    'baseAsset': 'MATIC',
-  },
-  'sAVAX': {
-    'symbol': 'sAVAX',
-    'synthAddress': '0x1000000000000000000000000000000000000007',
-    'collateralAddress': '0x2000000000000000000000000000000000000007',
-    'marketId': 12,
-    'decimals': 18,
-    'baseAsset': 'AVAX',
-  },
-  'sOP': {
-    'symbol': 'sOP',
-    'synthAddress': '0x1000000000000000000000000000000000000008',
-    'collateralAddress': '0x2000000000000000000000000000000000000008',
-    'marketId': 13,
-    'decimals': 18,
-    'baseAsset': 'OP',
-  },
-  'sARB': {
-    'symbol': 'sARB',
-    'synthAddress': '0x1000000000000000000000000000000000000009',
-    'collateralAddress': '0x2000000000000000000000000000000000000009',
-    'marketId': 14,
     'decimals': 18,
     'baseAsset': 'ARB',
   },
-  'sLDO': {
-    'symbol': 'sLDO',
-    'synthAddress': '0x100000000000000000000000000000000000000a',
-    'collateralAddress': '0x200000000000000000000000000000000000000a',
+  'axAVAX': {
+    'symbol': 'axAVAX',
+    'synthAddress': '',
+    'collateralAddress': '',
+    'marketId': 2,
+    'decimals': 18,
+    'baseAsset': 'AVAX',
+  },
+  'axBTC': {
+    'symbol': 'axBTC',
+    'synthAddress': '',
+    'collateralAddress': '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6', // WBTC on Polygon
+    'marketId': 3,
+    'decimals': 18,
+    'baseAsset': 'BTC',
+  },
+  'axETH': {
+    'symbol': 'axETH',
+    'synthAddress': '',
+    'collateralAddress': '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', // WETH on Polygon
+    'marketId': 5,
+    'decimals': 18,
+    'baseAsset': 'ETH',
+  },
+  'axLINK': {
+    'symbol': 'axLINK',
+    'synthAddress': '',
+    'collateralAddress': '',
+    'marketId': 8,
+    'decimals': 18,
+    'baseAsset': 'LINK',
+  },
+  'axOP': {
+    'symbol': 'axOP',
+    'synthAddress': '',
+    'collateralAddress': '',
+    'marketId': 9,
+    'decimals': 18,
+    'baseAsset': 'OP',
+  },
+  'axPOLY': {
+    'symbol': 'axPOLY',
+    'synthAddress': '',
+    'collateralAddress': '', // native MATIC wrapping not configured
+    'marketId': 10,
+    'decimals': 18,
+    'baseAsset': 'MATIC',
+  },
+  'axSOL': {
+    'symbol': 'axSOL',
+    'synthAddress': '',
+    'collateralAddress': '',
+    'marketId': 11,
+    'decimals': 18,
+    'baseAsset': 'SOL',
+  },
+  // ── STABLECOINS ───────────────────────────────────────────────────────────
+  'axUSDC': {
+    'symbol': 'axUSDC',
+    'synthAddress': '',
+    'collateralAddress': '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', // USDC.e on Polygon
+    'marketId': 13,
+    'decimals': 18,
+    'baseAsset': 'USDC',
+  },
+  'axUSDT': {
+    'symbol': 'axUSDT',
+    'synthAddress': '',
+    'collateralAddress': '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', // USDT on Polygon
+    'marketId': 14,
+    'decimals': 18,
+    'baseAsset': 'USDT',
+  },
+  // ── FOREX & INDICES ───────────────────────────────────────────────────────
+  'axDXY': {
+    'symbol': 'axDXY',
+    'synthAddress': '',
+    'collateralAddress': '',
+    'marketId': 4,
+    'decimals': 18,
+    'baseAsset': 'DXY',
+  },
+  'axEUR': {
+    'symbol': 'axEUR',
+    'synthAddress': '',
+    'collateralAddress': '',
+    'marketId': 6,
+    'decimals': 18,
+    'baseAsset': 'EUR',
+  },
+  'axGBP': {
+    'symbol': 'axGBP',
+    'synthAddress': '',
+    'collateralAddress': '',
+    'marketId': 7,
+    'decimals': 18,
+    'baseAsset': 'GBP',
+  },
+  'axSPY': {
+    'symbol': 'axSPY',
+    'synthAddress': '',
+    'collateralAddress': '',
+    'marketId': 12,
+    'decimals': 18,
+    'baseAsset': 'SPY',
+  },
+  'axXAU': {
+    'symbol': 'axXAU',
+    'synthAddress': '',
+    'collateralAddress': '',
     'marketId': 15,
     'decimals': 18,
-    'baseAsset': 'LDO',
-  },
-  'sUNI': {
-    'symbol': 'sUNI',
-    'synthAddress': '0x100000000000000000000000000000000000000b',
-    'collateralAddress': '0x200000000000000000000000000000000000000b',
-    'marketId': 16,
-    'decimals': 18,
-    'baseAsset': 'UNI',
-  },
-  'sAAVE': {
-    'symbol': 'sAAVE',
-    'synthAddress': '0x100000000000000000000000000000000000000c',
-    'collateralAddress': '0x200000000000000000000000000000000000000c',
-    'marketId': 17,
-    'decimals': 18,
-    'baseAsset': 'AAVE',
-  },
-  'sDOGE': {
-    'symbol': 'sDOGE',
-    'synthAddress': '0x100000000000000000000000000000000000000d',
-    'collateralAddress': '0x200000000000000000000000000000000000000d',
-    'marketId': 18,
-    'decimals': 18,
-    'baseAsset': 'DOGE',
-  },
-  'sSHIB': {
-    'symbol': 'sSHIB',
-    'synthAddress': '0x100000000000000000000000000000000000000e',
-    'collateralAddress': '0x200000000000000000000000000000000000000e',
-    'marketId': 19,
-    'decimals': 18,
-    'baseAsset': 'SHIB',
-  },
-  'sPEPE': {
-    'symbol': 'sPEPE',
-    'synthAddress': '0x100000000000000000000000000000000000000f',
-    'collateralAddress': '0x200000000000000000000000000000000000000f',
-    'marketId': 20,
-    'decimals': 18,
-    'baseAsset': 'PEPE',
+    'baseAsset': 'XAU',
   },
 };
 
@@ -217,6 +183,8 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
     on<SpotMarketSingleRefresh>(_onSingleMarketRefresh);
     on<_OraclePricesUpdated>(_onOraclePricesUpdated);
     on<SpotMarketRangeSelected>(_onRangeSelected);
+    on<_BatchPricesUpdated>(_onBatchPricesUpdated);
+    on<_BackgroundChartLoaded>(_onBackgroundChartLoaded);
 
     // Initialize markets on bloc creation (mirrors AccountBloc pattern)
     add(const SpotMarketsInitialize());
@@ -231,17 +199,13 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
   late MarketPriceRepository _marketPriceRepo;
   Timer? _pollingTimer;
   StreamSubscription<dynamic>? _eventSubscription;
-  bool _isPageFocused = true;
-  Timer? _oraclePollTimer;
-  int _pollingIndex = 0;
+  final bool _isPageFocused = true;
+  List<String> _allMarkets = [];
 
   @override
   Future<void> close() async {
-    // Cancel event listener subscription
     await _eventSubscription?.cancel();
-    // Cancel background polling timers
     _pollingTimer?.cancel();
-    _oraclePollTimer?.cancel();
     _web3Client.dispose();
     _synthetixRepo.dispose();
     await _oracleRepo.dispose();
@@ -255,7 +219,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
   ) async {
     emit(const SpotMarketsLoading());
     try {
-      _web3Client = Web3Client(BASE_SEPOLIA_RPC, http.Client());
+      _web3Client = Web3Client(ETH_SEPOLIA_RPC, http.Client());
 
       // Initialize oracle repository (use injected one or create new)
       _oracleRepo = _oracleRepository ?? OracleRepository();
@@ -267,7 +231,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
 
       // Initialize Synthetix repository
       _synthetixRepo = SynthetixSpotRepository(
-        rpcUrl: BASE_SEPOLIA_RPC,
+        rpcUrl: ETH_SEPOLIA_RPC,
         spotMarketProxyAddress: SPOT_MARKET_PROXY,
         coreProxyAddress: CORE_PROXY,
         oracleManagerAddress: ORACLE_MANAGER,
@@ -285,7 +249,8 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
       final priceHistory = <String, List<GraphData>>{};
       const selectedRange = SpotMarketChartRange.day;
 
-      // Defer chart history to background - don't wait for it on init
+      // Defer chart history to background - don't wait for it on init.
+      // We schedule a separate event so emit is valid (not the init handler's emit).
       if (initialMarket.isNotEmpty) {
         Future(() async {
           try {
@@ -293,11 +258,8 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
               initialMarket,
               selectedRange,
             );
-            if (history.isNotEmpty && state is SpotMarketsLoaded) {
-              final currentState = state as SpotMarketsLoaded;
-              final updatedHistory = Map<String, List<GraphData>>.from(currentState.priceHistory);
-              updatedHistory[_historyKey(initialMarket, selectedRange)] = history;
-              emit(currentState.copyWith(priceHistory: updatedHistory));
+            if (!isClosed && history.isNotEmpty) {
+              add(_BackgroundChartLoaded(initialMarket, selectedRange, history));
             }
           } catch (e) {
             print('🔷 Background chart load failed, not blocking: $e');
@@ -308,12 +270,10 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
       // Wait for parallel market data
       final marketData = await marketDataFuture;
 
-      // Start listening to selected-market-only events and staggered background polling
+      // Start listening to selected-market-only events and batch price polling
       _listenToMarketEventsFiltered();
-      _startStaggeredPolling(markets);
-      
-      // Start oracle polling for real-time prices
-      _startOraclePolling();
+      _allMarkets = markets;
+      _startBatchPricePolling();
 
       emit(SpotMarketsLoaded(
         markets: markets,
@@ -321,22 +281,21 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
         marketData: marketData,
         priceHistory: priceHistory,
         selectedRange: selectedRange,
-        showSidebar: true,
-      ));
+      ),);
     } catch (e) {
       print('SpotMarketsInitialize error: $e');
       // Extract detailed error message
       final errorDetails = e.toString();
       if (errorDetails.contains('RPC') || errorDetails.contains('network')) {
         emit(SpotMarketsError(
-          'Network error connecting to Base Sepolia',
+          'Network error connecting to Sepolia',
           details: errorDetails,
-        ));
+        ),);
       } else {
         emit(SpotMarketsError(
           'Failed to initialize spot markets',
           details: errorDetails,
-        ));
+        ),);
       }
     }
   }
@@ -381,71 +340,57 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
     return eventMarketId == (marketConfig['marketId'] as int?);
   }
 
-  /// Start staggered background polling: update one market every 1s (stagger across 20 markets)
-  /// Automatically pauses when page loses focus
-  void _startStaggeredPolling(List<String> markets) {
-    if (markets.isEmpty) return;
+  /// Single 30-second batch poll: fetches ALL market prices in one CoinGecko call.
+  /// Replaces the old staggered + oracle pollers (which made ~29 calls/min).
+  /// New rate: 2 calls/min (1 batch every 30s × ticker tape's 1 batch every 30s).
+  void _startBatchPricePolling() {
+    if (_allMarkets.isEmpty) return;
 
-    // Reduced from 15s to 800ms stagger = faster updates
-    _pollingTimer = Timer.periodic(const Duration(milliseconds: 800), (_) async {
-      // Skip polling if page not focused (reduces CPU/network when tab inactive)
+    _pollingTimer = Timer.periodic(const Duration(seconds: 30), (_) async {
       if (!_isPageFocused) return;
       if (state is! SpotMarketsLoaded) return;
 
-      // Get next market to update (rotate through list)
-      final marketToUpdate = markets[_pollingIndex % markets.length];
-      _pollingIndex++;
+      try {
+        final summaries = await _getMarketSummaries(_allMarkets);
+        if (summaries.isEmpty || state is! SpotMarketsLoaded) return;
 
-      // Fetch only this market's price (fire and forget)
-      _fetchSingleMarketPrice(marketToUpdate).then((updatedPrice) {
-        if (updatedPrice != null && state is SpotMarketsLoaded) {
-          final current = state as SpotMarketsLoaded;
-          final updated = Map<String, SpotMarketModel>.from(current.marketData);
-          final old = updated[marketToUpdate];
-          if (old != null) {
-            updated[marketToUpdate] = old.copyWith(currentPrice: updatedPrice);
-            add(SpotMarketSingleRefresh(marketToUpdate));
+        final currentState = state as SpotMarketsLoaded;
+        final updated = Map<String, SpotMarketModel>.from(currentState.marketData);
+        var changed = false;
+
+        for (final marketKey in _allMarkets) {
+          final config = SYNTHETIX_SPOT_MARKETS[marketKey];
+          if (config == null) continue;
+          final baseAsset = config['baseAsset'] as String;
+          final summary = summaries[baseAsset];
+          if (summary == null || summary.price <= 0) continue;
+
+          final old = updated[marketKey];
+          if (old != null && old.currentPrice != summary.price) {
+            updated[marketKey] = old.copyWith(
+              currentPrice: summary.price,
+              change24h: summary.change24h,
+            );
+            changed = true;
           }
         }
-      }).catchError((_) {
-        // Silently fail - will retry next cycle
-      });
-    });
-    print('🔷 SpotMarketsBloc staggered polling: 800ms stagger, pauses when page unfocused');
-  }
 
-  /// Start market price polling for real-time updates
-  /// Reduced from 10s to 20s, only polls selected market, pauses when unfocused
-  void _startOraclePolling() {
-    _oraclePollTimer = Timer.periodic(const Duration(seconds: 20), (_) async {
-      // Skip polling if page not focused or wrong state
-      if (!_isPageFocused || state is! SpotMarketsLoaded) return;
-      final currentState = state as SpotMarketsLoaded;
-
-      try {
-        // Only poll the SELECTED market (not all markets)
-        // This cuts network calls by 95%
-        final selectedConfig = SYNTHETIX_SPOT_MARKETS[currentState.selectedMarket];
-        if (selectedConfig == null) return;
-
-        final baseAsset = selectedConfig['baseAsset'] as String;
-        final summary = await _marketPriceRepo.fetchMarketSummaries([baseAsset]);
-        
-        if (summary.isNotEmpty) {
-          final marketSummary = summary[baseAsset];
-          if (marketSummary != null && marketSummary.price > 0) {
-            // Trigger event to update state (can't emit from Timer callback)
-            add(SpotMarketSingleRefresh(currentState.selectedMarket));
-          }
+        if (changed) {
+          add(_BatchPricesUpdated(updated));
         }
       } catch (e) {
-        // Silently fail - oracle polling is best-effort
+        // Silently fail — will retry next cycle
+        print('🔷 SpotMarketsBloc batch poll error: $e');
       }
     });
-    print('🔷 SpotMarketsBloc oracle polling: 20s interval, selected market only, pauses when unfocused');
+    print(
+      '🔷 SpotMarketsBloc batch price polling: 30s interval, '
+      '${_allMarkets.length} markets in 1 API call',
+    );
   }
 
-  /// Handle single market refresh from event-driven updates
+  /// Handle single market refresh from event-driven updates (e.g. OrderSettled).
+  /// Fetches price once (no double-fetch) and updates state.
   Future<void> _onSingleMarketRefresh(
     SpotMarketSingleRefresh event,
     Emitter<SpotMarketsState> emit,
@@ -463,9 +408,34 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
           }
         }
       } catch (e) {
-        // Silent fail for event-driven updates
         print('Error refreshing ${event.market}: $e');
       }
+    }
+  }
+
+  /// Handle batch price poll results.
+  Future<void> _onBatchPricesUpdated(
+    _BatchPricesUpdated event,
+    Emitter<SpotMarketsState> emit,
+  ) async {
+    if (state is SpotMarketsLoaded) {
+      final currentState = state as SpotMarketsLoaded;
+      emit(currentState.copyWith(marketData: event.updatedData));
+    }
+  }
+
+  /// Applies chart data that was loaded in the background after init.
+  Future<void> _onBackgroundChartLoaded(
+    _BackgroundChartLoaded event,
+    Emitter<SpotMarketsState> emit,
+  ) async {
+    if (state is SpotMarketsLoaded) {
+      final currentState = state as SpotMarketsLoaded;
+      final updatedHistory = Map<String, List<GraphData>>.from(
+        currentState.priceHistory,
+      );
+      updatedHistory[_historyKey(event.market, event.range)] = event.history;
+      emit(currentState.copyWith(priceHistory: updatedHistory));
     }
   }
 
@@ -599,7 +569,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
           BigInt.from(marketId),
           usdAmount,
           minSynthAmount,
-          EthereumAddress.fromHex(USD_PROXY)
+          EthereumAddress.fromHex(USD_PROXY),
         ],
         from: userAddress,
       );
@@ -635,12 +605,12 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
         emit(SpotMarketsError(
           'Network error during buy order preparation',
           details: errorDetails,
-        ));
+        ),);
       } else {
         emit(SpotMarketsError(
           'Failed to prepare buy order: $e',
           details: errorDetails,
-        ));
+        ),);
       }
     }
   }
@@ -742,7 +712,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
 
       add(const SpotMarketsRefresh());
     } catch (e) {
-      var errorOrder = pendingOrder.copyWith(
+      final errorOrder = pendingOrder.copyWith(
         status: PendingOrderStatus.failed,
         errorMessage: e.toString(),
       );
@@ -794,7 +764,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
           BigInt.from(marketId),
           synthAmount,
           minUsdAmount,
-          EthereumAddress.fromHex(USD_PROXY)
+          EthereumAddress.fromHex(USD_PROXY),
         ],
         from: userAddress,
       );
@@ -830,12 +800,12 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
         emit(SpotMarketsError(
           'Network error during sell order preparation',
           details: errorDetails,
-        ));
+        ),);
       } else {
         emit(SpotMarketsError(
           'Failed to prepare sell order: $e',
           details: errorDetails,
-        ));
+        ),);
       }
     }
   }
@@ -942,7 +912,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
 
       add(const SpotMarketsRefresh());
     } catch (e) {
-      var errorOrder = pendingOrder.copyWith(
+      final errorOrder = pendingOrder.copyWith(
         status: PendingOrderStatus.failed,
         errorMessage: e.toString(),
       );
@@ -1106,7 +1076,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
         return 365;
       case SpotMarketChartRange.yearToDate:
         final now = DateTime.now();
-        final start = DateTime(now.year, 1, 1);
+        final start = DateTime(now.year);
         return now.difference(start).inDays.clamp(1, 365);
     }
   }
@@ -1118,7 +1088,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
   /// Derive a price from SpotMarketProxy quotes
   /// Quotes selling exactly 1.0 synth to get USD price
   Future<double> _getPriceFromSpotQuote(
-      Map<String, dynamic> marketConfig) async {
+      Map<String, dynamic> marketConfig,) async {
     final marketId = marketConfig['marketId'] as int;
     final decimals = marketConfig['decimals'] as int;
     // Quote selling exactly 1.0 synth (10^decimals base units) to USD
@@ -1133,19 +1103,21 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
   }
 
   /// Mock prices for Synthetix v3 spot markets
-  /// Replace with real oracle data from Pyth
+  /// Replace with real oracle data from Pyth after deployment
   double _getSynthetixMockPrice(String market) {
     switch (market) {
+      case 'sDAI':
+        return 1;
       case 'sUSDC':
-        return 1.0; // USDC pegged to $1
-      case 'scbBTC':
-        return 42000; // BTC price from Pyth
-      case 'scbETH':
-        return 2200; // ETH price from Pyth
-      case 'sWETH':
-        return 2200; // WETH price from Pyth
-      case 'swstETH':
-        return 2500; // wstETH price from Pyth
+        return 1;
+      case 'sBTC':
+        return 97000;
+      case 'sETH':
+        return 2600;
+      case 'sUSDe':
+        return 1;
+      case 'sSOL':
+        return 200;
       default:
         return 100;
     }

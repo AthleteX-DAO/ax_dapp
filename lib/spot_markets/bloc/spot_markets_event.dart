@@ -107,3 +107,25 @@ class _OraclePricesUpdated extends SpotMarketsEvent {
   @override
   List<Object?> get props => [currentState, updatedData];
 }
+
+/// Internal event: batch price poll completed, apply updated market data.
+class _BatchPricesUpdated extends SpotMarketsEvent {
+  const _BatchPricesUpdated(this.updatedData);
+
+  final Map<String, SpotMarketModel> updatedData;
+
+  @override
+  List<Object?> get props => [updatedData];
+}
+
+/// Internal event: background chart data loaded after init completed.
+class _BackgroundChartLoaded extends SpotMarketsEvent {
+  const _BackgroundChartLoaded(this.market, this.range, this.history);
+
+  final String market;
+  final SpotMarketChartRange range;
+  final List<GraphData> history;
+
+  @override
+  List<Object?> get props => [market, range, history];
+}
