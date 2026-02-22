@@ -17,7 +17,7 @@ class UnifiedPortfolioUseCase {
   /// Total USDC across primary chains.
   Future<double> totalUsdcAcrossPrimaryChains() async {
     final primaryChains = EthereumChain.mainnetChains;
-    double total = 0.0;
+    var total = 0.0;
     for (final chain in primaryChains) {
       final usdcToken = Token.usdc(chain);
       final balance = await _safeTokenBalance(usdcToken);

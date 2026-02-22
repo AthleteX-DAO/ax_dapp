@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ax_dapp/service/portfolio_balance_service.dart';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:ax_dapp/wallet/usecases/synthetix_account_bootstrap.dart';
@@ -18,11 +19,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   WalletBloc({
     required WalletRepository walletRepository,
     required this.crossChainBalanceUseCase,
+    required PortfolioBalanceService portfolioBalanceService,
     required TokensRepository tokensRepository,
     required FireStoreCredentialsRepository fireStoreCredentialsRepository,
     required FireBaseAuthRepository fireBaseAuthRepository,
     required SynthetixAccountBootstrap synthetixAccountBootstrap,
   })  : _walletRepository = walletRepository,
+        _portfolioBalanceService = portfolioBalanceService,
         _tokensRepository = tokensRepository,
         _fireStoreCredentialsRepository = fireStoreCredentialsRepository,
         _fireBaseAuthRepository = fireBaseAuthRepository,
@@ -56,6 +59,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   final WalletRepository _walletRepository;
+  final PortfolioBalanceService _portfolioBalanceService;
   final TokensRepository _tokensRepository;
 
   final CrossChainBalanceUseCase crossChainBalanceUseCase;
@@ -96,7 +100,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     emit(
-      state.copyWith(walletViewStatus: WalletViewStatus.loading));
+      state.copyWith(walletViewStatus: WalletViewStatus.loading),);
     debugPrint('========== LOGIN FLOW START ==========');
     debugPrint('1. Emitted loading');
     final email = state.email;
@@ -161,8 +165,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     final chain = event.chain;
     if (chain == null) return;
     try {
+      // Invalidate portfolio cache on chain switch
+      _portfolioBalanceService.invalidateCache();
+      
       await _walletRepository.switchChain(chain);
       emit(state.copyWith(chain: event.chain));
+      
+      // Fetch fresh portfolio balance after chain switch
+      add(const FetchWalletBalanceRequested(forceRefresh: true));
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
     }
@@ -246,7 +256,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       emit(
         state.copyWith(
           failure: WalletFailure.fromUnsuccessfulOperation(),
-          errorMessage: 'Signup failed: ${e.toString()}',
+          errorMessage: 'Signup failed: $e',
           walletViewStatus: WalletViewStatus.signup,
         ),
       );
@@ -310,6 +320,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     try {
+      // Invalidate portfolio cache on wallet connection
+      _portfolioBalanceService.invalidateCache();
+      
       final walletAddress = await _walletRepository.connectWallet();
       unawaited(_ensureSynthetixAccount(emit));
       emit(
@@ -318,6 +331,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           walletViewStatus: WalletViewStatus.profile,
         ),
       );
+      
+      // Fetch fresh portfolio balance after wallet connection
+      add(const FetchWalletBalanceRequested(forceRefresh: true));
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
     }
@@ -327,6 +343,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     DisconnectWalletRequested _,
     Emitter<WalletState> emit,
   ) {
+    // Invalidate portfolio cache on wallet disconnection
+    _portfolioBalanceService.invalidateCache();
+    
     _walletRepository.disconnectWallet();
     _fireBaseAuthRepository.signOut();
     emit(
@@ -345,7 +364,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       onData: (wallet) {
         debugPrint('WALLET CHANGED: address=${wallet.address} status=${wallet.status} walletviewstatus=${state.walletViewStatus}');
         return state.copyWithWallet(wallet);
-      }
+      },
     );
   }
 
@@ -354,9 +373,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     FetchWalletBalanceRequested event,
     Emitter<WalletState> emit,
   ) async {
-    final walletBalance =
-        await crossChainBalanceUseCase.usdcBalance(state.chain);
-    emit(state.copyWith(walletBalance: walletBalance));
+    // Use portfolio balance service to get AX + USDC portfolio value
+    final portfolioBalance = await crossChainBalanceUseCase.portfolioBalance(
+      forceRefresh: event.forceRefresh,
+    );
+    emit(state.copyWith(walletBalance: portfolioBalance));
   }
 
   Future<void> _onWatchAxtChangesStarted(
@@ -450,7 +471,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         walletStatus: WalletStatus.disconnected,
         walletAddress: kEmptyAddress,
         failure: WalletFailure.none,
-        errorMessage: null,
       ),
     );
     debugPrint('🔴 AuthFailed complete. New viewStatus: ${state.walletViewStatus}');
@@ -460,7 +480,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     InfoMessageCleared _,
     Emitter<WalletState> emit,
   ) {
-    emit(state.copyWith(infoMessage: null));
+    emit(state.copyWith());
   }
 
 }

@@ -11,19 +11,19 @@ class SignUpButton extends StatelessWidget {
     final height = MediaQuery.sizeOf(context).height;
     return TextButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(
+        backgroundColor: WidgetStateProperty.all<Color>(
           Colors.amber[200]!.withOpacity(0.15),
         ),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
             side: const BorderSide(color: Colors.white),
           ),
         ),
-        minimumSize: MaterialStateProperty.all<Size>(
+        minimumSize: WidgetStateProperty.all<Size>(
           Size(width / 4, height * 0.09),
         ),
-        maximumSize: MaterialStateProperty.all<Size>(
+        maximumSize: WidgetStateProperty.all<Size>(
           Size(width / 2, height * 0.10),
         ),
       ),

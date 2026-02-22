@@ -1,12 +1,23 @@
+import 'package:ax_dapp/service/portfolio_balance_service.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class CrossChainBalanceUseCase {
   CrossChainBalanceUseCase({
     required WalletRepository walletRepository,
-  }) : _walletRepository = walletRepository;
+    required PortfolioBalanceService portfolioBalanceService,
+  })  : _walletRepository = walletRepository,
+        _portfolioBalanceService = portfolioBalanceService;
 
   final WalletRepository _walletRepository;
+  final PortfolioBalanceService _portfolioBalanceService;
+
+  /// Returns total portfolio balance (AX + USDC) in USD
+  Future<double> portfolioBalance({bool forceRefresh = false}) async {
+    return _portfolioBalanceService.getTotalPortfolioUsd(
+      forceRefresh: forceRefresh,
+    );
+  }
 
   Future<double> usdcBalance(EthereumChain chain) async {
     final balance =
@@ -69,6 +80,11 @@ class CrossChainBalanceUseCase {
         gasBalance = balance ?? 0;
         break;
       case EthereumChain.baseSepolia:
+        final balance =
+            await _walletRepository.getTokenBalance(Token.weth(chain).address);
+        gasBalance = balance ?? 0;
+        break;
+      case EthereumChain.arbitrumSepolia:
         final balance =
             await _walletRepository.getTokenBalance(Token.weth(chain).address);
         gasBalance = balance ?? 0;

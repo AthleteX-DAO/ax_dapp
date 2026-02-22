@@ -1,9 +1,7 @@
 import 'package:ax_dapp/account/account.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
-import 'package:ax_dapp/wallet/widgets/recovery_phrase_modal.dart';
 import 'package:ax_dapp/wallet/widgets/terms_and_conditions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +13,7 @@ class DrawerView extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     return Drawer(
-      width: width < 769 ? width : width / 3,
+      width: width < 769 ? width : width / 2.85,
       backgroundColor: Colors.black,
       child: BlocBuilder<WalletBloc, WalletState>(
         builder: (BuildContext context, state) {

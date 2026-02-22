@@ -38,6 +38,9 @@ class ExplorerUseCase {
       case EthereumChain.baseSepolia:
         buttonName = 'Show on Base Sepolia';
         break;
+      case EthereumChain.arbitrumSepolia:
+        buttonName = 'Show on Arbitrum Sepolia';
+        break;
     }
     return buttonName;
   }
@@ -73,6 +76,9 @@ class ExplorerUseCase {
         break;
       case EthereumChain.baseSepolia:
         explorerUrl = 'https://sepolia.basescan.org/address/$walletAddress';
+        break;
+      case EthereumChain.arbitrumSepolia:
+        explorerUrl = 'https://sepolia.arbiscan.io/address/$walletAddress';
         break;
     }
     return explorerUrl;

@@ -59,7 +59,7 @@ class _RecoveryPhraseModalState extends State<RecoveryPhraseModal> {
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFD700).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFFFD700), width: 1),
+                  border: Border.all(color: const Color(0xFFFFD700)),
                 ),
                 child: const Row(
                   children: [
@@ -85,7 +85,7 @@ class _RecoveryPhraseModalState extends State<RecoveryPhraseModal> {
                 decoration: BoxDecoration(
                   color: const Color(0xFF0F0F1E),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFF404060), width: 1),
+                  border: Border.all(color: const Color(0xFF404060)),
                 ),
                 child: GridView.builder(
                   shrinkWrap: true,
@@ -104,7 +104,6 @@ class _RecoveryPhraseModalState extends State<RecoveryPhraseModal> {
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
                           color: const Color(0xFF404060),
-                          width: 1,
                         ),
                       ),
                       alignment: Alignment.center,

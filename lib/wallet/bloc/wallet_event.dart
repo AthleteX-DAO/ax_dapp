@@ -95,7 +95,12 @@ class UpdateAxDataRequested extends WalletEvent {
 }
 
 class FetchWalletBalanceRequested extends WalletEvent {
-  const FetchWalletBalanceRequested();
+  const FetchWalletBalanceRequested({this.forceRefresh = false});
+
+  final bool forceRefresh;
+
+  @override
+  List<Object> get props => [forceRefresh];
 }
 
 class GetGasPriceRequested extends WalletEvent {
