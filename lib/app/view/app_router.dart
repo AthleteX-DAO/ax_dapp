@@ -39,6 +39,8 @@ import 'package:ax_dapp/sports_markets/view/sports_page.dart';
 import 'package:ax_dapp/spot_markets/bloc/bloc.dart';
 import 'package:ax_dapp/spot_markets/view/view.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/versus/versus.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -237,6 +239,12 @@ class AppRouter {
             name: 'perpetuals',
             path: '/perpetuals',
             builder: (BuildContext context, GoRouterState state) {
+              // Perps contracts are not yet deployed — show coming soon page
+              // to prevent EthereumAddress.fromHex('') crash.
+              if (SynthetixConfig.perpsMarketProxy.isEmpty) {
+                return const _PerpsComingSoonPage();
+              }
+
               final ethSepoliaWeb3Client = _getEthSepoliaWeb3Client();
               final walletRepository = context.read<WalletRepository>();
               
@@ -278,6 +286,22 @@ class AppRouter {
                     child: const DesktopSpotMarketsPage(),
                   ),
                 ),
+              );
+            },
+          ),
+          GoRoute(
+            name: 'versus',
+            path: '/versus',
+            builder: (BuildContext context, GoRouterState state) {
+              return MultiRepositoryProvider(
+                providers: [
+                  RepositoryProvider(
+                    create: (context) => VersusRepository(
+                      fireStore: FirebaseFirestore.instance,
+                    ),
+                  ),
+                ],
+                child: const VersusPage(),
               );
             },
           ),
@@ -341,3 +365,53 @@ Web3Client _getEthSepoliaWeb3Client() {
 }
 
 // TODO: Add _getPolygonMainnetWeb3Client() when Polygon mainnet is deployed
+
+/// Shown when Perps contracts are not yet deployed (perpsMarketProxy is empty).
+class _PerpsComingSoonPage extends StatelessWidget {
+  const _PerpsComingSoonPage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.rocket_launch_outlined,
+              size: 64,
+              color: Colors.amber,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Perps',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Coming Soon',
+              style: TextStyle(
+                color: Colors.amber,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Perpetual futures markets are under development.',
+              style: TextStyle(
+                color: Colors.white54,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
