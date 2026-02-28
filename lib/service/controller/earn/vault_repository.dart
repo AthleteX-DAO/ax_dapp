@@ -7,6 +7,7 @@ import 'package:ethereum_api/synthetix_v3_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:web3dart/json_rpc.dart' show RPCError;
 import 'package:web3dart/web3dart.dart' as web3;
 
 /// Data class for vault information.
@@ -162,43 +163,41 @@ class VaultRepository {
     }
   }
 
-  /// Fetch vaults for Ethereum Sepolia
+  /// Fetch vaults for Ethereum Sepolia — all three run concurrently.
   Future<List<VaultData>> _fetchSepoliaVaults(
     SynthetixCoreProxy coreProxy, {
     BigInt? overrideAccountId,
   }) async {
-    // AX, WBTC, and WETH addresses on Sepolia
     const axAddress = SynthetixConfig.axToken;
     const wbtcAddress = _wbtcSepolia;
     final wethAddress = const EthereumAddressConfig.weth()
         .address(EthereumChain.ethereumSepolia);
 
-    // Fetch vault data for all collaterals
-    final axVault = await _fetchVaultData(
-      coreProxy: coreProxy,
-      symbol: 'AX',
-      collateralAddress: axAddress,
-      poolId: _spartanPoolId,
-      overrideAccountId: overrideAccountId,
-    );
-
-    final wbtcVault = await _fetchVaultData(
-      coreProxy: coreProxy,
-      symbol: 'WBTC',
-      collateralAddress: wbtcAddress,
-      poolId: _spartanPoolId,
-      overrideAccountId: overrideAccountId,
-    );
-
-    final wethVault = await _fetchVaultData(
-      coreProxy: coreProxy,
-      symbol: 'WETH',
-      collateralAddress: wethAddress,
-      poolId: _spartanPoolId,
-      overrideAccountId: overrideAccountId,
-    );
-
-    return [axVault, wbtcVault, wethVault];
+    // Fire all three vault fetches in parallel — one RPC batch instead of 3
+    // sequential round-trips.
+    return Future.wait([
+      _fetchVaultData(
+        coreProxy: coreProxy,
+        symbol: 'AX',
+        collateralAddress: axAddress,
+        poolId: _spartanPoolId,
+        overrideAccountId: overrideAccountId,
+      ),
+      _fetchVaultData(
+        coreProxy: coreProxy,
+        symbol: 'WBTC',
+        collateralAddress: wbtcAddress,
+        poolId: _spartanPoolId,
+        overrideAccountId: overrideAccountId,
+      ),
+      _fetchVaultData(
+        coreProxy: coreProxy,
+        symbol: 'WETH',
+        collateralAddress: wethAddress,
+        poolId: _spartanPoolId,
+        overrideAccountId: overrideAccountId,
+      ),
+    ]);
   }
 
   /// Fetch vaults for Polygon Mainnet — only AX collateral is active.
@@ -217,7 +216,12 @@ class VaultRepository {
     return [axVault];
   }
 
-  /// Fetch data for a specific vault
+  /// Fetch data for a specific vault.
+  ///
+  /// TVL (getVaultCollateral), user balance (getAccountCollateral), and token
+  /// decimals are all fired in parallel via [Future.wait] to minimise RPC
+  /// round-trips. The resolved decimals value is passed directly into
+  /// [_getUserBalanceWithProxy] so it is never fetched twice.
   Future<VaultData> _fetchVaultData({
     required SynthetixCoreProxy coreProxy,
     required String symbol,
@@ -227,36 +231,40 @@ class VaultRepository {
   }) async {
     try {
       final collateralEthAddress = EthereumAddress.fromHex(collateralAddress);
-
-      // Get vault collateral (TVL)
-      final vaultCollateral = await coreProxy.getVaultCollateral(
-        poolId,
-        collateralEthAddress,
-      );
-
-      // Get user's deposited balance (on-chain via getAccountCollateral)
-      var userBalance = 0.0;
-      final resolvedAccountId = overrideAccountId ?? accountId;
-      if (resolvedAccountId != BigInt.zero) {
-        userBalance = await getUserBalance(
-          collateralAddress: collateralAddress,
-          poolId: poolId,
-          overrideAccountId: resolvedAccountId,
-        );
-      }
-
-      // Get collateral token decimals for conversion
       final token = erc20_api.ERC20(
         address: collateralEthAddress,
         client: _web3Client,
       );
-      final decimals = await token.decimals();
+      final resolvedAccountId = overrideAccountId ?? accountId;
 
-      // Convert BigInt to double (accounting for decimals)
-      final tvlRaw = vaultCollateral.amount;
-      final tvl = _bigIntToDouble(tvlRaw, decimals.toInt());
+      // Fire TVL, user balance, and decimals concurrently — saves 2 round-trips
+      // per vault vs the old sequential approach.
+      final results = await Future.wait([
+        coreProxy.getVaultCollateral(poolId, collateralEthAddress),
+        token.decimals(),
+        if (resolvedAccountId != BigInt.zero)
+          coreProxy.getAccountCollateral(
+            resolvedAccountId,
+            collateralEthAddress,
+          )
+        else
+          Future<dynamic>.value(null),
+      ]);
 
-      // Calculate APY from RewardDistributor contract
+      final vaultCollateral = results[0] as dynamic;
+      final decimals = (results[1] as BigInt).toInt();
+      final accountCollateral = results[2]; // null when no account
+
+      final tvl = _bigIntToDouble(vaultCollateral.amount as BigInt, decimals);
+
+      var userBalance = 0.0;
+      if (accountCollateral != null) {
+        userBalance = _bigIntToDouble(
+          accountCollateral.totalAssigned as BigInt,
+          decimals,
+        );
+      }
+
       final apy = await _calculateAPY(symbol: symbol, tvl: tvl);
 
       return VaultData(
@@ -271,7 +279,6 @@ class VaultRepository {
       );
     } catch (e) {
       debugPrint('Error fetching vault data for $symbol: $e');
-      // Return fallback data for this vault
       return VaultData(
         symbol: symbol,
         balance: 0,
@@ -299,37 +306,39 @@ class VaultRepository {
   ///
   /// Returns [totalAssigned] — the amount actively delegated to pools.
   /// Returns 0.0 gracefully when [overrideAccountId] is zero (no account yet).
+  ///
+  /// When called from [_fetchVaultData] the batched path is used instead
+  /// (decimals + collateral fetched together). This public method is kept for
+  /// standalone callers (e.g. EarnPageBloc balance refresh) and batches the
+  /// two independent RPC calls internally.
   Future<double> getUserBalance({
     required String collateralAddress,
     required BigInt poolId,
     BigInt? overrideAccountId,
   }) async {
     final resolvedAccountId = overrideAccountId ?? accountId;
-
-    // No Synthetix account yet — return 0 gracefully
-    if (resolvedAccountId == BigInt.zero) {
-      return 0.0;
-    }
+    if (resolvedAccountId == BigInt.zero) return 0.0;
 
     try {
+      final collateralEthAddress = EthereumAddress.fromHex(collateralAddress);
       final coreProxy = SynthetixCoreProxy(
         address: EthereumAddress.fromHex(_coreProxyAddress),
         client: _web3Client,
       );
-      final result = await coreProxy.getAccountCollateral(
-        resolvedAccountId,
-        EthereumAddress.fromHex(collateralAddress),
-      );
-
-      // Fetch token decimals for proper conversion
       final token = erc20_api.ERC20(
-        address: EthereumAddress.fromHex(collateralAddress),
+        address: collateralEthAddress,
         client: _web3Client,
       );
-      final decimals = await token.decimals();
 
-      // totalAssigned = collateral currently delegated to pools
-      return _bigIntToDouble(result.totalAssigned, decimals.toInt());
+      // Batch the two independent reads together.
+      final results = await Future.wait([
+        coreProxy.getAccountCollateral(resolvedAccountId, collateralEthAddress),
+        token.decimals(),
+      ]);
+
+      final collateral = results[0] as dynamic;
+      final decimals = (results[1] as BigInt).toInt();
+      return _bigIntToDouble(collateral.totalAssigned as BigInt, decimals);
     } catch (e) {
       debugPrint('Error getting account collateral balance: $e');
       return 0.0;
@@ -346,46 +355,205 @@ class VaultRepository {
     return decimals.toInt();
   }
 
+  /// Fetch the actual Synthetix account ID from the blockchain for a given wallet address.
+  Future<BigInt?> _fetchActualAccountId(String walletAddress) async {
+    try {
+      final coreProxyAddress = EthereumAddress.fromHex(_coreProxyAddress);
+      final coreProxy = SynthetixCoreProxy(
+        address: coreProxyAddress,
+        client: _web3Client,
+      );
+      
+      // Get the account token address
+      final tokenAddressResult = await _web3Client.call(
+        contract: coreProxy.self,
+        function: coreProxy.self.abi.functions.firstWhere((f) => f.name == 'getAccountTokenAddress'),
+        params: [],
+      );
+      
+      final accountTokenAddress = tokenAddressResult[0] as EthereumAddress;
+      debugPrint('   Account token address: ${accountTokenAddress.hex}');
+      
+      // Get account token balance for the user
+      final balanceResult = await _web3Client.call(
+        contract: coreProxy.self,
+        function: coreProxy.self.abi.functions.firstWhere((f) => f.name == 'balanceOf'),
+        params: [EthereumAddress.fromHex(walletAddress)],
+      );
+      
+      final balance = balanceResult[0] as BigInt;
+      debugPrint('   Account token balance: $balance');
+      
+      if (balance == BigInt.zero) {
+        return null;
+      }
+      
+      // Get the first account ID (tokenOfOwnerByIndex)
+      final tokenOfOwnerResult = await _web3Client.call(
+        contract: coreProxy.self,
+        function: coreProxy.self.abi.functions.firstWhere((f) => f.name == 'tokenOfOwnerByIndex'),
+        params: [EthereumAddress.fromHex(walletAddress), BigInt.zero],
+      );
+      
+      final actualAccountId = tokenOfOwnerResult[0] as BigInt;
+      debugPrint('   Found account ID: $actualAccountId');
+      
+      return actualAccountId;
+    } catch (e) {
+      debugPrint('Error fetching account ID: $e');
+      return null;
+    }
+  }
+
   /// Deposit into a vault.
   Future<String> deposit({
     required VaultData vault,
     required double amount,
   }) async {
+    debugPrint('\n═══════════════════════════════════════════');
+    debugPrint('🟦 [VAULT_REPO] DEPOSIT CALLED');
+    debugPrint('═══════════════════════════════════════════');
+    debugPrint('🟦 [VAULT_REPO] Parameters:');
+    debugPrint('   - vault.symbol: ${vault.symbol}');
+    debugPrint('   - vault.collateralAddress: ${vault.collateralAddress}');
+    debugPrint('   - vault.poolId: ${vault.poolId}');
+    debugPrint('   - amount (double): $amount');
+    debugPrint('   - userAddress: $userAddress');
+    debugPrint('   - chain: ${_chain.name}');
+    debugPrint('   - stored accountId: $accountId');
+
     if (userAddress == null) {
+      debugPrint('❌ [VAULT_REPO] Wallet not connected (userAddress is null)');
       throw Exception('Wallet not connected');
     }
 
+    debugPrint('🟡 [VAULT_REPO] Getting credentials from wallet...');
     final credentials = _walletRepository.credentials.value;
+    debugPrint('✅ [VAULT_REPO] Credentials obtained');
+
+    // CRITICAL: Fetch the actual account ID from the blockchain
+    debugPrint('🟡 [VAULT_REPO] Fetching actual account ID from blockchain...');
+    final actualAccountId = await _fetchActualAccountId(userAddress!);
+    debugPrint('✅ [VAULT_REPO] Actual account ID: $actualAccountId');
+    
+    if (actualAccountId == null) {
+      debugPrint('❌ [VAULT_REPO] No Synthetix account found for this wallet!');
+      throw Exception('No Synthetix account found. Please create one first from the Account page.');
+    }
+
     final collateralAddress = EthereumAddress.fromHex(vault.collateralAddress);
     final coreProxyAddress = EthereumAddress.fromHex(_coreProxyAddress);
     final userEthAddress = EthereumAddress.fromHex(userAddress!);
 
+    debugPrint('🟡 [VAULT_REPO] Address conversions:');
+    debugPrint('   - collateralAddress: ${collateralAddress.hex}');
+    debugPrint('   - coreProxyAddress: ${coreProxyAddress.hex}');
+    debugPrint('   - userEthAddress: ${userEthAddress.hex}');
+
     // 1) Approve CoreProxy to spend the collateral
+    debugPrint('\n🟡 [VAULT_REPO] === STEP 1: APPROVE ===');
     final token =
         erc20_api.ERC20(address: collateralAddress, client: _web3Client);
+    
+    debugPrint('🟡 [VAULT_REPO] Fetching token decimals...');
     final decimals = await token.decimals();
-    final amountWei = _doubleToBigInt(amount, decimals.toInt());
+    debugPrint('✅ [VAULT_REPO] Token decimals: $decimals');
 
+    final amountWei = _doubleToBigInt(amount, decimals.toInt());
+    debugPrint('🟡 [VAULT_REPO] Amount conversion:');
+    debugPrint('   - amount (double): $amount');
+    debugPrint('   - decimals: $decimals');
+    debugPrint('   - amountWei: $amountWei');
+
+    debugPrint('🟡 [VAULT_REPO] Checking current allowance...');
     final currentAllowance =
         await token.allowance(userEthAddress, coreProxyAddress);
+    debugPrint('✅ [VAULT_REPO] Current allowance: $currentAllowance');
+    debugPrint('   - Required: $amountWei');
+    debugPrint('   - Sufficient: ${currentAllowance >= amountWei}');
+
     if (currentAllowance < amountWei) {
-      await token.approve(coreProxyAddress, amountWei,
-          credentials: credentials,);
+      debugPrint('🟡 [VAULT_REPO] Approving CoreProxy to spend $amountWei...');
+      try {
+        await token.approve(coreProxyAddress, amountWei,
+            credentials: credentials,);
+        debugPrint('✅ [VAULT_REPO] Approval transaction sent');
+      } catch (approveError) {
+        debugPrint('❌ [VAULT_REPO] Approval failed: $approveError');
+        rethrow;
+      }
+    } else {
+      debugPrint('✅ [VAULT_REPO] Allowance already sufficient, skipping approve');
     }
 
-    // 2) Delegate collateral to the Spartan Council pool
+    // 2) Deposit collateral into the account using raw transaction
+    debugPrint('\n🟡 [VAULT_REPO] === STEP 2: DEPOSIT COLLATERAL ===');
     final coreProxy =
         SynthetixCoreProxy(address: coreProxyAddress, client: _web3Client);
-    final txHash = await coreProxy.delegateCollateral(
-      accountId,
-      vault.poolId,
-      collateralAddress,
-      amountWei,
-      _oneXLeverage,
-      credentials: credentials,
-    );
+    
+    debugPrint('🟡 [VAULT_REPO] deposit parameters:');
+    debugPrint('   - accountId: $actualAccountId');
+    debugPrint('   - collateralAddress: ${collateralAddress.hex}');
+    debugPrint('   - amount: $amountWei');
+    
+    try {
+      // Use the deposit function from coreProxy directly
+      final depositFunction = coreProxy.self.function('deposit');
+      final depositTx = web3.Transaction.callContract(
+        contract: coreProxy.self,
+        function: depositFunction,
+        parameters: [
+          actualAccountId,
+          collateralAddress,
+          amountWei,
+        ],
+      );
+      
+      debugPrint('🟡 [VAULT_REPO] Sending raw deposit transaction...');
+      final depositTxHash = await _web3Client.sendTransaction(
+        credentials,
+        depositTx,
+        chainId: _chain.chainId,
+      );
+      debugPrint('✅ [VAULT_REPO] deposit succeeded');
+      debugPrint('   - depositTxHash: $depositTxHash');
+    } catch (depositError) {
+      debugPrint('❌ [VAULT_REPO] deposit FAILED: $depositError');
+      rethrow;
+    }
 
-    return txHash;
+    // 3) Delegate collateral to the Spartan Council pool
+    debugPrint('\n🟡 [VAULT_REPO] === STEP 3: DELEGATE COLLATERAL ===');
+    
+    debugPrint('🟡 [VAULT_REPO] delegateCollateral parameters:');
+    debugPrint('   - accountId: $actualAccountId');
+    debugPrint('   - poolId: ${vault.poolId}');
+    debugPrint('   - collateralAddress: ${collateralAddress.hex}');
+    debugPrint('   - amount: $amountWei');
+    debugPrint('   - leverage: $_oneXLeverage');
+
+    try {
+      debugPrint('🟡 [VAULT_REPO] Calling coreProxy.delegateCollateral()...');
+      final txHash = await coreProxy.delegateCollateral(
+        actualAccountId,
+        vault.poolId,
+        collateralAddress,
+        amountWei,
+        _oneXLeverage,
+        credentials: credentials,
+      );
+      debugPrint('✅ [VAULT_REPO] delegateCollateral succeeded');
+      debugPrint('   - txHash: $txHash');
+      debugPrint('═══════════════════════════════════════════\n');
+      return txHash;
+    } catch (delegateError) {
+      debugPrint('❌ [VAULT_REPO] delegateCollateral FAILED: $delegateError');
+      if (delegateError is RPCError) {
+        debugPrint('   - RPCError details: ${delegateError.toString()}');
+      }
+      debugPrint('═══════════════════════════════════════════\n');
+      rethrow;
+    }
   }
 
   /// Withdraw from a vault.
@@ -426,8 +594,28 @@ class VaultRepository {
     required String collateralAddress,
     BigInt? poolId,
   }) async {
+    debugPrint('\n═══════════════════════════════════════════');
+    debugPrint('🟣 [VAULT_REPO] MINT STABLECOINS CALLED');
+    debugPrint('═══════════════════════════════════════════');
+    debugPrint('🟣 [VAULT_REPO] Parameters:');
+    debugPrint('   - amount (double): $amount');
+    debugPrint('   - collateralAddress: $collateralAddress');
+    debugPrint('   - poolId: ${poolId ?? _spartanPoolId}');
+    debugPrint('   - stored accountId: $accountId');
+
     if (userAddress == null) {
+      debugPrint('❌ [VAULT_REPO] Wallet not connected');
       throw Exception('Wallet not connected');
+    }
+
+    // Fetch actual account ID
+    debugPrint('🟣 [VAULT_REPO] Fetching actual account ID...');
+    final actualAccountId = await _fetchActualAccountId(userAddress!);
+    debugPrint('🟣 [VAULT_REPO] Actual account ID: $actualAccountId');
+    
+    if (actualAccountId == null) {
+      debugPrint('❌ [VAULT_REPO] No Synthetix account found!');
+      throw Exception('No Synthetix account found');
     }
 
     final credentials = _walletRepository.credentials.value;
@@ -438,6 +626,9 @@ class VaultRepository {
     // sUSD decimals (typically 18)
     const susdDecimals = 18;
     final amountWei = _doubleToBigInt(amount, susdDecimals);
+    if (amountWei <= BigInt.zero) {
+      throw ArgumentError.value(amount, 'amount', 'Mint amount must be > 0');
+    }
 
     // Use delegateCollateral pattern but call mintUsd
     final coreProxy = SynthetixCoreProxy(
@@ -445,18 +636,36 @@ class VaultRepository {
       client: _web3Client,
     );
 
+    debugPrint('🟣 [VAULT_REPO] mintUsd parameters:');
+    debugPrint('   - accountId: $actualAccountId');
+    debugPrint('   - pool: $pool');
+    debugPrint('   - collateral: $collateralEthAddress');
+    debugPrint('   - amount: $amountWei');
+
     final function = coreProxy.self.function('mintUsd');
     final transaction = Transaction.callContract(
       contract: coreProxy.self,
       function: function,
-      parameters: [accountId, pool, collateralEthAddress, amountWei],
+      parameters: [actualAccountId, pool, collateralEthAddress, amountWei],
     );
 
-    return _web3Client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    try {
+      debugPrint('🟣 [VAULT_REPO] Sending mintUsd transaction...');
+      final txHash = await _web3Client.sendTransaction(
+        credentials,
+        transaction,
+        chainId: SynthetixConfig.chainId,
+      );
+      debugPrint('✅ [VAULT_REPO] mintUsd succeeded: $txHash');
+      if (txHash.isEmpty) throw Exception('mintUsd returned empty hash');
+      return txHash;
+    } on RPCError catch (e) {
+      debugPrint('❌ [VAULT_REPO] mintUsd RPCError: ${e.message}');
+      throw Exception('mintUsd reverted: ${e.message}');
+    } catch (e) {
+      debugPrint('❌ [VAULT_REPO] mintUsd error: $e');
+      rethrow;
+    }
   }
 
   /// Burn (repay) synthetic USD debt.
@@ -476,6 +685,9 @@ class VaultRepository {
 
     const susdDecimals = 18;
     final amountWei = _doubleToBigInt(amount, susdDecimals);
+    if (amountWei <= BigInt.zero) {
+      throw ArgumentError.value(amount, 'amount', 'Burn amount must be > 0');
+    }
 
     final coreProxy = SynthetixCoreProxy(
       address: coreProxyAddress,
@@ -489,11 +701,19 @@ class VaultRepository {
       parameters: [accountId, pool, collateralEthAddress, amountWei],
     );
 
-    return _web3Client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    try {
+      final txHash = await _web3Client.sendTransaction(
+        credentials,
+        transaction,
+        chainId: SynthetixConfig.chainId,
+      );
+      if (txHash.isEmpty) throw Exception('burnUsd returned empty hash');
+      return txHash;
+    } on RPCError catch (e) {
+      throw Exception('burnUsd reverted: ${e.message}');
+    } catch (e) {
+      rethrow;
+    }
   }
 
   /// Get per-position debt for the account via CoreProxy.getPositionDebt.
