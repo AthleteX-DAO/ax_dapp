@@ -324,9 +324,21 @@ class _SynthetixDepositTabState extends State<_SynthetixDepositTab> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
+      buildWhen: (prev, curr) =>
+          prev.chain != curr.chain ||
+          prev.selectedCollateral != curr.selectedCollateral ||
+          prev.synthetixTxStatus != curr.synthetixTxStatus ||
+          prev.isSynthetixAccountLoading != curr.isSynthetixAccountLoading ||
+          prev.mintSliderValue != curr.mintSliderValue ||
+          prev.synthetixCollateralAssigned !=
+              curr.synthetixCollateralAssigned ||
+          prev.axUsdBalance != curr.axUsdBalance ||
+          prev.axUsdInAccount != curr.axUsdInAccount ||
+          prev.synthetixTxError != curr.synthetixTxError ||
+          prev.hasSynthetixAccount != curr.hasSynthetixAccount,
       builder: (context, state) {
         final collaterals = AthleteXSynthetixConfig.collateralsForChain(
-          AthleteXSynthetixConfig.sepoliaChainId,
+          state.chain.chainId,
         );
         final selected = state.selectedCollateral ?? collaterals.first;
         final txStatus = state.synthetixTxStatus;
@@ -539,6 +551,26 @@ class _SynthetixDepositTabState extends State<_SynthetixDepositTab> {
                   state.synthetixTxError != null)
                 const SizedBox(height: 12),
 
+              // Guard: need Synthetix account before depositing
+              if (!state.hasSynthetixAccount) ...[
+                ElevatedButton.icon(
+                  onPressed: isLoading
+                      ? null
+                      : () => context.read<AccountBloc>().add(
+                            const CreateSynthetixAccountRequested(),
+                          ),
+                  icon: const Icon(Icons.account_box_rounded),
+                  label: const Text('Create Synthetix Account'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ] else ...[
               // Deposit + Delegate button
               ElevatedButton.icon(
                 onPressed: isLoading
@@ -637,12 +669,116 @@ class _SynthetixDepositTabState extends State<_SynthetixDepositTab> {
                   ),
                 ),
               ],
+              ], // end else (has account)
+
+              // DEBUG PANEL
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: _getDebugStatusColor(txStatus),
+                    width: 2,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.bug_report,
+                          color: _getDebugStatusColor(txStatus),
+                          size: 16,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          'DEBUG PANEL',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: _getDebugStatusColor(txStatus),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'TX Status: ${txStatus.name}',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: _getDebugStatusColor(txStatus),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Has Account: ${state.hasSynthetixAccount}',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.white70,
+                      ),
+                    ),
+                    if (state.hasSynthetixAccount)
+                      Text(
+                        'Account ID: ${state.synthetixAccountId}',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    Text(
+                      'Collateral: ${selected.symbol} (${selected.address})',
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: Colors.white54,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (state.synthetixTxError != null) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        'ERROR: ${state.synthetixTxError}',
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.red,
+                        ),
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 20),
             ],
           ),
         );
       },
     );
+  }
+
+  Color _getDebugStatusColor(SynthetixTxStatus status) {
+    switch (status) {
+      case SynthetixTxStatus.idle:
+        return Colors.grey;
+      case SynthetixTxStatus.approving:
+        return Colors.blue;
+      case SynthetixTxStatus.depositing:
+        return Colors.amber;
+      case SynthetixTxStatus.delegating:
+        return Colors.orange;
+      case SynthetixTxStatus.minting:
+        return Colors.purple;
+      case SynthetixTxStatus.done:
+        return Colors.green;
+      case SynthetixTxStatus.error:
+        return Colors.red;
+    }
   }
 }
 
@@ -729,9 +865,11 @@ class _BalanceRow extends StatelessWidget {
   final BigInt amount;
   final Color color;
 
+  static final _decimals18 = BigInt.from(10).pow(18);
+
   @override
   Widget build(BuildContext context) {
-    final value = amount.toDouble() / BigInt.from(10).pow(18).toDouble();
+    final value = amount.toDouble() / _decimals18.toDouble();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -764,16 +902,18 @@ class _TxStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final curIdx =
-        _steps.indexWhere((s) => s.status == status);
+    final isError = status == SynthetixTxStatus.error;
+    // error is not in _steps — when errored, show all steps as red
+    final curIdx = isError ? -1 : _steps.indexWhere((s) => s.status == status);
 
     return Row(
       children: List.generate(_steps.length, (idx) {
         final step = _steps[idx];
-        final isDone = idx < curIdx ||
-            (status == SynthetixTxStatus.done && idx == _steps.length - 1);
-        final isActive = step.status == status;
-        final isError = status == SynthetixTxStatus.error && isActive;
+        final isDone = !isError &&
+            (idx < curIdx ||
+                (status == SynthetixTxStatus.done &&
+                    idx == _steps.length - 1));
+        final isActive = !isError && step.status == status;
 
         Color color;
         if (isError) {
@@ -799,7 +939,7 @@ class _TxStepper extends StatelessWidget {
                       color: color.withOpacity(0.2),
                       border: Border.all(color: color),
                     ),
-                    child: isActive && !isError
+                    child: isActive
                         ? Padding(
                             padding: const EdgeInsets.all(6),
                             child: CircularProgressIndicator(
@@ -827,7 +967,7 @@ class _TxStepper extends StatelessWidget {
               if (idx < _steps.length - 1)
                 Expanded(
                   child: Divider(
-                    color: idx < curIdx ? Colors.green : Colors.white24,
+                    color: isDone ? Colors.green : Colors.white24,
                     thickness: 1.5,
                   ),
                 ),

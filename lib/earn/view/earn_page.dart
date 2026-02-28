@@ -230,7 +230,7 @@ class _EarnPageState extends State<EarnPage> {
                           },
                           title: 'Borrow Stablecoins',
                           subtitle:
-                              'Use vault deposits as collateral to mint sUSD.',
+                              'Use vault deposits as collateral to mint axUSD.',
                           icon: Icons.account_balance_wallet_rounded,
                           accentColor: Colors.purple[400]!,
                           content: state.expandedTile ==
@@ -249,8 +249,123 @@ class _EarnPageState extends State<EarnPage> {
         ),
         // Transaction Modal (overlaid)
         const TransactionStepperModal(),
+        // Debug Panel
+        _DebugPanel(),
       ],
     );
+  }
+}
+
+/// Debug panel showing transaction status and debug info
+class _DebugPanel extends StatelessWidget {
+  const _DebugPanel();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EarnPageBloc, EarnPageState>(
+      builder: (context, state) {
+        // Only show when there's activity
+        if (!state.showTransactionModal && 
+            state.transactionStatus == TransactionStatus.idle) {
+          return const SizedBox.shrink();
+        }
+        
+        return Positioned(
+          bottom: 16,
+          left: 16,
+          right: 16,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.9),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: _getStatusColor(state.transactionStatus),
+                width: 2,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.bug_report,
+                      color: _getStatusColor(state.transactionStatus),
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'DEBUG PANEL',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: _getStatusColor(state.transactionStatus),
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      'Step: ${state.transactionStep.name}',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Status: ${state.transactionStatus.name}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: _getStatusColor(state.transactionStatus),
+                  ),
+                ),
+                if (state.transactionError.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    'Error: ${state.transactionError}',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: Colors.red,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+                if (state.transactionHash.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    'Tx Hash: ${state.transactionHash}',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.white54,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Color _getStatusColor(TransactionStatus status) {
+    switch (status) {
+      case TransactionStatus.idle:
+        return Colors.grey;
+      case TransactionStatus.pending:
+        return Colors.amber;
+      case TransactionStatus.success:
+        return Colors.green;
+      case TransactionStatus.error:
+        return Colors.red;
+    }
   }
 }
 
