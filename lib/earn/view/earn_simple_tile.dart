@@ -172,8 +172,16 @@ class _VaultCardState extends State<_VaultCard> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
+                      debugPrint('🎯 [EARN_SIMPLE] Deposit button pressed!');
+                      debugPrint('   vault.symbol: ${widget.vault.symbol}');
+                      debugPrint('   vault.collateralAddress: ${widget.vault.collateralAddress}');
+                      debugPrint('   vault.poolId: ${widget.vault.poolId}');
+                      
                       final amount = double.tryParse(_amountController.text) ?? 0;
+                      debugPrint('   input amount: $amount');
+                      
                       if (amount > 0) {
+                        debugPrint('   ✅ Submitting deposit form...');
                         context.read<EarnPageBloc>().add(
                           SubmitDepositForm(
                             vaultSymbol: widget.vault.symbol,
@@ -181,6 +189,9 @@ class _VaultCardState extends State<_VaultCard> {
                           ),
                         );
                         Navigator.pop(context);
+                        debugPrint('   ✅ Dialog closed, waiting for tx...');
+                      } else {
+                        debugPrint('   ❌ Invalid amount (must be > 0)');
                       }
                     },
                     style: ElevatedButton.styleFrom(

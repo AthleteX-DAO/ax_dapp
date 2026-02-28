@@ -354,8 +354,17 @@ class _LeverageVaultCardState extends State<_LeverageVaultCard> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
+                        debugPrint('🎯 [PROVIDE_LIQUIDITY] Button pressed!');
+                        debugPrint('   vault.symbol: ${widget.vault.symbol}');
+                        debugPrint('   vault.collateralAddress: ${widget.vault.collateralAddress}');
+                        debugPrint('   vault.poolId: ${widget.vault.poolId}');
+                        
                         final amount = double.tryParse(_amountController.text) ?? 0;
+                        debugPrint('   input amount: $amount');
+                        debugPrint('   leverage: $_leverage');
+                        
                         if (amount > 0) {
+                          debugPrint('   ✅ Submitting deposit with leverage...');
                           context.read<EarnPageBloc>().add(
                             SubmitDepositForm(
                               vaultSymbol: widget.vault.symbol,
@@ -364,6 +373,9 @@ class _LeverageVaultCardState extends State<_LeverageVaultCard> {
                             ),
                           );
                           Navigator.pop(context);
+                          debugPrint('   ✅ Dialog closed, waiting for tx...');
+                        } else {
+                          debugPrint('   ❌ Invalid amount (must be > 0)');
                         }
                       },
                       style: ElevatedButton.styleFrom(

@@ -102,7 +102,7 @@ class _BorrowStablecoinsTileState extends State<BorrowStablecoinsTile> {
   }
 }
 
-/// Mint (Borrow) sUSD section
+/// Mint (Borrow) axUSD section
 class _MintSection extends StatefulWidget {
   const _MintSection();
 
@@ -146,7 +146,7 @@ class _MintSectionState extends State<_MintSection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Mint sUSD',
+                'mint axUSD',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -159,7 +159,7 @@ class _MintSectionState extends State<_MintSection> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Borrow sUSD against your delegated collateral',
+                      'Borrow axUSD against your delegated collateral',
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.grey[400],
@@ -233,7 +233,7 @@ class _MintSectionState extends State<_MintSection> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          '500 sUSD',
+                          '500 axUSD',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -266,8 +266,13 @@ class _MintSectionState extends State<_MintSection> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
+                      debugPrint('🎯 [BORROW_STABLECOINS] Mint button pressed!');
                       final amount = double.tryParse(_amountController.text) ?? 0;
+                      debugPrint('   mint amount: $amount');
+                      debugPrint('   collateralAddress: 0xc43708f8987Df3f3681801e5e640667D86Ce3C30');
+                      
                       if (amount > 0) {
+                        debugPrint('   ✅ Submitting mint form...');
                         context.read<EarnPageBloc>().add(
                           SubmitMintForm(
                             amount: amount,
@@ -276,6 +281,9 @@ class _MintSectionState extends State<_MintSection> {
                           ),
                         );
                         Navigator.pop(context);
+                        debugPrint('   ✅ Dialog closed, waiting for tx...');
+                      } else {
+                        debugPrint('   ❌ Invalid amount (must be > 0)');
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -286,7 +294,7 @@ class _MintSectionState extends State<_MintSection> {
                       ),
                     ),
                     child: const Text(
-                      'Mint sUSD',
+                      'mint axUSD',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -328,7 +336,7 @@ class _MintSectionState extends State<_MintSection> {
                   const SizedBox(width: 8),
                   const Expanded(
                     child: Text(
-                      'Mint lets you borrow sUSD stablecoins against your delegated collateral for trading or holding.',
+                      'Mint lets you borrow axUSD stablecoins against your delegated collateral for trading or holding.',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.white,
@@ -401,7 +409,10 @@ class _MintSectionState extends State<_MintSection> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: _showMintDialog,
+            onPressed: () {
+              debugPrint('🎯 [BORROW_STABLECOINS] Main Mint button pressed! Opening dialog...');
+              _showMintDialog();
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.purple[400],
               padding: const EdgeInsets.symmetric(vertical: 12),
@@ -410,7 +421,7 @@ class _MintSectionState extends State<_MintSection> {
               ),
             ),
             child: const Text(
-              'Mint sUSD',
+              'mint axUSD',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -424,7 +435,7 @@ class _MintSectionState extends State<_MintSection> {
   }
 }
 
-/// Burn (Repay) sUSD section
+/// Burn (Repay) axUSD section
 class _BurnSection extends StatefulWidget {
   const _BurnSection();
 
@@ -467,7 +478,7 @@ class _BurnSectionState extends State<_BurnSection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Repay sUSD',
+                'Repay axUSD',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -477,7 +488,7 @@ class _BurnSectionState extends State<_BurnSection> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Return sUSD to reduce your debt and lower interest accrual',
+                'Return axUSD to reduce your debt and lower interest accrual',
                 style: TextStyle(
                   fontSize: 13,
                   color: Colors.grey[400],
@@ -536,7 +547,7 @@ class _BurnSectionState extends State<_BurnSection> {
                     ),
                     const SizedBox(height: 4),
                     const Text(
-                      '250 sUSD',
+                      '250 axUSD',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -588,7 +599,7 @@ class _BurnSectionState extends State<_BurnSection> {
                       ),
                     ),
                     child: const Text(
-                      'Repay sUSD',
+                      'Repay axUSD',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -682,7 +693,7 @@ class _BurnSectionState extends State<_BurnSection> {
                       ),
                       const SizedBox(height: 4),
                       const Text(
-                        '250 sUSD',
+                        '250 axUSD',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -734,7 +745,7 @@ class _BurnSectionState extends State<_BurnSection> {
               ),
             ),
             child: const Text(
-              'Repay sUSD',
+              'Repay axUSD',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
