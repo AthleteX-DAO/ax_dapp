@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
@@ -180,6 +181,9 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     Emitter<EarnPageState> emit,
   ) async {
     try {
+      debugPrint('🔵 [DEPOSIT] ===== STARTING DEPOSIT FLOW =====');
+      debugPrint('🔵 [DEPOSIT] Event: vaultSymbol=${event.vaultSymbol}, amount=${event.amount}, leverage=${event.leverage}');
+      
       emit(state.copyWith(
         showTransactionModal: true,
         transactionStatus: TransactionStatus.pending,
@@ -191,6 +195,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       _currentOperationAmount = event.amount;
 
       if (_vaultRepository == null) {
+        debugPrint('❌ [DEPOSIT] Vault repository is NULL');
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault repository not available',
@@ -199,14 +204,23 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       }
 
       // Fetch vault to get details
+      debugPrint('🟡 [DEPOSIT] Fetching vault: ${event.vaultSymbol}');
       final vault = await _vaultRepository!.fetchVault(event.vaultSymbol);
       if (vault == null) {
+        debugPrint('❌ [DEPOSIT] Vault not found: ${event.vaultSymbol}');
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault not found',
         ),);
         return;
       }
+
+      debugPrint('✅ [DEPOSIT] Vault fetched: ${vault.toString()}');
+      debugPrint('✅ [DEPOSIT] Vault details:');
+      debugPrint('   - symbol: ${vault.symbol}');
+      debugPrint('   - collateralAddress: ${vault.collateralAddress}');
+      debugPrint('   - poolId: ${vault.poolId}');
+      debugPrint('   - vaultAddress: ${vault.vaultAddress}');
 
       _currentOperationCollateral = vault.collateralAddress;
 
@@ -215,10 +229,17 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
 
       // Call deposit with custom leverage
       final leverageBigInt = BigInt.from((event.leverage * 1e18).toInt());
+      debugPrint('🟡 [DEPOSIT] Leverage calculation:');
+      debugPrint('   - leverage from UI: ${event.leverage}');
+      debugPrint('   - leverage * 1e18: ${(event.leverage * 1e18).toInt()}');
+      debugPrint('   - leverageBigInt: $leverageBigInt');
+      
+      debugPrint('🟡 [DEPOSIT] Calling vault_repository.deposit()...');
       final txHash = await _vaultRepository!.deposit(
         vault: vault,
         amount: event.amount,
       );
+      debugPrint('✅ [DEPOSIT] Deposit transaction submitted: $txHash');
 
       // Move to pending step and start polling
       emit(state.copyWith(
@@ -227,7 +248,9 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       ),);
 
       add(PollTransaction(txHash));
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('❌ [DEPOSIT] ERROR: $e');
+      debugPrint('❌ [DEPOSIT] StackTrace: $stackTrace');
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
@@ -291,6 +314,11 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     SubmitMintForm event,
     Emitter<EarnPageState> emit,
   ) async {
+    debugPrint('🔵 [EARN_BLOC] _onSubmitMintForm called');
+    debugPrint('   amount: ${event.amount}');
+    debugPrint('   collateralAddress: ${event.collateralAddress}');
+    debugPrint('   vaultRepository: ${_vaultRepository != null ? "AVAILABLE" : "NULL"}');
+    
     try {
       emit(state.copyWith(
         showTransactionModal: true,
@@ -304,26 +332,39 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
 
       emit(state.copyWith(transactionStep: TransactionStep.pending));
 
-      final txHash = await _vaultRepository?.mintStablecoins(
+      if (_vaultRepository == null) {
+        debugPrint('❌ [EARN_BLOC] VaultRepository is NULL!');
+        emit(state.copyWith(
+          transactionStatus: TransactionStatus.error,
+          transactionError: 'Vault repository not available',
+        ));
+        return;
+      }
+
+      debugPrint('🟡 [EARN_BLOC] Calling mintStablecoins...');
+      final txHash = await _vaultRepository!.mintStablecoins(
         amount: event.amount,
         collateralAddress: event.collateralAddress,
-      ) ?? '';
+      );
+      debugPrint('✅ [EARN_BLOC] mintStablecoins returned: $txHash');
 
       if (txHash.isEmpty) {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Failed to initiate mint transaction',
-        ),);
+        ));
         return;
       }
 
       emit(state.copyWith(transactionHash: txHash));
       add(PollTransaction(txHash));
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('❌ [EARN_BLOC] Mint error: $e');
+      debugPrint('❌ [EARN_BLOC] Stack: $stack');
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
-      ),);
+      ));
     }
   }
 
