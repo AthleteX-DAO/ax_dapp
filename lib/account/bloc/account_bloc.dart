@@ -310,11 +310,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
     try {
       // Get account IDs for this wallet
+      debugPrint('>>> Fetching Synthetix account IDs for wallet: ${state.walletAddress}');
       final accountIds = await _accountRepository.getSynthetixAccountIds(
         state.walletAddress,
       );
+      debugPrint('>>> Raw accountIds from contract: $accountIds');
 
       if (accountIds.isEmpty) {
+        debugPrint('>>> No Synthetix accounts found');
         emit(
           state.copyWith(
             hasSynthetixAccount: false,
@@ -325,9 +328,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       }
 
       // Use first account (primary account)
+      debugPrint('>>> accountIds.first: ${accountIds.first}');
+      debugPrint('>>> accountIds.first runtimeType: ${accountIds.first.runtimeType}');
       final accountId = accountIds.first.toInt();
+      debugPrint('>>> Converted accountId (toInt): $accountId');
 
-      const collateralAddress = AthleteXSynthetixConfig.primaryCollateralAddress;
+      final collateralAddress =
+          AthleteXSynthetixConfig.defaultCollateralAddress(state.chain.chainId);
       const poolId = AthleteXSynthetixConfig.defaultPoolId;
       const usdProxy = SynthetixConfig.usdProxy;
 
@@ -408,10 +415,65 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     DepositSynthetixCollateralRequested event,
     Emitter<AccountState> emit,
   ) async {
-    if (!state.hasSynthetixAccount) return;
+    debugPrint('========== DEPOSIT FLOW START ==========');
+    debugPrint('>>> ⚠️  CHAIN DETECTION: ${state.chain.chainId} (${state.chain.name})');
+    debugPrint('>>> Expected Polygon: 137');
+    if (state.chain.chainId != 137) {
+      debugPrint('>>> ⚠️  ⚠️  WARNING: NOT ON POLYGON! Please switch to Polygon Mainnet in your wallet!');
+    }
+    debugPrint('>>> ACCOUNT INFO:');
+    debugPrint('>>>   hasSynthetixAccount: ${state.hasSynthetixAccount}');
+    debugPrint('>>>   synthetixAccountId (STATE): ${state.synthetixAccountId}');
+    debugPrint('>>>   synthetixAccountId type: ${state.synthetixAccountId.runtimeType}');
+    
+    // CRITICAL FIX: The stored accountId is corrupted. Re-fetch from blockchain.
+    debugPrint('>>> RE-FETCHING account ID from blockchain...');
+    final freshAccountIds = await _accountRepository.getSynthetixAccountIds(state.walletAddress);
+    if (freshAccountIds.isEmpty) {
+      debugPrint('>>> ERROR: No accounts found on blockchain!');
+      emit(state.copyWith(
+        synthetixTxStatus: SynthetixTxStatus.error,
+        synthetixTxError: 'No Synthetix account found on blockchain. Please create one first.',
+        hasSynthetixAccount: false,
+      ));
+      return;
+    }
+    final validAccountId = freshAccountIds.first.toInt();
+    debugPrint('>>> FRESH accountId from blockchain: $validAccountId');
+    
+    // Update state with correct account ID
+    emit(state.copyWith(
+      synthetixAccountId: validAccountId,
+    ));
+    
+    debugPrint('>>> TRANSACTION INFO:');
+    debugPrint('>>>   collateralAddress: ${event.collateralAddress}');
+    debugPrint('>>>   amount: ${event.amount}');
+    debugPrint('>>>   coreProxy: ${SynthetixConfig.coreProxy}');
+    debugPrint('>>>   defaultPoolId: ${AthleteXSynthetixConfig.defaultPoolId}');
+    
+    // Validate collateral address matches the expected chain
+    final expectedCollateral = AthleteXSynthetixConfig.defaultCollateralAddress(state.chain.chainId);
+    debugPrint('>>> Expected collateral for chain ${state.chain.chainId}: $expectedCollateral');
+    if (event.collateralAddress.toLowerCase() != expectedCollateral.toLowerCase()) {
+      debugPrint('>>> ⚠️  ERROR: Collateral address mismatch!');
+      debugPrint('>>>    Using: ${event.collateralAddress}');
+      debugPrint('>>>    Expected for chain ${state.chain.chainId}: $expectedCollateral');
+      emit(state.copyWith(
+        synthetixTxStatus: SynthetixTxStatus.error,
+        synthetixTxError: 'Wrong network! You are on chain ${state.chain.chainId} but trying to use collateral for a different network. Please switch to Polygon (chain 137) in your wallet.',
+      ));
+      return;
+    }
+    
+    // Additional validation: ensure we're on Polygon for mainnet operations
+    if (state.chain.chainId != 137) {
+      debugPrint('>>> ⚠️  WARNING: Not on Polygon mainnet! Transactions may fail.');
+    }
 
     try {
       // Step 1 — approve CoreProxy to spend the collateral token
+      debugPrint('========== STEP 1: APPROVE ==========');
       emit(
         state.copyWith(
           isSynthetixAccountLoading: true,
@@ -419,50 +481,83 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         ),
       );
 
-      await _accountRepository.approveErc20(
+      debugPrint('Approving token ${event.collateralAddress} for spender ${SynthetixConfig.coreProxy}');
+      final approveTx = await _accountRepository.approveErc20(
         tokenAddress: event.collateralAddress,
         spenderAddress: SynthetixConfig.coreProxy,
         amount: event.amount,
       );
+      debugPrint('Approve tx submitted: $approveTx');
+      await _accountRepository.waitForReceipt(approveTx);
+      debugPrint('Approve tx confirmed!');
 
-      // Step 2 — deposit
+      // Step 2 — deposit (must wait for mining before delegate)
+      debugPrint('========== STEP 2: DEPOSIT ==========');
       emit(
         state.copyWith(synthetixTxStatus: SynthetixTxStatus.depositing),
       );
 
-      await _accountRepository.depositSynthetixCollateral(
-        accountId: state.synthetixAccountId,
+      debugPrint('Depositing collateral: accountId=$validAccountId, collateral=${event.collateralAddress}, amount=${event.amount}');
+      final depositTx = await _accountRepository.depositSynthetixCollateral(
+        accountId: validAccountId,
         collateralAddress: event.collateralAddress,
         amount: event.amount,
       );
+      debugPrint('Deposit tx submitted: $depositTx');
+      await _accountRepository.waitForReceipt(depositTx);
+      debugPrint('Deposit tx confirmed!');
 
       // Step 3 — auto-delegate the full deposited balance to the default pool
+      debugPrint('========== STEP 3: DELEGATE ==========');
       emit(state.copyWith(synthetixTxStatus: SynthetixTxStatus.delegating));
 
       // Compute total deposited after this deposit to set delegation
+      debugPrint('Fetching account collateral data...');
       final collateralData = await _accountRepository
           .getSynthetixAccountCollateral(
-        accountId: state.synthetixAccountId,
+        accountId: validAccountId,
         collateralAddress: event.collateralAddress,
       );
+      debugPrint('Collateral data: $collateralData');
       final totalDeposited =
           collateralData['totalDeposited'] ?? event.amount;
+      debugPrint('Total deposited: $totalDeposited');
 
-      await _accountRepository.delegateSynthetixCollateral(
-        accountId: state.synthetixAccountId,
-        poolId: AthleteXSynthetixConfig.defaultPoolId,
-        collateralAddress: event.collateralAddress,
-        amount: totalDeposited,
-      );
-
-      emit(
-        state.copyWith(synthetixTxStatus: SynthetixTxStatus.done),
-      );
+      debugPrint('Delegating: accountId=$validAccountId, poolId=${AthleteXSynthetixConfig.defaultPoolId}, amount=$totalDeposited');
+      try {
+        final delegateTx = await _accountRepository.delegateSynthetixCollateral(
+          accountId: validAccountId,
+          poolId: AthleteXSynthetixConfig.defaultPoolId,
+          collateralAddress: event.collateralAddress,
+          amount: totalDeposited,
+        );
+        debugPrint('Delegate tx submitted: $delegateTx');
+        await _accountRepository.waitForReceipt(delegateTx);
+        debugPrint('Delegate tx confirmed!');
+        
+        emit(
+          state.copyWith(synthetixTxStatus: SynthetixTxStatus.done),
+        );
+      } catch (delegateError) {
+        debugPrint('>>> Delegate failed but deposit succeeded: $delegateError');
+        debugPrint('>>> Collateral is deposited but not delegated to pool');
+        
+        // Deposit succeeded, show partial success
+        emit(
+          state.copyWith(
+            synthetixTxStatus: SynthetixTxStatus.done,
+            synthetixTxError: 'Deposit successful! Delegate failed (pool may need configuration). Your collateral is deposited but not earning yield yet.',
+          ),
+        );
+      }
 
       // Refresh account data
       add(const FetchSynthetixAccountRequested());
-    } catch (e) {
+      debugPrint('========== DEPOSIT FLOW COMPLETE ==========');
+    } catch (e, stack) {
+      debugPrint('========== DEPOSIT FLOW ERROR ==========');
       debugPrint('Error depositing + delegating collateral: $e');
+      debugPrint('Stack trace: $stack');
       emit(
         state.copyWith(
           isSynthetixAccountLoading: false,
@@ -647,19 +742,21 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         'MintAxUsd: minting ${mintAmount} axUSD (slider=${event.sliderValue})',
       );
 
-      await _accountRepository.mintAxUsd(
+      final mintTx = await _accountRepository.mintAxUsd(
         accountId: state.synthetixAccountId,
         poolId: AthleteXSynthetixConfig.defaultPoolId,
         collateralAddress: event.collateralAddress,
         amount: mintAmount,
       );
+      await _accountRepository.waitForReceipt(mintTx);
 
       // axUSD lands in CoreProxy account — withdraw it to wallet
-      await _accountRepository.withdrawAxUsd(
+      final withdrawTx = await _accountRepository.withdrawAxUsd(
         accountId: state.synthetixAccountId,
         amount: mintAmount,
         usdProxyAddress: SynthetixConfig.usdProxy,
       );
+      await _accountRepository.waitForReceipt(withdrawTx);
 
       emit(state.copyWith(synthetixTxStatus: SynthetixTxStatus.done));
       add(const FetchSynthetixAccountRequested());
