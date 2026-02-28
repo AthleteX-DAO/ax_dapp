@@ -1,5 +1,7 @@
 import 'package:ax_dapp/config/synthetix_config.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:web3dart/json_rpc.dart' show RPCError;
 import 'package:web3dart/web3dart.dart';
 
 /// Service for interacting with Synthetix V3 Core system
@@ -193,8 +195,6 @@ class SynthetixCoreService {
   /// Get user's account IDs
   Future<List<BigInt>> getUserAccounts(String userAddress) async {
     try {
-      print('SynthetixCoreService.getUserAccounts: user=$userAddress');
-
       final tokenAddressResult = await _client.call(
         contract: _coreProxy,
         function: _coreProxy.function('getAccountTokenAddress'),
@@ -202,9 +202,6 @@ class SynthetixCoreService {
       );
 
       final accountTokenAddress = tokenAddressResult[0] as EthereumAddress;
-      print(
-        'SynthetixCoreService.getUserAccounts: accountToken=$accountTokenAddress',
-      );
 
       final accountTokenAbi = ContractAbi.fromJson('''
       [
@@ -241,21 +238,21 @@ class SynthetixCoreService {
       );
 
       final balance = balanceResult[0] as BigInt;
-      print('SynthetixCoreService.getUserAccounts: balance=$balance');
 
-      final accounts = <BigInt>[];
-      for (var i = BigInt.zero; i < balance; i += BigInt.one) {
-        final tokenResult = await _client.call(
-          contract: accountToken,
-          function: accountToken.function('tokenOfOwnerByIndex'),
-          params: [owner, i],
-        );
-        final tokenId = tokenResult[0] as BigInt;
-        print('SynthetixCoreService.getUserAccounts: tokenId=$tokenId');
-        accounts.add(tokenId);
-      }
+      // Fire all tokenOfOwnerByIndex calls concurrently — one RPC round-trip
+      // per token instead of N sequential awaits.
+      final indices = List.generate(balance.toInt(), BigInt.from);
+      final tokenResults = await Future.wait(
+        indices.map(
+          (i) => _client.call(
+            contract: accountToken,
+            function: accountToken.function('tokenOfOwnerByIndex'),
+            params: [owner, i],
+          ),
+        ),
+      );
 
-      print('SynthetixCoreService.getUserAccounts: count=${accounts.length}');
+      final accounts = tokenResults.map((r) => r[0] as BigInt).toList();
       return accounts;
     } catch (e) {
       print('Error getting user accounts: $e');
@@ -327,18 +324,13 @@ class SynthetixCoreService {
   Future<String> createAccount(
     Credentials credentials,
   ) async {
-    print(
-      'SynthetixCoreService.createAccount: sending tx chainId=${SynthetixConfig.chainId}',
-    );
     final transaction = Transaction.callContract(
       contract: _coreProxy,
       function: _coreProxy.function('createAccount'),
       parameters: [],
     );
 
-    final txHash = await _sendWithGasBuffer(transaction, credentials);
-    print('SynthetixCoreService.createAccount: txHash=$txHash');
-    return txHash;
+    return _sendWithGasBuffer(transaction, credentials);
   }
 
   /// Deposit collateral (requires transaction + prior approval)
@@ -348,6 +340,10 @@ class SynthetixCoreService {
     required BigInt amount,
     required Credentials credentials,
   }) async {
+    debugPrint('>>> depositCollateral called: accountId=$accountId, collateral=$collateralAddress, amount=$amount');
+    if (amount <= BigInt.zero) {
+      throw ArgumentError.value(amount, 'amount', 'Deposit amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _coreProxy,
       function: _coreProxy.function('deposit'),
@@ -357,6 +353,7 @@ class SynthetixCoreService {
         amount,
       ],
     );
+    debugPrint('>>> depositCollateral transaction prepared, calling _sendWithGasBuffer...');
 
     return _sendWithGasBuffer(transaction, credentials);
   }
@@ -368,6 +365,9 @@ class SynthetixCoreService {
     required BigInt amount,
     required Credentials credentials,
   }) async {
+    if (amount <= BigInt.zero) {
+      throw ArgumentError.value(amount, 'amount', 'Withdraw amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _coreProxy,
       function: _coreProxy.function('withdraw'),
@@ -391,6 +391,22 @@ class SynthetixCoreService {
     required Credentials credentials,
     BigInt? leverage, // 1e18 = 1x leverage
   }) async {
+    debugPrint('>>> delegateCollateral called:');
+    debugPrint('>>>   accountId: $accountId (${BigInt.from(accountId).toRadixString(16)})');
+    debugPrint('>>>   poolId: $poolId (${BigInt.from(poolId).toRadixString(16)})');
+    debugPrint('>>>   collateralAddress: $collateralAddress');
+    debugPrint('>>>   amount: $amount');
+    debugPrint('>>>   leverage: ${leverage ?? BigInt.from(1000000000000000000)}');
+    
+    if (accountId <= 0) {
+      throw ArgumentError.value(accountId, 'accountId', 'Account ID must be > 0');
+    }
+    if (poolId <= 0) {
+      throw ArgumentError.value(poolId, 'poolId', 'Pool ID must be > 0');
+    }
+    if (amount <= BigInt.zero) {
+      throw ArgumentError.value(amount, 'amount', 'Delegate amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _coreProxy,
       function: _coreProxy.function('delegateCollateral'),
@@ -402,6 +418,7 @@ class SynthetixCoreService {
         leverage ?? BigInt.from(1000000000000000000), // 1e18 = 1x default
       ],
     );
+    debugPrint('>>> delegateCollateral transaction prepared, calling _sendWithGasBuffer...');
 
     return _sendWithGasBuffer(transaction, credentials);
   }
@@ -414,6 +431,15 @@ class SynthetixCoreService {
     required BigInt amount,
     required Credentials credentials,
   }) async {
+    if (accountId <= 0) {
+      throw ArgumentError.value(accountId, 'accountId', 'Account ID must be > 0');
+    }
+    if (poolId <= 0) {
+      throw ArgumentError.value(poolId, 'poolId', 'Pool ID must be > 0');
+    }
+    if (amount <= BigInt.zero) {
+      throw ArgumentError.value(amount, 'amount', 'Undelegate amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _coreProxy,
       function: _coreProxy.function('undelegateCollateral'),
@@ -436,6 +462,9 @@ class SynthetixCoreService {
     required BigInt amount,
     required Credentials credentials,
   }) async {
+    if (amount <= BigInt.zero) {
+      throw ArgumentError.value(amount, 'amount', 'Mint amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _coreProxy,
       function: _coreProxy.function('mintUsd'),
@@ -458,6 +487,9 @@ class SynthetixCoreService {
     required BigInt amount,
     required Credentials credentials,
   }) async {
+    if (amount <= BigInt.zero) {
+      throw ArgumentError.value(amount, 'amount', 'Burn amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _coreProxy,
       function: _coreProxy.function('burnUsd'),
@@ -543,25 +575,68 @@ class SynthetixCoreService {
   /// Sends [transaction] with a 1.3× gas buffer applied to the web3dart
   /// estimate, guarding against OOG failures on first-time storage writes
   /// (common on Polygon mainnet).
+  ///
+  /// Throws a descriptive [Exception] on RPC errors, estimation failures, or
+  /// an empty transaction hash so callers always receive a meaningful error.
   Future<String> _sendWithGasBuffer(
     Transaction transaction,
     Credentials credentials,
   ) async {
-    final estimatedGas = await _client.estimateGas(
-      sender: EthereumAddress.fromHex(
-        await credentials.extractAddress().then((a) => a.hex),
-      ),
-      to: transaction.to,
-      data: transaction.data,
-    );
-    // Apply 1.3× buffer (round up to nearest integer)
-    final bufferedGas = (estimatedGas * BigInt.from(13)) ~/ BigInt.from(10);
-    final txWithGas = transaction.copyWith(maxGas: bufferedGas.toInt());
-    return _client.sendTransaction(
-      credentials,
-      txWithGas,
-      chainId: SynthetixConfig.chainId,
-    );
+    debugPrint('>>> _sendWithGasBuffer called');
+    debugPrint('>>> transaction.to: ${transaction.to}');
+    debugPrint('>>> transaction.data: ${transaction.data}');
+    try {
+      final senderAddress = await credentials.extractAddress();
+      debugPrint('>>> sender: ${senderAddress.hex}');
+      
+      final estimatedGas = await _client.estimateGas(
+        sender: EthereumAddress.fromHex(senderAddress.hex),
+        to: transaction.to,
+        data: transaction.data,
+      );
+      debugPrint('>>> estimatedGas: $estimatedGas');
+      // Apply 1.3× buffer (round up to nearest integer)
+      final bufferedGas = (estimatedGas * BigInt.from(13)) ~/ BigInt.from(10);
+      debugPrint('>>> bufferedGas: $bufferedGas');
+      final txWithGas = transaction.copyWith(maxGas: bufferedGas.toInt());
+      debugPrint('>>> Sending transaction to chainId: ${SynthetixConfig.chainId}');
+      final txHash = await _client.sendTransaction(
+        credentials,
+        txWithGas,
+        chainId: SynthetixConfig.chainId,
+      );
+      debugPrint('>>> txHash returned: $txHash');
+      if (txHash.isEmpty) {
+        throw Exception('Transaction returned an empty hash — possible RPC issue');
+      }
+      return txHash;
+    } on RPCError catch (e) {
+      debugPrint('>>> RPCError: ${e.message}');
+      debugPrint('>>> RPCError code: ${e.errorCode}');
+      throw Exception('Contract reverted: ${e.message}');
+    } catch (e, stack) {
+      debugPrint('>>> Exception in _sendWithGasBuffer: $e');
+      debugPrint('>>> Stack: $stack');
+      rethrow;
+    }
+  }
+
+  /// Poll until a transaction is mined and confirmed.
+  /// Throws on timeout (60 s) or on-chain revert.
+  Future<void> waitForReceipt(String txHash) async {
+    const maxAttempts = 30;
+    const delay = Duration(seconds: 2);
+    for (var i = 0; i < maxAttempts; i++) {
+      final receipt = await _client.getTransactionReceipt(txHash);
+      if (receipt != null) {
+        if (receipt.status == false) {
+          throw Exception('Transaction reverted on-chain');
+        }
+        return;
+      }
+      await Future<void>.delayed(delay);
+    }
+    throw Exception('Transaction confirmation timeout after 60 s');
   }
 
   void dispose() {
