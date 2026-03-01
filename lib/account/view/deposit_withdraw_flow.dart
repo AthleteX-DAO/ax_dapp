@@ -32,16 +32,16 @@ class _DepositWithdrawFlowState extends State<DepositWithdrawFlow> {
   double _amountUsd = 0;
   bool _showAdvanced = false;
   String? _errorMessage;
-  String? _transactionHash;
-  bool _isProcessing = false;
-  String _collateralAddress =
-      AthleteXSynthetixConfig.primaryCollateralAddress;
+  late String _collateralAddress;
   String _collateralSymbol = AthleteXSynthetixConfig.primaryCollateralSymbol;
   int _collateralDecimals = AthleteXSynthetixConfig.primaryCollateralDecimals;
 
   @override
   void initState() {
     super.initState();
+    final chainId = context.read<AccountBloc>().state.chain.chainId;
+    _collateralAddress =
+        AthleteXSynthetixConfig.defaultCollateralAddress(chainId);
     _amountController = TextEditingController();
     _amountController.addListener(_updateUsdValue);
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -98,7 +98,6 @@ class _DepositWithdrawFlowState extends State<DepositWithdrawFlow> {
     }
 
     setState(() {
-      _isProcessing = true;
       _errorMessage = null;
     });
 
@@ -126,6 +125,9 @@ class _DepositWithdrawFlowState extends State<DepositWithdrawFlow> {
 
   @override
   Widget build(BuildContext context) {
+    final _isProcessing =
+        context.select((AccountBloc b) => b.state.isSynthetixAccountLoading);
+    const String? _transactionHash = null;
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.all(24),

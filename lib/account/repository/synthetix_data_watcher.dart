@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/account/models/account_models.dart';
 import 'package:ax_dapp/config/athletex_synthetix_config.dart';
+import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:ax_dapp/account/repository/synthetix_batch_queries.dart';
 import 'package:ax_dapp/service/synthetix_core_service.dart';
 import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
@@ -252,8 +253,11 @@ class SynthetixDataWatcher {
     }
 
     if (_vaultRepository == null) {
+      final defaultAddress =
+          AthleteXSynthetixConfig.defaultCollateralAddress(SynthetixConfig.chainId);
       final fallback = AthleteXSynthetixConfig.getCollateralInfo(
-        AthleteXSynthetixConfig.primaryCollateralAddress,
+        defaultAddress,
+        chainId: SynthetixConfig.chainId,
       );
       if (fallback == null) return null;
       _cachedVaultConfig = _VaultConfig(

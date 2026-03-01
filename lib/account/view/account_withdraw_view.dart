@@ -232,9 +232,15 @@ class _SynthetixWithdrawTabState extends State<_SynthetixWithdrawTab> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
+      buildWhen: (prev, curr) =>
+          prev.chain != curr.chain ||
+          prev.selectedCollateral != curr.selectedCollateral ||
+          prev.isSynthetixAccountLoading != curr.isSynthetixAccountLoading ||
+          prev.synthetixCollateralAvailable !=
+              curr.synthetixCollateralAvailable,
       builder: (context, state) {
         final collaterals = AthleteXSynthetixConfig.collateralsForChain(
-          AthleteXSynthetixConfig.sepoliaChainId,
+          state.chain.chainId,
         );
         final selected = state.selectedCollateral ?? collaterals.first;
         final isLoading = state.isSynthetixAccountLoading;

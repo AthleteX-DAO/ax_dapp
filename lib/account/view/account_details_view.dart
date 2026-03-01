@@ -320,10 +320,7 @@ class _AccountDetailsState extends State<AccountDetails>
                                             ),
                                           ),
                                           child: SelectableText(
-                                            context
-                                                    .read<WalletBloc>()
-                                                    .state
-                                                    .recoveryPhrase ??
+                                            walletState.recoveryPhrase ??
                                                 'Not available',
                                             style: const TextStyle(
                                               color: Colors.white70,

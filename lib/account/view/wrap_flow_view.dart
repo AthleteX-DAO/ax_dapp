@@ -51,7 +51,7 @@ class _WrapFlowViewState extends State<WrapFlowView> {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
         final wrappables = AthleteXSynthetixConfig.wrappableCollateralsForChain(
-          AthleteXSynthetixConfig.sepoliaChainId,
+          state.chain.chainId,
         );
         final selected = (state.selectedCollateral?.isWrappable ?? false)
             ? state.selectedCollateral!
