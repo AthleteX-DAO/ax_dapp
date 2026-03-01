@@ -105,7 +105,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     debugPrint('1. Emitted loading');
     final email = state.email;
     final password = state.password;
-    debugPrint('2. Email: $email, Password length: ${password.length}');
+    debugPrint('2. Credentials provided');
     try {
       debugPrint('3. About to signIn to Firebase Auth');
       await _fireBaseAuthRepository.signIn(
@@ -119,11 +119,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         email,
         password,
       );
-      debugPrint('6. Credentials decrypted, hex length: ${privateKeyHex.length}');
+      debugPrint('6. Credentials decrypted');
       
       debugPrint('7. About to import wallet');
       final walletAddress = await _walletRepository.importWallet(privateKeyHex);
-      debugPrint('8. Imported wallet: $walletAddress');
+      debugPrint('8. Wallet imported successfully');
       
       debugPrint('9. About to ensure Synthetix account');
       unawaited(_ensureSynthetixAccount(emit));
@@ -187,7 +187,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     final password = state.password;
     debugPrint('========== SIGNUP FLOW START ==========');
     debugPrint('1. Emitted loading');
-    debugPrint('2. Email: $email, Password length: ${password.length}');
+    debugPrint('2. Credentials provided');
     try {
       debugPrint('3. About to createUser in Firebase Auth');
       await _fireBaseAuthRepository.createUser(
@@ -207,7 +207,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       final privateKeyHex = walletResult.privateKeyHex;
       final recoveryPhrase = walletResult.recoveryPhrase;
       
-      debugPrint('6. Wallet created: $walletAddress');
+      debugPrint('6. Wallet created successfully');
       debugPrint('7. Recovery phrase generated (${walletResult.recoveryWords.length} words)');
       
       debugPrint('8. About to encrypt and store credentials in Firebase');
@@ -215,8 +215,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         _fireStoreCredentialsRepository
             .storeCredentials(email, password, privateKeyHex)
             .then((_) => debugPrint('9. Credentials encrypted and stored successfully'))
-            .catchError((e) {
-          debugPrint('9. Credentials backup failed: $e');
+            .catchError((Object e) {
+          debugPrint('9. Credentials backup failed');
           if (!emit.isDone) {
             emit(
               state.copyWith(
@@ -362,7 +362,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     await emit.forEach<Wallet>(
       _walletRepository.walletChanges,
       onData: (wallet) {
-        debugPrint('WALLET CHANGED: address=${wallet.address} status=${wallet.status} walletviewstatus=${state.walletViewStatus}');
+        debugPrint('WALLET CHANGED: status=${wallet.status} walletviewstatus=${state.walletViewStatus}');
         return state.copyWithWallet(wallet);
       },
     );
