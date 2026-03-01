@@ -3,105 +3,150 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encrypt/encrypt.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:pointycastle/digests/sha256.dart';
 import 'package:pointycastle/key_derivators/api.dart';
 import 'package:pointycastle/key_derivators/pbkdf2.dart';
 import 'package:pointycastle/macs/hmac.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
+/// Manages encrypted storage of wallet private keys in Firestore.
+///
+/// ## Encryption scheme versions
+///
+/// ### v2 (current — all new accounts)
+/// - **KDF**: PBKDF2-SHA256, 100,000 iterations, 32-byte cryptographically
+///   random salt (generated fresh on every store).
+/// - **Cipher**: AES-256-GCM (authenticated encryption). Provides both
+///   confidentiality and integrity — tampering with the ciphertext causes
+///   decryption to fail with an authentication error before any plaintext
+///   is exposed.
+/// - **IV**: 12-byte random (NIST-recommended for GCM).
+/// - **Stored fields**: `encryptedKey`, `iv`, `salt`, `v=2`.
+///   The password, plaintext key, and email are **never** stored.
+///
+/// ### v1 (legacy — read-only, not used for new stores)
+/// - KDF: PBKDF2-SHA256, email-as-salt (predictable, known).
+/// - Cipher: AES-256-CBC (no authentication tag).
+/// - Kept only as a decryption fallback so existing users are not locked out.
 class FireStoreCredentialsRepository {
   FireStoreCredentialsRepository({
     required FirebaseFirestore fireStore,
     required WalletRepository walletRepository,
-  })  : _firestore = fireStore;
+  }) : _firestore = fireStore;
 
   final FirebaseFirestore _firestore;
 
-  /// Encrypts private key with user's password and stores in Firebase
-  /// Uses PBKDF2 to derive encryption key from password
-  /// Returns the encrypted key string
-  Future<String> storeCredentials(String email, String password, String privateKeyHex) async {
-    try {
-      debugPrint('🔐 storeCredentials: Step 1 - About to derive key from password');
-      // Derive encryption key from password using PBKDF2
-      final encryptionKey = _deriveKeyFromPassword(password, email);
-      debugPrint('🔐 storeCredentials: Step 2 - Key derived successfully');
-      
-      debugPrint('🔐 storeCredentials: Step 3 - About to encrypt private key (${privateKeyHex.length} chars)');
-      // Encrypt private key
-      final encrypter = Encrypter(AES(encryptionKey));
-      final iv = IV.fromSecureRandom(16);
-      final encrypted = encrypter.encrypt(privateKeyHex, iv: iv);
-      debugPrint('🔐 storeCredentials: Step 4 - Private key encrypted (${encrypted.base64.length} chars)');
-      
-      final currentUser = FirebaseAuth.instance.currentUser;
-      debugPrint(
-        '🔐 storeCredentials: Step 5 - About to store in Firestore collection=encrypted_wallets, doc=$email, authUser=${currentUser?.uid}');
-      // Store ONLY encrypted data and IV (NO password or key)
-      final payload = <String, String>{
-        'email': email,
-        'encryptedKey': encrypted.base64,
-        'iv': iv.base64,
-        // Password is NEVER stored!
-      };
-      debugPrint('🔐 storeCredentials: Step 5a - Payload created: ${payload.keys.join(", ")}');
-      
-        await _firestore
-          .collection('encrypted_wallets')
-          .doc(email)
-          .set(payload)
-          .timeout(const Duration(seconds: 10));
-      debugPrint('🔐 storeCredentials: Step 6 - Successfully stored in Firestore!');
-      return encrypted.base64;
-    } catch (e, st) {
-      debugPrint('🔐 storeCredentials ERROR: $e');
-      debugPrint('🔐 storeCredentials STACK: $st');
-      rethrow;
-    }
+  // Bump this when the storage scheme changes.
+  static const int _currentSchemeVersion = 2;
+
+  // ---------------------------------------------------------------------------
+  // Public API
+  // ---------------------------------------------------------------------------
+
+  /// Encrypts [privateKeyHex] with [password] and stores the result in
+  /// Firestore under [email] (used only as a document key — not stored in the
+  /// document body).
+  ///
+  /// Returns the base64-encoded ciphertext.
+  Future<String> storeCredentials(
+    String email,
+    String password,
+    String privateKeyHex,
+  ) async {
+    // Random 32-byte salt — never predictable, never derived from email.
+    final salt = IV.fromSecureRandom(32);
+    final encryptionKey = _deriveKey(password, salt.bytes);
+
+    // AES-256-GCM: authenticated encryption (confidentiality + integrity).
+    // 12-byte IV is the NIST-recommended nonce size for GCM.
+    final iv = IV.fromSecureRandom(12);
+    final encrypter = Encrypter(AES(encryptionKey, mode: AESMode.gcm));
+    final encrypted = encrypter.encrypt(privateKeyHex, iv: iv);
+
+    // Store only the ciphertext, IV, salt, and scheme version.
+    // Password, plaintext key, and email are NEVER stored in the document body.
+    await _firestore
+        .collection('encrypted_wallets')
+        .doc(email)
+        .set({
+          'encryptedKey': encrypted.base64,
+          'iv': iv.base64,
+          'salt': salt.base64,
+          'v': _currentSchemeVersion,
+        })
+        .timeout(const Duration(seconds: 10));
+
+    return encrypted.base64;
   }
 
-  /// Decrypts private key using user's password
-  /// Returns the decrypted private key hex string
+  /// Loads and decrypts the wallet private key for [email].
+  ///
+  /// Supports v2 (random salt, AES-GCM) for new accounts and legacy v1
+  /// (email-as-salt, AES-CBC) for accounts created before the upgrade so
+  /// existing users are not locked out.
   Future<String> loadCredentials(String email, String password) async {
-    final doc = await _firestore.collection('encrypted_wallets').doc(email).get();
-    
+    final doc = await _firestore
+        .collection('encrypted_wallets')
+        .doc(email)
+        .get();
+
     if (!doc.exists) {
       throw Exception('No wallet found for this email');
     }
-    
+
     final data = doc.data()!;
-    final encryptedKeyBase64 = data['encryptedKey'] as String;
-    final ivBase64 = data['iv'] as String;
-    
-    // Derive same encryption key from password
-    final encryptionKey = _deriveKeyFromPassword(password, email);
-    
-    // Decrypt private key
-    final encrypter = Encrypter(AES(encryptionKey));
-    final encrypted = Encrypted.fromBase64(encryptedKeyBase64);
-    final iv = IV.fromBase64(ivBase64);
-    
+    final version = data['v'] as int? ?? 1;
+
     try {
-      final decryptedPrivateKey = encrypter.decrypt(encrypted, iv: iv);
-      return decryptedPrivateKey;
-    } catch (e) {
+      return version >= 2
+          ? _decryptV2(data, password)
+          : _decryptV1(data, password, email);
+    } catch (_) {
       throw Exception('Invalid password or corrupted wallet data');
     }
   }
 
-  /// Derives a 256-bit encryption key from password using PBKDF2
-  /// Uses email as salt for deterministic key derivation
-  Key _deriveKeyFromPassword(String password, String salt) {
-    final saltBytes = Uint8List.fromList(utf8.encode(salt));
-    final passwordBytes = Uint8List.fromList(utf8.encode(password));
-    debugPrint('🔐 deriveKey: saltBytes=${saltBytes.length}, passwordBytes=${passwordBytes.length}');
+  // ---------------------------------------------------------------------------
+  // Private helpers
+  // ---------------------------------------------------------------------------
 
+  /// Decrypts a v2 record: random salt + AES-256-GCM.
+  String _decryptV2(Map<String, dynamic> data, String password) {
+    final salt = IV.fromBase64(data['salt'] as String);
+    final iv = IV.fromBase64(data['iv'] as String);
+    final encryptionKey = _deriveKey(password, salt.bytes);
+    final encrypter = Encrypter(AES(encryptionKey, mode: AESMode.gcm));
+    return encrypter.decrypt(
+      Encrypted.fromBase64(data['encryptedKey'] as String),
+      iv: iv,
+    );
+  }
+
+  /// Decrypts a legacy v1 record: email-as-salt + AES-256-CBC.
+  String _decryptV1(
+    Map<String, dynamic> data,
+    String password,
+    String email,
+  ) {
+    final saltBytes = Uint8List.fromList(utf8.encode(email));
+    final encryptionKey = _deriveKey(password, saltBytes);
+    final encrypter = Encrypter(AES(encryptionKey));
+    final iv = IV.fromBase64(data['iv'] as String);
+    return encrypter.decrypt(
+      Encrypted.fromBase64(data['encryptedKey'] as String),
+      iv: iv,
+    );
+  }
+
+  /// Derives a 256-bit AES key from [password] using PBKDF2-SHA256.
+  ///
+  /// [saltBytes] must be a cryptographically random value for v2, or the
+  /// email bytes for legacy v1 decryption. 100,000 iterations makes
+  /// brute-force attacks ~100ms per guess on modern hardware.
+  Key _deriveKey(String password, Uint8List saltBytes) {
+    final passwordBytes = Uint8List.fromList(utf8.encode(password));
     final derivator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
       ..init(Pbkdf2Parameters(saltBytes, 100000, 32));
-
-    final keyBytes = derivator.process(passwordBytes);
-    return Key(Uint8List.fromList(keyBytes));
+    return Key(Uint8List.fromList(derivator.process(passwordBytes)));
   }
 }

@@ -77,7 +77,9 @@ class WalletRepository {
 
   /// Returns the current [WalletCredentials] private key
   /// This should be used cautiously! private keys are important
-  String get privateKey => _walletApiClient.hex;
+  // SECURITY: Private key getter removed - security vulnerability
+  // Private keys must NEVER be exposed or stored.
+  // Use only the credentials object via getTokenBalance, signTransaction, etc.
 
   /// Returns the current [Wallet] synchronously.
   Wallet get currentWallet =>

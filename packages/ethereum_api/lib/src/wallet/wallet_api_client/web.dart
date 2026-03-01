@@ -29,11 +29,10 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   final _chainController = BehaviorSubject<EthereumChain>();
 
-  String _seedHex = '';
-
-  /// Gets the wallet's private seed phrase
-  @override
-  String get hex => _seedHex;
+  /// SECURITY: Private keys must NEVER be stored in memory or exposed.
+  /// Use only the credentials object immediately and discard.
+  /// Removed: String _seedHex storage (security vulnerability)
+  /// Removed: hex getter (no legitimate use case in production)
 
   /// Allows listening to changes to the current [EthereumChain].
   @override
@@ -177,7 +176,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     final mnemonic = generateMnemonic();
     validateMnemonic(mnemonic);
     final hex = mnemonicToSeedHex(mnemonic);
-    _seedHex = hex;
+    // SECURITY: Never store hex - create credentials and return immediately
     final credentials = EthPrivateKey.fromHex(hex);
     return WalletCredentials(credentials);
   }
@@ -190,8 +189,10 @@ class EthereumWalletApiClient implements WalletApiClient {
   @override
   Future<WalletCredentials> importWalletCredentials(String hex) async {
     try {
+      // SECURITY: Create credentials and return immediately.
+      // Hex parameter will be garbage collected after function returns.
       final credentials = EthPrivateKey.fromHex(hex);
-      _seedHex = hex;
+      // ⚠️ NEVER store the hex key: _seedHex = hex; (REMOVED - security vulnerability)
       return WalletCredentials(credentials);
     } catch (error, stackTrace) {
       throw WalletFailure.fromError(error, stackTrace);

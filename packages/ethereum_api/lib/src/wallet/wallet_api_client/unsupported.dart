@@ -16,7 +16,7 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   /// returns the Wallets private seed phrase
   @override
-  String get hex => throw UnsupportedError('hex is not available');
+  // SECURITY: hex getter removed - private keys must never be exposed
   @override
   Stream<EthereumChain> get chainChanges => throw UnsupportedError(
         'ethereumChainChanges not supported on the current platform',

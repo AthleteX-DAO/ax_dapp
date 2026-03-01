@@ -19,3 +19,4 @@ export 'package:web_socket_channel/web_socket_channel.dart';
 export 'src/failure/failure.dart';
 export 'src/graphql/graphql.dart';
 export 'src/text/text.dart';
+export 'src/ethereum_address_validator.dart';
