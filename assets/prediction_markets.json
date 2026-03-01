@@ -1,0 +1,26 @@
+{
+  "network": "polygon",
+  "chainId": 137,
+  "axUSD": "0x1Ea27b8fa8D9Fb4370Dd654ffFad4734D0960fA6",
+  "umaFinder": "0x09aea4b2242abC8bb4BB78D537A67a245A7bEC64",
+  "ioo": "0x0A2F9bd90e88149F7d60699a8A340F46fE8BA95f",
+  "feeRecipient": "0x3E70f657AeaA09C413633d881A409a024D28E82C",
+  "deployedAt": "2025-07-14T00:00:00.000Z",
+  "markets": [
+    {
+      "pairName": "AIYUK_TRADE_2026",
+      "question": "Will Brandon Aiyuk be traded before the 2026 League Year?",
+      "category": "football",
+      "details": "Resolves YES if Brandon Aiyuk is officially traded from the San Francisco 49ers to another NFL team before the start of the 2026 NFL League Year (typically mid-March 2026). Resolves NO if he remains on the 49ers' roster or is released (not traded) before that date.",
+      "resolveBy": "2026-03-12",
+      "contractAddress": "0x65c63A783722a316c246A88D1Eef892e2d6c4e5C",
+      "longTokenAddress": "0x3A8309167EA3db591928b723a883A9a33C49357c",
+      "shortTokenAddress": "0xaEee2be5c176d2029eBD773E9fE27C81720172E6",
+      "longTokenName": "AIYUK_TRADE_2026 YES",
+      "shortTokenName": "AIYUK_TRADE_2026 NO",
+      "feeRecipient": "0x3E70f657AeaA09C413633d881A409a024D28E82C",
+      "protocolFeeRate": "10000000000000000",
+      "proposerReward": "0"
+    }
+  ]
+}

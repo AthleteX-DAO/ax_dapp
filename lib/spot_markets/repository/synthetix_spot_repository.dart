@@ -1,6 +1,8 @@
 import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared/shared.dart';
+import 'package:web3dart/json_rpc.dart' show RPCError;
 import 'package:web3dart/web3dart.dart';
 
 /// Repository for interacting with Synthetix v3 Spot Markets on Sepolia
@@ -210,12 +212,15 @@ class SynthetixSpotRepository {
     required Credentials credentials,
     String? referrer,
   }) async {
+    if (usdAmount <= BigInt.zero) {
+      throw ArgumentError.value(usdAmount, 'usdAmount', 'Buy amount must be > 0');
+    }
+    if (marketId <= 0) {
+      throw ArgumentError.value(marketId, 'marketId', 'Market ID must be > 0');
+    }
     try {
       final buyFunction = spotMarketContract.function('buy');
-      
-      final referrerAddress = referrer != null
-          ? EthereumAddress.fromHex(referrer)
-          : EthereumAddress.fromHex('0x0000000000000000000000000000000000000000');
+      final referrerAddress = EthereumAddressValidator.parseOrFallback(referrer);
 
       final transaction = Transaction.callContract(
         contract: spotMarketContract,
@@ -231,12 +236,14 @@ class SynthetixSpotRepository {
       final txHash = await _web3Client.sendTransaction(
         credentials,
         transaction,
-        chainId: SynthetixConfig.chainId, // Sepolia
+        chainId: SynthetixConfig.chainId,
       );
-
+      if (txHash.isEmpty) throw Exception('Buy order returned empty hash');
       return txHash;
+    } on RPCError catch (e) {
+      throw Exception('Buy order reverted: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to execute buy order: $e');
+      rethrow;
     }
   }
 
@@ -249,12 +256,15 @@ class SynthetixSpotRepository {
     required Credentials credentials,
     String? referrer,
   }) async {
+    if (synthAmount <= BigInt.zero) {
+      throw ArgumentError.value(synthAmount, 'synthAmount', 'Sell amount must be > 0');
+    }
+    if (marketId <= 0) {
+      throw ArgumentError.value(marketId, 'marketId', 'Market ID must be > 0');
+    }
     try {
       final sellFunction = spotMarketContract.function('sell');
-      
-      final referrerAddress = referrer != null
-          ? EthereumAddress.fromHex(referrer)
-          : EthereumAddress.fromHex('0x0000000000000000000000000000000000000000');
+      final referrerAddress = EthereumAddressValidator.parseOrFallback(referrer);
 
       final transaction = Transaction.callContract(
         contract: spotMarketContract,
@@ -270,12 +280,14 @@ class SynthetixSpotRepository {
       final txHash = await _web3Client.sendTransaction(
         credentials,
         transaction,
-        chainId: SynthetixConfig.chainId, // Sepolia
+        chainId: SynthetixConfig.chainId,
       );
-
+      if (txHash.isEmpty) throw Exception('Sell order returned empty hash');
       return txHash;
+    } on RPCError catch (e) {
+      throw Exception('Sell order reverted: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to execute sell order: $e');
+      rethrow;
     }
   }
 
@@ -333,13 +345,16 @@ class SynthetixSpotRepository {
     required BigInt amount,
     required Credentials credentials,
   }) async {
+    if (amount <= BigInt.zero) {
+      throw ArgumentError.value(amount, 'amount', 'Approval amount must be > 0');
+    }
     try {
       final tokenContract = DeployedContract(
         erc20Abi,
-        EthereumAddress.fromHex(tokenAddress),
+        EthereumAddressValidator.parse(tokenAddress),
       );
       final approveFunction = tokenContract.function('approve');
-      
+
       final transaction = Transaction.callContract(
         contract: tokenContract,
         function: approveFunction,
@@ -352,12 +367,14 @@ class SynthetixSpotRepository {
       final txHash = await _web3Client.sendTransaction(
         credentials,
         transaction,
-        chainId: SynthetixConfig.chainId, // Sepolia
+        chainId: SynthetixConfig.chainId,
       );
-
+      if (txHash.isEmpty) throw Exception('Token approval returned empty hash');
       return txHash;
+    } on RPCError catch (e) {
+      throw Exception('Token approval reverted: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to approve token spending: $e');
+      rethrow;
     }
   }
 
