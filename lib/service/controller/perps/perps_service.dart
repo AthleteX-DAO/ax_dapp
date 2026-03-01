@@ -44,13 +44,20 @@ class PerpsService {
     required bool isMarketOrder,
     double? limitPrice,
   }) async {
+    if (sizeDelta == 0) {
+      throw ArgumentError.value(sizeDelta, 'sizeDelta', 'Order size must not be zero');
+    }
+    if (!isMarketOrder && (limitPrice == null || limitPrice <= 0)) {
+      throw ArgumentError.value(limitPrice, 'limitPrice', 'Limit price must be > 0 for limit orders');
+    }
+
     try {
       final walletCreds = _walletRepository.credentials;
       final credentials = walletCreds.value;
 
       final marketId = _marketIds[symbol];
       if (marketId == null) {
-        throw Exception('Market not found for symbol: $symbol');
+        throw ArgumentError.value(symbol, 'symbol', 'Unsupported market symbol');
       }
 
       // Convert size to wei (18 decimals)

@@ -1,5 +1,7 @@
 import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared/shared.dart';
+import 'package:web3dart/json_rpc.dart' show RPCError;
 import 'package:web3dart/web3dart.dart';
 
 /// Service for interacting with Synthetix V3 Spot Markets
@@ -175,6 +177,9 @@ class SynthetixSpotService {
     required Credentials credentials,
     String? referrer,
   }) async {
+    if (usdAmount <= BigInt.zero) {
+      throw ArgumentError.value(usdAmount, 'usdAmount', 'Buy amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _spotMarket,
       function: _spotMarket.function('buy'),
@@ -182,16 +187,23 @@ class SynthetixSpotService {
         BigInt.from(marketId),
         usdAmount,
         minSynthAmount,
-        EthereumAddress.fromHex(
-            referrer ?? '0x0000000000000000000000000000000000000000',),
+        EthereumAddressValidator.parseOrFallback(referrer),
       ],
     );
 
-    return _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    try {
+      final txHash = await _client.sendTransaction(
+        credentials,
+        transaction,
+        chainId: SynthetixConfig.chainId,
+      );
+      if (txHash.isEmpty) throw Exception('Buy synth returned empty hash');
+      return txHash;
+    } on RPCError catch (e) {
+      throw Exception('Spot market buy reverted: ${e.message}');
+    } catch (e) {
+      rethrow;
+    }
   }
 
   /// Sell synths for USD (atomic swap)
@@ -202,6 +214,9 @@ class SynthetixSpotService {
     required Credentials credentials,
     String? referrer,
   }) async {
+    if (synthAmount <= BigInt.zero) {
+      throw ArgumentError.value(synthAmount, 'synthAmount', 'Sell amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _spotMarket,
       function: _spotMarket.function('sell'),
@@ -209,16 +224,23 @@ class SynthetixSpotService {
         BigInt.from(marketId),
         synthAmount,
         minUsdAmount,
-        EthereumAddress.fromHex(
-            referrer ?? '0x0000000000000000000000000000000000000000',),
+        EthereumAddressValidator.parseOrFallback(referrer),
       ],
     );
 
-    return _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    try {
+      final txHash = await _client.sendTransaction(
+        credentials,
+        transaction,
+        chainId: SynthetixConfig.chainId,
+      );
+      if (txHash.isEmpty) throw Exception('Sell synth returned empty hash');
+      return txHash;
+    } on RPCError catch (e) {
+      throw Exception('Spot market sell reverted: ${e.message}');
+    } catch (e) {
+      rethrow;
+    }
   }
 
   /// Wrap real collateral (e.g. USDC) into its synth equivalent (e.g. axUSDC).
@@ -231,6 +253,9 @@ class SynthetixSpotService {
     required BigInt minAmountReceived,
     required Credentials credentials,
   }) async {
+    if (wrapAmount <= BigInt.zero) {
+      throw ArgumentError.value(wrapAmount, 'wrapAmount', 'Wrap amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _spotMarket,
       function: _spotMarket.function('wrap'),
@@ -240,11 +265,19 @@ class SynthetixSpotService {
         minAmountReceived,
       ],
     );
-    return _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    try {
+      final txHash = await _client.sendTransaction(
+        credentials,
+        transaction,
+        chainId: SynthetixConfig.chainId,
+      );
+      if (txHash.isEmpty) throw Exception('Wrap collateral returned empty hash');
+      return txHash;
+    } on RPCError catch (e) {
+      throw Exception('Wrap collateral reverted: ${e.message}');
+    } catch (e) {
+      rethrow;
+    }
   }
 
   /// Unwrap synth back to the underlying collateral.
@@ -254,6 +287,9 @@ class SynthetixSpotService {
     required BigInt minAmountReceived,
     required Credentials credentials,
   }) async {
+    if (unwrapAmount <= BigInt.zero) {
+      throw ArgumentError.value(unwrapAmount, 'unwrapAmount', 'Unwrap amount must be > 0');
+    }
     final transaction = Transaction.callContract(
       contract: _spotMarket,
       function: _spotMarket.function('unwrap'),
@@ -263,11 +299,19 @@ class SynthetixSpotService {
         minAmountReceived,
       ],
     );
-    return _client.sendTransaction(
-      credentials,
-      transaction,
-      chainId: SynthetixConfig.chainId,
-    );
+    try {
+      final txHash = await _client.sendTransaction(
+        credentials,
+        transaction,
+        chainId: SynthetixConfig.chainId,
+      );
+      if (txHash.isEmpty) throw Exception('Unwrap collateral returned empty hash');
+      return txHash;
+    } on RPCError catch (e) {
+      throw Exception('Unwrap collateral reverted: ${e.message}');
+    } catch (e) {
+      rethrow;
+    }
   }
 
   void dispose() {
