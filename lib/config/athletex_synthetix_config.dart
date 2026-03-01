@@ -1,9 +1,9 @@
 /// Enhanced Synthetix configuration for AthleteX protocol operations
 /// Extends SynthetixConfig with collateral, pool, and strategy settings
 class AthleteXSynthetixConfig {
-  /// Primary collateral token address (AX on Sepolia)
-  static const String primaryCollateralAddress =
-      '0xDc5Aa90C7ce823cFBc62aBC3c035c609a97a0A3C'; // AX on Sepolia
+  /// Returns the default collateral address for [chainId].
+  static String defaultCollateralAddress(int chainId) =>
+      collateralsForChain(chainId).firstWhere((c) => c.isDefault).address;
 
   /// Primary collateral token decimals
   static const int primaryCollateralDecimals = 18;
@@ -91,12 +91,10 @@ class AthleteXSynthetixConfig {
 
   /// AX token on Polygon mainnet.
   /// Contract: https://polygonscan.com/token/0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df
-  static const String _axPolygonAddress =
-      '0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df';
 
   static const List<CollateralInfo> _polygonCollaterals = [
     CollateralInfo(
-      address: _axPolygonAddress,
+      address: '0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df',
       symbol: 'AX',
       decimals: 18,
       isDefault: true,
@@ -135,7 +133,7 @@ class AthleteXSynthetixConfig {
   /// Returns all supported collaterals for [chainId].
   /// Falls back to Sepolia list when chain is unknown.
   static List<CollateralInfo> collateralsForChain(int chainId) =>
-      _collateralsByChain[chainId] ?? _sepoliaCollaterals;
+      _collateralsByChain[chainId] ?? _polygonCollaterals;
 
   /// Returns all wrappable collaterals for [chainId].
   static List<CollateralInfo> wrappableCollateralsForChain(int chainId) =>
@@ -146,7 +144,7 @@ class AthleteXSynthetixConfig {
   /// Get collateral info by address (case-insensitive) for [chainId].
   static CollateralInfo? getCollateralInfo(
     String address, {
-    int chainId = sepoliaChainId,
+    required int chainId,
   }) {
     final lower = address.toLowerCase();
     try {
@@ -160,7 +158,7 @@ class AthleteXSynthetixConfig {
   /// Returns true if address is a supported collateral on [chainId].
   static bool isSupportedCollateral(
     String address, {
-    int chainId = sepoliaChainId,
+    required int chainId,
   }) =>
       getCollateralInfo(address, chainId: chainId) != null;
 }

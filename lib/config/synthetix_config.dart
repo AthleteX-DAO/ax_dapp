@@ -49,7 +49,7 @@ class SynthetixConfig {
   static const String axOracleNodeId = '';
 
   // Owner of AthleteX Polygon deployment (deployer wallet)
-  static const String owner = '0x3E70f657AeaA09C413633d881A409a024D28E82C';
+  static const String owner = '0x286EDbA8F65adf56f0B10eb38EFD5c255033B4ED';
 
   // Sepolia fallback — kept for reference / testing
   static const String sepoliaRpcUrl =
