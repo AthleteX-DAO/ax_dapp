@@ -26,7 +26,9 @@ void main() {
   // ─── Shared constants ───────────────────────────────────────────────────────
 
   const testWalletAddress = '0x1234567890123456789012345678901234567890';
-  const testCollateralAddress = AthleteXSynthetixConfig.primaryCollateralAddress;
+  final testCollateralAddress = AthleteXSynthetixConfig.defaultCollateralAddress(
+    EthereumChain.sepoliaTestnet.chainId,
+  );
   const testAccountId = 42;
 
   final testWallet = const Wallet(

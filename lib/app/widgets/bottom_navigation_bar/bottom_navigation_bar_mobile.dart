@@ -34,7 +34,7 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
         context.goNamed('earn');
         break;
       case 3:
-        context.goNamed('perpetuals');
+        context.goNamed('versus');
         break;
     }
   }
@@ -77,10 +77,16 @@ class _BottomNavigationBarMobileState extends State<BottomNavigationBarMobile> {
               label: 'Vaults',
               tooltip: 'Earn yield on your assets',
             ),
+            // Perps hidden — not yet ready for production
+            // BottomNavigationBarItem(
+            //   icon: Icon(FontAwesomeIcons.arrowTrendUp),
+            //   label: 'Perps',
+            //   tooltip: 'Trade perpetual futures',
+            // ),
             BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.arrowTrendUp),
-              label: 'Perps',
-              tooltip: 'Trade perpetual futures',
+              icon: Icon(FontAwesomeIcons.crown),
+              label: 'Versus',
+              tooltip: 'Trade versus markets',
             ),
           ],
           currentIndex: selectedIndex,

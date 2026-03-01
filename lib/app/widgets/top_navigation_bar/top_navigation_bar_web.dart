@@ -71,16 +71,17 @@ class TopNavigationBarWeb extends StatelessWidget {
                     //     context.goNamed('league');
                     //   },
                     // ),
-                    TopNavigationBarItem(
-                      routeName: 'perpetuals',
-                      buttonName: 'Perps',
-                      isSelected: selectedButton == 'perpetuals',
-                      onPressed: () {
-                        bloc.add(
-                            const SelectButtonEvent(buttonName: 'perpetuals'),);
-                        context.goNamed('perpetuals');
-                      },
-                    ),
+                    // Perps hidden — not yet ready for production
+                    // TopNavigationBarItem(
+                    //   routeName: 'perpetuals',
+                    //   buttonName: 'Perps',
+                    //   isSelected: selectedButton == 'perpetuals',
+                    //   onPressed: () {
+                    //     bloc.add(
+                    //         const SelectButtonEvent(buttonName: 'perpetuals'),);
+                    //     context.goNamed('perpetuals');
+                    //   },
+                    // ),
                     TopNavigationBarItem(
                       routeName: 'spot-markets',
                       buttonName: 'Spot',
@@ -89,6 +90,16 @@ class TopNavigationBarWeb extends StatelessWidget {
                         bloc.add(
                             const SelectButtonEvent(buttonName: 'spot-markets'),);
                         context.goNamed('spot-markets');
+                      },
+                    ),
+                    TopNavigationBarItem(
+                      routeName: 'versus',
+                      buttonName: 'Versus',
+                      isSelected: selectedButton == 'versus',
+                      onPressed: () {
+                        bloc.add(
+                            const SelectButtonEvent(buttonName: 'versus'),);
+                        context.goNamed('versus');
                       },
                     ),
                     TextButton(

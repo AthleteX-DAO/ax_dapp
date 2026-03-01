@@ -18,6 +18,7 @@ import 'package:ax_dapp/perps/bloc/perps_page_bloc.dart';
 import 'package:ax_dapp/perps/bloc/perps_trading_bloc.dart';
 import 'package:ax_dapp/perps/view/desktop_perpetuals_page.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
+import 'package:ax_dapp/predict/data/prediction_market_client.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
@@ -83,6 +84,8 @@ class AppRouter {
                       context.read<GetPredictionMarketInfoUseCase>(),
                   getPredictionMarketDataUseCase:
                       context.read<GetPredictionMarketDataUseCase>(),
+                  predictionMarketClient:
+                      context.read<PredictionMarketClient>(),
                 ),
                 child: const DesktopPredict(),
               );

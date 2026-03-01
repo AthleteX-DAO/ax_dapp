@@ -4,5 +4,65 @@ service cloud.firestore {
     match /encrypted_wallets/{document=**} {
       allow read, write: if request.auth != null;
     }
+    
+    // Versus battle votes — open to all (wallet address is the identity)
+    match /battle_votes/{voteId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    // Athlete ELO rankings
+    match /athlete_elo_rankings/{athleteId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    // Rapper ELO rankings
+    match /rapper_elo_rankings/{athleteId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    // Finance Bro ELO rankings
+    match /finance_bro_elo_rankings/{athleteId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    // Versus chat matchup documents
+    match /versus_chat/{matchId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+      
+      // Chat messages subcollection
+      match /messages/{messageId} {
+        allow read: if true;
+        allow create: if request.auth != null 
+                      && request.resource.data.walletAddress is string
+                      && request.resource.data.message is string
+                      && request.resource.data.message.size() > 0
+                      && request.resource.data.message.size() <= 280;
+        allow update: if request.auth != null;
+        allow delete: if request.auth != null 
+                      && (resource.data.walletAddress == request.auth.token.email
+                          || request.auth.token.admin == true);
+      }
+    }
+    
+    // Prediction market price data (for hero carousel and charts)
+    match /prediction_markets_prices/{document=**} {
+      allow read: if true;
+      allow write: if true;  // Allow writes for development price seeding
+    }
+    
+    match /spot_markets_prices/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    match /perp_markets_prices/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
   }
 }

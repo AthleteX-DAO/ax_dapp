@@ -8,9 +8,12 @@ import 'package:ax_dapp/league/repository/prize_pool_repository.dart';
 import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
+import 'package:ax_dapp/predict/data/firebase_price_client.dart';
+import 'package:ax_dapp/predict/data/prediction_market_client.dart';
+import 'package:ax_dapp/predict/repository/live_prediction_market_repository.dart';
 import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
-import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
-import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
+import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
+import 'package:ax_dapp/predict/usecases/get_top_prediction_markets_usecase.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -59,7 +62,7 @@ import 'package:user_authentication/user_authentication.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 void main() async {
-  const defaultChain = EthereumChain.ethereumSepolia;
+  const defaultChain = EthereumChain.polygonMainnet;
 
   _setupLogging();
   final dio = Dio()..interceptors.add(LoggingInterceptor());
@@ -171,6 +174,20 @@ void main() async {
             create: (context) => EventMarketRepository(),
           ),
           RepositoryProvider(
+            create: (context) => PredictionMarketClient(),
+          ),
+          RepositoryProvider(
+            create: (context) => FirebasePriceClient(
+              firestore: FirebaseFirestore.instance,
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => LivePredictionMarketRepository(
+              predictionMarketClient:
+                  context.read<PredictionMarketClient>(),
+            ),
+          ),
+          RepositoryProvider(
             create: (context) => LeagueUseCase(),
           ),
           RepositoryProvider(
@@ -191,6 +208,9 @@ void main() async {
             create: (context) => GetPredictionMarketDataUseCase(
               tokensRepository: context.read<TokensRepository>(),
               graphRepo: subGraphRepo,
+              livePredictionMarketRepository:
+                  context.read<LivePredictionMarketRepository>(),
+              firebasePriceClient: context.read<FirebasePriceClient>(),
             ),
           ),
           RepositoryProvider(
@@ -199,6 +219,12 @@ void main() async {
                   context.read<PredictionSnapshotRepository>(),
               predictionAddressRepository:
                   context.read<PredictionAddressRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => GetTopPredictionMarketsUseCase(
+              livePredictionMarketRepository:
+                  context.read<LivePredictionMarketRepository>(),
             ),
           ),
           RepositoryProvider(

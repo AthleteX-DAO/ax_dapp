@@ -1,4 +1,5 @@
 import 'package:ax_dapp/app/view/view.dart';
+import 'package:ax_dapp/app/widgets/price_data_initializer.dart';
 import 'package:ax_dapp/debug/views/debug_app_wrapper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,12 @@ class EntryApp extends StatelessWidget {
       routerConfig: AppRouter().router,
     );
 
+    final appWithInitializer = PriceDataInitializer(
+      child: _appRouter,
+    );
+
     return kDebugMode
-        ? DebugAppWrapper(home: _appRouter)
-        : _appRouter;
+        ? DebugAppWrapper(home: appWithInitializer)
+        : appWithInitializer;
   }
 }
