@@ -1,3 +1,4 @@
+import 'package:ax_dapp/predict/data/prediction_market_client.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
@@ -16,9 +17,11 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     required EventMarketRepository eventMarketRepository,
     required GetPredictionMarketInfoUseCase getPredictionMarketInfoUseCase,
     required this.getPredictionMarketDataUseCase,
+    PredictionMarketClient? predictionMarketClient,
   })  : _streamAppDataChanges = streamAppDataChangesUseCase,
         _eventMarketRepository = eventMarketRepository,
         _getPredictionMarketInfoUseCase = getPredictionMarketInfoUseCase,
+        _predictionMarketClient = predictionMarketClient,
         super(const PredictPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<SelectedPredictionMarketsChanged>(_onSelectedPredictionMarketsChanged);
@@ -51,6 +54,8 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
 
     on<PredictionVisibilityChanged>(_onPredictionVisibilityChanged);
 
+    on<PredictionPlacementRequested>(_onPredictionPlacementRequested);
+
     add(const WatchAppDataChangesStarted());
     add(const AllPredictionMarketsRequested());
   }
@@ -59,6 +64,7 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
   final EventMarketRepository _eventMarketRepository;
   final GetPredictionMarketInfoUseCase _getPredictionMarketInfoUseCase;
   final GetPredictionMarketDataUseCase getPredictionMarketDataUseCase;
+  final PredictionMarketClient? _predictionMarketClient;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -344,5 +350,53 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
       updatedVisibility.remove(event.predictionId);
     }
     emit(state.copyWith(visiblePredictionIds: updatedVisibility));
+  }
+
+  /// Handle bet placement: approve axUSD → create tokens on-chain.
+  Future<void> _onPredictionPlacementRequested(
+    PredictionPlacementRequested event,
+    Emitter<PredictPageState> emit,
+  ) async {
+    if (_predictionMarketClient == null) {
+      debugPrint('PredictionMarketClient not available — cannot place prediction');
+      return;
+    }
+
+    // Use the Controller's credentials for the wallet-connected user
+    final credentials = _eventMarketRepository.controller.credentials;
+    final axUsdAddress = '0x1Ea27b8fa8D9Fb4370Dd654ffFad4734D0960fA6';
+    final amount =
+        BigInt.from(event.axUsdAmount * 1e18);
+
+    try {
+      debugPrint(
+        'Placing bet: ${event.axUsdAmount} axUSD on '
+        '${event.isYes ? "YES" : "NO"} for market ${event.marketAddress}',
+      );
+
+      // Step 1: Approve axUSD spend (amount + 1% fee buffer)
+      final approveAmount =
+          amount + (amount * BigInt.from(2)) ~/ BigInt.from(100);
+      final approveTx = await _predictionMarketClient!.approveAxUsd(
+        axUsdAddress: axUsdAddress,
+        spenderAddress: event.marketAddress,
+        amount: approveAmount,
+        credentials: credentials,
+      );
+      debugPrint('Approve tx: $approveTx');
+
+      // Step 2: Create tokens (mints equal YES + NO)
+      final createTx = await _predictionMarketClient!.createTokens(
+        marketAddress: event.marketAddress,
+        tokensToCreate: amount,
+        credentials: credentials,
+      );
+      debugPrint('Create tx: $createTx');
+
+      // Refresh market data after successful bet
+      add(const AllPredictionMarketsRequested());
+    } catch (e) {
+      debugPrint('Bet placement failed: $e');
+    }
   }
 }

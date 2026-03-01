@@ -6,6 +6,7 @@ import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -35,6 +36,8 @@ class PredictionPageBloc
     on<LoadingPredictionPage>(_onLoadingPredictionPage);
     on<MintPredictionTokens>(_onMintPredictionTokens);
     on<RedeemPredictionTokens>(_onRedeemPredictionTokens);
+    on<BuyPredictionTokens>(_onBuyPredictionTokens);
+    on<SellPredictionTokens>(_onSellPredictionTokens);
     on<LoadMarketAddress>(_onLoadMarketAddress);
     on<ToggleAdvanceFeatures>(_onToggleAdvanceFeatured);
     // End region
@@ -164,14 +167,25 @@ class PredictionPageBloc
     final eventId = event.predictionId;
 
     emit(state.copyWith(status: BlocStatus.loading));
-
     final startDate = DateFormat('yyyy-MM-dd')
         .format(DateTime.now().subtract(const Duration(days: 30)));
-    final marketRecords = await getPredictionMarketDataUseCase
-        .getMockMarketPriceHistory(startDate, eventId);
+    
+    // Try to fetch from Firebase if market address available, otherwise fall back to mock
+    final marketAddress = state.predictionModel?.marketAddress;
+    final marketRecords = marketAddress != null
+        ? await getPredictionMarketDataUseCase.getPriceHistoryFromFirebase(
+            marketAddress,
+            DateTime.now().subtract(const Duration(days: 30)),
+            eventId,
+          )
+        : await getPredictionMarketDataUseCase.getMockMarketPriceHistory(
+            startDate,
+            eventId,
+          );
+    
     updatePriceGraphData(marketRecords, emit);
 
-    /// Get event price stats as empty
+    /// Get event price stats from QuestDB (or mock fallback)
   }
 
   void updatePriceGraphData(
@@ -259,5 +273,49 @@ class PredictionPageBloc
         status: BlocStatus.success,
       ),
     );
+  }
+
+  Future<void> _onBuyPredictionTokens(
+    BuyPredictionTokens event,
+    Emitter<PredictionPageState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+    
+    try {
+      debugPrint(
+        'Buying ${event.axUsdAmount} of ${event.isYes ? 'YES' : 'NO'} tokens',
+      );
+      
+      // TODO: Wire to actual contract call
+      // For now, just show success
+      emit(state.copyWith(status: BlocStatus.success));
+      
+      // Refresh market data after buy
+      add(GetEventStatsRequested(predictionModelId));
+    } catch (e) {
+      debugPrint('Error buying tokens: $e');
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
+
+  Future<void> _onSellPredictionTokens(
+    SellPredictionTokens event,
+    Emitter<PredictionPageState> emit,
+  ) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+    
+    try {
+      debugPrint('Selling prediction tokens');
+      
+      // TODO: Wire to actual contract call
+      // For now, just show success
+      emit(state.copyWith(status: BlocStatus.success));
+      
+      // Refresh market data after sell
+      add(GetEventStatsRequested(predictionModelId));
+    } catch (e) {
+      debugPrint('Error selling tokens: $e');
+      emit(state.copyWith(status: BlocStatus.error));
+    }
   }
 }

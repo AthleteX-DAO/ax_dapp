@@ -18,7 +18,7 @@ class PredictionGridPlaceholder extends StatelessWidget {
             crossAxisCount: 4,
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
-            childAspectRatio: 1.35,
+            childAspectRatio: 2.45,
           ),
           itemBuilder: (context, index) {
             return _PredictionPlaceholderCard(index: index + 1);

@@ -20,7 +20,16 @@ class RedeemPredictionTokens extends PredictionPageEvent {
 }
 
 class BuyPredictionTokens extends PredictionPageEvent {
-  const BuyPredictionTokens();
+  const BuyPredictionTokens({
+    required this.axUsdAmount,
+    required this.isYes,
+  });
+
+  final double axUsdAmount;
+  final bool isYes;
+
+  @override
+  List<Object?> get props => [axUsdAmount, isYes];
 }
 
 class SellPredictionTokens extends PredictionPageEvent {

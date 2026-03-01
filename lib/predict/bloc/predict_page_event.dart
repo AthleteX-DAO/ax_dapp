@@ -78,3 +78,26 @@ class PredictionVisibilityChanged extends PredictPageEvent {
   @override
   List<Object?> get props => [predictionId, isVisible];
 }
+
+/// Event to place a prediction (create YES or NO tokens) on a live prediction market.
+class PredictionPlacementRequested extends PredictPageEvent {
+  const PredictionPlacementRequested({
+    required this.marketAddress,
+    required this.axUsdAmount,
+    required this.isYes,
+  });
+
+  /// On-chain contract address of the prediction market.
+  final String marketAddress;
+
+  /// Amount of axUSD to spend (human-readable, e.g. 10.0 = 10 axUSD).
+  final double axUsdAmount;
+
+  /// True = YES position, false = NO position.
+  /// (Both create equal YES+NO tokens — the user's intent determines
+  ///  which token they hold for payout.)
+  final bool isYes;
+
+  @override
+  List<Object?> get props => [marketAddress, axUsdAmount, isYes];
+}

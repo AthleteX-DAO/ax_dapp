@@ -1,9 +1,11 @@
 import 'package:ax_dapp/predict/predict.dart';
+import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/widgets/buttons.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/gold_theme.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StatsSide extends StatefulWidget {
   const StatsSide({
@@ -19,6 +21,29 @@ class StatsSide extends StatefulWidget {
 
 class _StatsSideState extends State<StatsSide> {
   bool _isYesSelected = true;
+  double _tradeAmount = 0;
+  final _amountController = TextEditingController();
+  final _maxBalance = 10000.0; // TODO: wire real balance from wallet
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  void _setAmount(double amount) {
+    setState(() {
+      _tradeAmount = amount.clamp(0, _maxBalance);
+      _amountController.text = _tradeAmount.toStringAsFixed(2);
+    });
+  }
+
+  double get _selectedPrice =>
+      _isYesSelected
+          ? (widget.predictionModel.longTokenPrice ?? 0.5)
+          : (widget.predictionModel.shortTokenPrice ?? 0.5);
+
+  double get _expectedPayout => _tradeAmount / _selectedPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +178,193 @@ class _StatsSideState extends State<StatsSide> {
                 ),
               ),
               const SizedBox(height: 24),
+              // Amount Input Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Trade Amount',
+                      style: textStyle(
+                        Colors.white,
+                        16,
+                        isBold: true,
+                        isUline: false,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    // Amount Display
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.15),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Amount',
+                            style: textStyle(
+                              Colors.white.withOpacity(0.7),
+                              14,
+                              isBold: false,
+                              isUline: false,
+                            ),
+                          ),
+                          Text(
+                            '\$${_tradeAmount.toStringAsFixed(2)}',
+                            style: textStyle(
+                              Colors.white,
+                              18,
+                              isBold: true,
+                              isUline: false,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    // Quick Add Buttons
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        _buildQuickAddButton('+\$1', 1),
+                        _buildQuickAddButton('+\$5', 5),
+                        _buildQuickAddButton('+\$10', 10),
+                        _buildQuickAddButton('+\$100', 100),
+                        _buildQuickAddButton('Max', _maxBalance),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    // Amount Input Field
+                    TextField(
+                      controller: _amountController,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      style: textStyle(
+                        Colors.white,
+                        14,
+                        isBold: false,
+                        isUline: false,
+                      ),
+                      onChanged: (value) {
+                        _setAmount(double.tryParse(value) ?? 0);
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Enter amount in USD',
+                        hintStyle: textStyle(
+                          Colors.white.withOpacity(0.4),
+                          14,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.08),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Colors.white.withOpacity(0.15),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Colors.white.withOpacity(0.15),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: primaryOrangeColor.withOpacity(0.5),
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    // Payout Info
+                    if (_tradeAmount > 0)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          color: primaryGreenColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: primaryGreenColor.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Expected if Correct:',
+                              style: textStyle(
+                                primaryGreenColor,
+                                12,
+                                isBold: false,
+                                isUline: false,
+                              ),
+                            ),
+                            Text(
+                              '\$${_expectedPayout.toStringAsFixed(2)}',
+                              style: textStyle(
+                                primaryGreenColor,
+                                12,
+                                isBold: true,
+                                isUline: false,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                    // Trade Button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _isYesSelected
+                              ? primaryGreenColor
+                              : primaryRedColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 4,
+                        ),
+                        onPressed: _tradeAmount > 0
+                            ? () => _executeTrade(context)
+                            : null,
+                        child: Text(
+                          'Buy ${_isYesSelected ? 'YES' : 'NO'}',
+                          style: textStyle(
+                            Colors.white,
+                            16,
+                            isBold: true,
+                            isUline: false,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
               // Trade Info Message
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -256,5 +468,58 @@ class _StatsSideState extends State<StatsSide> {
       containerWdt: wid,
       initialOutcome: initialOutcome,
     );
+  }
+
+  Widget _buildQuickAddButton(String label, double amount) {
+    return GestureDetector(
+      onTap: () => _setAmount(_tradeAmount + amount),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.08),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.2),
+          ),
+        ),
+        child: Text(
+          label,
+          style: textStyle(
+            Colors.white,
+            12,
+            isBold: true,
+            isUline: false,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _executeTrade(BuildContext context) {
+    if (_tradeAmount <= 0) return;
+
+    // Dispatch BuyPredictionTokens event to PredictionPageBloc
+    context.read<PredictionPageBloc>().add(
+      BuyPredictionTokens(
+        axUsdAmount: _tradeAmount,
+        isYes: _isYesSelected,
+      ),
+    );
+
+    // Show confirmation
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Placing \$$_tradeAmount ${_isYesSelected ? 'YES' : 'NO'} prediction on-chain…',
+        ),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+
+    // Clear amount after trade
+    setState(() {
+      _tradeAmount = 0;
+      _amountController.clear();
+    });
   }
 }

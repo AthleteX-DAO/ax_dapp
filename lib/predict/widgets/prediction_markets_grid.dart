@@ -27,7 +27,7 @@ class PredictionMarketsGrid extends StatelessWidget {
             crossAxisCount: 4,
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
-            childAspectRatio: 1.35,
+            childAspectRatio: 2.45,
           ),
           itemBuilder: (context, index) {
             return ResponsivePredictionCard(
@@ -91,7 +91,7 @@ class PredictionMarketsSliverGrid extends StatelessWidget {
         crossAxisCount: crossAxisCount,
         mainAxisSpacing: 12,
         crossAxisSpacing: 12,
-        childAspectRatio: 1.2,
+        childAspectRatio: 2.18,
       ),
       delegate: SliverChildBuilderDelegate(
         (context, index) => ResponsivePredictionCard(

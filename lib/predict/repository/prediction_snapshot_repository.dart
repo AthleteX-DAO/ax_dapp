@@ -36,7 +36,9 @@ class PredictionSnapshotRepository {
           )
           .toList();
       for (final proposal in proposalMap) {
-        final id = proposal['id']! as int;
+        final idString = proposal['id']! as String;
+        // Snapshot proposal IDs are hex strings - hash to int for MarketModel compatibility
+        final id = idString.hashCode;
         final title = proposal['title']!;
         final body = proposal['body']!;
         predictions.add(

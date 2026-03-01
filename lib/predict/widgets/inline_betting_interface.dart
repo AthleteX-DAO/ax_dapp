@@ -4,20 +4,20 @@ import 'package:ax_dapp/service/responsive_constants.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 
-/// Inline betting interface shown on market cards
+/// Inline prediction interface shown on market cards
 /// Shows amount input, quick-add buttons, and win calculation
 class InlineBettingInterface extends StatefulWidget {
   const InlineBettingInterface({
     super.key,
     required this.predictionModel,
     required this.isYes,
-    required this.onBet,
+    required this.onPredict,
     required this.expanded,
   });
 
   final PredictionModel predictionModel;
   final bool isYes;
-  final void Function(double amount)? onBet;
+  final void Function(double amount)? onPredict;
   final bool expanded;
 
   @override
@@ -225,7 +225,7 @@ class _InlineBettingInterfaceState extends State<InlineBettingInterface> {
                     ),
                     const SizedBox(height: 12),
 
-                    // Bet button
+                    // Predict button
                     SizedBox(
                       width: double.infinity,
                       height: 48,
@@ -239,10 +239,10 @@ class _InlineBettingInterfaceState extends State<InlineBettingInterface> {
                           ),
                         ),
                         onPressed: () {
-                          widget.onBet?.call(_sliderValue);
+                          widget.onPredict?.call(_sliderValue);
                         },
                         child: Text(
-                          'Bet ${widget.isYes ? 'Yes' : 'No'}',
+                          'Predict ${widget.isYes ? 'Yes' : 'No'}',
                           style: textStyle(
                             Colors.white,
                             14,

@@ -1,4 +1,5 @@
 import 'package:ax_dapp/app/widgets/widgets.dart';
+import 'package:ax_dapp/predict/bloc/hero_carousel_bloc.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -64,7 +65,13 @@ class _DesktopPredictState extends State<DesktopPredict> {
                       child: RepaintBoundary(
                         child: SizedBox(
                           height: heroHeight,
-                          child: const PredictionHeroCarouselPlaceholder(),
+                          child: BlocProvider(
+                            create: (context) => HeroCarouselBloc(
+                              getTopPredictionMarketsUseCase:
+                                  context.read(),
+                            ),
+                            child: const PredictionHeroCarouselPlaceholder(),
+                          ),
                         ),
                       ),
                     ),
