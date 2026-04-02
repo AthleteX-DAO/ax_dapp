@@ -16,7 +16,7 @@ class SynthetixAccountInfo extends StatelessWidget {
     super.key,
   });
 
-  final int accountId;
+  final BigInt accountId;
   final BigInt collateralDeposited;
   final BigInt collateralAssigned;
   final BigInt collateralAvailable;
@@ -51,7 +51,7 @@ class SynthetixAccountInfo extends StatelessWidget {
       );
     }
 
-    if (accountId == 0) {
+    if (accountId == BigInt.zero) {
       return Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(

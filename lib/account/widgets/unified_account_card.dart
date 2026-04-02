@@ -32,7 +32,7 @@ class UnifiedAccountCard extends StatefulWidget {
     super.key,
   });
 
-  final int accountId;
+  final BigInt accountId;
   final BigInt collateralDeposited;
   final BigInt collateralAssigned;
   final BigInt collateralAvailable;
@@ -116,7 +116,7 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
       return _buildLoadingCard();
     }
 
-    if (widget.accountId == 0) {
+    if (widget.accountId == BigInt.zero) {
       return _buildCreateAccountCard();
     }
 

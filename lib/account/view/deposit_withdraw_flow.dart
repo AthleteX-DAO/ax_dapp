@@ -18,7 +18,7 @@ class DepositWithdrawFlow extends StatefulWidget {
   });
 
   final bool isDeposit;
-  final int accountId;
+  final BigInt accountId;
   final BigInt currentCollateralAmount;
   final BigInt maxWithdrawAmount;
   final VoidCallback onComplete;

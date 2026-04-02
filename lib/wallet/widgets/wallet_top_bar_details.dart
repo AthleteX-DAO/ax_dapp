@@ -31,8 +31,8 @@ class WalletTopBarDetails extends StatelessWidget {
             ? '${address.substring(0, 7)}...${address.substring(address.length - 5)}'
             : 'Connect wallet';
         final balanceText = state.walletBalance > 0
-            ? '${state.walletBalance.toStringAsFixed(2)} USDC'
-            : 'USDC 0.00';
+            ? '${state.walletBalance.toStringAsFixed(2)} axUSD'
+            : 'axUSD 0.00';
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),

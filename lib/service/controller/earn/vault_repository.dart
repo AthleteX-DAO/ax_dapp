@@ -91,11 +91,6 @@ class VaultRepository {
   EthereumChain get chain => _chain;
   EthereumChain _chain;
 
-  /// Update the active chain. Called by EarnPageBloc when AppData changes.
-  void updateChain(EthereumChain newChain) {
-    _chain = newChain;
-  }
-
   /// The reactive web3 client for blockchain calls.
   final ValueStream<Web3Client> _reactiveWeb3Client;
 
@@ -105,8 +100,22 @@ class VaultRepository {
   /// The user's wallet address (optional, for balance queries).
   final String? userAddress;
 
-  /// The Synthetix V3 account id used for delegate/undelegate. Default: 1.
-  final BigInt accountId;
+  /// The Synthetix V3 account id used for deposit/delegate/mint. Updated when
+  /// AccountBloc confirms a live account.
+  BigInt accountId;
+
+  /// Update the active chain. Called by EarnPageBloc when AppData changes.
+  void updateChain(EthereumChain newChain) {
+    _chain = newChain;
+  }
+
+  /// Update the Synthetix account ID. Called from EarnPage (or EarnPageBloc)
+  /// whenever AccountBloc emits a non-zero synthetixAccountId.
+  void updateAccountId(BigInt newAccountId) {
+    if (newAccountId != BigInt.zero) {
+      accountId = newAccountId;
+    }
+  }
 
   Web3Client get _web3Client => _reactiveWeb3Client.value;
 
@@ -431,13 +440,14 @@ class VaultRepository {
     final credentials = _walletRepository.credentials.value;
     debugPrint('✅ [VAULT_REPO] Credentials obtained');
 
-    // CRITICAL: Fetch the actual account ID from the blockchain
-    debugPrint('🟡 [VAULT_REPO] Fetching actual account ID from blockchain...');
-    final actualAccountId = await _fetchActualAccountId(userAddress!);
-    debugPrint('✅ [VAULT_REPO] Actual account ID: $actualAccountId');
-    
-    if (actualAccountId == null) {
-      debugPrint('❌ [VAULT_REPO] No Synthetix account found for this wallet!');
+    // Use the account ID already provided to VaultRepository (from AccountBloc).
+    // _fetchActualAccountId was removed: it called ERC-721 functions that don't
+    // exist on CoreProxy, causing the deposit to always fail.
+    final resolvedAccountId = accountId;
+    debugPrint('✅ [VAULT_REPO] Using stored accountId: $resolvedAccountId');
+
+    if (resolvedAccountId == BigInt.zero) {
+      debugPrint('❌ [VAULT_REPO] No Synthetix account (accountId is zero)!');
       throw Exception('No Synthetix account found. Please create one first from the Account page.');
     }
 
@@ -492,7 +502,7 @@ class VaultRepository {
         SynthetixCoreProxy(address: coreProxyAddress, client: _web3Client);
     
     debugPrint('🟡 [VAULT_REPO] deposit parameters:');
-    debugPrint('   - accountId: $actualAccountId');
+    debugPrint('   - accountId: $resolvedAccountId');
     debugPrint('   - collateralAddress: ${collateralAddress.hex}');
     debugPrint('   - amount: $amountWei');
     
@@ -503,7 +513,7 @@ class VaultRepository {
         contract: coreProxy.self,
         function: depositFunction,
         parameters: [
-          actualAccountId,
+          resolvedAccountId,
           collateralAddress,
           amountWei,
         ],
@@ -526,7 +536,7 @@ class VaultRepository {
     debugPrint('\n🟡 [VAULT_REPO] === STEP 3: DELEGATE COLLATERAL ===');
     
     debugPrint('🟡 [VAULT_REPO] delegateCollateral parameters:');
-    debugPrint('   - accountId: $actualAccountId');
+    debugPrint('   - accountId: $resolvedAccountId');
     debugPrint('   - poolId: ${vault.poolId}');
     debugPrint('   - collateralAddress: ${collateralAddress.hex}');
     debugPrint('   - amount: $amountWei');
@@ -535,7 +545,7 @@ class VaultRepository {
     try {
       debugPrint('🟡 [VAULT_REPO] Calling coreProxy.delegateCollateral()...');
       final txHash = await coreProxy.delegateCollateral(
-        actualAccountId,
+        resolvedAccountId,
         vault.poolId,
         collateralAddress,
         amountWei,
@@ -608,13 +618,12 @@ class VaultRepository {
       throw Exception('Wallet not connected');
     }
 
-    // Fetch actual account ID
-    debugPrint('🟣 [VAULT_REPO] Fetching actual account ID...');
-    final actualAccountId = await _fetchActualAccountId(userAddress!);
-    debugPrint('🟣 [VAULT_REPO] Actual account ID: $actualAccountId');
-    
-    if (actualAccountId == null) {
-      debugPrint('❌ [VAULT_REPO] No Synthetix account found!');
+    // Use the account ID already provided to VaultRepository (from AccountBloc).
+    final resolvedAccountId = accountId;
+    debugPrint('🟣 [VAULT_REPO] Using stored accountId: $resolvedAccountId');
+
+    if (resolvedAccountId == BigInt.zero) {
+      debugPrint('❌ [VAULT_REPO] No Synthetix account (accountId is zero)!');
       throw Exception('No Synthetix account found');
     }
 
@@ -637,7 +646,7 @@ class VaultRepository {
     );
 
     debugPrint('🟣 [VAULT_REPO] mintUsd parameters:');
-    debugPrint('   - accountId: $actualAccountId');
+    debugPrint('   - accountId: $resolvedAccountId');
     debugPrint('   - pool: $pool');
     debugPrint('   - collateral: $collateralEthAddress');
     debugPrint('   - amount: $amountWei');
@@ -646,7 +655,7 @@ class VaultRepository {
     final transaction = Transaction.callContract(
       contract: coreProxy.self,
       function: function,
-      parameters: [actualAccountId, pool, collateralEthAddress, amountWei],
+      parameters: [resolvedAccountId, pool, collateralEthAddress, amountWei],
     );
 
     try {

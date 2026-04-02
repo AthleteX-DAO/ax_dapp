@@ -11,11 +11,11 @@ class EarnSimpleTile extends StatelessWidget {
   Widget build(BuildContext context) {
     // Re-fetch vaults whenever the Synthetix accountId changes so balances
     // update as soon as an account is created without needing a page reload.
-    return BlocSelector<AccountBloc, AccountState, int>(
+    return BlocSelector<AccountBloc, AccountState, BigInt>(
       selector: (state) => state.synthetixAccountId,
       builder: (context, accountId) {
         final resolvedId =
-            accountId == 0 ? null : BigInt.from(accountId);
+            accountId == BigInt.zero ? null : accountId;
         return FutureBuilder<List<VaultData>>(
           key: ValueKey(accountId),
           future: context

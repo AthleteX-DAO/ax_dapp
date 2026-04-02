@@ -330,8 +330,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       // Use first account (primary account)
       debugPrint('>>> accountIds.first: ${accountIds.first}');
       debugPrint('>>> accountIds.first runtimeType: ${accountIds.first.runtimeType}');
-      final accountId = accountIds.first.toInt();
-      debugPrint('>>> Converted accountId (toInt): $accountId');
+      final accountId = accountIds.first;
+      debugPrint('>>> Converted accountId: $accountId');
 
       final collateralAddress =
           AthleteXSynthetixConfig.defaultCollateralAddress(state.chain.chainId);
@@ -438,7 +438,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       ));
       return;
     }
-    final validAccountId = freshAccountIds.first.toInt();
+    final validAccountId = freshAccountIds.first;
     debugPrint('>>> FRESH accountId from blockchain: $validAccountId');
     
     // Update state with correct account ID

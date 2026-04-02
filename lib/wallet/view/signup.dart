@@ -1,13 +1,12 @@
+import 'package:ax_dapp/service/gold_theme.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpView extends StatefulWidget {
-  const SignUpView({
-    super.key,
-  });
+  const SignUpView({super.key});
 
   @override
   State<SignUpView> createState() => _SignUpViewState();
@@ -17,19 +16,20 @@ class _SignUpViewState extends State<SignUpView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool _hasDispatchedAuthFailed = false;
+  bool _obscurePassword = true;
+  bool _hovering = false;
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    final height = MediaQuery.sizeOf(context).height;
     return BlocBuilder<WalletBloc, WalletState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<WalletBloc>();
         final errorMessage = state.errorMessage;
         final walletViewStatus = state.walletViewStatus;
+
+        // ── Error / Info Toast Handling ──
         if (state.hasFailure && !_hasDispatchedAuthFailed) {
-          debugPrint('🟡 SignUpView: Detected failure, dispatching AuthFailed');
           _hasDispatchedAuthFailed = true;
           WidgetsBinding.instance.addPostFrameCallback((_) {
             context.showWarningToast(
@@ -50,91 +50,258 @@ class _SignUpViewState extends State<SignUpView> {
           });
           bloc.add(const InfoMessageCleared());
         }
+
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 28),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              IconButton(
+            children: [
+              // ── Back button ──
+              Align(
                 alignment: Alignment.centerLeft,
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                  size: 30,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_rounded,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                  onPressed: () => bloc.add(const LoginSignUpViewRequested()),
                 ),
-                onPressed: () => context.read<WalletBloc>().add(
-                      const LoginSignUpViewRequested(),
-                    ),
               ),
-              TextField(
-                keyboardType: TextInputType.emailAddress,
+              const SizedBox(height: 12),
+
+              // ── Title ──
+              ShaderMask(
+                shaderCallback: (bounds) => const LinearGradient(
+                  colors: [GoldTheme.gold, Color(0xFFFFF1B0)],
+                ).createShader(bounds),
+                child: const Text(
+                  'Get Started',
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Create your AthleteX account',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey[400],
+                  fontFamily: 'OpenSans',
+                ),
+              ),
+              const SizedBox(height: 36),
+
+              // ── Email field ──
+              _buildTextField(
                 controller: emailController,
-                textAlign: TextAlign.center,
+                label: 'Email',
+                hint: 'Enter your email',
+                icon: Icons.email_outlined,
+                keyboardType: TextInputType.emailAddress,
                 onChanged: (value) =>
-                    context.read<WalletBloc>().add(EmailChanged(email: value)),
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your email',
-                  labelText: 'Email',
-                ),
+                    bloc.add(EmailChanged(email: value)),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              TextField(
+              const SizedBox(height: 16),
+
+              // ── Password field ──
+              _buildTextField(
                 controller: passwordController,
-                obscureText: true,
-                textAlign: TextAlign.center,
-                onChanged: (value) => context
-                    .read<WalletBloc>()
-                    .add(PassWordChanged(password: value)),
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your Password',
-                  labelText: 'Password',
+                label: 'Password',
+                hint: 'Create a password',
+                icon: Icons.lock_outline_rounded,
+                obscureText: _obscurePassword,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword
+                        ? Icons.visibility_off_rounded
+                        : Icons.visibility_rounded,
+                    color: Colors.grey[500],
+                    size: 20,
+                  ),
+                  onPressed: () =>
+                      setState(() => _obscurePassword = !_obscurePassword),
+                ),
+                onChanged: (value) =>
+                    bloc.add(PassWordChanged(password: value)),
+              ),
+              const SizedBox(height: 12),
+
+              // ── Password requirements hint ──
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.03),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.08),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline_rounded,
+                      size: 16,
+                      color: Colors.grey[500],
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Password must be at least 6 characters',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[500],
+                          fontFamily: 'OpenSans',
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 35,
-              ),
-              TextButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all<Color>(
-                    primaryOrangeColor.withOpacity(0.15),
-                  ),
-                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      side: const BorderSide(color: Colors.white),
+              const SizedBox(height: 32),
+
+              // ── Sign Up Button ──
+              MouseRegion(
+                onEnter: (_) => setState(() => _hovering = true),
+                onExit: (_) => setState(() => _hovering = false),
+                child: GestureDetector(
+                  onTap: () =>
+                      bloc.add(const ProfileViewRequestedFromSignUp()),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: _hovering
+                            ? [
+                                const Color(0xFFFFC600),
+                                const Color(0xFFE0A800),
+                              ]
+                            : [GoldTheme.gold, GoldTheme.goldDark],
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                      boxShadow: [
+                        BoxShadow(
+                          color: GoldTheme.gold
+                              .withValues(alpha: _hovering ? 0.35 : 0.18),
+                          blurRadius: _hovering ? 18 : 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.person_add_alt_1_rounded,
+                          color: Colors.black,
+                          size: 20,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Create Account',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'OpenSans',
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  minimumSize: WidgetStateProperty.all<Size>(
-                    Size(width / 4, height * 0.09),
-                  ),
-                  maximumSize: WidgetStateProperty.all<Size>(
-                    Size(width / 2, height * 0.10),
-                  ),
                 ),
-                onPressed: () async {
-                  context.read<WalletBloc>().add(
-                        const ProfileViewRequestedFromSignUp(),
-                      );
-                },
-                child: FittedBox(
-                  child: Text(
-                    'Sign Up',
+              ),
+              const SizedBox(height: 20),
+
+              // ── Already have account? ──
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Already have an account? ',
                     style: TextStyle(
-                      color: Colors.amber[400],
-                      fontSize: 40,
+                      fontSize: 13,
+                      color: Colors.grey[400],
                       fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                ),
+                  GestureDetector(
+                    onTap: () => bloc.add(const LoginViewRequested()),
+                    child: const Text(
+                      'Log In',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: GoldTheme.gold,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'OpenSans',
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required IconData icon,
+    required ValueChanged<String> onChanged,
+    TextInputType? keyboardType,
+    bool obscureText = false,
+    Widget? suffixIcon,
+  }) {
+    return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      onChanged: onChanged,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 15,
+        fontFamily: 'OpenSans',
+      ),
+      decoration: InputDecoration(
+        hintText: hint,
+        labelText: label,
+        hintStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
+        labelStyle: TextStyle(
+          color: GoldTheme.gold.withValues(alpha: 0.7),
+          fontFamily: 'OpenSans',
+        ),
+        prefixIcon: Icon(icon, color: Colors.grey[500], size: 20),
+        suffixIcon: suffixIcon,
+        filled: true,
+        fillColor: Colors.white.withValues(alpha: 0.05),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(
+            color: Colors.white.withValues(alpha: 0.12),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: GoldTheme.gold, width: 1.5),
+        ),
+      ),
     );
   }
 

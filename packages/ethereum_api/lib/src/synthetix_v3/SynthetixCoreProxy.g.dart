@@ -26,7 +26,7 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     _i1.BlockNum? atBlock,
   }) async {
     final function = self.abi.functions[0];
-    assert(checkSignature(function, '36731394'));
+    assert(checkSignature(function, '078145a8'));
     final params = [poolId, collateralType];
     final response = await read(function, params, atBlock);
     return GetVaultCollateralResult(
@@ -46,7 +46,7 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     _i1.BlockNum? atBlock,
   }) async {
     final function = self.abi.functions[1];
-    assert(checkSignature(function, 'c035a4f0'));
+    assert(checkSignature(function, '2fb8ff24'));
     final params = [poolId, collateralType];
     final response = await read(function, params, atBlock);
     return response[0] as BigInt;
@@ -62,7 +62,7 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     _i1.BlockNum? atBlock,
   }) async {
     final function = self.abi.functions[2];
-    assert(checkSignature(function, '2faa3a7b'));
+    assert(checkSignature(function, 'efecf137'));
     final params = [poolId];
     final response = await read(function, params, atBlock);
     return response[0] as List<dynamic>;
@@ -79,7 +79,7 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     _i1.BlockNum? atBlock,
   }) async {
     final function = self.abi.functions[3];
-    assert(checkSignature(function, 'a0a6d21e'));
+    assert(checkSignature(function, 'ef45148e'));
     final params = [accountId, collateralType];
     final response = await read(function, params, atBlock);
     return GetAccountCollateralResult(
@@ -101,7 +101,7 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     _i1.BlockNum? atBlock,
   }) async {
     final function = self.abi.functions[4];
-    assert(checkSignature(function, 'cf79b629'));
+    assert(checkSignature(function, '33cc422b'));
     final params = [accountId, poolId, collateralType];
     final response = await read(function, params, atBlock);
     return response[0] as BigInt;
@@ -118,7 +118,7 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     _i1.BlockNum? atBlock,
   }) async {
     final function = self.abi.functions[5];
-    assert(checkSignature(function, '6872bf61'));
+    assert(checkSignature(function, '60248c55'));
     final params = [poolId, collateralType];
     final response = await read(function, params, atBlock);
     return response[0] as BigInt;
@@ -135,7 +135,7 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     _i1.Transaction? transaction,
   }) async {
     final function = self.abi.functions[6];
-    assert(checkSignature(function, 'c3e2f2c0'));
+    assert(checkSignature(function, '7b0532a4'));
     final params = [accountId, poolId, collateralType, amount, leverage];
     return write(credentials, transaction, function, params);
   }
@@ -150,7 +150,7 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     _i1.Transaction? transaction,
   }) async {
     final function = self.abi.functions[7];
-    assert(checkSignature(function, '10b22fa0'));
+    assert(checkSignature(function, 'a4e5e0dd'));
     final params = [accountId, poolId, collateralType, amount];
     return write(credentials, transaction, function, params);
   }

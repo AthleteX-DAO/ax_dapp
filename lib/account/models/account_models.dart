@@ -252,7 +252,7 @@ class SynthetixAccount extends Equatable {
   });
 
   /// Unique Synthetix account ID on-chain
-  final int accountId;
+  final BigInt accountId;
 
   /// Wallet address that owns this account
   final String ownerAddress;
@@ -299,7 +299,7 @@ class SynthetixAccount extends Equatable {
   }
 
   SynthetixAccount copyWith({
-    int? accountId,
+    BigInt? accountId,
     String? ownerAddress,
     Map<String, SynthetixCollateral>? collaterals,
     Map<int, ProtocolPosition>? positions,

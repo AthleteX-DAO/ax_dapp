@@ -17,7 +17,7 @@ class AccountState extends Equatable {
     this.vaultsError,
     EthereumChain? withdrawTargetChain,
     // Synthetix account data
-    this.synthetixAccountId = 0,
+    BigInt? synthetixAccountId,
     BigInt? synthetixCollateralDeposited,
     BigInt? synthetixCollateralAssigned,
     BigInt? synthetixCollateralAvailable,
@@ -34,6 +34,7 @@ class AccountState extends Equatable {
     this.synthetixTxStatus = SynthetixTxStatus.idle,
     this.synthetixTxError,
   })  : withdrawTargetChain = withdrawTargetChain ?? chain,
+        synthetixAccountId = synthetixAccountId ?? BigInt.zero,
         synthetixCollateralDeposited =
             synthetixCollateralDeposited ?? _zeroBigInt,
         synthetixCollateralAssigned =
@@ -63,7 +64,7 @@ class AccountState extends Equatable {
   final String? vaultsError;
 
   // Synthetix V3 account data
-  final int synthetixAccountId;
+  final BigInt synthetixAccountId;
   final BigInt synthetixCollateralDeposited;
   final BigInt synthetixCollateralAssigned;
   final BigInt synthetixCollateralAvailable;
@@ -138,7 +139,7 @@ class AccountState extends Equatable {
     List<VaultData>? vaults,
     bool? isVaultsLoading,
     String? vaultsError,
-    int? synthetixAccountId,
+    BigInt? synthetixAccountId,
     BigInt? synthetixCollateralDeposited,
     BigInt? synthetixCollateralAssigned,
     BigInt? synthetixCollateralAvailable,

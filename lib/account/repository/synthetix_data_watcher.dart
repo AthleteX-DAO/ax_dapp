@@ -59,13 +59,13 @@ class SynthetixDataWatcher {
   Timer? _pollingTimer;
   bool _isWatching = false;
   String? _currentWalletAddress;
-  int? _currentAccountId;
+  BigInt? _currentAccountId;
   _VaultConfig? _cachedVaultConfig;
 
   /// Start watching a specific Synthetix account
   Future<void> startWatching({
     required String walletAddress,
-    required int synthetixAccountId,
+    required BigInt synthetixAccountId,
   }) async {
     if (_isWatching &&
         _currentWalletAddress == walletAddress &&

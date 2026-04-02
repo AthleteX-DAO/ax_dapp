@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:ax_dapp/config/synthetix_config.dart';
+
 import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -127,7 +129,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       try {
         // Fetch live C-ratio
         final cRatio = await _vaultRepository?.getCollateralRatio(
-          collateralAddress: '0xc43708f8987Df3f3681801e5e640667D86Ce3C30', // fUSDC or similar
+          collateralAddress: SynthetixConfig.axToken, // fUSDC or similar
         ) ?? 200.0;
         emit(state.copyWith(
           collateralRatio: cRatio,
@@ -164,7 +166,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
 
     try {
       final cRatio = await _vaultRepository?.getCollateralRatio(
-        collateralAddress: '0xc43708f8987Df3f3681801e5e640667D86Ce3C30',
+        collateralAddress: SynthetixConfig.axToken,
       ) ?? 200.0;
       emit(state.copyWith(
         collateralRatio: cRatio,

@@ -31,12 +31,12 @@ class SynthetixBatchQueries {
   final DeployedContract _coreProxy;
 
   Future<SynthetixBatchSnapshot> fetchAccountSnapshot({
-    required int accountId,
+    required BigInt accountId,
     required String collateralAddress,
     required int poolId,
   }) async {
     final collateralType = EthereumAddress.fromHex(collateralAddress);
-    final accountIdBig = BigInt.from(accountId);
+    final accountIdBig = accountId;
     final poolIdBig = BigInt.from(poolId);
 
     final getCollateralFn = _coreProxy.function('getAccountCollateral');

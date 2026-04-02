@@ -292,7 +292,7 @@ class SynthetixCoreService {
 
   /// Get collateral info for an account
   Future<Map<String, BigInt>> getAccountCollateral(
-    int accountId,
+    BigInt accountId,
     String collateralAddress,
   ) async {
     try {
@@ -300,7 +300,7 @@ class SynthetixCoreService {
         contract: _coreProxy,
         function: _coreProxy.function('getAccountCollateral'),
         params: [
-          BigInt.from(accountId),
+          accountId,
           EthereumAddress.fromHex(collateralAddress),
         ],
       );
@@ -335,7 +335,7 @@ class SynthetixCoreService {
 
   /// Deposit collateral (requires transaction + prior approval)
   Future<String> depositCollateral({
-    required int accountId,
+    required BigInt accountId,
     required String collateralAddress,
     required BigInt amount,
     required Credentials credentials,
@@ -348,7 +348,7 @@ class SynthetixCoreService {
       contract: _coreProxy,
       function: _coreProxy.function('deposit'),
       parameters: [
-        BigInt.from(accountId),
+        accountId,
         EthereumAddress.fromHex(collateralAddress),
         amount,
       ],
@@ -360,7 +360,7 @@ class SynthetixCoreService {
 
   /// Withdraw collateral from account
   Future<String> withdrawCollateral({
-    required int accountId,
+    required BigInt accountId,
     required String collateralAddress,
     required BigInt amount,
     required Credentials credentials,
@@ -372,7 +372,7 @@ class SynthetixCoreService {
       contract: _coreProxy,
       function: _coreProxy.function('withdraw'),
       parameters: [
-        BigInt.from(accountId),
+        accountId,
         EthereumAddress.fromHex(collateralAddress),
         amount,
       ],
@@ -384,7 +384,7 @@ class SynthetixCoreService {
   /// Delegate collateral to a liquidity pool
   /// This commits your collateral to back a pool and earn yield
   Future<String> delegateCollateral({
-    required int accountId,
+    required BigInt accountId,
     required int poolId,
     required String collateralAddress,
     required BigInt amount,
@@ -392,13 +392,13 @@ class SynthetixCoreService {
     BigInt? leverage, // 1e18 = 1x leverage
   }) async {
     debugPrint('>>> delegateCollateral called:');
-    debugPrint('>>>   accountId: $accountId (${BigInt.from(accountId).toRadixString(16)})');
+    debugPrint('>>>   accountId: $accountId (${accountId.toRadixString(16)})');
     debugPrint('>>>   poolId: $poolId (${BigInt.from(poolId).toRadixString(16)})');
     debugPrint('>>>   collateralAddress: $collateralAddress');
     debugPrint('>>>   amount: $amount');
     debugPrint('>>>   leverage: ${leverage ?? BigInt.from(1000000000000000000)}');
     
-    if (accountId <= 0) {
+    if (accountId <= BigInt.zero) {
       throw ArgumentError.value(accountId, 'accountId', 'Account ID must be > 0');
     }
     if (poolId <= 0) {
@@ -411,7 +411,7 @@ class SynthetixCoreService {
       contract: _coreProxy,
       function: _coreProxy.function('delegateCollateral'),
       parameters: [
-        BigInt.from(accountId),
+        accountId,
         BigInt.from(poolId),
         EthereumAddress.fromHex(collateralAddress),
         amount,
@@ -425,13 +425,13 @@ class SynthetixCoreService {
 
   /// Undelegate collateral from a liquidity pool
   Future<String> undelegateCollateral({
-    required int accountId,
+    required BigInt accountId,
     required int poolId,
     required String collateralAddress,
     required BigInt amount,
     required Credentials credentials,
   }) async {
-    if (accountId <= 0) {
+    if (accountId <= BigInt.zero) {
       throw ArgumentError.value(accountId, 'accountId', 'Account ID must be > 0');
     }
     if (poolId <= 0) {
@@ -444,7 +444,7 @@ class SynthetixCoreService {
       contract: _coreProxy,
       function: _coreProxy.function('undelegateCollateral'),
       parameters: [
-        BigInt.from(accountId),
+        accountId,
         BigInt.from(poolId),
         EthereumAddress.fromHex(collateralAddress),
         amount,
@@ -456,7 +456,7 @@ class SynthetixCoreService {
 
   /// Mint/borrow sUSD against delegated collateral
   Future<String> mintUsd({
-    required int accountId,
+    required BigInt accountId,
     required int poolId,
     required String collateralAddress,
     required BigInt amount,
@@ -469,7 +469,7 @@ class SynthetixCoreService {
       contract: _coreProxy,
       function: _coreProxy.function('mintUsd'),
       parameters: [
-        BigInt.from(accountId),
+        accountId,
         BigInt.from(poolId),
         EthereumAddress.fromHex(collateralAddress),
         amount,
@@ -481,7 +481,7 @@ class SynthetixCoreService {
 
   /// Burn/repay sUSD debt
   Future<String> burnUsd({
-    required int accountId,
+    required BigInt accountId,
     required int poolId,
     required String collateralAddress,
     required BigInt amount,
@@ -494,7 +494,7 @@ class SynthetixCoreService {
       contract: _coreProxy,
       function: _coreProxy.function('burnUsd'),
       parameters: [
-        BigInt.from(accountId),
+        accountId,
         BigInt.from(poolId),
         EthereumAddress.fromHex(collateralAddress),
         amount,
@@ -506,7 +506,7 @@ class SynthetixCoreService {
 
   /// Get available (unassigned) collateral that can be withdrawn
   Future<BigInt> getAccountAvailableCollateral(
-    int accountId,
+    BigInt accountId,
     String collateralAddress,
   ) async {
     try {
@@ -514,7 +514,7 @@ class SynthetixCoreService {
         contract: _coreProxy,
         function: _coreProxy.function('getAccountAvailableCollateral'),
         params: [
-          BigInt.from(accountId),
+          accountId,
           EthereumAddress.fromHex(collateralAddress),
         ],
       );
@@ -527,7 +527,7 @@ class SynthetixCoreService {
 
   /// Get debt position for account in a pool
   Future<BigInt> getPositionDebt(
-    int accountId,
+    BigInt accountId,
     int poolId,
     String collateralAddress,
   ) async {
@@ -536,7 +536,7 @@ class SynthetixCoreService {
         contract: _coreProxy,
         function: _coreProxy.function('getPositionDebt'),
         params: [
-          BigInt.from(accountId),
+          accountId,
           BigInt.from(poolId),
           EthereumAddress.fromHex(collateralAddress),
         ],
@@ -551,7 +551,7 @@ class SynthetixCoreService {
   /// Get collateralization ratio (c-ratio) for a position
   /// Returns ratio in 18 decimals (e.g., 400e18 = 400%)
   Future<BigInt> getPositionCollateralRatio(
-    int accountId,
+    BigInt accountId,
     int poolId,
     String collateralAddress,
   ) async {
@@ -560,7 +560,7 @@ class SynthetixCoreService {
         contract: _coreProxy,
         function: _coreProxy.function('getPositionCollateralRatio'),
         params: [
-          BigInt.from(accountId),
+          accountId,
           BigInt.from(poolId),
           EthereumAddress.fromHex(collateralAddress),
         ],
@@ -589,16 +589,32 @@ class SynthetixCoreService {
       final senderAddress = await credentials.extractAddress();
       debugPrint('>>> sender: ${senderAddress.hex}');
       
-      final estimatedGas = await _client.estimateGas(
-        sender: EthereumAddress.fromHex(senderAddress.hex),
-        to: transaction.to,
-        data: transaction.data,
-      );
-      debugPrint('>>> estimatedGas: $estimatedGas');
-      // Apply 1.3× buffer (round up to nearest integer)
-      final bufferedGas = (estimatedGas * BigInt.from(13)) ~/ BigInt.from(10);
-      debugPrint('>>> bufferedGas: $bufferedGas');
-      final txWithGas = transaction.copyWith(maxGas: bufferedGas.toInt());
+      // Try estimateGas first, but fall back to a fixed limit if it fails.
+      // On Flutter web, eth_estimateGas may not pass the `from` address
+      // correctly through the JS bridge, causing permissioned Synthetix
+      // calls (delegate, mint, etc.) to revert with PermissionDenied
+      // during simulation while the actual signed tx would succeed.
+      BigInt gasLimit;
+      try {
+        final estimatedGas = await _client.estimateGas(
+          sender: EthereumAddress.fromHex(senderAddress.hex),
+          to: transaction.to,
+          data: transaction.data,
+        );
+        debugPrint('>>> estimatedGas: $estimatedGas');
+        // Apply 1.3× buffer (round up to nearest integer)
+        gasLimit = (estimatedGas * BigInt.from(13)) ~/ BigInt.from(10);
+      } catch (estimateError) {
+        // Gas estimation failed (likely a permission check that requires
+        // msg.sender). Use a generous fallback gas limit.
+        const fallbackGas = 500000;
+        debugPrint('>>> estimateGas failed: $estimateError');
+        debugPrint('>>> Using fallback gas limit: $fallbackGas');
+        gasLimit = BigInt.from(fallbackGas);
+      }
+      
+      debugPrint('>>> gasLimit: $gasLimit');
+      final txWithGas = transaction.copyWith(maxGas: gasLimit.toInt());
       debugPrint('>>> Sending transaction to chainId: ${SynthetixConfig.chainId}');
       final txHash = await _client.sendTransaction(
         credentials,

@@ -8,7 +8,7 @@ class EthereumUrlConfig {
   /// Configuration for GraphQL dex link.
   const EthereumUrlConfig.dex()
       : polygonMainnet =
-            'https://api.thegraph.com/subgraphs/name/nyamwaya/athletex-dex-subgraph-mainnet',
+            'https://api.studio.thegraph.com/query/1743457/athletex-dex/v0.0.1',
         goerliTestNet = kEmptyUrl,
         ethereumMainnet = kEmptyUrl,
         optimism = kEmptyUrl,

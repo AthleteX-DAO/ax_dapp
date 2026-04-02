@@ -49,7 +49,7 @@ class AccountRepository {
 
   /// Get collateral information for a Synthetix account
   Future<Map<String, BigInt>> getSynthetixAccountCollateral({
-    required int accountId,
+    required BigInt accountId,
     required String collateralAddress,
   }) async {
     return _synthetixCoreService.getAccountCollateral(
@@ -60,7 +60,7 @@ class AccountRepository {
 
   /// Get available (withdrawable) collateral for a Synthetix account
   Future<BigInt> getSynthetixAvailableCollateral({
-    required int accountId,
+    required BigInt accountId,
     required String collateralAddress,
   }) async {
     return _synthetixCoreService.getAccountAvailableCollateral(
@@ -71,7 +71,7 @@ class AccountRepository {
 
   /// Get debt position for a Synthetix account in a pool
   Future<BigInt> getSynthetixPositionDebt({
-    required int accountId,
+    required BigInt accountId,
     required int poolId,
     required String collateralAddress,
   }) async {
@@ -84,7 +84,7 @@ class AccountRepository {
 
   /// Get collateralization ratio for a Synthetix account position
   Future<BigInt> getSynthetixCollateralRatio({
-    required int accountId,
+    required BigInt accountId,
     required int poolId,
     required String collateralAddress,
   }) async {
@@ -97,7 +97,7 @@ class AccountRepository {
 
   /// Deposit collateral to a Synthetix account
   Future<String> depositSynthetixCollateral({
-    required int accountId,
+    required BigInt accountId,
     required String collateralAddress,
     required BigInt amount,
   }) async {
@@ -113,7 +113,7 @@ class AccountRepository {
 
   /// Withdraw collateral from a Synthetix account
   Future<String> withdrawSynthetixCollateral({
-    required int accountId,
+    required BigInt accountId,
     required String collateralAddress,
     required BigInt amount,
   }) async {
@@ -129,7 +129,7 @@ class AccountRepository {
 
   /// Delegate collateral to a pool
   Future<String> delegateSynthetixCollateral({
-    required int accountId,
+    required BigInt accountId,
     required int poolId,
     required String collateralAddress,
     required BigInt amount,
@@ -149,7 +149,7 @@ class AccountRepository {
 
   /// Undelegate collateral from a pool
   Future<String> undelegateSynthetixCollateral({
-    required int accountId,
+    required BigInt accountId,
     required int poolId,
     required String collateralAddress,
     required BigInt amount,
@@ -180,7 +180,7 @@ class AccountRepository {
   /// [amount] is in 18-decimal wei units.  After minting, axUSD lands inside
   /// the CoreProxy account — call [withdrawAxUsd] to pull it into the wallet.
   Future<String> mintAxUsd({
-    required int accountId,
+    required BigInt accountId,
     required int poolId,
     required String collateralAddress,
     required BigInt amount,
@@ -201,7 +201,7 @@ class AccountRepository {
   /// Must be called after [mintAxUsd] — minted axUSD is NOT in the wallet
   /// until explicitly withdrawn.
   Future<String> withdrawAxUsd({
-    required int accountId,
+    required BigInt accountId,
     required BigInt amount,
     required String usdProxyAddress,
   }) async {

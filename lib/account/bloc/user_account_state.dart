@@ -96,7 +96,7 @@ class ReadyToTradeState extends UserAccountState {
   });
 
   final String walletAddress;
-  final int synthetixAccountId;
+  final BigInt synthetixAccountId;
 
   @override
   bool get isWalletConnected => true;

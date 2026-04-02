@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ax_dapp/earn/bloc/earn_page_bloc.dart';
@@ -49,7 +51,18 @@ class _EarnPageState extends State<EarnPage> {
     final topPadding = lerpDouble(24, 16, t)!;
     final headerHeight = lerpDouble(_headerMaxHeight, _headerMinHeight, t)!;
 
-    return Stack(
+    return BlocListener<AccountBloc, AccountState>(
+      listenWhen: (prev, curr) =>
+          prev.synthetixAccountId != curr.synthetixAccountId &&
+          curr.synthetixAccountId != BigInt.zero,
+      listener: (context, accountState) {
+        // Push the confirmed account ID into VaultRepository so that
+        // deposit / mint / withdraw use the real on-chain account.
+        context
+            .read<VaultRepository>()
+            .updateAccountId(accountState.synthetixAccountId);
+      },
+      child: Stack(
       fit: StackFit.expand,
       children: [
         Column(
@@ -252,6 +265,7 @@ class _EarnPageState extends State<EarnPage> {
         // Debug Panel
         _DebugPanel(),
       ],
+      ),
     );
   }
 }
