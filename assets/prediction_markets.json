@@ -21,6 +21,21 @@
       "feeRecipient": "0x3E70f657AeaA09C413633d881A409a024D28E82C",
       "protocolFeeRate": "10000000000000000",
       "proposerReward": "0"
+    },
+    {
+      "pairName": "JELLYROLL_DIVORCE_2026",
+      "question": "Will Jelly Roll and Bunnie Xo finalize their divorce by August 1, 2026?",
+      "category": "exotic",
+      "details": "Resolves YES if Jelly Roll (Jason DeFord) and Bunnie Xo (Jelly Roll's wife) have their divorce finalized by a court on or before August 1, 2026. Resolves NO otherwise.",
+      "resolveBy": "2026-08-01",
+      "contractAddress": "0x164c1b6e1C9F3c088D3930eDE9fCA4ea8C11Ad9F",
+      "longTokenAddress": "0xAfa41dAd6Eeb7155c2A327c4a33E4503BF172D01",
+      "shortTokenAddress": "0xcf3558796C2e38B3277AbEAd647B341390d3e07d",
+      "longTokenName": "JELLYROLL_DIVORCE_2026 YES",
+      "shortTokenName": "JELLYROLL_DIVORCE_2026 NO",
+      "feeRecipient": "0x3E70f657AeaA09C413633d881A409a024D28E82C",
+      "protocolFeeRate": "10000000000000000",
+      "proposerReward": "0"
     }
   ]
 }
