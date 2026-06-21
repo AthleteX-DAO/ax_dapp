@@ -55,7 +55,19 @@ class DexSubgraphClient {
 
       final amount0In = double.tryParse('${swap['amount0In']}') ?? 0;
       final amount1In = double.tryParse('${swap['amount1In']}') ?? 0;
-      final amountUSD = double.tryParse('${swap['amountUSD']}') ?? 0;
+      final amount0Out = double.tryParse('${swap['amount0Out']}') ?? 0;
+      final amount1Out = double.tryParse('${swap['amount1Out']}') ?? 0;
+      var amountUSD = double.tryParse('${swap['amountUSD']}') ?? 0;
+
+      // If the subgraph returns amountUSD=0 (common for custom tokens like
+      // prediction YES/NO tokens), derive the USD value from the axUSD side.
+      // axUSD is pegged to $1, so whichever axUSD amount flows is the $ value.
+      if (amountUSD == 0) {
+        amountUSD = _deriveUsdAmount(
+          token0Symbol, token1Symbol,
+          amount0In, amount1In, amount0Out, amount1Out,
+        );
+      }
 
       // Determine side: if amount0In > 0 the sender sold token0 (buy token1)
       final isBuy = amount0In > 0;
@@ -77,6 +89,9 @@ class DexSubgraphClient {
   }
 
   /// Queries `pairDayDatas` for the aggregate 24-hour volume.
+  ///
+  /// Falls back to summing individual swap amounts (using axUSD-derived values)
+  /// when the subgraph can't price custom tokens.
   Future<double> get24hVolume() async {
     final yesterday = (DateTime.now()
                 .subtract(const Duration(days: 1))
@@ -84,6 +99,7 @@ class DexSubgraphClient {
             1000)
         .round();
 
+    // First try pairDayDatas (fast aggregate)
     final query = '''
     query {
       pairDayDatas(
@@ -98,12 +114,59 @@ class DexSubgraphClient {
     ''';
 
     final data = await _executeQuery(query);
-    if (data == null) return 0;
+    if (data != null) {
+      final dayDatas = data['pairDayDatas'] as List<dynamic>? ?? [];
+      var total = 0.0;
+      for (final entry in dayDatas) {
+        total += double.tryParse('${entry['dailyVolumeUSD']}') ?? 0;
+      }
+      if (total > 0) return total;
+    }
 
-    final dayDatas = data['pairDayDatas'] as List<dynamic>? ?? [];
+    // Fallback: sum USD from individual swaps in last 24h
+    final swapQuery = '''
+    query {
+      swaps(
+        first: 1000
+        where: { timestamp_gte: "$yesterday" }
+        orderBy: timestamp
+        orderDirection: desc
+      ) {
+        amountUSD
+        amount0In
+        amount1In
+        amount0Out
+        amount1Out
+        pair {
+          token0 { symbol }
+          token1 { symbol }
+        }
+      }
+    }
+    ''';
+
+    final swapData = await _executeQuery(swapQuery);
+    if (swapData == null) return 0;
+
+    final swaps = swapData['swaps'] as List<dynamic>? ?? [];
     var total = 0.0;
-    for (final entry in dayDatas) {
-      total += double.tryParse('${entry['dailyVolumeUSD']}') ?? 0;
+    for (final swap in swaps) {
+      var usd = double.tryParse('${swap['amountUSD']}') ?? 0;
+      if (usd == 0) {
+        final pair = swap['pair'] as Map<String, dynamic>?;
+        if (pair != null) {
+          final t0 = (pair['token0'] as Map<String, dynamic>?)?['symbol'] as String? ?? '';
+          final t1 = (pair['token1'] as Map<String, dynamic>?)?['symbol'] as String? ?? '';
+          usd = _deriveUsdAmount(
+            t0, t1,
+            double.tryParse('${swap['amount0In']}') ?? 0,
+            double.tryParse('${swap['amount1In']}') ?? 0,
+            double.tryParse('${swap['amount0Out']}') ?? 0,
+            double.tryParse('${swap['amount1Out']}') ?? 0,
+          );
+        }
+      }
+      total += usd;
     }
     return total;
   }
@@ -116,7 +179,15 @@ class DexSubgraphClient {
       swaps(first: 500, orderBy: timestamp, orderDirection: desc) {
         sender
         amountUSD
+        amount0In
+        amount1In
+        amount0Out
+        amount1Out
         timestamp
+        pair {
+          token0 { symbol }
+          token1 { symbol }
+        }
       }
     }
     ''';
@@ -129,8 +200,24 @@ class DexSubgraphClient {
 
     for (final swap in swaps) {
       final sender = swap['sender'] as String? ?? '';
-      final usd = double.tryParse('${swap['amountUSD']}') ?? 0;
+      var usd = double.tryParse('${swap['amountUSD']}') ?? 0;
       final ts = int.tryParse('${swap['timestamp']}') ?? 0;
+
+      // Derive USD from axUSD side when amountUSD is 0
+      if (usd == 0) {
+        final pair = swap['pair'] as Map<String, dynamic>?;
+        if (pair != null) {
+          final t0 = (pair['token0'] as Map<String, dynamic>?)?['symbol'] as String? ?? '';
+          final t1 = (pair['token1'] as Map<String, dynamic>?)?['symbol'] as String? ?? '';
+          usd = _deriveUsdAmount(
+            t0, t1,
+            double.tryParse('${swap['amount0In']}') ?? 0,
+            double.tryParse('${swap['amount1In']}') ?? 0,
+            double.tryParse('${swap['amount0Out']}') ?? 0,
+            double.tryParse('${swap['amount1Out']}') ?? 0,
+          );
+        }
+      }
 
       traderMap.putIfAbsent(
         sender,
@@ -198,6 +285,32 @@ class DexSubgraphClient {
       debugPrint('[DexSubgraphClient] POST fallback error: $e');
       return null;
     }
+  }
+
+  /// Derives USD amount from axUSD token amounts when `amountUSD` is 0.
+  ///
+  /// Since axUSD is pegged to $1, whichever side of the swap involves axUSD
+  /// gives us the dollar value directly.
+  static double _deriveUsdAmount(
+    String token0Symbol,
+    String token1Symbol,
+    double amount0In,
+    double amount1In,
+    double amount0Out,
+    double amount1Out,
+  ) {
+    // Stablecoin symbols that are worth ~$1
+    const stableSymbols = {'axUSD', 'USDC', 'USDT', 'DAI', 'USDC.e'};
+
+    if (stableSymbols.contains(token0Symbol)) {
+      // token0 is the stable — use its in or out amount
+      return amount0In > 0 ? amount0In : amount0Out;
+    }
+    if (stableSymbols.contains(token1Symbol)) {
+      return amount1In > 0 ? amount1In : amount1Out;
+    }
+    // Neither side is a known stable — can't derive
+    return 0;
   }
 }
 
