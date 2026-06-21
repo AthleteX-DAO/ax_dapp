@@ -13,6 +13,8 @@ import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:web3dart/crypto.dart';
+import 'package:web3dart/web3dart.dart';
 
 part 'prediction_page_event.dart';
 part 'prediction_page_state.dart';
@@ -307,11 +309,24 @@ class PredictionPageBloc
 
         if (orderResponse != null && orderResponse.transactions.isNotEmpty) {
           debugPrint('API-routed buy: ${orderResponse.transactions.length} txs');
+          final client = _eventMarketRepository.controller.client.value;
+          final credentials = _eventMarketRepository.controller.credentials;
+          
           // Sign and send each transaction
           for (final unsignedTx in orderResponse.transactions) {
             debugPrint('Sending tx: ${unsignedTx.description}');
-            // The unsigned tx contains to, data, value — send via web3
-            // This is handled by the wallet/web3 layer
+            final tx = Transaction(
+              to: EthereumAddress.fromHex(unsignedTx.to),
+              data: hexToBytes(unsignedTx.data),
+              value: EtherAmount.inWei(BigInt.parse(unsignedTx.value)),
+            );
+            
+            final txHash = await client.sendTransaction(
+              credentials,
+              tx,
+              chainId: orderResponse.chainId,
+            );
+            debugPrint('Tx hash: $txHash');
           }
           emit(state.copyWith(status: BlocStatus.success));
           add(GetEventStatsRequested(predictionModelId));
