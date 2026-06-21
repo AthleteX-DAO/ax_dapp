@@ -1,4 +1,6 @@
+import 'package:ax_dapp/predict/livestream/livestream_model.dart';
 import 'package:ax_dapp/predict/predict.dart';
+import 'package:ax_dapp/predict/widgets/livestream_grid_card.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/responsive_constants.dart';
 import 'package:flutter/material.dart';
@@ -68,23 +70,30 @@ class PredictionMarketsGrid extends StatelessWidget {
   }
 }
 
-/// Sliver-based grid for improved performance within CustomScrollView
+/// Sliver-based grid for improved performance within CustomScrollView.
+/// Interleaves [LiveStreamGridCard] at positions 3 and 5 within every group
+/// of 5 items (2-of-5 ratio).
 class PredictionMarketsSliverGrid extends StatelessWidget {
   const PredictionMarketsSliverGrid({
     required this.predictions,
+    this.streams = const [],
     super.key,
   });
 
   final List<PredictionModel> predictions;
+  final List<LiveStreamModel> streams;
 
   @override
   Widget build(BuildContext context) {
-    if (predictions.isEmpty) {
+    if (predictions.isEmpty && streams.isEmpty) {
       return SliverToBoxAdapter(child: _buildEmptySliverState());
     }
 
     final width = MediaQuery.sizeOf(context).width;
     final crossAxisCount = ResponsiveConstants.getGridCrossAxisCount(width);
+
+    // Build merged item list: for every 5 slots, 3 predictions + 2 streams
+    final mergedItems = _buildMergedItems();
 
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -94,12 +103,44 @@ class PredictionMarketsSliverGrid extends StatelessWidget {
         childAspectRatio: 2.18,
       ),
       delegate: SliverChildBuilderDelegate(
-        (context, index) => ResponsivePredictionCard(
-          prediction: predictions[index],
-        ),
-        childCount: predictions.length,
+        (context, index) {
+          final item = mergedItems[index];
+          if (item is LiveStreamModel) {
+            return LiveStreamGridCard(stream: item);
+          }
+          return ResponsivePredictionCard(
+            prediction: item as PredictionModel,
+          );
+        },
+        childCount: mergedItems.length,
       ),
     );
+  }
+
+  /// Interleaves streams at positions 2 and 4 within every group of 5.
+  /// Pattern: [pred, pred, STREAM, pred, STREAM, pred, pred, STREAM, ...]
+  List<Object> _buildMergedItems() {
+    if (streams.isEmpty) return predictions;
+
+    final items = <Object>[];
+    var predIdx = 0;
+    var streamIdx = 0;
+
+    while (predIdx < predictions.length) {
+      final posInGroup = items.length % 5;
+
+      if ((posInGroup == 2 || posInGroup == 4) && streamIdx < streams.length) {
+        // Insert a stream card
+        items.add(streams[streamIdx]);
+        streamIdx++;
+      } else {
+        // Insert a prediction card
+        items.add(predictions[predIdx]);
+        predIdx++;
+      }
+    }
+
+    return items;
   }
 
   Widget _buildEmptySliverState() {

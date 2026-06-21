@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Seed Livestreams</title>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <style>
+    body { font-family: monospace; background: #1a1a2e; color: #00ff88; padding: 40px; }
+    button { background: #fec500; color: #000; border: none; padding: 12px 24px; 
+             font-size: 16px; cursor: pointer; border-radius: 6px; font-weight: bold; }
+    button:hover { background: #cc9e00; }
+    #log { white-space: pre-wrap; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>🏟️ Seed Livestreams to Firestore</h1>
+  <p>Project: <strong>athletex-prod</strong></p>
+  <button onclick="seed()">Seed 6 Livestreams</button>
+  <div id="log"></div>
+
+  <script>
+    firebase.initializeApp({
+      apiKey: "AIzaSyBev41Rd-3rxDdqfc7mceAix785rVzIMPY",
+      authDomain: "athletex-prod.firebaseapp.com",
+      projectId: "athletex-prod",
+      storageBucket: "athletex-prod.firebasestorage.app",
+      messagingSenderId: "621355421546",
+      appId: "1:621355421546:web:410b581282fb92241adf13",
+      measurementId: "G-QG8RMDHJTE"
+    });
+
+    const db = firebase.firestore();
+    const log = (msg) => document.getElementById('log').textContent += msg + '\n';
+
+    const streams = [
+      {
+        title: 'Celtics vs Pacers — Eastern Conference Finals Game 6',
+        url: 'https://www.youtube.com/watch?v=M7lc1UVf-VE',
+        source: 'youtube',
+        sport: 'Basketball',
+        thumbnailUrl: 'https://img.youtube.com/vi/M7lc1UVf-VE/maxresdefault.jpg',
+        isLive: true,
+        isFeatured: true,
+        scheduledAt: null,
+        marketId: null,
+        metadata: { homeTeam: 'Celtics', awayTeam: 'Pacers', league: 'NBA' },
+      },
+      {
+        title: 'Yankees vs Dodgers — MLB Highlights',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        source: 'youtube',
+        sport: 'Baseball',
+        thumbnailUrl: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+        isLive: true,
+        isFeatured: false,
+        scheduledAt: null,
+        marketId: null,
+        metadata: { homeTeam: 'Yankees', awayTeam: 'Dodgers', league: 'MLB' },
+      },
+      {
+        title: 'Arsenal vs Liverpool — Premier League Matchday 38',
+        url: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+        source: 'youtube',
+        sport: 'Soccer',
+        thumbnailUrl: 'https://img.youtube.com/vi/jNQXAC9IVRw/maxresdefault.jpg',
+        isLive: true,
+        isFeatured: false,
+        scheduledAt: null,
+        marketId: null,
+        metadata: { homeTeam: 'Arsenal', awayTeam: 'Liverpool', league: 'Premier League' },
+      },
+      {
+        title: 'Chiefs vs Eagles — NFL Preseason Week 1',
+        url: 'https://www.youtube.com/watch?v=9bZkp7q19f0',
+        source: 'youtube',
+        sport: 'Football',
+        thumbnailUrl: 'https://img.youtube.com/vi/9bZkp7q19f0/maxresdefault.jpg',
+        isLive: true,
+        isFeatured: false,
+        scheduledAt: null,
+        marketId: null,
+        metadata: { homeTeam: 'Chiefs', awayTeam: 'Eagles', league: 'NFL' },
+      },
+      {
+        title: 'Panthers vs Oilers — Stanley Cup Finals Game 4',
+        url: 'https://www.youtube.com/watch?v=kJQP7kiw5Fk',
+        source: 'youtube',
+        sport: 'Hockey',
+        thumbnailUrl: 'https://img.youtube.com/vi/kJQP7kiw5Fk/maxresdefault.jpg',
+        isLive: true,
+        isFeatured: false,
+        scheduledAt: null,
+        marketId: null,
+        metadata: { homeTeam: 'Panthers', awayTeam: 'Oilers', league: 'NHL' },
+      },
+      {
+        title: 'UFC 310 — Main Card Live',
+        url: 'https://www.youtube.com/watch?v=DLzxrzFCyOs',
+        source: 'youtube',
+        sport: 'Exotic',
+        thumbnailUrl: 'https://img.youtube.com/vi/DLzxrzFCyOs/maxresdefault.jpg',
+        isLive: true,
+        isFeatured: false,
+        scheduledAt: null,
+        marketId: null,
+        metadata: { league: 'UFC' },
+      },
+    ];
+
+    async function seed() {
+      log('⏳ Seeding livestreams...');
+      const batch = db.batch();
+      for (const stream of streams) {
+        const ref = db.collection('livestreams').doc();
+        batch.set(ref, {
+          ...stream,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        log(`  📺 ${stream.title}`);
+      }
+      try {
+        await batch.commit();
+        log(`\n✅ Successfully seeded ${streams.length} livestream documents!`);
+        log('🔄 Refresh the Predict page to see them.');
+      } catch (err) {
+        log(`\n❌ Error: ${err.message}`);
+        log('💡 Make sure Firestore rules allow writes (deploy firestore.rules first).');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/data/prediction_order_client.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
@@ -7,6 +8,7 @@ import 'package:ax_dapp/service/controller/predictions/event_market_repository.d
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -31,6 +33,8 @@ class PredictionPage extends StatelessWidget {
         predictionModelId: predictionModel.id,
         getPredictionMarketDataUseCase:
             context.read<GetPredictionMarketDataUseCase>(),
+        tokensRepository: context.read<TokensRepository>(),
+        predictionOrderClient: context.read<PredictionOrderClient>(),
       ),
       child: BlocListener<PredictionPageBloc, PredictionPageState>(
         listener: (context, state) {

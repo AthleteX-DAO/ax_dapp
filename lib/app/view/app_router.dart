@@ -18,6 +18,7 @@ import 'package:ax_dapp/perps/bloc/perps_page_bloc.dart';
 import 'package:ax_dapp/perps/bloc/perps_trading_bloc.dart';
 import 'package:ax_dapp/perps/view/desktop_perpetuals_page.dart';
 import 'package:ax_dapp/predict/bloc/predict_page_bloc.dart';
+import 'package:ax_dapp/predict/livestream/livestream.dart';
 import 'package:ax_dapp/predict/data/prediction_market_client.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
@@ -25,6 +26,7 @@ import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart
 import 'package:ax_dapp/predict/view/desktop_predict.dart';
 import 'package:ax_dapp/prediction/view/prediction_page.dart';
 import 'package:ax_dapp/repositories/market_price/market_price_repository.dart';
+import 'package:ax_dapp/repositories/oracle/oracle_repository.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -41,6 +43,7 @@ import 'package:ax_dapp/spot_markets/bloc/bloc.dart';
 import 'package:ax_dapp/spot_markets/view/view.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/versus/versus.dart';
+import 'package:ax_dapp/vote/vote.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,6 +89,8 @@ class AppRouter {
                       context.read<GetPredictionMarketDataUseCase>(),
                   predictionMarketClient:
                       context.read<PredictionMarketClient>(),
+                  liveStreamRepository:
+                      context.read<LiveStreamRepository>(),
                 ),
                 child: const DesktopPredict(),
               );
@@ -277,18 +282,12 @@ class AppRouter {
             name: 'spot-markets',
             path: '/spot-markets',
             builder: (BuildContext context, GoRouterState state) {
-              return RepositoryProvider(
-                create: (context) => MarketPriceRepository(),
-                child: Builder(
-                  builder: (context) => BlocProvider(
-                    create: (BuildContext context) => SpotMarketsBloc(
-                      walletRepository: context.read<WalletRepository>(),
-                      marketPriceRepository:
-                          context.read<MarketPriceRepository>(),
-                    ),
-                    child: const DesktopSpotMarketsPage(),
-                  ),
+              return BlocProvider(
+                create: (BuildContext context) => SpotMarketsBloc(
+                  walletRepository: context.read<WalletRepository>(),
+                  oracleRepository: context.read<OracleRepository>(),
                 ),
+                child: const DesktopSpotMarketsPage(),
               );
             },
           ),
@@ -305,6 +304,26 @@ class AppRouter {
                   ),
                 ],
                 child: const VersusPage(),
+              );
+            },
+          ),
+          GoRoute(
+            name: 'vote',
+            path: '/vote',
+            builder: (BuildContext context, GoRouterState state) {
+              final walletAddress = context
+                  .read<WalletRepository>()
+                  .currentWallet
+                  .address;
+              return BlocProvider(
+                create: (BuildContext context) => VoteBloc(
+                  exchangeStatsRepository:
+                      context.read<ExchangeStatsRepository>(),
+                  proposalRepository:
+                      context.read<ProposalRepository>(),
+                  walletAddress: walletAddress,
+                )..add(const LoadDashboard()),
+                child: const VotePage(),
               );
             },
           ),

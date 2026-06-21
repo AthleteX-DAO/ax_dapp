@@ -22,6 +22,46 @@ class EarnSimpleTile extends StatelessWidget {
               .read<VaultRepository>()
               .fetchVaults(overrideAccountId: resolvedId),
           builder: (context, snapshot) {
+            // Error state — show message instead of crashing
+            if (snapshot.hasError) {
+              debugPrint('❌ [EARN_SIMPLE] fetchVaults error: ${snapshot.error}');
+              return Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.red.withOpacity(0.3)),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.error_outline, color: Colors.red, size: 32),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Failed to load vaults',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'OpenSans',
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${snapshot.error}',
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 11,
+                        fontFamily: 'OpenSans',
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              );
+            }
+
             if (!snapshot.hasData) {
               return const Center(
                 child: CircularProgressIndicator(color: Color(0xFFFFC600)),
@@ -29,6 +69,21 @@ class EarnSimpleTile extends StatelessWidget {
             }
 
             final vaults = snapshot.data ?? [];
+
+            if (vaults.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    'No vaults available',
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontFamily: 'OpenSans',
+                    ),
+                  ),
+                ),
+              );
+            }
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

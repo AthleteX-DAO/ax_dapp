@@ -70,7 +70,9 @@ class _DesktopPredictState extends State<DesktopPredict> {
                               getTopPredictionMarketsUseCase:
                                   context.read(),
                             ),
-                            child: const PredictionHeroCarouselPlaceholder(),
+                            child: PredictionHeroCarouselPlaceholder(
+                              featuredStream: state.featuredStream,
+                            ),
                           ),
                         ),
                       ),
@@ -82,6 +84,7 @@ class _DesktopPredictState extends State<DesktopPredict> {
                       ),
                       sliver: PredictionMarketsSliverGrid(
                         predictions: state.filteredPredictions,
+                        streams: state.gridStreams,
                       ),
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 40)),

@@ -1,4 +1,5 @@
 import 'package:ax_dapp/predict/data/prediction_market_client.dart';
+import 'package:ax_dapp/predict/livestream/livestream.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
@@ -18,10 +19,12 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
     required GetPredictionMarketInfoUseCase getPredictionMarketInfoUseCase,
     required this.getPredictionMarketDataUseCase,
     PredictionMarketClient? predictionMarketClient,
+    LiveStreamRepository? liveStreamRepository,
   })  : _streamAppDataChanges = streamAppDataChangesUseCase,
         _eventMarketRepository = eventMarketRepository,
         _getPredictionMarketInfoUseCase = getPredictionMarketInfoUseCase,
         _predictionMarketClient = predictionMarketClient,
+        _liveStreamRepository = liveStreamRepository,
         super(const PredictPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<SelectedPredictionMarketsChanged>(_onSelectedPredictionMarketsChanged);
@@ -56,8 +59,11 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
 
     on<PredictionPlacementRequested>(_onPredictionPlacementRequested);
 
+    on<LiveStreamsFetchRequested>(_onLiveStreamsFetchRequested);
+
     add(const WatchAppDataChangesStarted());
     add(const AllPredictionMarketsRequested());
+    add(const LiveStreamsFetchRequested());
   }
 
   final StreamAppDataChangesUseCase _streamAppDataChanges;
@@ -65,6 +71,7 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
   final GetPredictionMarketInfoUseCase _getPredictionMarketInfoUseCase;
   final GetPredictionMarketDataUseCase getPredictionMarketDataUseCase;
   final PredictionMarketClient? _predictionMarketClient;
+  final LiveStreamRepository? _liveStreamRepository;
 
   Future<void> _onWatchAppDataChangesStarted(
     WatchAppDataChangesStarted _,
@@ -397,6 +404,20 @@ class PredictPageBloc extends Bloc<PredictPageEvent, PredictPageState> {
       add(const AllPredictionMarketsRequested());
     } catch (e) {
       debugPrint('Bet placement failed: $e');
+    }
+  }
+
+  Future<void> _onLiveStreamsFetchRequested(
+    LiveStreamsFetchRequested _,
+    Emitter<PredictPageState> emit,
+  ) async {
+    if (_liveStreamRepository == null) return;
+    try {
+      final streams = await _liveStreamRepository!.fetchActiveStreams();
+      emit(state.copyWith(activeStreams: streams));
+    } catch (e) {
+      debugPrint('LiveStream fetch failed: $e');
+      // Non-blocking — don't change page status
     }
   }
 }

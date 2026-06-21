@@ -9,7 +9,10 @@ import 'package:ax_dapp/league/repository/timer_repository.dart';
 import 'package:ax_dapp/league/usecases/league_use_case.dart';
 import 'package:ax_dapp/logger_interceptor.dart';
 import 'package:ax_dapp/predict/data/firebase_price_client.dart';
+import 'package:ax_dapp/predict/livestream/livestream.dart';
+import 'package:ax_dapp/predict/data/prediction_api_client.dart';
 import 'package:ax_dapp/predict/data/prediction_market_client.dart';
+import 'package:ax_dapp/predict/data/prediction_order_client.dart';
 import 'package:ax_dapp/predict/repository/live_prediction_market_repository.dart';
 import 'package:ax_dapp/predict/repository/prediction_snapshot_repository.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';import 'package:ax_dapp/predict/usecase/get_prediction_market_info_use_case.dart';
@@ -40,6 +43,12 @@ import 'package:ax_dapp/sports_markets/usecases/get_sports_markets_data_use_case
 import 'package:ax_dapp/wallet/usecases/cross_chain_balance_usecase.dart';
 import 'package:ax_dapp/wallet/usecases/synthetix_account_bootstrap.dart';
 import 'package:ax_dapp/wallet/usecases/unified_portfolio_usecase.dart';
+import 'package:ax_dapp/vote/repository/dex_subgraph_client.dart';
+import 'package:ax_dapp/vote/repository/prediction_stats_client.dart';
+import 'package:ax_dapp/vote/repository/exchange_stats_repository.dart';
+import 'package:ax_dapp/vote/repository/proposal_repository.dart';
+import 'package:ax_dapp/config/synthetix_config.dart';
+import 'package:ax_dapp/service/controller/perps/perps_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:config_repository/config_repository.dart';
@@ -211,7 +220,11 @@ void main() async {
               livePredictionMarketRepository:
                   context.read<LivePredictionMarketRepository>(),
               firebasePriceClient: context.read<FirebasePriceClient>(),
+              predictionApiClient: PredictionApiClient(),
             ),
+          ),
+          RepositoryProvider(
+            create: (context) => PredictionOrderClient(),
           ),
           RepositoryProvider(
             create: (context) => GetPredictionMarketInfoUseCase(
@@ -283,6 +296,45 @@ void main() async {
               chain: defaultChain,
               reactiveWeb3Client: appConfig.reactiveWeb3Client,
               walletRepository: context.read<WalletRepository>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => DexSubgraphClient(
+              reactiveDexClient: appConfig.reactiveDexGqlClient,
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => PredictionStatsClient(
+              livePredictionMarketRepository:
+                  context.read<LivePredictionMarketRepository>(),
+              firebasePriceClient:
+                  context.read<FirebasePriceClient>(),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => ExchangeStatsRepository(
+              dexSubgraphClient:
+                  context.read<DexSubgraphClient>(),
+              predictionStatsClient:
+                  context.read<PredictionStatsClient>(),
+              perpsRepository: SynthetixConfig.isPerpsEnabled
+                  ? PerpsRepository(
+                      web3Client: Web3Client(
+                        SynthetixConfig.rpcUrl,
+                        http.Client(),
+                      ),
+                    )
+                  : null,
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => ProposalRepository(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => LiveStreamRepository(
+              fireStore: FirebaseFirestore.instance,
             ),
           ),
         ],

@@ -101,3 +101,7 @@ class PredictionPlacementRequested extends PredictPageEvent {
   @override
   List<Object?> get props => [marketAddress, axUsdAmount, isYes];
 }
+
+class LiveStreamsFetchRequested extends PredictPageEvent {
+  const LiveStreamsFetchRequested();
+}

@@ -1,0 +1,13 @@
+# CORS Proxy Configuration for 1inch API
+# This file configures a development proxy to bypass CORS restrictions
+
+# Proxy configuration
+# Forwards requests from /api/1inch to https://api.1inch.dev
+proxy:
+  # Match requests to /api/1inch/*
+  - from: /api/1inch
+    # Forward to 1inch API
+    to: https://api.1inch.dev
+    # Preserve path after /api/1inch
+    pathRewrite:
+      "^/api/1inch": ""

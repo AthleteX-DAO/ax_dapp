@@ -1,4 +1,5 @@
 export 'athlete_battle_card.dart';
+export 'athlete_share_card.dart';
 export 'chat_input_field.dart';
 export 'chat_message_card.dart';
 export 'leaderboard_widget.dart';

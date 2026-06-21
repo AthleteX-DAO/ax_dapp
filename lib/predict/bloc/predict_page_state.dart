@@ -8,6 +8,7 @@ class PredictPageState extends Equatable {
     this.filteredPredictions = const [],
     this.selectedChain = EthereumChain.none,
     this.visiblePredictionIds = const {},
+    this.activeStreams = const [],
   });
 
   final List<PredictionModel> predictions;
@@ -19,6 +20,22 @@ class PredictPageState extends Equatable {
   /// Set of prediction IDs currently visible on screen for efficient rendering
   final Set<int> visiblePredictionIds;
 
+  /// Active livestreams to display in the carousel and grid.
+  final List<LiveStreamModel> activeStreams;
+
+  /// The featured stream for the hero carousel (first live + featured).
+  LiveStreamModel? get featuredStream {
+    try {
+      return activeStreams.firstWhere((s) => s.isFeatured && s.isLive);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Streams suitable for grid interleaving (live, not featured).
+  List<LiveStreamModel> get gridStreams =>
+      activeStreams.where((s) => s.isLive).toList();
+
   PredictPageState copyWith({
     List<PredictionModel>? predictions,
     List<PredictionModel>? filteredPredictions,
@@ -26,6 +43,7 @@ class PredictPageState extends Equatable {
     EthereumChain? selectedChain,
     BlocStatus? status,
     Set<int>? visiblePredictionIds,
+    List<LiveStreamModel>? activeStreams,
   }) {
     return PredictPageState(
       predictions: predictions ?? this.predictions,
@@ -34,6 +52,7 @@ class PredictPageState extends Equatable {
       selectedChain: selectedChain ?? this.selectedChain,
       status: status ?? this.status,
       visiblePredictionIds: visiblePredictionIds ?? this.visiblePredictionIds,
+      activeStreams: activeStreams ?? this.activeStreams,
     );
   }
 
@@ -45,5 +64,6 @@ class PredictPageState extends Equatable {
         selectedChain,
         status,
         visiblePredictionIds,
+        activeStreams,
       ];
 }

@@ -30,6 +30,10 @@ class SynthetixConfig {
   static const String perpsMarketRouter = '';
   static const String perpsAccountProxy = '';
 
+  /// Whether perps trading is available on the current chain.
+  /// Returns false until perpsMarketProxy is deployed and configured.
+  static bool get isPerpsEnabled => perpsMarketProxy.isNotEmpty;
+
   // AthleteX Tokens (deployed on Polygon mainnet via cannon)
   static const String axToken =
       '0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df';

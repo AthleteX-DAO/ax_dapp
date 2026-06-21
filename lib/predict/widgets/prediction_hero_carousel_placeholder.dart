@@ -1,14 +1,21 @@
 import 'dart:async';
 
 import 'package:ax_dapp/predict/bloc/hero_carousel_bloc.dart';
+import 'package:ax_dapp/predict/livestream/livestream_model.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/predict/widgets/livestream_hero_card.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class PredictionHeroCarouselPlaceholder extends StatefulWidget {
-  const PredictionHeroCarouselPlaceholder({super.key});
+  const PredictionHeroCarouselPlaceholder({
+    super.key,
+    this.featuredStream,
+  });
+
+  final LiveStreamModel? featuredStream;
 
   @override
   State<PredictionHeroCarouselPlaceholder> createState() =>
@@ -67,20 +74,34 @@ class _PredictionHeroCarouselPlaceholderState
           return _buildEmptyState();
         }
 
+        final hasStream = widget.featuredStream != null;
+        final totalCount = state.topMarkets.length + (hasStream ? 1 : 0);
+
         return Column(
           children: [
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: state.topMarkets.length,
+                itemCount: totalCount,
                 onPageChanged: (index) =>
                     setState(() => _currentPage = index),
                 itemBuilder: (context, index) {
+                  // First item is the featured livestream
+                  if (hasStream && index == 0) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: LiveStreamHeroCard(
+                        stream: widget.featuredStream!,
+                      ),
+                    );
+                  }
+
+                  final marketIndex = hasStream ? index - 1 : index;
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: GestureDetector(
                       onTap: () {
-                        final market = state.topMarkets[index];
+                        final market = state.topMarkets[marketIndex];
                         context.goNamed(
                           'prediction',
                           pathParameters: {
@@ -89,7 +110,9 @@ class _PredictionHeroCarouselPlaceholderState
                           extra: market,
                         );
                       },
-                      child: _HeroCard(prediction: state.topMarkets[index]),
+                      child: _HeroCard(
+                        prediction: state.topMarkets[marketIndex],
+                      ),
                     ),
                   );
                 },
@@ -97,7 +120,7 @@ class _PredictionHeroCarouselPlaceholderState
             ),
             const SizedBox(height: 12),
             _DotsIndicator(
-              count: state.topMarkets.length,
+              count: totalCount,
               activeIndex: _currentPage,
             ),
           ],

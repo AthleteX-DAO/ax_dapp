@@ -33,7 +33,7 @@ class TrackingRepository {
   void track(TrackEvent event) {
     _firebase.logEvent(
       name: event.name,
-      parameters: event.params,
+      parameters: event.params.cast<String, Object>(),
     );
     dev.log(event.name);
     _updateLoggedEvents(event);

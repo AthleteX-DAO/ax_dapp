@@ -1,6 +1,7 @@
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/prediction/bloc/prediction_page_bloc.dart';
 import 'package:ax_dapp/prediction/widgets/buttons.dart';
+import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/gold_theme.dart';
 import 'package:ax_dapp/util/colors.dart';
@@ -23,7 +24,26 @@ class _StatsSideState extends State<StatsSide> {
   bool _isYesSelected = true;
   double _tradeAmount = 0;
   final _amountController = TextEditingController();
-  final _maxBalance = 10000.0; // TODO: wire real balance from wallet
+  double _maxBalance = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWalletBalance();
+  }
+
+  Future<void> _loadWalletBalance() async {
+    try {
+      final balance = await context
+          .read<GetTotalTokenBalanceUseCase>()
+          .getTotalAxBalance();
+      if (mounted) {
+        setState(() => _maxBalance = balance);
+      }
+    } catch (_) {
+      // Wallet not connected — leave at 0
+    }
+  }
 
   @override
   void dispose() {

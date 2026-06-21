@@ -80,7 +80,6 @@ class VaultRepository {
     required EthereumChain chain,
     required ValueStream<Web3Client> reactiveWeb3Client,
     required WalletRepository walletRepository,
-    this.userAddress,
     BigInt? accountId,
   })  : _chain = chain,
         _reactiveWeb3Client = reactiveWeb3Client,
@@ -97,8 +96,15 @@ class VaultRepository {
   /// Wallet repository for signing transactions and reading chain/account.
   final WalletRepository _walletRepository;
 
-  /// The user's wallet address (optional, for balance queries).
-  final String? userAddress;
+  /// Get the connected wallet address reactively from WalletRepository.
+  /// Returns null if the wallet is not connected.
+  String? get userAddress {
+    final addr = _walletRepository.currentWallet.address;
+    if (addr.isEmpty || addr == '0x0000000000000000000000000000000000000000') {
+      return null;
+    }
+    return addr;
+  }
 
   /// The Synthetix V3 account id used for deposit/delegate/mint. Updated when
   /// AccountBloc confirms a live account.
@@ -507,23 +513,13 @@ class VaultRepository {
     debugPrint('   - amount: $amountWei');
     
     try {
-      // Use the deposit function from coreProxy directly
-      final depositFunction = coreProxy.self.function('deposit');
-      final depositTx = web3.Transaction.callContract(
-        contract: coreProxy.self,
-        function: depositFunction,
-        parameters: [
-          resolvedAccountId,
-          collateralAddress,
-          amountWei,
-        ],
-      );
-      
-      debugPrint('🟡 [VAULT_REPO] Sending raw deposit transaction...');
-      final depositTxHash = await _web3Client.sendTransaction(
-        credentials,
-        depositTx,
-        chainId: _chain.chainId,
+      // Use typed deposit method from CoreProxy
+      debugPrint('🟡 [VAULT_REPO] Calling coreProxy.deposit()...');
+      final depositTxHash = await coreProxy.deposit(
+        resolvedAccountId,
+        collateralAddress,
+        amountWei,
+        credentials: credentials,
       );
       debugPrint('✅ [VAULT_REPO] deposit succeeded');
       debugPrint('   - depositTxHash: $depositTxHash');
@@ -567,10 +563,18 @@ class VaultRepository {
   }
 
   /// Withdraw from a vault.
+  ///
+  /// Two-step process:
+  /// 1. Undelegate collateral from the pool
+  /// 2. Withdraw collateral from the account back to the user's wallet
   Future<String> withdraw({
     required VaultData vault,
     required double amount,
   }) async {
+    debugPrint('\n═══════════════════════════════════════════');
+    debugPrint('🟧 [VAULT_REPO] WITHDRAW CALLED');
+    debugPrint('═══════════════════════════════════════════');
+
     if (userAddress == null) {
       throw Exception('Wallet not connected');
     }
@@ -586,15 +590,40 @@ class VaultRepository {
 
     final coreProxy =
         SynthetixCoreProxy(address: coreProxyAddress, client: _web3Client);
-    final txHash = await coreProxy.undelegateCollateral(
-      accountId,
-      vault.poolId,
-      collateralAddress,
-      amountWei,
-      credentials: credentials,
-    );
 
-    return txHash;
+    // Step 1: Undelegate collateral from pool
+    debugPrint('🟧 [VAULT_REPO] Step 1: Undelegating collateral...');
+    try {
+      await coreProxy.undelegateCollateral(
+        accountId,
+        vault.poolId,
+        collateralAddress,
+        amountWei,
+        credentials: credentials,
+      );
+      debugPrint('✅ [VAULT_REPO] Undelegate succeeded');
+    } on RPCError catch (e) {
+      debugPrint('❌ [VAULT_REPO] Undelegate failed: ${e.message}');
+      throw Exception('Undelegate failed: ${e.message}');
+    }
+
+    // Step 2: Withdraw collateral from account to wallet
+    debugPrint('🟧 [VAULT_REPO] Step 2: Withdrawing to wallet...');
+    try {
+      final txHash = await coreProxy.withdrawCollateral(
+        accountId,
+        collateralAddress,
+        amountWei,
+        credentials: credentials,
+      );
+      debugPrint('✅ [VAULT_REPO] Withdraw succeeded: $txHash');
+      debugPrint('═══════════════════════════════════════════\n');
+      if (txHash.isEmpty) throw Exception('Withdraw returned empty hash');
+      return txHash;
+    } on RPCError catch (e) {
+      debugPrint('❌ [VAULT_REPO] Withdraw failed: ${e.message}');
+      throw Exception('Withdraw failed: ${e.message}');
+    }
   }
 
   /// Mint (borrow) synthetic USD against delegated collateral.
@@ -651,19 +680,14 @@ class VaultRepository {
     debugPrint('   - collateral: $collateralEthAddress');
     debugPrint('   - amount: $amountWei');
 
-    final function = coreProxy.self.function('mintUsd');
-    final transaction = Transaction.callContract(
-      contract: coreProxy.self,
-      function: function,
-      parameters: [resolvedAccountId, pool, collateralEthAddress, amountWei],
-    );
-
     try {
-      debugPrint('🟣 [VAULT_REPO] Sending mintUsd transaction...');
-      final txHash = await _web3Client.sendTransaction(
-        credentials,
-        transaction,
-        chainId: SynthetixConfig.chainId,
+      debugPrint('🟣 [VAULT_REPO] Calling coreProxy.mintUsd()...');
+      final txHash = await coreProxy.mintUsd(
+        resolvedAccountId,
+        pool,
+        collateralEthAddress,
+        amountWei,
+        credentials: credentials,
       );
       debugPrint('✅ [VAULT_REPO] mintUsd succeeded: $txHash');
       if (txHash.isEmpty) throw Exception('mintUsd returned empty hash');
@@ -703,18 +727,13 @@ class VaultRepository {
       client: _web3Client,
     );
 
-    final function = coreProxy.self.function('burnUsd');
-    final transaction = Transaction.callContract(
-      contract: coreProxy.self,
-      function: function,
-      parameters: [accountId, pool, collateralEthAddress, amountWei],
-    );
-
     try {
-      final txHash = await _web3Client.sendTransaction(
-        credentials,
-        transaction,
-        chainId: SynthetixConfig.chainId,
+      final txHash = await coreProxy.burnUsd(
+        accountId,
+        pool,
+        collateralEthAddress,
+        amountWei,
+        credentials: credentials,
       );
       if (txHash.isEmpty) throw Exception('burnUsd returned empty hash');
       return txHash;

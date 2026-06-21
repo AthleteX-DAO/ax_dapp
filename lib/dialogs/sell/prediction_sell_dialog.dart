@@ -1,7 +1,9 @@
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/widgets/widgets.dart';
 import 'package:ax_dapp/predict/predict.dart';
+import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_sell_info.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/transaction_status_dialog.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -399,7 +401,11 @@ class YesAptButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
       ),
-      onPressed: () {},
+      onPressed: () {
+        context
+            .read<SellDialogBloc>()
+            .add(const AptTypeSelectionChanged(AptType.long));
+      },
       child: Text(
         'Yes',
         style: TextStyle(
@@ -431,7 +437,11 @@ class NoAptButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
       ),
-      onPressed: () {},
+      onPressed: () {
+        context
+            .read<SellDialogBloc>()
+            .add(const AptTypeSelectionChanged(AptType.short));
+      },
       child: Text(
         'No',
         style: TextStyle(
@@ -463,23 +473,17 @@ class PedictionSellApproveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 175,
-      height: 40,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.amber),
-        color: Colors.amber,
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: TextButton(
-        onPressed: () {},
-        child: const Text(
-          'Approve',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-            fontFamily: 'OpenSans',
-          ),
+    final bloc = context.read<SellDialogBloc>();
+    return ApproveButton(
+      175,
+      40,
+      'Approve',
+      bloc.swapRepository.approve,
+      bloc.swapRepository.swap,
+      (context) => const Dialog(
+        child: TransactionStatusDialog(
+          title: 'Transaction Confirmed',
+          icons: Icons.check_circle_outline,
         ),
       ),
     );

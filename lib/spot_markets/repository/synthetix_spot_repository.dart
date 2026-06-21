@@ -5,7 +5,7 @@ import 'package:shared/shared.dart';
 import 'package:web3dart/json_rpc.dart' show RPCError;
 import 'package:web3dart/web3dart.dart';
 
-/// Repository for interacting with Synthetix v3 Spot Markets on Sepolia
+/// Repository for interacting with Synthetix v3 Spot Markets on Polygon Mainnet
 class SynthetixSpotRepository {
 
   SynthetixSpotRepository({
@@ -59,25 +59,80 @@ class SynthetixSpotRepository {
     _web3Client.dispose();
   }
 
-  /// Get available spot markets from Synthetix v3
+  /// Get available spot markets from Synthetix v3.
+  /// Returns market configs from the known deployment (15 ax-branded markets).
   Future<List<Map<String, dynamic>>> getAvailableMarkets() async {
     try {
-      // TODO: Call SpotMarketProxy.getMarkets() to get list of available spot markets
-      // Returns: List of market configs with IDs, fees, etc.
-      return [];
+      // Resolve synth addresses on-chain for each known market
+      final markets = <Map<String, dynamic>>[];
+      final getSynthFunction = spotMarketContract.function('getSynth');
+
+      for (var id = 1; id <= 15; id++) {
+        try {
+          final result = await _web3Client.call(
+            contract: spotMarketContract,
+            function: getSynthFunction,
+            params: [BigInt.from(id)],
+          );
+          final synthAddress = (result[0] as EthereumAddress).hex;
+          markets.add({
+            'marketId': id,
+            'synthAddress': synthAddress,
+          });
+        } catch (e) {
+          // Market ID may not exist — skip
+          continue;
+        }
+      }
+      return markets;
     } catch (e) {
       throw Exception('Failed to fetch available markets: $e');
     }
   }
 
-  /// Get market details from Synthetix v3
+  /// Get market details from Synthetix v3.
+  /// Resolves synth address, current price (via sell quote), and skew.
   Future<Map<String, dynamic>> getMarketDetails(int marketId) async {
     try {
-      // TODO: Call SpotMarketProxy.getMarketSummary(marketId)
-      // Returns: price, skew, timestamp, etc.
-      return {};
+      final getSynthFunction = spotMarketContract.function('getSynth');
+      final synthResult = await _web3Client.call(
+        contract: spotMarketContract,
+        function: getSynthFunction,
+        params: [BigInt.from(marketId)],
+      );
+      final synthAddress = (synthResult[0] as EthereumAddress).hex;
+
+      // Get price by quoting a sell of 1 synth (18 decimals)
+      final oneSynth = BigInt.from(10).pow(18);
+      double price = 0;
+      try {
+        final quote = await getQuoteSellExactIn(
+          marketId: marketId,
+          synthAmount: oneSynth,
+        );
+        final usdAmount = quote['usdAmount'] as BigInt;
+        price = usdAmount.toDouble() / 1e18;
+      } catch (_) {
+        // Price may not be available if market has no liquidity
+      }
+
+      // Get skew
+      double skew = 0;
+      try {
+        final skewRaw = await getMarketSkew(marketId);
+        skew = skewRaw.toDouble() / 1e18;
+      } catch (_) {
+        // Skew query may fail on some markets
+      }
+
+      return {
+        'marketId': marketId,
+        'synthAddress': synthAddress,
+        'price': price,
+        'skew': skew,
+      };
     } catch (e) {
-      throw Exception('Failed to fetch market details: $e');
+      throw Exception('Failed to fetch market details for ID $marketId: $e');
     }
   }
 
@@ -485,12 +540,30 @@ class SynthetixSpotRepository {
     }
   }
 
-  /// Get aggregated market data
+  /// Get aggregated market data for all known markets.
+  /// Fetches details in parallel for efficiency.
   Future<Map<String, dynamic>> getAggregatedMarketData() async {
     try {
-      // TODO: Fetch market summaries, volumes, etc.
-      // Can aggregate data from multiple markets
-      return {};
+      final results = <int, Map<String, dynamic>>{};
+      final futures = <Future<void>>[];
+
+      for (var id = 1; id <= 15; id++) {
+        futures.add(
+          getMarketDetails(id).then((details) {
+            if (details.isNotEmpty) {
+              results[id] = details;
+            }
+          }).catchError((_) {}),
+        );
+      }
+
+      await Future.wait(futures);
+
+      return {
+        'markets': results,
+        'totalMarkets': results.length,
+        'timestamp': DateTime.now().toIso8601String(),
+      };
     } catch (e) {
       throw Exception('Failed to fetch aggregated market data: $e');
     }

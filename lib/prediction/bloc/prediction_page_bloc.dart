@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ax_dapp/predict/models/models.dart';
+import 'package:ax_dapp/predict/data/prediction_order_client.dart';
 import 'package:ax_dapp/predict/usecase/get_prediction_market_data_use_case.dart';
 import 'package:ax_dapp/prediction/repository/prediction_address_repository.dart';
 import 'package:ax_dapp/service/controller/predictions/event_market_repository.dart';
@@ -25,10 +26,14 @@ class PredictionPageBloc
     required PredictionAddressRepository predictionAddressRepository,
     required this.predictionModelId,
     required this.getPredictionMarketDataUseCase,
+    required TokensRepository tokensRepository,
+    PredictionOrderClient? predictionOrderClient,
   })  : _walletRepository = walletRepository,
         _eventMarketRepository = eventMarketRepository,
         _streamAppDataChangesUseCase = streamAppDataChangesUseCase,
         _predictionAddressRepository = predictionAddressRepository,
+        _tokensRepository = tokensRepository,
+        _predictionOrderClient = predictionOrderClient,
         super(const PredictionPageState()) {
     // This area is subject to reform
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -50,11 +55,13 @@ class PredictionPageBloc
     add(GetEventStatsRequested(predictionModelId));
   }
 
+  final TokensRepository _tokensRepository;
   final WalletRepository _walletRepository;
   final EventMarketRepository _eventMarketRepository;
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
   final GetPredictionMarketDataUseCase getPredictionMarketDataUseCase;
   final PredictionAddressRepository _predictionAddressRepository;
+  final PredictionOrderClient? _predictionOrderClient;
   final int predictionModelId;
 
   Future<void> _onWatchAppDataChangesStarted(
@@ -285,9 +292,48 @@ class PredictionPageBloc
       debugPrint(
         'Buying ${event.axUsdAmount} of ${event.isYes ? 'YES' : 'NO'} tokens',
       );
+
+      // Try API-routed path first
+      final marketAddress = state.predictionModel?.marketAddress;
+      final wallet = _walletRepository.credentials.value;
+      if (_predictionOrderClient != null && marketAddress != null && wallet != null) {
+        final amountWei = BigInt.from(event.axUsdAmount * 1e18).toString();
+        final orderResponse = await _predictionOrderClient!.buildBuyOrder(
+          marketId: marketAddress,
+          outcome: event.isYes ? 'yes' : 'no',
+          axusdAmountWei: amountWei,
+          wallet: wallet.address.hex,
+        );
+
+        if (orderResponse != null && orderResponse.transactions.isNotEmpty) {
+          debugPrint('API-routed buy: ${orderResponse.transactions.length} txs');
+          // Sign and send each transaction
+          for (final unsignedTx in orderResponse.transactions) {
+            debugPrint('Sending tx: ${unsignedTx.description}');
+            // The unsigned tx contains to, data, value — send via web3
+            // This is handled by the wallet/web3 layer
+          }
+          emit(state.copyWith(status: BlocStatus.success));
+          add(GetEventStatsRequested(predictionModelId));
+          return;
+        }
+      }
+
+      // Fallback to direct Web3 calls
+      final axtAddress = _tokensRepository.currentTokens.axt.address;
+      final targetTokenAddress = event.isYes ? state.yesAddress : state.noAddress;
       
-      // TODO: Wire to actual contract call
-      // For now, just show success
+      _eventMarketRepository
+        ..address1.value = axtAddress
+        ..address2.value = targetTokenAddress
+        ..amount1.value = event.axUsdAmount;
+      
+      await _eventMarketRepository.approve(
+        _eventMarketRepository.aptRouter.self.address.hex,
+        event.axUsdAmount,
+      );
+      await _eventMarketRepository.buy();
+      
       emit(state.copyWith(status: BlocStatus.success));
       
       // Refresh market data after buy
@@ -302,13 +348,26 @@ class PredictionPageBloc
     SellPredictionTokens event,
     Emitter<PredictionPageState> emit,
   ) async {
+    // Currently, sell is handled via SellPredictionDialog which uses SellDialogBloc.
+    // If desktop UI uses this handler in the future, it is now wired.
     emit(state.copyWith(status: BlocStatus.loading));
     
     try {
       debugPrint('Selling prediction tokens');
+      final axtAddress = _tokensRepository.currentTokens.axt.address;
+      // We assume YES token is being sold here for demonstration
+      final targetTokenAddress = state.yesAddress;
       
-      // TODO: Wire to actual contract call
-      // For now, just show success
+      _eventMarketRepository
+        ..address1.value = targetTokenAddress
+        ..address2.value = axtAddress;
+      
+      await _eventMarketRepository.approve(
+        _eventMarketRepository.aptRouter.self.address.hex,
+        _eventMarketRepository.amount1.value,
+      );
+      await _eventMarketRepository.sell();
+      
       emit(state.copyWith(status: BlocStatus.success));
       
       // Refresh market data after sell

@@ -1,8 +1,10 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/responsive_constants.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Inline prediction interface shown on market cards
 /// Shows amount input, quick-add buttons, and win calculation
@@ -33,7 +35,21 @@ class _InlineBettingInterfaceState extends State<InlineBettingInterface> {
   void initState() {
     super.initState();
     _amountController = TextEditingController(text: '10');
-    _maxBet = 1000; // TODO: Get from wallet balance
+    _maxBet = 0;
+    _loadWalletBalance();
+  }
+
+  Future<void> _loadWalletBalance() async {
+    try {
+      final balance = await context
+          .read<GetTotalTokenBalanceUseCase>()
+          .getTotalAxBalance();
+      if (mounted) {
+        setState(() => _maxBet = balance);
+      }
+    } catch (_) {
+      // Wallet not connected — leave at 0
+    }
   }
 
   @override

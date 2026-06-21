@@ -3,7 +3,7 @@
 import 'package:web3dart/web3dart.dart' as _i1;
 
 final _contractAbi = _i1.ContractAbi.fromJson(
-  '[{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultCollateral","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"value","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultDebt","outputs":[{"internalType":"int256","name":"debt","type":"int256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"}],"name":"getPoolConfiguration","outputs":[{"components":[{"internalType":"uint128","name":"marketId","type":"uint128"},{"internalType":"uint128","name":"weightD18","type":"uint128"},{"internalType":"int128","name":"maxDebtShareValueD18","type":"int128"}],"internalType":"struct MarketConfiguration.Data[]","name":"markets","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getAccountCollateral","outputs":[{"internalType":"uint256","name":"totalDeposited","type":"uint256"},{"internalType":"uint256","name":"totalAssigned","type":"uint256"},{"internalType":"uint256","name":"totalLocked","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionCollateral","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultCollateralRatio","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"leverage","type":"uint256"}],"name":"delegateCollateral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"undelegateCollateral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionDebt","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionCollateralRatio","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]',
+  '[{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultCollateral","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"value","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultDebt","outputs":[{"internalType":"int256","name":"debt","type":"int256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"}],"name":"getPoolConfiguration","outputs":[{"components":[{"internalType":"uint128","name":"marketId","type":"uint128"},{"internalType":"uint128","name":"weightD18","type":"uint128"},{"internalType":"int128","name":"maxDebtShareValueD18","type":"int128"}],"internalType":"struct MarketConfiguration.Data[]","name":"markets","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getAccountCollateral","outputs":[{"internalType":"uint256","name":"totalDeposited","type":"uint256"},{"internalType":"uint256","name":"totalAssigned","type":"uint256"},{"internalType":"uint256","name":"totalLocked","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionCollateral","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getVaultCollateralRatio","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"leverage","type":"uint256"}],"name":"delegateCollateral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"undelegateCollateral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionDebt","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"}],"name":"getPositionCollateralRatio","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"tokenAmount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"tokenAmount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mintUsd","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"accountId","type":"uint128"},{"internalType":"uint128","name":"poolId","type":"uint128"},{"internalType":"address","name":"collateralType","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burnUsd","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128","name":"requestedAccountId","type":"uint128"}],"name":"createAccount","outputs":[],"stateMutability":"nonpayable","type":"function"}]',
   'SynthetixCoreProxy',
 );
 
@@ -181,6 +181,78 @@ class SynthetixCoreProxy extends _i1.GeneratedContract {
     final params = [accountId, poolId, collateralType];
     final response = await read(function, params, atBlock);
     return response[0] as BigInt;
+  }
+
+  /// Deposit collateral tokens into a Synthetix account.
+  /// Tokens must be approved for CoreProxy spending first.
+  Future<String> deposit(
+    BigInt accountId,
+    _i1.EthereumAddress collateralType,
+    BigInt tokenAmount, {
+    required _i1.Credentials credentials,
+    _i1.Transaction? transaction,
+  }) async {
+    final function = self.abi.functions[10];
+    assert(checkSignature(function, 'cfd47663'));
+    final params = [accountId, collateralType, tokenAmount];
+    return write(credentials, transaction, function, params);
+  }
+
+  /// Withdraw collateral tokens from a Synthetix account back to the wallet.
+  /// Collateral must be undelegated first.
+  Future<String> withdrawCollateral(
+    BigInt accountId,
+    _i1.EthereumAddress collateralType,
+    BigInt tokenAmount, {
+    required _i1.Credentials credentials,
+    _i1.Transaction? transaction,
+  }) async {
+    final function = self.abi.functions[11];
+    assert(checkSignature(function, '95997c51'));
+    final params = [accountId, collateralType, tokenAmount];
+    return write(credentials, transaction, function, params);
+  }
+
+  /// Mint (borrow) axUSD against delegated collateral.
+  Future<String> mintUsd(
+    BigInt accountId,
+    BigInt poolId,
+    _i1.EthereumAddress collateralType,
+    BigInt amount, {
+    required _i1.Credentials credentials,
+    _i1.Transaction? transaction,
+  }) async {
+    final function = self.abi.functions[12];
+    assert(checkSignature(function, 'df16a074'));
+    final params = [accountId, poolId, collateralType, amount];
+    return write(credentials, transaction, function, params);
+  }
+
+  /// Burn (repay) axUSD debt.
+  Future<String> burnUsd(
+    BigInt accountId,
+    BigInt poolId,
+    _i1.EthereumAddress collateralType,
+    BigInt amount, {
+    required _i1.Credentials credentials,
+    _i1.Transaction? transaction,
+  }) async {
+    final function = self.abi.functions[13];
+    assert(checkSignature(function, 'd3264e43'));
+    final params = [accountId, poolId, collateralType, amount];
+    return write(credentials, transaction, function, params);
+  }
+
+  /// Create a new Synthetix V3 account (NFT).
+  Future<String> createAccount(
+    BigInt requestedAccountId, {
+    required _i1.Credentials credentials,
+    _i1.Transaction? transaction,
+  }) async {
+    final function = self.abi.functions[14];
+    assert(checkSignature(function, '9dca362f'));
+    final params = [requestedAccountId];
+    return write(credentials, transaction, function, params);
   }
 }
 

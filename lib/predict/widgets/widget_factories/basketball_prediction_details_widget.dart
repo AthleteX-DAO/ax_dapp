@@ -7,13 +7,48 @@ class BasketballPredictionsDetailsWidget implements PredictionDetailsWidget {
   const BasketballPredictionsDetailsWidget(this.predictionModel);
 
   final PredictionModel predictionModel;
+
   @override
   Widget predictionDetailsCardsForMobile(
     double prdNameBx, {
     required bool showIcon,
   }) {
-    // TODO: implement predictionDetailsCardsForMobile
-    throw UnimplementedError();
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          if (showIcon)
+            SizedBox(
+              width: 40,
+              child: Icon(
+                Icons.sports_basketball,
+                color: Colors.grey[700],
+                size: 24,
+              ),
+            ),
+          SizedBox(
+            width: prdNameBx,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  predictionModel.prompt,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyle(
+                    Colors.white,
+                    14,
+                    isBold: false,
+                    isUline: false,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -66,13 +101,123 @@ class BasketballPredictionsDetailsWidget implements PredictionDetailsWidget {
 
   @override
   Widget predictionPageKeyStatistics() {
-    // TODO: implement predictionPageKeyStatistics
-    throw UnimplementedError();
+    final stats = _parseKeyStatistics();
+    if (stats.isEmpty) {
+      return Center(
+        child: Text(
+          'No key statistics available',
+          style: textStyle(
+            Colors.grey,
+            14,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: stats.entries
+              .map((entry) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          entry.key,
+                          style: textStyle(
+                            Colors.white70,
+                            12,
+                            isBold: false,
+                            isUline: false,
+                          ),
+                        ),
+                        Text(
+                          entry.value,
+                          style: textStyle(
+                            Colors.white,
+                            12,
+                            isBold: true,
+                            isUline: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),)
+              .toList(),
+        ),
+      ),
+    );
   }
 
   @override
   Widget predictionPageKeyStatisticsForMobile() {
-    // TODO: implement predictionPageKeyStatisticsForMobile
-    throw UnimplementedError();
+    final stats = _parseKeyStatistics();
+    if (stats.isEmpty) {
+      return Center(
+        child: Text(
+          'No key statistics available',
+          style: textStyle(
+            Colors.grey,
+            12,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: stats.entries
+              .map((entry) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            entry.key,
+                            style: textStyle(
+                              Colors.white70,
+                              11,
+                              isBold: false,
+                              isUline: false,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          entry.value,
+                          style: textStyle(
+                            Colors.white,
+                            11,
+                            isBold: true,
+                            isUline: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),)
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  Map<String, String> _parseKeyStatistics() {
+    return {
+      'League': 'NBA',
+      'Game Type': 'Regular Season',
+      'Market Type': 'Moneyline',
+      'Odds Format': 'Decimal',
+    };
   }
 }

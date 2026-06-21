@@ -2,6 +2,7 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/versus/models/athlete_elo.dart';
 import 'package:ax_dapp/versus/repository/versus_repository.dart';
+import 'package:ax_dapp/versus/widgets/athlete_share_card.dart';
 import 'package:flutter/material.dart';
 
 /// Widget displaying the leaderboard of top athletes by ELO
@@ -245,6 +246,7 @@ class LeaderboardWidget extends StatelessWidget {
                     return _LeaderboardRow(
                       rank: index + 1,
                       athlete: athletes[index],
+                      category: _getLeaderboardTitle(),
                     );
                   },
                 );
@@ -261,10 +263,12 @@ class _LeaderboardRow extends StatefulWidget {
   const _LeaderboardRow({
     required this.rank,
     required this.athlete,
+    required this.category,
   });
 
   final int rank;
   final AthleteElo athlete;
+  final String category;
 
   @override
   State<_LeaderboardRow> createState() => _LeaderboardRowState();
@@ -313,13 +317,11 @@ class _LeaderboardRowState extends State<_LeaderboardRow> {
       cursor: SystemMouseCursors.click,
       child: InkWell(
         onTap: () {
-          // TODO: Navigate to Battle tab and load matchup with this athlete
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${widget.athlete.athleteName} clicked! Feature coming soon.'),
-              duration: const Duration(seconds: 2),
-              backgroundColor: primaryOrangeColor,
-            ),
+          AthleteShareCardDialog.show(
+            context,
+            athlete: widget.athlete,
+            rank: widget.rank,
+            category: widget.category,
           );
         },
         child: AnimatedContainer(

@@ -64,5 +64,32 @@ service cloud.firestore {
       allow read: if true;
       allow write: if true;
     }
+    
+    // Market proposals for community-driven prediction market voting
+    match /market_proposals/{proposalId} {
+      allow read: if true;
+      allow create: if request.auth != null
+                    && request.resource.data.prompt is string
+                    && request.resource.data.prompt.size() > 0
+                    && request.resource.data.category is string
+                    && request.resource.data.proposerAddress is string;
+      allow update: if request.auth != null;
+      allow delete: if false;
+    }
+    
+    // Individual votes on market proposals (1 wallet = 1 vote per proposal)
+    match /market_proposal_votes/{voteId} {
+      allow read: if true;
+      allow create: if request.auth != null
+                    && request.resource.data.proposalId is string
+                    && request.resource.data.walletAddress is string;
+      allow update, delete: if false;
+    }
+    
+    // Livestream data for prediction markets page
+    match /livestreams/{streamId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
   }
 }

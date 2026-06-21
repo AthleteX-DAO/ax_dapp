@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:ax_dapp/predict/data/firebase_price_client.dart';
+import 'package:ax_dapp/predict/data/prediction_api_client.dart';
 import 'package:ax_dapp/predict/models/token_market_model.dart';
 import 'package:ax_dapp/predict/predict.dart';
 import 'package:ax_dapp/predict/repository/live_prediction_market_repository.dart';
@@ -17,25 +18,45 @@ class GetPredictionMarketDataUseCase {
     required this.graphRepo,
     LivePredictionMarketRepository? livePredictionMarketRepository,
     FirebasePriceClient? firebasePriceClient,
+    PredictionApiClient? predictionApiClient,
   })  : _tokensRepository = tokensRepository,
         _liveRepo = livePredictionMarketRepository,
-        _firebaseClient = firebasePriceClient;
+        _firebaseClient = firebasePriceClient,
+        _apiClient = predictionApiClient;
 
   final TokensRepository _tokensRepository;
   final SubGraphRepo graphRepo;
   final LivePredictionMarketRepository? _liveRepo;
   final FirebasePriceClient? _firebaseClient;
+  final PredictionApiClient? _apiClient;
 
   List<TokenPair> allPairs = [];
 
-  /// Fetch price history for a specific market from Firebase.
-  /// Falls back to mock data if Firebase is unavailable.
+  /// Fetch price history for a specific market.
+  /// Tries: API → Firebase → mock data.
   Future<MarketPriceRecord> getPriceHistoryFromFirebase(
     String marketAddress,
     DateTime startDate,
     int marketId,
   ) async {
-    // Try to fetch from Firebase if available
+    // 1. Try the backend API
+    if (_apiClient != null) {
+      try {
+        final days = DateTime.now().difference(startDate).inDays.clamp(1, 365);
+        final result = await _apiClient!.fetchPriceHistory(
+          marketId,
+          days: days,
+        );
+        if (result != null) {
+          debugPrint('Price history loaded from API for market $marketId');
+          return result;
+        }
+      } catch (e) {
+        debugPrint('API price history failed: $e');
+      }
+    }
+
+    // 2. Try Firebase
     if (_firebaseClient != null) {
       try {
         debugPrint('Fetching price history from Firebase for $marketAddress');
@@ -52,7 +73,7 @@ class GetPredictionMarketDataUseCase {
       }
     }
 
-    // Fall back to mock data
+    // 3. Fall back to mock data
     return getMockMarketPriceHistory(
       DateFormat('yyyy-MM-dd').format(startDate),
       marketId,
@@ -125,7 +146,34 @@ class GetPredictionMarketDataUseCase {
   Future<List<PredictionModel>> fetchSupportedPredictionMarkets(
     SupportedPredictionMarkets supportedPredictionMarkets,
   ) async {
-    // 1. Load live on-chain markets from the deployment manifest.
+    // 1. Try the backend API first.
+    if (_apiClient != null) {
+      try {
+        final apiMarkets = await _apiClient!.fetchMarkets(
+          category: supportedPredictionMarkets,
+        );
+        if (apiMarkets.isNotEmpty) {
+          debugPrint(
+            'Loaded ${apiMarkets.length} markets from API '
+            '(category: ${supportedPredictionMarkets.name})',
+          );
+          // Prepend any live on-chain markets from the manifest.
+          List<PredictionModel> liveMarkets = [];
+          if (_liveRepo != null) {
+            try {
+              liveMarkets = await _liveRepo!.getLivePredictionMarkets(
+                category: supportedPredictionMarkets,
+              );
+            } catch (_) {}
+          }
+          return [...liveMarkets, ...apiMarkets];
+        }
+      } catch (e) {
+        debugPrint('API fetch failed, falling back: $e');
+      }
+    }
+
+    // 2. Fallback: load live on-chain markets from the deployment manifest.
     List<PredictionModel> liveMarkets = [];
     if (_liveRepo != null) {
       try {
@@ -137,7 +185,7 @@ class GetPredictionMarketDataUseCase {
       }
     }
 
-    // 2. Build mock markets for categories that have no live contracts yet.
+    // 3. Build mock markets for categories that have no live contracts yet.
     final mockMarkets = _buildMockPredictionMarkets();
     final filteredMocks = supportedPredictionMarkets ==
             SupportedPredictionMarkets.all
@@ -149,7 +197,7 @@ class GetPredictionMarketDataUseCase {
             )
             .toList();
 
-    // 3. Live markets appear first, then mocks fill the rest of the page.
+    // 4. Live markets appear first, then mocks fill the rest of the page.
     return [...liveMarkets, ...filteredMocks];
   }
 

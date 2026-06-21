@@ -13,7 +13,7 @@ const baseApiUrl = (String.fromEnvironment(
           defaultValue: 'staging',
         ) ==
         'staging')
-    ? 'https://api-stage.athletex.io'
+    ? 'http://74.208.213.94:8000'
     : 'https://api.athletex.io';
 
 const baseUrl = (String.fromEnvironment(

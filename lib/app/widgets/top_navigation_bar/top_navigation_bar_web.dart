@@ -102,23 +102,15 @@ class TopNavigationBarWeb extends StatelessWidget {
                         context.goNamed('versus');
                       },
                     ),
-                    TextButton(
+                    TopNavigationBarItem(
+                      routeName: 'vote',
+                      buttonName: 'Vote',
+                      isSelected: selectedButton == 'vote',
                       onPressed: () {
-                        launchUrl(
-                          Uri.parse(
-                            'https://snapshot.org/#/athletex.eth',
-                          ),
-                        );
+                        bloc.add(
+                            const SelectButtonEvent(buttonName: 'vote'),);
+                        context.goNamed('vote');
                       },
-                      child: Text(
-                        'Vote',
-                        style: textStyle(
-                          Colors.white,
-                          navigationBarItemTextSize,
-                          isBold: true,
-                          isUline: false,
-                        ),
-                      ),
                     ),
                   ],
                 ),

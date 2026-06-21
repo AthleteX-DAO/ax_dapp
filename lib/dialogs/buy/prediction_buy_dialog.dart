@@ -1,7 +1,9 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/widgets/widgets.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/transaction_status_dialog.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -501,41 +503,19 @@ class PedictionBuyApproveButton extends StatelessWidget {
   final String longOrShort;
   final AptBuyInfo aptBuyInfo;
 
-  // / This will come in handy
-  //   approveCallback: bloc.swapRepository.approve,
-  // confirmCallback: bloc.swapRepository.swap,
-  // confirmDialog: const TransactionStatusDialog(
-  //   title: 'Transaction Confirmed',
-  //   icons: Icons.check_circle_outline,
-  // ),
-  // walletAddress: formattedWalletAddress,
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 175,
-      height: 40,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.amber),
-        color: Colors.amber,
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: TextButton(
-        onPressed: () {
-          context.read<BuyDialogBloc>().add(
-                const BuyAPTRequested(
-                  addressToApprove:
-                      '0x711b8208753fC1B9ed2836519c02Da649157E864',
-                ),
-              );
-        },
-        child: const Text(
-          'Approve',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-            fontFamily: 'OpenSans',
-          ),
+    final bloc = context.read<BuyDialogBloc>();
+    return ApproveButton(
+      175,
+      40,
+      'Approve',
+      bloc.swapRepository.approve,
+      bloc.swapRepository.swap,
+      (context) => const Dialog(
+        child: TransactionStatusDialog(
+          title: 'Transaction Confirmed',
+          icons: Icons.check_circle_outline,
         ),
       ),
     );

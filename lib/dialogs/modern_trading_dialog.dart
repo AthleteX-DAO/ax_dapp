@@ -1,9 +1,20 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:ax_dapp/predict/models/prediction_model.dart';
+import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/transaction_status_dialog.dart';
+import 'package:ax_dapp/service/controller/swap/swap_repository.dart';
+import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
+import 'package:ax_dapp/util/warning_text_button.dart';
+import 'package:ethereum_api/src/tokens/models/contract.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 /// Modern, glassmorphic trading dialog with enhanced UX
 class ModernTradingDialog extends StatefulWidget {
@@ -35,7 +46,8 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
   String _selectedCurrency = 'USD';
   bool _limitOrderEnabled = false;
   late bool _isBuyLocal;
-  final double _balance = 2500; // TODO: wire real balance
+  double _balance = 0;
+  StreamSubscription<AppData>? _appDataSubscription;
 
   @override
   void initState() {
@@ -46,11 +58,48 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
     );
     _selectedOutcome = widget.initialOutcome;
     _isBuyLocal = widget.isBuy;
+    _loadWalletBalance();
+
+    _appDataSubscription = context
+        .read<StreamAppDataChangesUseCase>()
+        .appDataChanges
+        .listen((appData) {
+      final appConfig = appData.appConfig;
+      final aptFactory = appConfig.reactiveAptFactoryClient.valueOrNull;
+      final aptRouter = appConfig.reactiveAptRouterClient.valueOrNull;
+      final swapRepository = context.read<SwapRepository>();
+      final walletRepository = context.read<WalletRepository>();
+      if (aptFactory != null && aptRouter != null) {
+        swapRepository
+          ..aptFactory = aptFactory
+          ..aptRouter = aptRouter;
+      }
+      swapRepository.controller.client.value = appConfig.reactiveWeb3Client.value;
+      swapRepository.controller.credentials = walletRepository.credentials.value;
+      swapRepository.factoryAddress.value =
+          Contract.exchangeFactory(appData.chain).address;
+      swapRepository.routerAddress.value =
+          Contract.exchangeRouter(appData.chain).address;
+    });
+  }
+
+  Future<void> _loadWalletBalance() async {
+    try {
+      final balance = await context
+          .read<GetTotalTokenBalanceUseCase>()
+          .getTotalAxBalance();
+      if (mounted) {
+        setState(() => _balance = balance);
+      }
+    } catch (_) {
+      // Wallet not connected — leave at 0
+    }
   }
 
   @override
   void dispose() {
     _expandController.dispose();
+    _appDataSubscription?.cancel();
     super.dispose();
   }
 
@@ -486,7 +535,7 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
               ),
             ),
             Text(
-              r'Balance: $2,500.00',
+              'Balance: \$${_balance.toStringAsFixed(2)}',
               style: textStyle(
                 Colors.white54,
                 12,
@@ -831,37 +880,56 @@ class _ModernTradingDialogState extends State<ModernTradingDialog>
   }
 
   Widget _buildActionButtons() {
+    final double amount = double.tryParse(_inputAmount) ?? 0.0;
+    if (amount <= 0) {
+      return const WarningTextButton(
+        warningTitle: 'Enter Amount',
+      );
+    }
+    if (amount > _balance) {
+      return const WarningTextButton(
+        warningTitle: 'Insufficient Balance',
+      );
+    }
+
+    final swapRepository = context.read<SwapRepository>();
+    final tokensRepository = context.read<TokensRepository>();
+
+    final String fromAddr;
+    final String toAddr;
+
+    if (_isBuyLocal) {
+      fromAddr = tokensRepository.currentTokens.axt.address;
+      toAddr = _selectedOutcome == 'Yes'
+          ? widget.predictionModel.yesTokenAddress
+          : widget.predictionModel.noTokenAddress;
+    } else {
+      fromAddr = _selectedOutcome == 'Yes'
+          ? widget.predictionModel.yesTokenAddress
+          : widget.predictionModel.noTokenAddress;
+      toAddr = tokensRepository.currentTokens.axt.address;
+    }
+
+    // Configure SwapRepository right before action
+    swapRepository
+      ..fromAddress = fromAddr
+      ..toAddress = toAddr
+      ..fromAmount = amount
+      ..topDecimals = 18
+      ..bottomDecimals = 18;
+
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                primaryOrangeColor,
-                primaryOrangeColor.withOpacity(0.8),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: primaryOrangeColor.withOpacity(0.3),
-                blurRadius: 12,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: Text(
-            '${_isBuyLocal ? "Buy" : "Sell"} $_selectedOutcome',
-            textAlign: TextAlign.center,
-            style: textStyle(
-              Colors.black,
-              16,
-              isBold: true,
-              isUline: false,
+        ApproveButton(
+          double.infinity,
+          50,
+          'Approve',
+          swapRepository.approve,
+          swapRepository.swap,
+          (context) => const Dialog(
+            child: TransactionStatusDialog(
+              title: 'Transaction Confirmed',
+              icons: Icons.check_circle_outline,
             ),
           ),
         ),

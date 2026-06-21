@@ -151,4 +151,24 @@ class FetchPlatformTVL extends EarnPageEvent {
   List<Object> get props => [];
 }
 
+/// Internal event dispatched by the transaction polling timer.
+/// Must use add() from Timer callbacks, never emit() directly.
+class _TransactionPollResult extends EarnPageEvent {
+  const _TransactionPollResult({required this.success, this.error});
+  final bool success;
+  final String? error;
+
+  @override
+  List<Object> get props => [success, error ?? ''];
+}
+
+/// Internal event dispatched by the C-ratio debounce timer.
+class _CollateralRatioResult extends EarnPageEvent {
+  const _CollateralRatioResult({required this.ratio});
+  final double ratio;
+
+  @override
+  List<Object> get props => [ratio];
+}
+
 enum TileType { earnSimple, provideLiquidity, borrowStablecoins }

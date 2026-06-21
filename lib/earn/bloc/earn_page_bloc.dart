@@ -33,6 +33,8 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     on<SubmitMintForm>(_onSubmitMintForm);
     on<SubmitBurnForm>(_onSubmitBurnForm);
     on<PollTransaction>(_onPollTransaction);
+    on<_TransactionPollResult>(_onTransactionPollResult);
+    on<_CollateralRatioResult>(_onCollateralRatioResult);
     on<TransactionConfirmed>(_onTransactionConfirmed);
     on<TransactionFailed>(_onTransactionFailed);
     on<CloseTransactionModal>(_onCloseTransactionModal);
@@ -124,21 +126,29 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     // Emit loading state
     emit(state.copyWith(isCollateralRatioLoading: true));
 
-    // Set up new debounce timer (500ms)
+    // Set up new debounce timer (500ms) — use add() not emit()
     _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
       try {
-        // Fetch live C-ratio
         final cRatio = await _vaultRepository?.getCollateralRatio(
-          collateralAddress: SynthetixConfig.axToken, // fUSDC or similar
+          collateralAddress: SynthetixConfig.axToken,
         ) ?? 200.0;
-        emit(state.copyWith(
-          collateralRatio: cRatio,
-          isCollateralRatioLoading: false,
-        ),);
+        add(_CollateralRatioResult(ratio: cRatio));
       } catch (e) {
-        emit(state.copyWith(isCollateralRatioLoading: false));
+        debugPrint('C-ratio fetch error: $e');
+        add(const _CollateralRatioResult(ratio: 200.0));
       }
     });
+  }
+
+  /// Handle the result from debounce timer or refresh.
+  Future<void> _onCollateralRatioResult(
+    _CollateralRatioResult event,
+    Emitter<EarnPageState> emit,
+  ) async {
+    emit(state.copyWith(
+      collateralRatio: event.ratio,
+      isCollateralRatioLoading: false,
+    ));
   }
 
   /// Handle leverage slider update
@@ -411,63 +421,75 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     }
   }
 
-  /// Poll transaction receipt
+  /// Poll transaction receipt.
+  ///
+  /// IMPORTANT: Timer callbacks MUST use `add()` to dispatch events, not
+  /// `emit()` directly. Calling `emit` after the handler returns crashes the
+  /// bloc with "emit was called after an event handler completed normally".
   Future<void> _onPollTransaction(
     PollTransaction event,
     Emitter<EarnPageState> emit,
   ) async {
-    // Cancel any existing polling timer
     _pollingTimer?.cancel();
 
     var attempts = 0;
-    const maxAttempts = 60; // 60 * 2s = 120s timeout
+    const maxAttempts = 60;
     const pollInterval = Duration(seconds: 2);
 
     _pollingTimer = Timer.periodic(pollInterval, (_) async {
       attempts++;
-
       try {
-        final receipt = await _vaultRepository?.getTransactionReceipt(event.txHash);
-
+        final receipt =
+            await _vaultRepository?.getTransactionReceipt(event.txHash);
         if (receipt != null) {
           _pollingTimer?.cancel();
-
           if (receipt.status == true) {
-            // Transaction succeeded
-            emit(state.copyWith(
-              transactionStep: TransactionStep.success,
-              transactionStatus: TransactionStatus.success,
-            ),);
-
-            // Auto-dismiss after 2 seconds
-            await Future.delayed(const Duration(seconds: 2));
-            add(const CloseTransactionModal());
+            add(const _TransactionPollResult(success: true));
           } else {
-            // Transaction reverted
-            _pollingTimer?.cancel();
-            emit(state.copyWith(
-              transactionStatus: TransactionStatus.error,
-              transactionError: 'Transaction failed on-chain',
-            ),);
+            add(const _TransactionPollResult(
+              success: false,
+              error: 'Transaction reverted on-chain',
+            ));
           }
         } else if (attempts >= maxAttempts) {
-          // Timeout
           _pollingTimer?.cancel();
-          emit(state.copyWith(
-            transactionStatus: TransactionStatus.error,
-            transactionError: 'Transaction confirmation timeout',
-          ),);
+          add(const _TransactionPollResult(
+            success: false,
+            error: 'Transaction confirmation timeout',
+          ));
         }
       } catch (e) {
+        debugPrint('Poll error (attempt $attempts): $e');
         if (attempts >= maxAttempts) {
           _pollingTimer?.cancel();
-          emit(state.copyWith(
-            transactionStatus: TransactionStatus.error,
-            transactionError: 'Error polling transaction: $e',
-          ),);
+          add(_TransactionPollResult(
+            success: false,
+            error: 'Error polling transaction: $e',
+          ));
         }
       }
     });
+  }
+
+  /// Handle the result dispatched from the polling timer.
+  Future<void> _onTransactionPollResult(
+    _TransactionPollResult event,
+    Emitter<EarnPageState> emit,
+  ) async {
+    if (event.success) {
+      emit(state.copyWith(
+        transactionStep: TransactionStep.success,
+        transactionStatus: TransactionStatus.success,
+      ));
+      // Auto-dismiss after 2 seconds
+      await Future.delayed(const Duration(seconds: 2));
+      add(const CloseTransactionModal());
+    } else {
+      emit(state.copyWith(
+        transactionStatus: TransactionStatus.error,
+        transactionError: event.error ?? 'Unknown error',
+      ));
+    }
   }
 
   /// Handle transaction confirmed

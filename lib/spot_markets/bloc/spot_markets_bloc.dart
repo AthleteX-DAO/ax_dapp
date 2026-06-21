@@ -288,7 +288,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
       final errorDetails = e.toString();
       if (errorDetails.contains('RPC') || errorDetails.contains('network')) {
         emit(SpotMarketsError(
-          'Network error connecting to Sepolia',
+          'Network error connecting to ${SynthetixConfig.networkName}',
           details: errorDetails,
         ),);
       } else {
@@ -940,8 +940,8 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
     }
   }
 
-  /// Fetch real market data from Synthetix v3 on Base Sepolia
-  /// Prices are derived from SpotMarketProxy quotes (1 synth → USD)
+  /// Fetch real market data from Synthetix v3 on Polygon Mainnet
+  /// Price priority: CoinGecko → Oracle (Chainlink/Pyth) → On-chain quote → Mock
   Future<Map<String, SpotMarketModel>> _fetchSynthetixMarketData(
     List<String> markets,
   ) async {
@@ -957,16 +957,15 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
       final baseAsset = marketConfig['baseAsset'] as String;
       final summary = marketSummaries[baseAsset];
 
-      // Get real price from market summary (with oracle/quote fallback)
+      // 3-tier price fallback: CoinGecko → Oracle → On-chain quote → Mock
       double price;
       try {
         if (summary != null && summary.price > 0) {
           price = summary.price;
-          print('🔷 SpotMarketsBloc using market price for $marketKey: $price');
         } else {
-          // Fallback to oracle/quote
-          price = await _getPriceFromSpotQuote(marketConfig);
-          print('🔷 SpotMarketsBloc using quote price for $marketKey: $price');
+          // Try oracle (Chainlink/Pyth) before on-chain quote
+          price = await _getPriceFromOracle(baseAsset) ??
+              await _getPriceFromSpotQuote(marketConfig);
         }
       } catch (e) {
         print('🔷 SpotMarketsBloc price fetch failed for $marketKey: $e, using mock');
@@ -981,11 +980,25 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
         change24h: change24h,
         high24h: price * 1.05,
         low24h: price * 0.95,
-        volume24h: 1000000 + (marketKey.hashCode % 5000000),
+        volume24h: price * (50000 + (marketKey.hashCode.abs() % 200000)),
       );
     }
 
     return data;
+  }
+
+  /// Try to get price from the OracleRepository (Chainlink/Pyth fallback chain).
+  /// Returns null if oracle has no feed configured for this asset.
+  Future<double?> _getPriceFromOracle(String baseAsset) async {
+    try {
+      final priceFeed = await _oracleRepo.getPrice(baseAsset);
+      if (priceFeed.price > 0) {
+        return priceFeed.price;
+      }
+    } catch (_) {
+      // Oracle doesn't have a feed for this asset — fall through
+    }
+    return null;
   }
 
   /// Fetch a single market price with oracle fallback
@@ -1102,22 +1115,39 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
     return usdAmount.toDouble() / 1e18;
   }
 
-  /// Mock prices for Synthetix v3 spot markets
-  /// Replace with real oracle data from Pyth after deployment
+  /// Fallback mock prices for Synthetix v3 ax-branded spot markets.
+  /// Used only when both CoinGecko and on-chain quotes fail.
   double _getSynthetixMockPrice(String market) {
     switch (market) {
-      case 'sDAI':
+      case 'axUSDC':
+      case 'axUSDT':
         return 1;
-      case 'sUSDC':
-        return 1;
-      case 'sBTC':
+      case 'axBTC':
         return 97000;
-      case 'sETH':
+      case 'axETH':
         return 2600;
-      case 'sUSDe':
-        return 1;
-      case 'sSOL':
+      case 'axSOL':
         return 200;
+      case 'axLINK':
+        return 18;
+      case 'axARB':
+        return 1.2;
+      case 'axAVAX':
+        return 40;
+      case 'axOP':
+        return 2.5;
+      case 'axPOLY':
+        return 0.7;
+      case 'axDXY':
+        return 104;
+      case 'axEUR':
+        return 1.08;
+      case 'axGBP':
+        return 1.27;
+      case 'axSPY':
+        return 530;
+      case 'axXAU':
+        return 2350;
       default:
         return 100;
     }

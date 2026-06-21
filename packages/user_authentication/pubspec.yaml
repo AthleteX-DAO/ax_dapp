@@ -4,14 +4,14 @@ version: 0.0.1
 publish_to: none
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  cloud_firestore: ^4.3.1
+  cloud_firestore: ^5.0.0
   cryptography: ^2.5.0
   encrypt: ^5.0.3
-  firebase_auth: ^4.11.1
-  firebase_core: ^2.4.1
+  firebase_auth: ^5.0.0
+  firebase_core: ^3.0.0
   flutter:
     sdk: flutter
   wallet_repository:
