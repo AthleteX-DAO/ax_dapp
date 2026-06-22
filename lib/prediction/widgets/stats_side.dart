@@ -74,7 +74,7 @@ class _StatsSideState extends State<StatsSide> {
     return Container(
       width: wid,
       padding: const EdgeInsets.all(16),
-      decoration: GoldTheme.panel(radius: 24),
+      decoration: GoldTheme.glowPanel(radius: 24),
       child: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         child: Padding(
@@ -354,26 +354,24 @@ class _StatsSideState extends State<StatsSide> {
                       ),
                     const SizedBox(height: 16),
                     // Trade Button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: _isYesSelected
-                              ? primaryGreenColor
-                              : primaryRedColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 4,
-                        ),
-                        onPressed: _tradeAmount > 0
-                            ? () => _executeTrade(context)
-                            : null,
+                    GestureDetector(
+                      onTap: _tradeAmount > 0
+                          ? () => _executeTrade(context)
+                          : null,
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: _tradeAmount > 0
+                            ? GoldTheme.goldGlowButton(radius: 12)
+                            : BoxDecoration(
+                                color: Colors.white.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                        alignment: Alignment.center,
                         child: Text(
                           'Buy ${_isYesSelected ? 'YES' : 'NO'}',
                           style: textStyle(
-                            Colors.white,
+                            _tradeAmount > 0 ? Colors.black : Colors.white38,
                             16,
                             isBold: true,
                             isUline: false,
@@ -496,16 +494,16 @@ class _StatsSideState extends State<StatsSide> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.08),
+          color: primaryOrangeColor.withOpacity(0.08),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: Colors.white.withOpacity(0.2),
+            color: primaryOrangeColor.withOpacity(0.25),
           ),
         ),
         child: Text(
           label,
           style: textStyle(
-            Colors.white,
+            primaryOrangeColor,
             12,
             isBold: true,
             isUline: false,

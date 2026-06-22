@@ -435,12 +435,19 @@ class _UmaResolverSectionState extends State<UmaResolverSection> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(14),
+        color: Colors.white.withOpacity(0.06),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
-          width: 1.5,
+          color: primaryOrangeColor.withOpacity(0.3),
+          width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: primaryOrangeColor.withOpacity(0.1),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -449,7 +456,7 @@ class _UmaResolverSectionState extends State<UmaResolverSection> {
             title,
             style: textStyle(
               Colors.white,
-              compact ? 11 : 14,
+              compact ? 12 : 16,
               isBold: true,
               isUline: false,
             ),

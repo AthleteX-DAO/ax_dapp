@@ -25,16 +25,24 @@ class PromptPageTitle extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.black.withOpacity(0.4),
-                Colors.black.withOpacity(0.2),
+                Colors.black.withOpacity(0.5),
+                Colors.black.withOpacity(0.3),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: primaryOrangeColor.withOpacity(0.3),
+              color: primaryOrangeColor.withOpacity(0.4),
+              width: 1.5,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: primaryOrangeColor.withOpacity(0.15),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Row(
             children: [

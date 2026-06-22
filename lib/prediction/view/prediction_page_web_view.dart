@@ -49,7 +49,7 @@ class PredictionPageWebView extends StatelessWidget {
                             containerWidth: _containerWdt * 0.45,
                           ),
                         ),
-                        const SizedBox(height: 1),
+                        const SizedBox(height: 24),
                         // Bottom-left: Market Intel (Rules/UMA/AI)
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -64,7 +64,7 @@ class PredictionPageWebView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 24),
                   // Right column: Market Info
                   Expanded(
                     flex: 0,

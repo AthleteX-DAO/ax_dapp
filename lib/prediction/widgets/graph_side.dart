@@ -58,7 +58,7 @@ class GraphSide extends StatelessWidget {
                   width: wid * .875,
                   height: _height * .5,
                   padding: const EdgeInsets.all(12),
-                  decoration: GoldTheme.panel(radius: 14),
+                  decoration: GoldTheme.glowPanel(radius: 16),
                   child: Stack(
                     children: [
                       Padding(
