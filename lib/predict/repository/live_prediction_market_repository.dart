@@ -1,3 +1,4 @@
+import 'package:ax_dapp/predict/data/prediction_api_client.dart';
 import 'package:ax_dapp/predict/data/prediction_market_client.dart';
 import 'package:ax_dapp/predict/data/prediction_market_manifest.dart';
 import 'package:ax_dapp/predict/models/prediction_model.dart';
@@ -14,10 +15,13 @@ class LivePredictionMarketRepository {
   LivePredictionMarketRepository({
     required PredictionMarketClient predictionMarketClient,
     PredictionMarketManifest? manifest,
+    PredictionApiClient? apiClient,
   })  : _client = predictionMarketClient,
-        _manifest = manifest;
+        _manifest = manifest,
+        _apiClient = apiClient;
 
   final PredictionMarketClient _client;
+  final PredictionApiClient? _apiClient;
   PredictionMarketManifest? _manifest;
 
   /// Ensure the manifest is loaded (cached after first call).
@@ -34,6 +38,21 @@ class LivePredictionMarketRepository {
   }) async {
     final manifest = await _loadManifest();
 
+    // Fetch API volumes in parallel with chain data
+    Map<String, double> apiVolumes = {};
+    if (_apiClient != null) {
+      try {
+        final apiMarkets = await _apiClient!.fetchMarkets();
+        if (apiMarkets != null) {
+          for (final am in apiMarkets) {
+            apiVolumes[am.marketAddress.toLowerCase()] = am.tradingVolume;
+          }
+        }
+      } catch (e) {
+        debugPrint('Failed to fetch API volumes: $e');
+      }
+    }
+
     // Build PredictionModels from manifest — fetch chain data in parallel.
     final futures = manifest.markets.map((deployedMarket) async {
       try {
@@ -42,7 +61,7 @@ class LivePredictionMarketRepository {
           deployedMarket.longTokenAddress,
           deployedMarket.shortTokenAddress,
         );
-        return _toPredictionModel(deployedMarket, chainData);
+        return _toPredictionModel(deployedMarket, chainData, apiVolumes);
       } catch (e) {
         debugPrint(
           'Failed to fetch chain data for ${deployedMarket.pairName}: $e',
@@ -51,6 +70,7 @@ class LivePredictionMarketRepository {
         return _toPredictionModel(
           deployedMarket,
           MarketOnChainData.empty(),
+          apiVolumes,
         );
       }
     });
@@ -68,6 +88,7 @@ class LivePredictionMarketRepository {
   PredictionModel _toPredictionModel(
     DeployedMarketConfig config,
     MarketOnChainData chainData,
+    Map<String, double> apiVolumes,
   ) {
     // Determine resolution status
     bool? resolution;
@@ -81,8 +102,12 @@ class LivePredictionMarketRepository {
       // 5e17 (draw) → null resolution for now
     }
 
+    // Use API volume if available, otherwise fall back to on-chain proxy
+    final marketId = config.contractAddress.hashCode;
+    final volume = apiVolumes[config.contractAddress.toLowerCase()] ?? chainData.tradingVolume;
+
     return PredictionModel(
-      id: config.contractAddress.hashCode,
+      id: marketId,
       prompt: config.question,
       details: config.details,
       marketAddress: config.contractAddress,
@@ -91,7 +116,7 @@ class LivePredictionMarketRepository {
       yesName: config.longTokenName,
       noName: config.shortTokenName,
       resolution: resolution,
-      tradingVolume: chainData.tradingVolume,
+      tradingVolume: volume,
       supportedPredictionMarkets: _parseCategory(config.category),
       time: config.resolveBy,
       longTokenPrice: chainData.yesPrice,

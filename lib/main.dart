@@ -194,6 +194,7 @@ void main() async {
             create: (context) => LivePredictionMarketRepository(
               predictionMarketClient:
                   context.read<PredictionMarketClient>(),
+              apiClient: PredictionApiClient(),
             ),
           ),
           RepositoryProvider(
