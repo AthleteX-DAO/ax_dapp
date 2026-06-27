@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 enum BuildConfig { staging, release }
 
 const buildConfig = String.fromEnvironment(
@@ -8,13 +10,24 @@ const buildConfig = String.fromEnvironment(
     ? BuildConfig.staging
     : BuildConfig.release;
 
-const baseApiUrl = (String.fromEnvironment(
-          'BUILD_TYPE',
-          defaultValue: 'staging',
-        ) ==
-        'staging')
-    ? 'http://74.208.213.94:8000'
-    : 'https://api.athletex.io';
+String get baseApiUrl {
+  if (kIsWeb) {
+    final host = Uri.base.host;
+    if (host == 'localhost' || host == '127.0.0.1' || host.isEmpty) {
+      return 'http://localhost:8000';
+    }
+  }
+  if (kDebugMode) {
+    return 'http://localhost:8000';
+  }
+  return const String.fromEnvironment(
+            'BUILD_TYPE',
+            defaultValue: 'staging',
+          ) ==
+          'staging'
+      ? 'http://74.208.213.94:8000'
+      : 'https://api.athletex.io';
+}
 
 const baseUrl = (String.fromEnvironment(
           'BUILD_TYPE',

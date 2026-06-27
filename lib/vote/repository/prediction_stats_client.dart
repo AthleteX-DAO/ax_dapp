@@ -64,8 +64,8 @@ class PredictionStatsClient {
       final markets = await _liveRepo.getLivePredictionMarkets();
       var total = 0.0;
       for (final market in markets) {
-        final yesOI = (market.longTokenPrice ?? 0) * market.tradingVolume;
-        final noOI = (market.shortTokenPrice ?? 0) * market.tradingVolume;
+        final yesOI = (market.longTokenPrice ?? 0) * market.yesTokenSupply;
+        final noOI = (market.shortTokenPrice ?? 0) * market.noTokenSupply;
         total += yesOI + noOI;
       }
       return total;

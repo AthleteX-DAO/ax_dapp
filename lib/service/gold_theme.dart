@@ -80,58 +80,6 @@ class GoldTheme {
     );
   }
 
-  // Create a panel with gold glow effect matching versus page cards
-  static BoxDecoration glowPanel({
-    double radius = 16,
-    double glowOpacity = 0.2,
-    double borderOpacity = 0.4,
-  }) {
-    return BoxDecoration(
-      gradient: LinearGradient(
-        colors: [
-          Colors.white.withOpacity(0.08),
-          Colors.white.withOpacity(0.04),
-        ],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      borderRadius: BorderRadius.circular(radius),
-      border: Border.all(
-        color: gold.withOpacity(borderOpacity),
-        width: 1.5,
-      ),
-      boxShadow: [
-        BoxShadow(
-          color: gold.withOpacity(glowOpacity),
-          blurRadius: 20,
-          spreadRadius: 0,
-          offset: const Offset(0, 8),
-        ),
-      ],
-    );
-  }
-
-  // Gold gradient button with glow — matches versus vote button
-  static BoxDecoration goldGlowButton({
-    double radius = 12,
-  }) {
-    return BoxDecoration(
-      gradient: LinearGradient(
-        colors: [gold, gold.withOpacity(0.8)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      borderRadius: BorderRadius.circular(radius),
-      boxShadow: [
-        BoxShadow(
-          color: gold.withOpacity(0.4),
-          blurRadius: 15,
-          offset: const Offset(0, 5),
-        ),
-      ],
-    );
-  }
-
   // Create a gold accent button decoration
   static BoxDecoration goldButton({
     double radius = 8,
@@ -163,6 +111,59 @@ class GoldTheme {
       254,
       197,
       0,
+    );
+  }
+
+  // Create a glowing panel decoration with gold box shadow
+  static BoxDecoration glowPanel({
+    double radius = 12,
+  }) {
+    return BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Colors.white.withOpacity(0.08),
+          Colors.white.withOpacity(0.04),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: BorderRadius.circular(radius),
+      border: Border.all(
+        color: gold.withOpacity(0.3),
+        width: 1.5,
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: gold.withOpacity(0.15),
+          blurRadius: 12,
+          spreadRadius: 1,
+        ),
+      ],
+    );
+  }
+
+  // Create a gold glow button decoration with shadow effect
+  static BoxDecoration goldGlowButton({
+    double radius = 8,
+  }) {
+    return BoxDecoration(
+      gradient: const LinearGradient(
+        colors: [
+          gold,
+          goldDark,
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: BorderRadius.circular(radius),
+      boxShadow: [
+        BoxShadow(
+          color: gold.withOpacity(0.5),
+          blurRadius: 12,
+          spreadRadius: 2,
+          offset: const Offset(0, 2),
+        ),
+      ],
     );
   }
 }

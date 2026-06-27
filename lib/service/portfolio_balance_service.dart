@@ -114,6 +114,7 @@ class PortfolioBalanceService {
   /// Returns: Total USD value, 0.0 if all queries fail
   Future<double> getTotalPortfolioUsd({
     bool forceRefresh = false,
+    int chainId = 137,
   }) async {
     try {
       // Check cache first
@@ -122,14 +123,29 @@ class PortfolioBalanceService {
         return _cachedTotalUsd ?? 0.0;
       }
 
-      // Get AX balance
+      // Resolve token addresses from collateral registry
+      final collaterals = AthleteXSynthetixConfig.collateralsForChain(chainId);
+      final axCollateral = collaterals.firstWhere(
+        (c) => c.symbol == 'AX',
+        orElse: () => collaterals.first,
+      );
+      final usdcCollateral = collaterals.where((c) => c.symbol == 'USDC');
+
+      // Get AX balance using contract address
       final axUsd = await getTokenBalanceUsd(
-        AthleteXSynthetixConfig.primaryCollateralSymbol,
+        axCollateral.address,
         forceRefresh: forceRefresh,
       );
 
-      // Get USDC balance (stablecoin, 1:1 with USD)
-      final usdcUsd = await getTokenBalanceUsd('USDC', decimals: 6, forceRefresh: forceRefresh);
+      // Get USDC balance using contract address
+      var usdcUsd = 0.0;
+      for (final usdc in usdcCollateral) {
+        usdcUsd += await getTokenBalanceUsd(
+          usdc.address,
+          decimals: usdc.decimals,
+          forceRefresh: forceRefresh,
+        );
+      }
 
       // Total portfolio
       final total = axUsd + usdcUsd;

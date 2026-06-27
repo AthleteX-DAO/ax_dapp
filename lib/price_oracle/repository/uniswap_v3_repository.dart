@@ -23,7 +23,7 @@ class UniswapV3Repository {
   static const String _axTokenAddress =
       '0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df';
   static const String _usdcAddress =
-      '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'; // USDC on Polygon
+      '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'; // USDC on Polygon
   static const String _wmaticAddress =
       '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'; // WMATIC (POL)
 

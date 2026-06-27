@@ -2,9 +2,11 @@ import 'package:ax_dapp/account/bloc/account_bloc.dart';
 import 'package:ax_dapp/dialogs/delegate_collateral_dialog.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class AccountAssetCard extends StatelessWidget {
   const AccountAssetCard({
@@ -16,142 +18,179 @@ class AccountAssetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _width = MediaQuery.sizeOf(context).width;
-    final balance = token.balance;
-    return SizedBox(
-      height: 40,
-      child: OutlinedButton(
-        onPressed: () {
+    final walletState = context.watch<WalletBloc>().state;
+    final accountState = context.watch<AccountBloc>().state;
+    final isConnected = walletState.walletAddress.isNotEmpty &&
+        walletState.walletAddress != kEmptyAddress;
+
+    // Check ticker to determine the balance.
+    final double? balanceValue;
+    if (!isConnected) {
+      balanceValue = null;
+    } else if (token.ticker == 'AX') {
+      balanceValue = accountState.serverAxBalance;
+    } else if (token.ticker == 'Matic') {
+      balanceValue = accountState.serverMaticBalance;
+    } else if (token.ticker == 'USDC') {
+      balanceValue = accountState.serverUsdcBalance;
+    } else {
+      balanceValue = null; // Fetch on-chain balance asynchronously for other tokens (SX, WETH)
+    }
+
+    if (isConnected && balanceValue == null) {
+      return FutureBuilder<double?>(
+        future: context.read<WalletRepository>().getTokenBalance(token.address),
+        builder: (context, snapshot) {
+          final balance = snapshot.data ?? 0.0;
+          return _buildCard(context, balance, isConnected);
+        },
+      );
+    } else {
+      return _buildCard(context, balanceValue ?? 0.0, isConnected);
+    }
+  }
+
+  Widget _buildCard(BuildContext context, double balance, bool isConnected) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.02),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+        ),
+      ),
+      child: InkWell(
+        onTap: () {
           context
               .read<AccountBloc>()
               .add(AccountTokenViewRequested(token: token));
         },
-        style: ButtonStyle(
-          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-            ),
-          ),
-        ),
-        child: Row(
-          children: <Widget>[
-            Container(
-              height: 30,
-              width: 50,
-              alignment: Alignment.centerLeft,
-              child: Container(
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            children: <Widget>[
+              // Token Image
+              Container(
                 width: 30,
                 height: 30,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    scale: 0.5,
                     image: tokenImage(token),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 45,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: (_width < 350.0) ? 110 : 125,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
+              const SizedBox(width: 12),
+              // Ticker and Name
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
                       token.ticker,
                       style: textStyle(
                         Colors.white,
-                        14,
+                        13,
                         isBold: true,
                         isUline: false,
                       ),
                     ),
-                  ),
-                  Container(
-                    width: (_width < 350.0) ? 110 : 125,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
+                    const SizedBox(height: 2),
+                    Text(
                       token.name,
                       style: textStyle(
-                        Colors.grey[100]!,
+                        Colors.grey[400]!,
                         9,
                         isBold: false,
                         isUline: false,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const Spacer(),
-            if (balance != null)
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
+              // Balance
+              if (isConnected)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        balance.toStringAsFixed(4),
+                        style: textStyle(
+                          Colors.white,
+                          13,
+                          isBold: true,
+                          isUline: false,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Balance',
+                        style: textStyle(
+                          Colors.white54,
+                          9,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(width: 8),
+              // Delegation Actions
+              Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    balance.toStringAsFixed(4),
-                    style: textStyle(
-                      Colors.white,
-                      12,
-                      isBold: true,
-                      isUline: false,
-                    ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_upward_rounded, size: 18),
+                    color: Colors.greenAccent,
+                    tooltip: 'Delegate',
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (_) => BlocProvider.value(
+                          value: context.read<AccountBloc>(),
+                          child: DelegateCollateralDialog(
+                            token: token,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  Text(
-                    'Balance',
-                    style: textStyle(
-                      Colors.white54,
-                      9,
-                      isBold: false,
-                      isUline: false,
-                    ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_downward_rounded, size: 18),
+                    color: Colors.redAccent,
+                    tooltip: 'Undelegate',
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (_) => BlocProvider.value(
+                          value: context.read<AccountBloc>(),
+                          child: DelegateCollateralDialog(
+                            token: token,
+                            initialMode: DelegationMode.undelegate,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
-            const SizedBox(width: 8),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_upward, size: 18),
-                  color: Colors.green,
-                  tooltip: 'Delegate',
-                  onPressed: () {
-                    showDialog<void>(
-                      context: context,
-                      builder: (_) => BlocProvider.value(
-                        value: context.read<AccountBloc>(),
-                        child: DelegateCollateralDialog(
-                          token: token,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.arrow_downward, size: 18),
-                  color: Colors.red,
-                  tooltip: 'Undelegate',
-                  onPressed: () {
-                    showDialog<void>(
-                      context: context,
-                      builder: (_) => BlocProvider.value(
-                        value: context.read<AccountBloc>(),
-                        child: DelegateCollateralDialog(
-                          token: token,
-                          initialMode: DelegationMode.undelegate,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

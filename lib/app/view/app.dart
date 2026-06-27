@@ -1,4 +1,5 @@
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
+import 'package:ax_dapp/account/data/portfolio_api_client.dart';
 import 'package:ax_dapp/account/repository/account_repository.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/view.dart';
@@ -63,6 +64,7 @@ class App extends StatelessWidget {
             streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
             accountRepository: context.read<AccountRepository>(),
             vaultRepository: context.read<VaultRepository>(),
+            portfolioApiClient: PortfolioApiClient(),
           ),
         ),
         BlocProvider(

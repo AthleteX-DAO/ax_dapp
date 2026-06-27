@@ -67,7 +67,7 @@ class EthereumAddressConfig {
 
   /// Configuration for [Token.usdc].
   const EthereumAddressConfig.usdc()
-      : polygonMainnet = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+      : polygonMainnet = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
         goerliTestNet = '0x3a034FE373B6304f98b7A24A3F21C958946d4075',
         sportxMainnet = '0xe2aa35c2039bd0ff196a6ef99523cc0d3972ae3e',
         sportxTestnet = kEmptyAddress,

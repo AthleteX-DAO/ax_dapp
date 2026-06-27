@@ -65,6 +65,7 @@ class AthleteXSynthetixConfig {
       decimals: 18,
       isDefault: true,
       isWrappable: false,
+      minDelegation: 100.0,
     ),
     CollateralInfo(
       address: '0xC2567853F68299DeaFcB5B5c3b00a5a6bCA88f42',
@@ -99,9 +100,10 @@ class AthleteXSynthetixConfig {
       decimals: 18,
       isDefault: true,
       isWrappable: false,
+      minDelegation: 100.0,
     ),
     CollateralInfo(
-      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+      address: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
       symbol: 'USDC',
       decimals: 6,
       isDefault: false,
@@ -175,6 +177,7 @@ class CollateralInfo {
     required this.decimals,
     required this.isDefault,
     required this.isWrappable,
+    this.minDelegation = 0.0,
   });
 
   final String address;
@@ -187,6 +190,9 @@ class CollateralInfo {
   /// True if this token can be wrapped via SpotMarket (Trader path).
   /// False = LP path only (deposit → delegate → mint → trade).
   final bool isWrappable;
+
+  /// Minimum delegation amount required by the Synthetix core system.
+  final double minDelegation;
 
   /// Converts a decimal [amount] to raw wei representation.
   BigInt toRaw(double amount) {

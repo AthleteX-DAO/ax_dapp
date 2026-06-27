@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class NetworkStatusWidget extends StatefulWidget {
   const NetworkStatusWidget({
-    required this.chainName,
-    required this.ethBalance,
+    required this.chain,
+    required this.gasTokenBalance,
     required this.gasPrice,
     super.key,
   });
 
-  final String chainName;
-  final double ethBalance;
+  final EthereumChain chain;
+  final double gasTokenBalance;
   final double gasPrice; // in gwei
 
   @override
@@ -61,9 +62,9 @@ class _NetworkStatusWidgetState extends State<NetworkStatusWidget>
     return 'High';
   }
 
-  Color get _ethBalanceColor {
-    if (widget.ethBalance > 0.1) return Colors.green;
-    if (widget.ethBalance > 0.01) return Colors.orange;
+  Color get _gasTokenBalanceColor {
+    if (widget.gasTokenBalance > 0.1) return Colors.green;
+    if (widget.gasTokenBalance > 0.01) return Colors.orange;
     return Colors.red;
   }
 
@@ -102,7 +103,7 @@ class _NetworkStatusWidgetState extends State<NetworkStatusWidget>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        widget.chainName,
+                        widget.chain.name,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -177,9 +178,9 @@ class _NetworkStatusWidgetState extends State<NetworkStatusWidget>
                     ),
                     const SizedBox(height: 10),
                     _buildDetailRow(
-                      'ETH for Gas',
-                      '${widget.ethBalance.toStringAsFixed(4)} ETH',
-                      _ethBalanceColor,
+                      'Gas Token',
+                      '${widget.gasTokenBalance.toStringAsFixed(4)} ${widget.chain.gasTokenName}',
+                      _gasTokenBalanceColor,
                     ),
                     const SizedBox(height: 10),
                     _buildDetailRow(

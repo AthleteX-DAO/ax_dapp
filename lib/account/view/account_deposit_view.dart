@@ -316,7 +316,18 @@ class _SynthetixDepositTabState extends State<_SynthetixDepositTab> {
   final _amountController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _amountController.addListener(_onAmountChanged);
+  }
+
+  void _onAmountChanged() {
+    setState(() {});
+  }
+
+  @override
   void dispose() {
+    _amountController.removeListener(_onAmountChanged);
     _amountController.dispose();
     super.dispose();
   }
@@ -344,6 +355,23 @@ class _SynthetixDepositTabState extends State<_SynthetixDepositTab> {
         final txStatus = state.synthetixTxStatus;
         final isLoading = state.isSynthetixAccountLoading;
         final sliderValue = state.mintSliderValue;
+
+        final inputText = _amountController.text.trim();
+        final rawAmount = double.tryParse(inputText);
+        String? amountError;
+        if (inputText.isNotEmpty) {
+          if (rawAmount == null || rawAmount <= 0) {
+            amountError = 'Enter a valid positive number';
+          } else {
+            final currentDepositedDecimal =
+                selected.toDecimal(state.synthetixCollateralDeposited);
+            final expectedTotal = currentDepositedDecimal + rawAmount;
+            if (expectedTotal < selected.minDelegation) {
+              amountError =
+                  'Minimum total delegation is ${selected.minDelegation.toStringAsFixed(0)} ${selected.symbol}. (Current: ${currentDepositedDecimal.toStringAsFixed(2)}, Expected: ${expectedTotal.toStringAsFixed(2)})';
+            }
+          }
+        }
 
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -440,6 +468,8 @@ class _SynthetixDepositTabState extends State<_SynthetixDepositTab> {
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: '0.0',
+                        errorText: amountError,
+                        errorMaxLines: 3,
                         hintStyle:
                             const TextStyle(color: Colors.white38),
                         suffixText: selected.symbol,
@@ -573,7 +603,7 @@ class _SynthetixDepositTabState extends State<_SynthetixDepositTab> {
               ] else ...[
               // Deposit + Delegate button
               ElevatedButton.icon(
-                onPressed: isLoading
+                onPressed: isLoading || amountError != null || inputText.isEmpty
                     ? null
                     : () {
                         final raw = double.tryParse(

@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/versus/models/athlete_elo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
@@ -76,7 +78,13 @@ class AthleteShareCardDialog extends StatelessWidget {
               _ActionButton(
                 icon: Icons.download_rounded,
                 label: 'Save',
-                onPressed: () => _downloadCard(cardKey),
+                onPressed: () {
+                  context.read<TrackingCubit>().trackVersusShareCard(
+                        athleteName: athlete.athleteName,
+                        walletId: '',
+                      );
+                  _downloadCard(cardKey);
+                },
               ),
               const SizedBox(width: 8),
               _ActionButton(
@@ -95,17 +103,35 @@ class AthleteShareCardDialog extends StatelessWidget {
             children: [
               _SocialButton(
                 label: '𝕏',
-                onPressed: () => _shareWithImage(cardKey, 'twitter'),
+                onPressed: () {
+                  context.read<TrackingCubit>().trackVersusShareCard(
+                        athleteName: athlete.athleteName,
+                        walletId: '',
+                      );
+                  _shareWithImage(cardKey, 'twitter');
+                },
               ),
               const SizedBox(width: 8),
               _SocialButton(
                 label: 'f',
-                onPressed: () => _shareWithImage(cardKey, 'facebook'),
+                onPressed: () {
+                  context.read<TrackingCubit>().trackVersusShareCard(
+                        athleteName: athlete.athleteName,
+                        walletId: '',
+                      );
+                  _shareWithImage(cardKey, 'facebook');
+                },
               ),
               const SizedBox(width: 8),
               _SocialButton(
                 icon: Icons.link_rounded,
-                onPressed: () => _shareWithImage(cardKey, 'copy', context: context),
+                onPressed: () {
+                  context.read<TrackingCubit>().trackVersusShareCard(
+                        athleteName: athlete.athleteName,
+                        walletId: '',
+                      );
+                  _shareWithImage(cardKey, 'copy', context: context);
+                },
               ),
             ],
           ),

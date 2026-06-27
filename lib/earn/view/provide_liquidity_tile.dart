@@ -12,102 +12,47 @@ class ProvideLiquidityTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<VaultData>>(
-      future: context.read<VaultRepository>().fetchVaults(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(color: Color(0xFFFFC600)),
-          );
-        }
+    return BlocSelector<AccountBloc, AccountState, BigInt>(
+      selector: (state) => state.synthetixAccountId,
+      builder: (context, accountId) {
+        return FutureBuilder<List<VaultData>>(
+          key: ValueKey(accountId),
+          future: context
+              .read<VaultRepository>()
+              .fetchVaults(overrideAccountId: accountId),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(color: Color(0xFFFFC600)),
+              );
+            }
 
-        final vaults = snapshot.data ?? [];
+            final vaults = snapshot.data ?? [];
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Info box
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.blue[400]!.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue[400]!),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Info box
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[400]!.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.blue[400]!),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.info_rounded,
-                        color: Colors.blue[400],
-                        size: 16,
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'What is Liquidity Provision?',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Delegate collateral to the pool with optional leverage to earn higher yields. Your capital backs trading activity.',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[300],
-                      fontFamily: 'OpenSans',
-                      height: 1.5,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Pool info card
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.grey[850],
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[800]!),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Spartan Council Pool',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Text(
-                            'Pool ID',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.grey[500],
-                              fontFamily: 'OpenSans',
-                            ),
+                          Icon(
+                            Icons.info_rounded,
+                            color: Colors.blue[400],
+                            size: 16,
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(width: 8),
                           const Text(
-                            '#1',
+                            'What is Liquidity Provision?',
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
@@ -117,42 +62,105 @@ class ProvideLiquidityTile extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 8),
+                      Text(
+                        'Delegate collateral to the pool with optional leverage to earn higher yields. Your capital backs trading activity.',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[300],
+                          fontFamily: 'OpenSans',
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                // Pool info card
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[850],
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey[800]!),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Spartan Council Pool',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Status',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.grey[500],
-                              fontFamily: 'OpenSans',
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Pool ID',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey[500],
+                                  fontFamily: 'OpenSans',
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                '#1',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontFamily: 'OpenSans',
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
-                          const Text(
-                            'Active',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green,
-                              fontFamily: 'OpenSans',
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Status',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey[500],
+                                  fontFamily: 'OpenSans',
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                'Active',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                  fontFamily: 'OpenSans',
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Vault cards with leverage controls
-            ...vaults.map((vault) => Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: _LeverageVaultCard(vault: vault),
-            ),),
-            const SizedBox(height: 8),
-          ],
+                ),
+                const SizedBox(height: 24),
+                // Vault cards with leverage controls
+                ...vaults.map((vault) => Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: _LeverageVaultCard(vault: vault),
+                ),),
+                const SizedBox(height: 8),
+              ],
+            );
+          },
         );
       },
     );

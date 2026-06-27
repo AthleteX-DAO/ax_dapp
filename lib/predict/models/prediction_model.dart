@@ -22,6 +22,8 @@ class PredictionModel extends MarketModel {
     required this.shortTokenPercentage,
     required this.longTokenPriceUsd,
     required this.shortTokenPriceUsd,
+    this.yesTokenSupply = 0,
+    this.noTokenSupply = 0,
   }) : super(
           id: id,
           name: prompt,
@@ -49,6 +51,8 @@ class PredictionModel extends MarketModel {
   final double? shortTokenPriceUsd;
   final double? longTokenPercentage;
   final double? shortTokenPercentage;
+  final double yesTokenSupply;
+  final double noTokenSupply;
 
   static const empty = PredictionModel(
     id: 0,
@@ -89,6 +93,8 @@ class PredictionModel extends MarketModel {
         shortTokenPriceUsd,
         longTokenPercentage,
         shortTokenPercentage,
+        yesTokenSupply,
+        noTokenSupply,
       ];
 
   @override

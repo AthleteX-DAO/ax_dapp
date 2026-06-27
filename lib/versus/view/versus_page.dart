@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/versus/bloc/versus_bloc.dart';
 import 'package:ax_dapp/versus/repository/versus_repository.dart';
@@ -68,17 +69,33 @@ class _VersusViewState extends State<VersusView> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: BlocListener<VersusBloc, VersusState>(
-        // Only fires when a user-initiated market cycle completes or fails.
-        listenWhen: (prev, next) =>
-            _isCycling &&
-            (next.status == VersusStatus.loaded ||
-             next.status == VersusStatus.error),
-        listener: (context, state) => setState(() {
-          _isCycling = false;
-          // Snap back to Battle so the new matchup is immediately visible.
-          if (!isDesktop) _selectedTab = 0;
-        }),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<VersusBloc, VersusState>(
+            // Only fires when a user-initiated market cycle completes or fails.
+            listenWhen: (prev, next) =>
+                _isCycling &&
+                (next.status == VersusStatus.loaded ||
+                 next.status == VersusStatus.error),
+            listener: (context, state) => setState(() {
+              _isCycling = false;
+              // Snap back to Battle so the new matchup is immediately visible.
+              if (!isDesktop) _selectedTab = 0;
+            }),
+          ),
+          BlocListener<VersusBloc, VersusState>(
+            listenWhen: (prev, next) =>
+                prev.status != next.status &&
+                next.status == VersusStatus.loaded &&
+                next.currentMatch != null,
+            listener: (context, state) {
+              context.read<TrackingCubit>().trackVersusMatchView(
+                    marketName: state.currentMatch!.marketName,
+                    walletId: '',
+                  );
+            },
+          ),
+        ],
         child: isDesktop
             ? _buildDesktopLayout()
             : _buildMobileLayout(),

@@ -332,8 +332,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         ),
       );
       
-      // Fetch fresh portfolio balance after wallet connection
+      // Fetch fresh portfolio balance and gas price after wallet connection
       add(const FetchWalletBalanceRequested(forceRefresh: true));
+      add(const GetGasPriceRequested());
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
     }
@@ -377,7 +378,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     final portfolioBalance = await crossChainBalanceUseCase.portfolioBalance(
       forceRefresh: event.forceRefresh,
     );
-    emit(state.copyWith(walletBalance: portfolioBalance));
+    // Fetch native token balance (POL/MATIC/ETH) for gas display
+    final gasBalance = await crossChainBalanceUseCase.getGasBalance(
+      state.chain,
+    );
+    emit(state.copyWith(
+      walletBalance: portfolioBalance,
+      nativeBalance: gasBalance,
+    ));
   }
 
   Future<void> _onWatchAxtChangesStarted(

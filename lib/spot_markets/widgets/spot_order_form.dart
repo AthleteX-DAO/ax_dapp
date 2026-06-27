@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/spot_markets/bloc/bloc.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
@@ -244,6 +245,12 @@ class _SpotOrderFormState extends State<SpotOrderForm> {
       return;
     }
 
+    context.read<TrackingCubit>().trackSpotOrderBuyPressed(
+      marketName: widget.selectedMarket,
+      amount: double.parse(_quantityController.text),
+      walletId: '',
+    );
+
     context.read<SpotMarketsBloc>().add(
           SpotMarketBuyOrderPlaced(
             market: widget.selectedMarket,
@@ -265,6 +272,12 @@ class _SpotOrderFormState extends State<SpotOrderForm> {
       _showError(context, 'Market price not available');
       return;
     }
+
+    context.read<TrackingCubit>().trackSpotOrderSellPressed(
+      marketName: widget.selectedMarket,
+      amount: double.parse(_quantityController.text),
+      walletId: '',
+    );
 
     context.read<SpotMarketsBloc>().add(
           SpotMarketSellOrderPlaced(

@@ -1,6 +1,8 @@
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Input field for sending chat messages
 class ChatInputField extends StatefulWidget {
@@ -43,6 +45,10 @@ class _ChatInputFieldState extends State<ChatInputField> {
   void _sendMessage() {
     final message = _controller.text.trim();
     if (message.isNotEmpty) {
+      context.read<TrackingCubit>().trackVersusChatSent(
+            marketName: '',
+            walletId: '',
+          );
       widget.onSend(message);
       _controller.clear();
     }

@@ -6,6 +6,7 @@ class WalletState extends Equatable {
     required this.walletAddress,
     required this.chain,
     this.walletBalance = 0,
+    this.nativeBalance = 0,
     this.axData = AxData.empty,
     this.gasPrice = 0,
     this.failure = WalletFailure.none,
@@ -31,6 +32,8 @@ class WalletState extends Equatable {
   final WalletStatus walletStatus;
   final String walletAddress;
   final double walletBalance;
+  /// Native token balance (POL/MATIC/ETH) for gas display.
+  final double nativeBalance;
   final WalletViewStatus walletViewStatus;
   final EthereumChain chain;
   final AxData axData;
@@ -49,6 +52,7 @@ class WalletState extends Equatable {
         walletAddress,
         walletViewStatus,
         walletBalance,
+        nativeBalance,
         chain,
         gasPrice,
         failure,
@@ -66,6 +70,7 @@ class WalletState extends Equatable {
     WalletViewStatus? walletViewStatus,
     String? walletAddress,
     double? walletBalance,
+    double? nativeBalance,
     EthereumChain? chain,
     AxData? axData,
     double? gasPrice,
@@ -81,6 +86,7 @@ class WalletState extends Equatable {
       walletStatus: walletStatus ?? this.walletStatus,
       walletViewStatus: walletViewStatus ?? this.walletViewStatus,
       walletBalance: walletBalance ?? this.walletBalance,
+      nativeBalance: nativeBalance ?? this.nativeBalance,
       walletAddress: walletAddress ?? this.walletAddress,
       chain: chain ?? this.chain,
       axData: axData ?? this.axData,

@@ -14,13 +14,11 @@ class EarnSimpleTile extends StatelessWidget {
     return BlocSelector<AccountBloc, AccountState, BigInt>(
       selector: (state) => state.synthetixAccountId,
       builder: (context, accountId) {
-        final resolvedId =
-            accountId == BigInt.zero ? null : accountId;
         return FutureBuilder<List<VaultData>>(
           key: ValueKey(accountId),
           future: context
               .read<VaultRepository>()
-              .fetchVaults(overrideAccountId: resolvedId),
+              .fetchVaults(overrideAccountId: accountId),
           builder: (context, snapshot) {
             // Error state — show message instead of crashing
             if (snapshot.hasError) {

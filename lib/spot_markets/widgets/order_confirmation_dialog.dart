@@ -1,7 +1,9 @@
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/spot_markets/models/pending_order.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderConfirmationDialog extends StatelessWidget {
   const OrderConfirmationDialog({
@@ -206,7 +208,16 @@ class OrderConfirmationDialog extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: onConfirm,
+                        onPressed: () {
+                          context.read<TrackingCubit>().trackSpotOrderSuccess(
+                            marketName: pendingOrder.market,
+                            orderType: pendingOrder.type,
+                            amount: pendingOrder.quantity,
+                            valueInUsd: pendingOrder.totalCost,
+                            walletId: '',
+                          );
+                          onConfirm();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: actionColor,
                           padding: const EdgeInsets.symmetric(vertical: 12),

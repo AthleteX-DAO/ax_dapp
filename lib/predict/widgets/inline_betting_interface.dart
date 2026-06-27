@@ -2,6 +2,7 @@ import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_case.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/responsive_constants.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -255,6 +256,12 @@ class _InlineBettingInterfaceState extends State<InlineBettingInterface> {
                           ),
                         ),
                         onPressed: () {
+                          context.read<TrackingCubit>().trackPredictionBuyPressed(
+                            marketName: widget.predictionModel.prompt,
+                            side: widget.isYes ? 'Yes' : 'No',
+                            amount: _sliderValue,
+                            walletId: '',
+                          );
                           widget.onPredict?.call(_sliderValue);
                         },
                         child: Text(

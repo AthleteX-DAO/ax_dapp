@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ax_dapp/api/ax_api_client.dart';
 import 'package:ax_dapp/config/synthetix_config.dart';
 
 import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
@@ -18,9 +19,11 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     required WalletRepository walletRepository,
     VaultRepository? vaultRepository,
     StreamAppDataChangesUseCase? streamAppDataChanges,
+    AxApiClient? axApiClient,
   })  : _vaultRepository = vaultRepository,
         _walletRepository = walletRepository,
         _streamAppDataChanges = streamAppDataChanges,
+        _axApiClient = axApiClient,
         super(const EarnPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<ExpandTile>(_onExpandTile);
@@ -50,6 +53,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
   final VaultRepository? _vaultRepository;
   final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase? _streamAppDataChanges;
+  final AxApiClient? _axApiClient;
 
   /// Debounce timer for C-ratio queries
   Timer? _debounceTimer;
@@ -80,14 +84,38 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     );
   }
 
-  /// Fetch platform TVL
+  /// Fetch platform TVL — API-first with VaultRepository fallback
   Future<void> _onFetchPlatformTVL(
     FetchPlatformTVL event,
     Emitter<EarnPageState> emit,
   ) async {
     emit(state.copyWith(isPlatformTVLLoading: true));
     try {
-      final tvl = await _vaultRepository?.getPlatformTVL() ?? 0.0;
+      double tvl = 0.0;
+      // Try API first
+      if (_axApiClient != null) {
+        try {
+          final pools = await _axApiClient!.fetchPools();
+          if (pools.isNotEmpty) {
+            // For each pool's collateral, get the price
+            for (final pool in pools) {
+              for (final collateral in pool.collateralTypes) {
+                final price =
+                    await _axApiClient!.fetchCollateralPrice(collateral);
+                if (price != null) {
+                  tvl += price;
+                }
+              }
+            }
+            debugPrint('🔷 EarnPageBloc TVL from API: \$$tvl');
+          }
+        } catch (e) {
+          debugPrint('🔷 EarnPageBloc API TVL failed, falling back: $e');
+          tvl = await _vaultRepository?.getPlatformTVL() ?? 0.0;
+        }
+      } else {
+        tvl = await _vaultRepository?.getPlatformTVL() ?? 0.0;
+      }
       emit(state.copyWith(
         platformTVL: tvl,
         isPlatformTVLLoading: false,

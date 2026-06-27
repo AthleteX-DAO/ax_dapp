@@ -520,3 +520,327 @@ extension PromoDialogTracking on TrackingCubit {
     );
   }
 }
+
+extension PredictionPageTracking on TrackingCubit {
+  /// Tracks when a user views a specific prediction market
+  void trackPredictionView({
+    required String marketName,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      PredictPageTrackingEvent.onPressedPredictionView({
+        'market_name': marketName,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user initiates a buy (bet) on a prediction market
+  void trackPredictionBuyPressed({
+    required String marketName,
+    required String side,
+    required double amount,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      PredictPageTrackingEvent.onPressedPredictionBuy({
+        'market_name': marketName,
+        'side': side,
+        'amount': amount,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a prediction buy transaction succeeds on-chain
+  void trackPredictionBuySuccess({
+    required String marketName,
+    required String side,
+    required double amount,
+    required double valueInUsd,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      PredictPageTrackingEvent.onPredictionBuySuccess({
+        'market_name': marketName,
+        'side': side,
+        'amount': amount,
+        'value_in_usd': valueInUsd,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user initiates a sell of their prediction position
+  void trackPredictionSellPressed({
+    required String marketName,
+    required String side,
+    required double amount,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      PredictPageTrackingEvent.onPressedPredictionSell({
+        'market_name': marketName,
+        'side': side,
+        'amount': amount,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a prediction sell transaction succeeds on-chain
+  void trackPredictionSellSuccess({
+    required String marketName,
+    required String side,
+    required double amount,
+    required double valueInUsd,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      PredictPageTrackingEvent.onPredictionSellSuccess({
+        'market_name': marketName,
+        'side': side,
+        'amount': amount,
+        'value_in_usd': valueInUsd,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+}
+
+extension SpotMarketTracking on TrackingCubit {
+  /// Tracks when a user views a specific spot market
+  void trackSpotMarketView({
+    required String marketName,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      SpotMarketsTrackingEvent.onSpotMarketView({
+        'market_name': marketName,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user initiates a buy order on the spot market
+  void trackSpotOrderBuyPressed({
+    required String marketName,
+    required double amount,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      SpotMarketsTrackingEvent.onPressedSpotOrderBuy({
+        'market_name': marketName,
+        'amount': amount,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user initiates a sell order on the spot market
+  void trackSpotOrderSellPressed({
+    required String marketName,
+    required double amount,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      SpotMarketsTrackingEvent.onPressedSpotOrderSell({
+        'market_name': marketName,
+        'amount': amount,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a spot market order succeeds on-chain
+  void trackSpotOrderSuccess({
+    required String marketName,
+    required String orderType,
+    required double amount,
+    required double valueInUsd,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      SpotMarketsTrackingEvent.onSpotOrderSuccess({
+        'market_name': marketName,
+        'order_type': orderType,
+        'amount': amount,
+        'value_in_usd': valueInUsd,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+}
+
+extension AuthTracking on TrackingCubit {
+  /// Tracks when a user presses the sign up button
+  void trackSignUpPressed() {
+    trackingRepository.track(
+      AuthTrackingEvent.onSignUpPressed({
+        'timestamp': DateTime.now().toIso8601String(),
+      }),
+    );
+  }
+
+  /// Tracks when a user successfully creates a new account
+  void trackSignUpSuccess({
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      AuthTrackingEvent.onSignUpSuccess({
+        'wallet_id': walletId,
+        'timestamp': DateTime.now().toIso8601String(),
+      }),
+    );
+  }
+}
+
+extension VaultTracking on TrackingCubit {
+  /// Tracks when a user views a specific vault
+  void trackVaultView({
+    required String vaultName,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VaultTrackingEvent.onVaultView({
+        'vault_name': vaultName,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user initiates a deposit into a vault
+  void trackVaultDepositPressed({
+    required String vaultName,
+    required double amount,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VaultTrackingEvent.onVaultDepositPressed({
+        'vault_name': vaultName,
+        'amount': amount,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a vault deposit transaction settles on-chain
+  void trackVaultDepositSuccess({
+    required String vaultName,
+    required double amount,
+    required double valueInUsd,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VaultTrackingEvent.onVaultDepositSuccess({
+        'vault_name': vaultName,
+        'amount': amount,
+        'value_in_usd': valueInUsd,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user initiates a withdrawal from a vault
+  void trackVaultWithdrawPressed({
+    required String vaultName,
+    required double amount,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VaultTrackingEvent.onVaultWithdrawPressed({
+        'vault_name': vaultName,
+        'amount': amount,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a vault withdrawal transaction settles on-chain
+  void trackVaultWithdrawSuccess({
+    required String vaultName,
+    required double amount,
+    required double valueInUsd,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VaultTrackingEvent.onVaultWithdrawSuccess({
+        'vault_name': vaultName,
+        'amount': amount,
+        'value_in_usd': valueInUsd,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user initiates a borrow against their vault position
+  void trackVaultBorrowPressed({
+    required String vaultName,
+    required double amount,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VaultTrackingEvent.onVaultBorrowPressed({
+        'vault_name': vaultName,
+        'amount': amount,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+}
+
+extension VersusTracking on TrackingCubit {
+  /// Tracks when a user views a versus matchup
+  void trackVersusMatchView({
+    required String marketName,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VersusTrackingEvent.onVersusMatchView({
+        'market_name': marketName,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user casts a vote for an athlete
+  void trackVersusVoteCast({
+    required String athleteName,
+    required String marketName,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VersusTrackingEvent.onVersusVoteCast({
+        'athlete_name': athleteName,
+        'market_name': marketName,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user sends a message in the versus chat
+  void trackVersusChatSent({
+    required String marketName,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VersusTrackingEvent.onVersusChatSent({
+        'market_name': marketName,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+
+  /// Tracks when a user shares an athlete card
+  void trackVersusShareCard({
+    required String athleteName,
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      VersusTrackingEvent.onVersusShareCard({
+        'athlete_name': athleteName,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+}

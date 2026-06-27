@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:ax_dapp/account/data/portfolio_api_client.dart';
 import 'package:ax_dapp/account/models/models.dart';
 import 'package:ax_dapp/account/repository/account_repository.dart';
 import 'package:ax_dapp/config/athletex_synthetix_config.dart';
@@ -23,11 +24,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required AccountRepository accountRepository,
     required VaultRepository vaultRepository,
+    required PortfolioApiClient portfolioApiClient,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
         _streamAppDataChangesUseCase = streamAppDataChanges,
         _accountRepository = accountRepository,
         _vaultRepository = vaultRepository,
+        _portfolioApiClient = portfolioApiClient,
         super(
           AccountState(
             chain: walletRepository.currentChain,
@@ -78,6 +81,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final StreamAppDataChangesUseCase _streamAppDataChangesUseCase;
   final AccountRepository _accountRepository;
   final VaultRepository _vaultRepository;
+  final PortfolioApiClient _portfolioApiClient;
   Timer? _vaultSummaryTimer;
 
   FutureOr<void> _onWatchAppDataChangesStarted(
@@ -96,6 +100,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         emit(
           state.copyWith(
             selectedToken: tokens.first,
+            walletAddress: _walletRepository.currentWallet.address,
           ),
         );
 
@@ -158,10 +163,15 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   }
 
   Future<void> _onAccountWithdrawViewRequested(
-    AccountWithdrawViewRequested _,
+    AccountWithdrawViewRequested event,
     Emitter<AccountState> emit,
   ) async {
-    emit(state.copyWith(accountViewStatus: AccountViewStatus.withdraw));
+    emit(
+      state.copyWith(
+        accountViewStatus: AccountViewStatus.withdraw,
+        withdrawInitialTabIndex: event.initialTabIndex,
+      ),
+    );
   }
 
   Future<void> _onAccountDepositViewRequested(
@@ -309,104 +319,154 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     emit(state.copyWith(isSynthetixAccountLoading: true));
 
     try {
-      // Get account IDs for this wallet
-      debugPrint('>>> Fetching Synthetix account IDs for wallet: ${state.walletAddress}');
-      final accountIds = await _accountRepository.getSynthetixAccountIds(
+      // Try server API first (preferred path)
+      final response = await _portfolioApiClient.fetchBalance(
         state.walletAddress,
       );
-      debugPrint('>>> Raw accountIds from contract: $accountIds');
 
-      if (accountIds.isEmpty) {
-        debugPrint('>>> No Synthetix accounts found');
+      if (response != null && response.accounts.isNotEmpty) {
+        final account = response.primaryAccount!;
+        debugPrint(
+          '>>> Server API: accountId=${account.accountId}, '
+          'deposited=${account.collateralDeposited}, '
+          'debt=${account.debt}',
+        );
+
+        // axUSD in wallet: use server response
+        final axUsdWalletBalance = response.axusd;
+
+        emit(
+          state.copyWith(
+            synthetixAccountId: account.accountId,
+            synthetixCollateralDeposited: account.collateralDeposited,
+            synthetixCollateralAssigned: account.collateralAssigned,
+            synthetixCollateralAvailable: account.collateralAvailable,
+            synthetixDebt: account.debt,
+            synthetixCollateralRatio: account.cRatio ?? BigInt.zero,
+            hasSynthetixAccount: true,
+            isSynthetixAccountLoading: false,
+            axUsdBalance: axUsdWalletBalance,
+            serverUsdcBalance: response.usdcBalanceUsd,
+            serverMaticBalance: response.maticBalance,
+            serverGasPriceGwei: response.gasPriceGwei,
+            serverAxBalance: response.axBalance,
+          ),
+        );
+        return;
+      }
+
+      if (response != null && response.accounts.isEmpty) {
+        debugPrint('>>> Server API: no Synthetix accounts found');
+        emit(
+          state.copyWith(
+            hasSynthetixAccount: false,
+            isSynthetixAccountLoading: false,
+            serverUsdcBalance: response.usdcBalanceUsd,
+            serverMaticBalance: response.maticBalance,
+            serverGasPriceGwei: response.gasPriceGwei,
+            serverAxBalance: response.axBalance,
+          ),
+        );
+        return;
+      }
+
+      // Server unreachable — fall back to direct RPC
+      debugPrint('>>> Server API unavailable, falling back to direct RPC');
+      await _fetchSynthetixAccountViaRpc(emit);
+    } catch (e) {
+      debugPrint('Error fetching Synthetix account: $e');
+      // Try RPC fallback
+      try {
+        await _fetchSynthetixAccountViaRpc(emit);
+      } catch (rpcError) {
+        debugPrint('RPC fallback also failed: $rpcError');
         emit(
           state.copyWith(
             hasSynthetixAccount: false,
             isSynthetixAccountLoading: false,
           ),
         );
-        return;
       }
+    }
+  }
 
-      // Use first account (primary account)
-      debugPrint('>>> accountIds.first: ${accountIds.first}');
-      debugPrint('>>> accountIds.first runtimeType: ${accountIds.first.runtimeType}');
-      final accountId = accountIds.first;
-      debugPrint('>>> Converted accountId: $accountId');
+  /// Fallback: fetch Synthetix account data via direct RPC calls.
+  Future<void> _fetchSynthetixAccountViaRpc(
+    Emitter<AccountState> emit,
+  ) async {
+    final accountIds = await _accountRepository.getSynthetixAccountIds(
+      state.walletAddress,
+    );
 
-      final collateralAddress =
-          AthleteXSynthetixConfig.defaultCollateralAddress(state.chain.chainId);
-      const poolId = AthleteXSynthetixConfig.defaultPoolId;
-      const usdProxy = SynthetixConfig.usdProxy;
-
-      // Fetch account data in parallel
-      final results = await Future.wait([
-        _accountRepository.getSynthetixAccountCollateral(
-          accountId: accountId,
-          collateralAddress: collateralAddress,
-        ),
-        _accountRepository.getSynthetixAvailableCollateral(
-          accountId: accountId,
-          collateralAddress: collateralAddress,
-        ),
-        _accountRepository.getSynthetixPositionDebt(
-          accountId: accountId,
-          poolId: poolId,
-          collateralAddress: collateralAddress,
-        ),
-        _accountRepository.getSynthetixCollateralRatio(
-          accountId: accountId,
-          poolId: poolId,
-          collateralAddress: collateralAddress,
-        ),
-        // axUSD in wallet (USD proxy ERC-20 balance)
-        _accountRepository.getSynthetixAccountCollateral(
-          accountId: accountId,
-          collateralAddress: usdProxy,
-        ),
-      ]);
-
-      final collateralData = results[0] as Map<String, BigInt>;
-      final availableCollateral = results[1] as BigInt;
-      final debt = results[2] as BigInt;
-      final cRatio = results[3] as BigInt;
-      final axUsdAccountData = results[4] as Map<String, BigInt>;
-
-      // axUSD in CoreProxy account (minted but not withdrawn)
-      final axUsdInAccount = axUsdAccountData['totalDeposited'] ?? BigInt.zero;
-
-      // axUSD in wallet: fetch ERC-20 balance directly
-      var axUsdWalletBalance = BigInt.zero;
-      try {
-        axUsdWalletBalance = await _walletRepository.getRawTokenBalance(
-          usdProxy,
-        );
-      } catch (_) {
-        // wallet repo may not support getRawTokenBalance — best-effort
-      }
-
-      emit(
-        state.copyWith(
-          synthetixAccountId: accountId,
-          synthetixCollateralDeposited: collateralData['totalDeposited'],
-          synthetixCollateralAssigned: collateralData['totalAssigned'],
-          synthetixCollateralAvailable: availableCollateral,
-          synthetixDebt: debt,
-          synthetixCollateralRatio: cRatio,
-          hasSynthetixAccount: true,
-          isSynthetixAccountLoading: false,
-          axUsdBalance: axUsdWalletBalance,
-          axUsdInAccount: axUsdInAccount,
-        ),
-      );
-    } catch (e) {
-      debugPrint('Error fetching Synthetix account: $e');
+    if (accountIds.isEmpty) {
       emit(
         state.copyWith(
           hasSynthetixAccount: false,
           isSynthetixAccountLoading: false,
         ),
       );
+      return;
     }
+
+    final accountId = accountIds.first;
+    final collateralAddress =
+        AthleteXSynthetixConfig.defaultCollateralAddress(state.chain.chainId);
+    const poolId = AthleteXSynthetixConfig.defaultPoolId;
+    const usdProxy = SynthetixConfig.usdProxy;
+
+    final results = await Future.wait([
+      _accountRepository.getSynthetixAccountCollateral(
+        accountId: accountId,
+        collateralAddress: collateralAddress,
+      ),
+      _accountRepository.getSynthetixAvailableCollateral(
+        accountId: accountId,
+        collateralAddress: collateralAddress,
+      ),
+      _accountRepository.getSynthetixPositionDebt(
+        accountId: accountId,
+        poolId: poolId,
+        collateralAddress: collateralAddress,
+      ),
+      _accountRepository.getSynthetixCollateralRatio(
+        accountId: accountId,
+        poolId: poolId,
+        collateralAddress: collateralAddress,
+      ),
+      _accountRepository.getSynthetixAccountCollateral(
+        accountId: accountId,
+        collateralAddress: usdProxy,
+      ),
+    ]);
+
+    final collateralData = results[0] as Map<String, BigInt>;
+    final availableCollateral = results[1] as BigInt;
+    final debt = results[2] as BigInt;
+    final cRatio = results[3] as BigInt;
+    final axUsdAccountData = results[4] as Map<String, BigInt>;
+    final axUsdInAccount = axUsdAccountData['totalDeposited'] ?? BigInt.zero;
+
+    var axUsdWalletBalance = BigInt.zero;
+    try {
+      axUsdWalletBalance = await _walletRepository.getRawTokenBalance(
+        usdProxy,
+      );
+    } catch (_) {}
+
+    emit(
+      state.copyWith(
+        synthetixAccountId: accountId,
+        synthetixCollateralDeposited: collateralData['totalDeposited'],
+        synthetixCollateralAssigned: collateralData['totalAssigned'],
+        synthetixCollateralAvailable: availableCollateral,
+        synthetixDebt: debt,
+        synthetixCollateralRatio: cRatio,
+        hasSynthetixAccount: true,
+        isSynthetixAccountLoading: false,
+        axUsdBalance: axUsdWalletBalance,
+        axUsdInAccount: axUsdInAccount,
+      ),
+    );
   }
 
   /// Deposits collateral to Synthetix account, then auto-delegates the full
@@ -601,11 +661,18 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     try {
       emit(state.copyWith(isSynthetixAccountLoading: true));
 
+      final collateralData = await _accountRepository.getSynthetixAccountCollateral(
+        accountId: state.synthetixAccountId,
+        collateralAddress: event.collateralAddress,
+      );
+      final currentAssigned = collateralData['totalAssigned'] ?? BigInt.zero;
+      final targetAmount = currentAssigned + event.amount;
+
       await _accountRepository.delegateSynthetixCollateral(
         accountId: state.synthetixAccountId,
         poolId: event.poolId,
         collateralAddress: event.collateralAddress,
-        amount: event.amount,
+        amount: targetAmount,
         leverage: event.leverage,
       );
 

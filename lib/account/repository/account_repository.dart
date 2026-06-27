@@ -154,11 +154,18 @@ class AccountRepository {
     required String collateralAddress,
     required BigInt amount,
   }) async {
-    final txHash = await _synthetixCoreService.undelegateCollateral(
+    final collateralData = await getSynthetixAccountCollateral(
+      accountId: accountId,
+      collateralAddress: collateralAddress,
+    );
+    final currentAssigned = collateralData['totalAssigned'] ?? BigInt.zero;
+    final newAssigned = currentAssigned > amount ? (currentAssigned - amount) : BigInt.zero;
+
+    final txHash = await _synthetixCoreService.delegateCollateral(
       accountId: accountId,
       poolId: poolId,
       collateralAddress: collateralAddress,
-      amount: amount,
+      amount: newAssigned,
       credentials: controller.credentials,
     );
     controller.transactionHash = txHash;

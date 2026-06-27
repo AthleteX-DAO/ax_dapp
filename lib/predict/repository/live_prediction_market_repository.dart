@@ -39,14 +39,12 @@ class LivePredictionMarketRepository {
     final manifest = await _loadManifest();
 
     // Fetch API volumes in parallel with chain data
-    Map<String, double> apiVolumes = {};
+    final apiVolumes = <String, double>{};
     if (_apiClient != null) {
       try {
         final apiMarkets = await _apiClient!.fetchMarkets();
-        if (apiMarkets != null) {
-          for (final am in apiMarkets) {
-            apiVolumes[am.marketAddress.toLowerCase()] = am.tradingVolume;
-          }
+        for (final am in apiMarkets) {
+          apiVolumes[am.marketAddress.toLowerCase()] = am.tradingVolume;
         }
       } catch (e) {
         debugPrint('Failed to fetch API volumes: $e');
@@ -104,7 +102,8 @@ class LivePredictionMarketRepository {
 
     // Use API volume if available, otherwise fall back to on-chain proxy
     final marketId = config.contractAddress.hashCode;
-    final volume = apiVolumes[config.contractAddress.toLowerCase()] ?? chainData.tradingVolume;
+    final volume = apiVolumes[config.contractAddress.toLowerCase()] ??
+        chainData.tradingVolume;
 
     return PredictionModel(
       id: marketId,
@@ -125,6 +124,8 @@ class LivePredictionMarketRepository {
       shortTokenPercentage: chainData.noPrice * 100,
       longTokenPriceUsd: chainData.yesPrice,
       shortTokenPriceUsd: chainData.noPrice,
+      yesTokenSupply: chainData.yesTokenSupply.toDouble() / 1e18,
+      noTokenSupply: chainData.noTokenSupply.toDouble() / 1e18,
     );
   }
 

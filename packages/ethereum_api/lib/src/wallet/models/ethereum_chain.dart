@@ -193,6 +193,28 @@ extension ChainX on EthereumChain {
       this == EthereumChain.ethereumSepolia ||
       this == EthereumChain.baseSepolia;
 
+  /// Returns the gas token name (symbol) for the chain.
+  String get gasTokenName {
+    switch (this) {
+      case EthereumChain.polygonMainnet:
+        return 'POL';
+      case EthereumChain.sxMainnet:
+      case EthereumChain.sxTestnet:
+        return 'SX';
+      case EthereumChain.ethereumSepolia:
+      case EthereumChain.baseSepolia:
+      case EthereumChain.arbitrumSepolia:
+      case EthereumChain.ethereumMainnet:
+      case EthereumChain.goerliTestNet:
+      case EthereumChain.optimism:
+      case EthereumChain.arbitriumOne:
+        return 'ETH';
+      case EthereumChain.none:
+      case EthereumChain.unsupported:
+        return '';
+    }
+  }
+
   /// Returns the RPC URL used to initialize a [Web3Client].
   String get rpcUrl => rpcUrls.firstOrNull ?? '';
 

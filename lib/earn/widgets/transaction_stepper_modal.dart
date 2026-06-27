@@ -1,4 +1,5 @@
 import 'package:ax_dapp/earn/bloc/earn_page_bloc.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,12 +10,35 @@ class TransactionStepperModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EarnPageBloc, EarnPageState>(
-      buildWhen: (previous, current) =>
-          previous.showTransactionModal != current.showTransactionModal ||
+    return BlocListener<EarnPageBloc, EarnPageState>(
+      listenWhen: (previous, current) =>
           previous.transactionStep != current.transactionStep ||
           previous.transactionStatus != current.transactionStatus,
-      builder: (context, state) {
+      listener: (context, state) {
+        final tracking = context.read<TrackingCubit>();
+        if (state.transactionStep == TransactionStep.approve &&
+            state.showTransactionModal) {
+          tracking.trackVaultDepositPressed(
+            vaultName: '',
+            amount: state.currentAmount,
+            walletId: '',
+          );
+        }
+        if (state.transactionStatus == TransactionStatus.success) {
+          tracking.trackVaultDepositSuccess(
+            vaultName: '',
+            amount: state.currentAmount,
+            valueInUsd: 0,
+            walletId: '',
+          );
+        }
+      },
+      child: BlocBuilder<EarnPageBloc, EarnPageState>(
+        buildWhen: (previous, current) =>
+            previous.showTransactionModal != current.showTransactionModal ||
+            previous.transactionStep != current.transactionStep ||
+            previous.transactionStatus != current.transactionStatus,
+        builder: (context, state) {
         if (!state.showTransactionModal) {
           return const SizedBox.shrink();
         }
@@ -138,7 +162,8 @@ class TransactionStepperModal extends StatelessWidget {
             ),
           ),
         );
-      },
+        },
+      ),
     );
   }
 

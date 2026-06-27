@@ -1,6 +1,8 @@
 import 'package:ax_dapp/predict/models/prediction_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ViewButton extends StatelessWidget {
@@ -15,6 +17,10 @@ class ViewButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
+        context.read<TrackingCubit>().trackPredictionView(
+          marketName: predictionModel.prompt,
+          walletId: '',
+        );
         context.goNamed(
           'prediction',
           pathParameters: {

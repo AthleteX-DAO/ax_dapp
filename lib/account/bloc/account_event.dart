@@ -12,7 +12,11 @@ class AccountDetailsViewRequested extends AccountEvent {
 }
 
 class AccountWithdrawViewRequested extends AccountEvent {
-  const AccountWithdrawViewRequested();
+  const AccountWithdrawViewRequested({this.initialTabIndex = 0});
+  final int initialTabIndex;
+
+  @override
+  List<Object?> get props => [initialTabIndex];
 }
 
 class AccountDepositViewRequested extends AccountEvent {

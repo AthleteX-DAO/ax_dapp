@@ -1,3 +1,4 @@
+import 'package:ax_dapp/api/ax_api_client.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/app/view/app_scaffold.dart';
 import 'package:ax_dapp/athlete_markets/athlete.dart';
@@ -236,6 +237,7 @@ class AppRouter {
                       vaultRepository: context.read<VaultRepository>(),
                       streamAppDataChanges:
                           context.read<StreamAppDataChangesUseCase>(),
+                      axApiClient: context.read<AxApiClient>(),
                     ),
                   ),
                 ],
@@ -286,6 +288,7 @@ class AppRouter {
                 create: (BuildContext context) => SpotMarketsBloc(
                   walletRepository: context.read<WalletRepository>(),
                   oracleRepository: context.read<OracleRepository>(),
+                  axApiClient: context.read<AxApiClient>(),
                 ),
                 child: const DesktopSpotMarketsPage(),
               );

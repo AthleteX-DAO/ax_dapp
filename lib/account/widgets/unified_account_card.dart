@@ -1,15 +1,16 @@
 import 'dart:math' as math;
 
 import 'package:ax_dapp/account/bloc/account_bloc.dart';
-import 'package:ax_dapp/account/widgets/account_assets_filter.dart';
-import 'package:ax_dapp/account/widgets/account_assets_list.dart';
 import 'package:ax_dapp/account/widgets/smart_contextual_alerts.dart';
 import 'package:ax_dapp/account/widgets/synthetix_health_gauge.dart';
 import 'package:ax_dapp/service/controller/earn/vault_repository.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
-import 'package:ax_dapp/util/colors.dart';
+import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class UnifiedAccountCard extends StatefulWidget {
   const UnifiedAccountCard({
@@ -47,6 +48,7 @@ class UnifiedAccountCard extends StatefulWidget {
   final VoidCallback onViewPerpsPositions;
   final VoidCallback onViewPredictionPositions;
   final VoidCallback onViewVaultYields;
+
   /// axUSD balance held in the user's wallet (18-decimal BigInt).
   final BigInt? axUsdBalance;
 
@@ -250,10 +252,8 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
                   children: [
                     _buildTabSelector(),
                     const SizedBox(height: 20),
-                    if (_selectedTab == _OverviewTab.health)
-                      _buildHealthTab(),
-                    if (_selectedTab == _OverviewTab.assets)
-                      _buildAssetsTab(),
+                    if (_selectedTab == _OverviewTab.health) _buildHealthTab(),
+                    if (_selectedTab == _OverviewTab.assets) _buildAssetsTab(),
                     if (_selectedTab == _OverviewTab.positions)
                       _buildPositionsTab(),
                   ],
@@ -384,6 +384,11 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
                 .read<AccountBloc>()
                 .add(const AccountDepositViewRequested());
           },
+          onWithdrawTapped: () {
+            context
+                .read<AccountBloc>()
+                .add(const AccountWithdrawViewRequested(initialTabIndex: 1));
+          },
         ),
         const SizedBox(height: 16),
         _buildDetailRow(
@@ -420,11 +425,11 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
           Icons.trending_up_rounded,
           _healthColor,
         ),
-        if ((widget.axUsdBalance ?? BigInt.zero) > BigInt.zero) ...
-          _buildAxUsdRow(),
+        if ((widget.axUsdBalance ?? BigInt.zero) > BigInt.zero)
+          ..._buildAxUsdRow(),
         if ((widget.axUsdBalance ?? BigInt.zero) > BigInt.zero ||
-            widget.collateralAssigned > BigInt.zero) ...
-          _buildTradingCta(),
+            widget.collateralAssigned > BigInt.zero)
+          ..._buildTradingCta(),
       ],
     );
   }
@@ -482,27 +487,183 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
       ];
 
   Widget _buildAssetsTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const AccountAssetsFilter(),
-        SizedBox(
-          height: 220,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: const WalletAssetsList(),
-          ),
-        ),
-      ],
+    return BlocBuilder<AccountBloc, AccountState>(
+      builder: (context, accountState) {
+        final tokens = context.select((WalletBloc bloc) => bloc.state.tokens);
+        final isConnected = accountState.walletAddress.isNotEmpty &&
+            accountState.walletAddress != kEmptyAddress;
+
+        return Column(
+          children: [
+            // ── Wallet Summary Container ──
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withOpacity(0.08),
+                    Colors.white.withOpacity(0.06),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.1),
+                  width: 1.5,
+                ),
+              ),
+              child: Column(
+                children: [
+                  // Header row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Wallet Assets',
+                        style: textStyle(
+                          Colors.white,
+                          14,
+                          isBold: true,
+                          isUline: false,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: (isConnected ? Colors.green : Colors.grey)
+                              .withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: (isConnected ? Colors.green : Colors.grey)
+                                .withOpacity(0.5),
+                          ),
+                        ),
+                        child: Text(
+                          isConnected
+                              ? '${tokens.length} Tokens'
+                              : 'Disconnected',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: isConnected ? Colors.green : Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  // ── Token Rows ──
+                  if (!isConnected)
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: const Column(
+                        children: [
+                          Icon(Icons.link_off_rounded,
+                              size: 48, color: Colors.white30),
+                          SizedBox(height: 8),
+                          Text(
+                            'Connect wallet to view assets',
+                            style: TextStyle(
+                              color: Colors.white38,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else if (tokens.isEmpty)
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: const Column(
+                        children: [
+                          Icon(Icons.inbox_rounded,
+                              size: 48, color: Colors.white30),
+                          SizedBox(height: 8),
+                          Text(
+                            'No tokens found',
+                            style: TextStyle(
+                              color: Colors.white38,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    ...tokens.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final token = entry.value;
+                      return Column(
+                        children: [
+                          _AssetDetailRow(
+                            token: token,
+                            accountState: accountState,
+                          ),
+                          if (index < tokens.length - 1)
+                            const SizedBox(height: 12),
+                        ],
+                      );
+                    }),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            // ── Quick Actions ──
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => context
+                        .read<AccountBloc>()
+                        .add(const AccountDepositViewRequested()),
+                    icon: const Icon(Icons.arrow_upward_rounded, size: 18),
+                    label: const Text('Deposit'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.greenAccent,
+                      side: const BorderSide(
+                          color: Colors.greenAccent, width: 1.5),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => context.read<AccountBloc>().add(
+                        const AccountWithdrawViewRequested(initialTabIndex: 1)),
+                    icon: const Icon(Icons.arrow_downward_rounded, size: 18),
+                    label: const Text('Withdraw'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.redAccent,
+                      side:
+                          const BorderSide(color: Colors.redAccent, width: 1.5),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
   Widget _buildPositionsTab() {
     final vaults = widget.vaults;
     final totalTvl = vaults.fold<double>(0, (sum, v) => sum + v.tvl);
-    final bestApy = vaults.isEmpty
-        ? 0.0
-        : vaults.map((v) => v.apy).reduce(math.max);
+    final bestApy =
+        vaults.isEmpty ? 0.0 : vaults.map((v) => v.apy).reduce(math.max);
     final activeVaults = vaults.where((v) => v.balance > 0).length;
 
     return Column(
@@ -781,9 +942,10 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
   }
 
   // Synthetix returns uint256.max (~1.15e77) when there is no debt.
-  static final _uint256Max =
-      BigInt.parse('115792089237316195423570985008687907853269984665640564039457584007913129639935');
-  static final _cRatioSentinel = _uint256Max >> 64; // anything above ~1e58 is sentinel
+  static final _uint256Max = BigInt.parse(
+      '115792089237316195423570985008687907853269984665640564039457584007913129639935');
+  static final _cRatioSentinel =
+      _uint256Max >> 64; // anything above ~1e58 is sentinel
 
   String _formatCRatio(BigInt ratio) {
     if (ratio == BigInt.zero) return 'N/A';
@@ -804,5 +966,136 @@ class _UnifiedAccountCardState extends State<UnifiedAccountCard>
       return '\$${(value / 1e3).toStringAsFixed(1)}K';
     }
     return '\$${value.toStringAsFixed(2)}';
+  }
+}
+
+/// A single token row styled to match the Health-tab detail rows.
+class _AssetDetailRow extends StatelessWidget {
+  const _AssetDetailRow({
+    required this.token,
+    required this.accountState,
+  });
+
+  final Token token;
+  final AccountState accountState;
+
+  Color _tokenAccent() {
+    switch (token.ticker) {
+      case 'AX':
+        return primaryOrangeColor;
+      case 'Matic':
+        return const Color(0xFF8247E5); // Polygon purple
+      case 'USDC':
+        return const Color(0xFF2775CA); // USDC blue
+      case 'WETH':
+        return const Color(0xFF627EEA); // ETH blue
+      case 'SX':
+        return const Color(0xFF00D395); // SX green
+      default:
+        return Colors.white70;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<double?>(
+      future: context.read<WalletRepository>().getTokenBalance(token.address),
+      builder: (context, snapshot) {
+        return _buildRow(context, snapshot.data ?? 0.0);
+      },
+    );
+  }
+
+  Widget _buildRow(BuildContext context, double balance) {
+    final accent = _tokenAccent();
+    return GestureDetector(
+      onTap: () {
+        context
+            .read<AccountBloc>()
+            .add(AccountTokenViewRequested(token: token));
+      },
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            // Token icon in a styled circle
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: accent.withOpacity(0.15),
+                shape: BoxShape.circle,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Image(
+                  image: tokenImage(token),
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => Icon(
+                    Icons.token_rounded,
+                    size: 18,
+                    color: accent,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            // Ticker + Name
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    token.ticker,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    token.name,
+                    style: const TextStyle(
+                      color: Colors.white54,
+                      fontSize: 11,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            // Balance
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  balance.toStringAsFixed(4),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: accent,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                const Text(
+                  'Balance',
+                  style: TextStyle(
+                    color: Colors.white38,
+                    fontSize: 10,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

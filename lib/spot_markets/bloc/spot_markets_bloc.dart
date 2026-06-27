@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:ax_dapp/api/ax_api_client.dart';
 import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:ax_dapp/repositories/market_price/market_price_repository.dart';
 import 'package:ax_dapp/repositories/oracle/oracle_repository.dart';
@@ -107,7 +108,7 @@ const Map<String, Map<String, dynamic>> SYNTHETIX_SPOT_MARKETS = {
   'axUSDC': {
     'symbol': 'axUSDC',
     'synthAddress': '',
-    'collateralAddress': '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', // USDC.e on Polygon
+    'collateralAddress': '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359', // USDC on Polygon
     'marketId': 13,
     'decimals': 18,
     'baseAsset': 'USDC',
@@ -168,9 +169,11 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
     WalletRepository? walletRepository,
     OracleRepository? oracleRepository,
     MarketPriceRepository? marketPriceRepository,
+    AxApiClient? axApiClient,
   })  : _walletRepository = walletRepository,
         _oracleRepository = oracleRepository,
         _marketPriceRepository = marketPriceRepository,
+        _axApiClient = axApiClient,
         super(const SpotMarketsInitial()) {
     on<SpotMarketsInitialize>(_onInitialize);
     on<SpotMarketsRefresh>(_onRefresh);
@@ -193,6 +196,7 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
   final WalletRepository? _walletRepository;
   final OracleRepository? _oracleRepository;
   final MarketPriceRepository? _marketPriceRepository;
+  final AxApiClient? _axApiClient;
   late Web3Client _web3Client;
   late SynthetixSpotRepository _synthetixRepo;
   late OracleRepository _oracleRepo;
@@ -238,8 +242,24 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
       );
       await _synthetixRepo.initialize();
 
-      // Fetch Synthetix v3 spot markets
-      final markets = SYNTHETIX_SPOT_MARKETS.keys.toList();
+      // Fetch Synthetix v3 spot markets — API-first with static fallback
+      List<String> markets;
+      if (_axApiClient != null) {
+        try {
+          final apiMarkets = await _axApiClient!.fetchSpotMarkets();
+          if (apiMarkets.isNotEmpty) {
+            markets = apiMarkets.map((m) => m.symbol).toList();
+            print('🔷 SpotMarketsBloc loaded ${markets.length} markets from API');
+          } else {
+            markets = SYNTHETIX_SPOT_MARKETS.keys.toList();
+          }
+        } catch (e) {
+          print('🔷 SpotMarketsBloc API fallback: $e');
+          markets = SYNTHETIX_SPOT_MARKETS.keys.toList();
+        }
+      } else {
+        markets = SYNTHETIX_SPOT_MARKETS.keys.toList();
+      }
       final initialMarket = markets.isNotEmpty ? markets.first : '';
       
       // Fetch market data in PARALLEL (not sequential)
@@ -349,6 +369,39 @@ class SpotMarketsBloc extends Bloc<SpotMarketsEvent, SpotMarketsState> {
     _pollingTimer = Timer.periodic(const Duration(seconds: 30), (_) async {
       if (!_isPageFocused) return;
       if (state is! SpotMarketsLoaded) return;
+
+      // Try API batch prices first
+      if (_axApiClient != null) {
+        try {
+          final batchPrices = await _axApiClient!.fetchBatchPrices();
+          if (batchPrices.isNotEmpty) {
+            final currentState = state as SpotMarketsLoaded;
+            final updated = Map<String, SpotMarketModel>.from(currentState.marketData);
+            var changed = false;
+            for (final entry in batchPrices.entries) {
+              // Find market symbol for this ID
+              final symbol = SYNTHETIX_SPOT_MARKETS.entries
+                  .where((e) => e.value['marketId'] == entry.key)
+                  .map((e) => e.key)
+                  .firstOrNull;
+              if (symbol != null) {
+                final price = entry.value.price / 1e18;
+                final old = updated[symbol];
+                if (old != null && old.currentPrice != price) {
+                  updated[symbol] = old.copyWith(currentPrice: price);
+                  changed = true;
+                }
+              }
+            }
+            if (changed && !isClosed) {
+              add(_BatchPricesUpdated(updated));
+              return; // Skip CoinGecko
+            }
+          }
+        } catch (e) {
+          print('🔷 Batch price API failed, falling back to CoinGecko: $e');
+        }
+      }
 
       try {
         final summaries = await _getMarketSummaries(_allMarkets);

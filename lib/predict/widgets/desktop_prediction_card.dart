@@ -3,7 +3,9 @@ import 'package:ax_dapp/predict/widgets/price.dart';
 import 'package:ax_dapp/predict/widgets/widget_factories/prediction_details_widget.dart';
 import 'package:ax_dapp/prediction/widgets/prediction_buy_button.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class DesktopPredictionCard extends StatelessWidget {
@@ -22,6 +24,10 @@ class DesktopPredictionCard extends StatelessWidget {
       height: 70,
       child: OutlinedButton(
         onPressed: () {
+          context.read<TrackingCubit>().trackPredictionView(
+            marketName: predictionModel.prompt,
+            walletId: '',
+          );
           context.goNamed(
             'prediction',
             pathParameters: {

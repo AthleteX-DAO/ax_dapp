@@ -26,7 +26,13 @@ class _AccountWithdrawViewState extends State<AccountWithdrawView>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    final initialIndex =
+        context.read<AccountBloc>().state.withdrawInitialTabIndex;
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: initialIndex,
+    );
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ax_dapp/account/repository/account_repository.dart';
+import 'package:ax_dapp/api/ax_api_client.dart';
 import 'package:ax_dapp/app/view/app.dart';
 import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/firebase_options.dart';
@@ -115,6 +116,9 @@ void main() async {
         providers: [
           RepositoryProvider(
             create: (_) => LongShortPairRepository(),
+          ),
+          RepositoryProvider(
+            create: (_) => AxApiClient(),
           ),
           RepositoryProvider(
             create: (_) => PoolRepository(),

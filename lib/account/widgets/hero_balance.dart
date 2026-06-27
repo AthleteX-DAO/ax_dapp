@@ -5,10 +5,16 @@ import 'package:flutter/material.dart';
 class HeroBalance extends StatefulWidget {
   const HeroBalance({
     required this.balanceUsd,
+    this.availableToTrade = 0,
+    this.reservedForGas = 0,
     super.key,
   });
 
   final double balanceUsd;
+  /// Available collateral value in USD (from Synthetix).
+  final double availableToTrade;
+  /// Native token balance in USD reserved for gas.
+  final double reservedForGas;
 
   @override
   State<HeroBalance> createState() => _HeroBalanceState();
@@ -133,13 +139,13 @@ class _HeroBalanceState extends State<HeroBalance>
                   const SizedBox(height: 12),
                   _buildDetailRow(
                     'Available to Trade',
-                    '\$${(widget.balanceUsd * 0.95).toStringAsFixed(2)}',
+                    '\$${widget.availableToTrade.toStringAsFixed(2)}',
                     Colors.green,
                   ),
                   const SizedBox(height: 12),
                   _buildDetailRow(
                     'Reserved for Gas',
-                    '\$${(widget.balanceUsd * 0.05).toStringAsFixed(2)}',
+                    '\$${widget.reservedForGas.toStringAsFixed(2)}',
                     Colors.white54,
                   ),
                 ],

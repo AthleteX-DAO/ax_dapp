@@ -1,9 +1,11 @@
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/versus/models/versus_match_model.dart';
 import 'package:ax_dapp/versus/widgets/athlete_battle_card.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Layout for displaying the versus battle with two athletes and VS logo
 class VersusBattleLayout extends StatefulWidget {
@@ -182,7 +184,14 @@ class _VersusBattleLayoutState extends State<VersusBattleLayout>
             padding: const EdgeInsets.all(16),
             child: AthleteBattleCard(
               athlete: widget.match.athlete1,
-              onTap: widget.onVoteAthlete1,
+              onTap: () {
+                context.read<TrackingCubit>().trackVersusVoteCast(
+                      athleteName: widget.match.athlete1.athleteName,
+                      marketName: widget.match.marketName,
+                      walletId: '',
+                    );
+                widget.onVoteAthlete1();
+              },
               isSwipingRight: isSwipingRight,
             ),
           ),
@@ -196,7 +205,14 @@ class _VersusBattleLayoutState extends State<VersusBattleLayout>
             padding: const EdgeInsets.all(16),
             child: AthleteBattleCard(
               athlete: widget.match.athlete2,
-              onTap: widget.onVoteAthlete2,
+              onTap: () {
+                context.read<TrackingCubit>().trackVersusVoteCast(
+                      athleteName: widget.match.athlete2.athleteName,
+                      marketName: widget.match.marketName,
+                      walletId: '',
+                    );
+                widget.onVoteAthlete2();
+              },
               isSwipingLeft: isSwipingLeft,
             ),
           ),
@@ -216,7 +232,14 @@ class _VersusBattleLayoutState extends State<VersusBattleLayout>
               Expanded(
                 child: AthleteBattleCard(
                   athlete: widget.match.athlete1,
-                  onTap: widget.onVoteAthlete1,
+                  onTap: () {
+                    context.read<TrackingCubit>().trackVersusVoteCast(
+                          athleteName: widget.match.athlete1.athleteName,
+                          marketName: widget.match.marketName,
+                          walletId: '',
+                        );
+                    widget.onVoteAthlete1();
+                  },
                 ),
               ),
               const SizedBox(height: 16),
@@ -337,7 +360,14 @@ class _VersusBattleLayoutState extends State<VersusBattleLayout>
               Expanded(
                 child: AthleteBattleCard(
                   athlete: widget.match.athlete2,
-                  onTap: widget.onVoteAthlete2,
+                  onTap: () {
+                    context.read<TrackingCubit>().trackVersusVoteCast(
+                          athleteName: widget.match.athlete2.athleteName,
+                          marketName: widget.match.marketName,
+                          walletId: '',
+                        );
+                    widget.onVoteAthlete2();
+                  },
                 ),
               ),
               const SizedBox(height: 16),

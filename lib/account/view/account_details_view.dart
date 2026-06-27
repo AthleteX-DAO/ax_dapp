@@ -121,10 +121,19 @@ class _AccountDetailsState extends State<AccountDetails>
             current.isSynthetixAccountLoading ||
           previous.vaults != current.vaults ||
           previous.isVaultsLoading != current.isVaultsLoading ||
-          previous.vaultsError != current.vaultsError,
+          previous.vaultsError != current.vaultsError ||
+          previous.serverUsdcBalance != current.serverUsdcBalance ||
+          previous.serverMaticBalance != current.serverMaticBalance ||
+          previous.serverGasPriceGwei != current.serverGasPriceGwei,
         builder: (context, accountState) {
-            // Calculate portfolio balance from wallet
-            final walletBalance = walletState.walletBalance;
+            // Use server-sourced balances from AccountBloc
+            final usdcBalance = accountState.serverUsdcBalance;
+            final nativeBalance = accountState.serverMaticBalance;
+            final gasPriceGwei = accountState.serverGasPriceGwei;
+            // POL price ~$0.08 for USD conversion
+            const polPriceUsd = 0.08;
+            final nativeBalanceUsd = nativeBalance * polPriceUsd;
+            final portfolioUsd = usdcBalance + nativeBalanceUsd;
 
             return SingleChildScrollView(
               child: Padding(
@@ -134,7 +143,9 @@ class _AccountDetailsState extends State<AccountDetails>
                   children: [
                     // === HERO BALANCE SECTION ===
                     HeroBalance(
-                      balanceUsd: walletBalance,
+                      balanceUsd: portfolioUsd,
+                      availableToTrade: usdcBalance,
+                      reservedForGas: nativeBalanceUsd,
                     ),
                     const SizedBox(height: 20),
 
@@ -143,9 +154,9 @@ class _AccountDetailsState extends State<AccountDetails>
                       children: [
                         Expanded(
                           child: NetworkStatusWidget(
-                            chainName: walletState.chain.name,
-                            ethBalance: walletBalance,
-                            gasPrice: walletState.gasPrice,
+                            chain: walletState.chain,
+                            gasTokenBalance: nativeBalance,
+                            gasPrice: gasPriceGwei,
                           ),
                         ),
                         const SizedBox(width: 16),

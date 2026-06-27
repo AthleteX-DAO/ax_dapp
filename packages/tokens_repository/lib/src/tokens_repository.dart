@@ -30,7 +30,7 @@ class TokensRepository {
 
   // Polygon Mainnet addresses for price oracle
   static const String _axTokenAddress = '0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df';
-  static const String _usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
+  static const String _usdcAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359';
   static const String _uniswapV3FactoryAddress = '0x1F98431c8aD98523631AE4a59f267346ea31F984';
 
   /// Allows listening to changes to the current [Token]s.

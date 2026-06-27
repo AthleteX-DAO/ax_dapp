@@ -28,6 +28,12 @@ class AccountState extends Equatable {
     // axUSD tracking
     BigInt? axUsdBalance,
     BigInt? axUsdInAccount,
+    // Server-sourced wallet balances
+    this.serverUsdcBalance = 0,
+    this.serverMaticBalance = 0,
+    this.serverGasPriceGwei = 0,
+    this.serverAxBalance = 0,
+    this.withdrawInitialTabIndex = 0,
     // collateral selection & mint UI
     this.selectedCollateral,
     this.mintSliderValue = 0.5,
@@ -92,6 +98,18 @@ class AccountState extends Equatable {
   /// Non-null when [synthetixTxStatus] == [SynthetixTxStatus.error].
   final String? synthetixTxError;
 
+  /// USDC balance from server (human-readable USD, 6-decimal adjusted).
+  final double serverUsdcBalance;
+  /// Native POL/MATIC balance from server (human-readable, 18-decimal adjusted).
+  final double serverMaticBalance;
+  /// Gas price in gwei from server.
+  final double serverGasPriceGwei;
+  /// AX balance from server (human-readable, 18-decimal adjusted).
+  final double serverAxBalance;
+
+  /// Default tab index when navigating to withdraw page.
+  final int withdrawInitialTabIndex;
+
   @override
   List<Object?> get props => [
         accountViewStatus,
@@ -122,6 +140,11 @@ class AccountState extends Equatable {
         mintSliderValue,
         synthetixTxStatus,
         synthetixTxError,
+        serverUsdcBalance,
+        serverMaticBalance,
+        serverGasPriceGwei,
+        serverAxBalance,
+        withdrawInitialTabIndex,
       ];
 
   AccountState copyWith({
@@ -153,6 +176,11 @@ class AccountState extends Equatable {
     double? mintSliderValue,
     SynthetixTxStatus? synthetixTxStatus,
     String? synthetixTxError,
+    double? serverUsdcBalance,
+    double? serverMaticBalance,
+    double? serverGasPriceGwei,
+    double? serverAxBalance,
+    int? withdrawInitialTabIndex,
   }) {
     return AccountState(
       chain: chain ?? this.chain,
@@ -188,6 +216,12 @@ class AccountState extends Equatable {
       mintSliderValue: mintSliderValue ?? this.mintSliderValue,
       synthetixTxStatus: synthetixTxStatus ?? this.synthetixTxStatus,
       synthetixTxError: synthetixTxError ?? this.synthetixTxError,
+      serverUsdcBalance: serverUsdcBalance ?? this.serverUsdcBalance,
+      serverMaticBalance: serverMaticBalance ?? this.serverMaticBalance,
+      serverGasPriceGwei: serverGasPriceGwei ?? this.serverGasPriceGwei,
+      serverAxBalance: serverAxBalance ?? this.serverAxBalance,
+      withdrawInitialTabIndex:
+          withdrawInitialTabIndex ?? this.withdrawInitialTabIndex,
     );
   }
 }

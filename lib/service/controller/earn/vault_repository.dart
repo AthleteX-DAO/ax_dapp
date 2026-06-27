@@ -84,7 +84,7 @@ class VaultRepository {
   })  : _chain = chain,
         _reactiveWeb3Client = reactiveWeb3Client,
         _walletRepository = walletRepository,
-        accountId = accountId ?? BigInt.from(1);
+        accountId = accountId ?? BigInt.zero;
 
   /// The Ethereum chain for vault operations. Mutable — updated on chain switch.
   EthereumChain get chain => _chain;
@@ -250,7 +250,7 @@ class VaultRepository {
         address: collateralEthAddress,
         client: _web3Client,
       );
-      final resolvedAccountId = overrideAccountId ?? accountId;
+      final resolvedAccountId = userAddress == null ? BigInt.zero : (overrideAccountId ?? accountId);
 
       // Fire TVL, user balance, and decimals concurrently — saves 2 round-trips
       // per vault vs the old sequential approach.
@@ -275,7 +275,7 @@ class VaultRepository {
       var userBalance = 0.0;
       if (accountCollateral != null) {
         userBalance = _bigIntToDouble(
-          accountCollateral.totalAssigned as BigInt,
+          accountCollateral.totalDeposited as BigInt,
           decimals,
         );
       }
@@ -373,7 +373,7 @@ class VaultRepository {
   /// Fetch the actual Synthetix account ID from the blockchain for a given wallet address.
   Future<BigInt?> _fetchActualAccountId(String walletAddress) async {
     try {
-      final coreProxyAddress = EthereumAddress.fromHex(_coreProxyAddress);
+      final coreProxyAddress = web3.EthereumAddress.fromHex(_coreProxyAddress);
       final coreProxy = SynthetixCoreProxy(
         address: coreProxyAddress,
         client: _web3Client,
@@ -386,14 +386,41 @@ class VaultRepository {
         params: [],
       );
       
-      final accountTokenAddress = tokenAddressResult[0] as EthereumAddress;
+      final accountTokenAddress = tokenAddressResult[0] as web3.EthereumAddress;
       debugPrint('   Account token address: ${accountTokenAddress.hex}');
       
+      final accountTokenAbi = web3.ContractAbi.fromJson('''
+      [
+        {
+          "inputs": [{"internalType": "address", "name": "owner", "type": "address"}],
+          "name": "balanceOf",
+          "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {"internalType": "address", "name": "owner", "type": "address"},
+            {"internalType": "uint256", "name": "index", "type": "uint256"}
+          ],
+          "name": "tokenOfOwnerByIndex",
+          "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+      ''', 'AccountToken');
+
+      final accountToken = web3.DeployedContract(
+        accountTokenAbi,
+        accountTokenAddress,
+      );
+
       // Get account token balance for the user
       final balanceResult = await _web3Client.call(
-        contract: coreProxy.self,
-        function: coreProxy.self.abi.functions.firstWhere((f) => f.name == 'balanceOf'),
-        params: [EthereumAddress.fromHex(walletAddress)],
+        contract: accountToken,
+        function: accountToken.function('balanceOf'),
+        params: [web3.EthereumAddress.fromHex(walletAddress)],
       );
       
       final balance = balanceResult[0] as BigInt;
@@ -405,9 +432,9 @@ class VaultRepository {
       
       // Get the first account ID (tokenOfOwnerByIndex)
       final tokenOfOwnerResult = await _web3Client.call(
-        contract: coreProxy.self,
-        function: coreProxy.self.abi.functions.firstWhere((f) => f.name == 'tokenOfOwnerByIndex'),
-        params: [EthereumAddress.fromHex(walletAddress), BigInt.zero],
+        contract: accountToken,
+        function: accountToken.function('tokenOfOwnerByIndex'),
+        params: [web3.EthereumAddress.fromHex(walletAddress), BigInt.zero],
       );
       
       final actualAccountId = tokenOfOwnerResult[0] as BigInt;
@@ -418,6 +445,23 @@ class VaultRepository {
       debugPrint('Error fetching account ID: $e');
       return null;
     }
+  }
+
+  /// Poll until a transaction is mined and confirmed.
+  Future<void> _waitForReceipt(String txHash) async {
+    const maxAttempts = 30;
+    const delay = Duration(seconds: 2);
+    for (var i = 0; i < maxAttempts; i++) {
+      final receipt = await _web3Client.getTransactionReceipt(txHash);
+      if (receipt != null) {
+        if (receipt.status == false) {
+          throw Exception('Transaction reverted on-chain');
+        }
+        return;
+      }
+      await Future<void>.delayed(delay);
+    }
+    throw Exception('Transaction confirmation timeout after 60 s');
   }
 
   /// Deposit into a vault.
@@ -446,11 +490,17 @@ class VaultRepository {
     final credentials = _walletRepository.credentials.value;
     debugPrint('✅ [VAULT_REPO] Credentials obtained');
 
-    // Use the account ID already provided to VaultRepository (from AccountBloc).
-    // _fetchActualAccountId was removed: it called ERC-721 functions that don't
-    // exist on CoreProxy, causing the deposit to always fail.
-    final resolvedAccountId = accountId;
-    debugPrint('✅ [VAULT_REPO] Using stored accountId: $resolvedAccountId');
+    var resolvedAccountId = accountId;
+    if (resolvedAccountId == BigInt.zero) {
+      debugPrint('🟡 [VAULT_REPO] Stored accountId is zero, attempting to fetch from blockchain...');
+      final fetchedId = await _fetchActualAccountId(userAddress!);
+      if (fetchedId != null && fetchedId != BigInt.zero) {
+        resolvedAccountId = fetchedId;
+        accountId = fetchedId; // Cache it
+        debugPrint('✅ [VAULT_REPO] Found on-chain accountId: $resolvedAccountId');
+      }
+    }
+    debugPrint('✅ [VAULT_REPO] Using resolved accountId: $resolvedAccountId');
 
     if (resolvedAccountId == BigInt.zero) {
       debugPrint('❌ [VAULT_REPO] No Synthetix account (accountId is zero)!');
@@ -491,9 +541,11 @@ class VaultRepository {
     if (currentAllowance < amountWei) {
       debugPrint('🟡 [VAULT_REPO] Approving CoreProxy to spend $amountWei...');
       try {
-        await token.approve(coreProxyAddress, amountWei,
+        final approveTxHash = await token.approve(coreProxyAddress, amountWei,
             credentials: credentials,);
-        debugPrint('✅ [VAULT_REPO] Approval transaction sent');
+        debugPrint('✅ [VAULT_REPO] Approval transaction sent: $approveTxHash');
+        await _waitForReceipt(approveTxHash);
+        debugPrint('✅ [VAULT_REPO] Approval transaction confirmed');
       } catch (approveError) {
         debugPrint('❌ [VAULT_REPO] Approval failed: $approveError');
         rethrow;
@@ -521,8 +573,9 @@ class VaultRepository {
         amountWei,
         credentials: credentials,
       );
-      debugPrint('✅ [VAULT_REPO] deposit succeeded');
-      debugPrint('   - depositTxHash: $depositTxHash');
+      debugPrint('✅ [VAULT_REPO] deposit transaction submitted: $depositTxHash');
+      await _waitForReceipt(depositTxHash);
+      debugPrint('✅ [VAULT_REPO] deposit transaction confirmed');
     } catch (depositError) {
       debugPrint('❌ [VAULT_REPO] deposit FAILED: $depositError');
       rethrow;
@@ -531,20 +584,28 @@ class VaultRepository {
     // 3) Delegate collateral to the Spartan Council pool
     debugPrint('\n🟡 [VAULT_REPO] === STEP 3: DELEGATE COLLATERAL ===');
     
-    debugPrint('🟡 [VAULT_REPO] delegateCollateral parameters:');
-    debugPrint('   - accountId: $resolvedAccountId');
-    debugPrint('   - poolId: ${vault.poolId}');
-    debugPrint('   - collateralAddress: ${collateralAddress.hex}');
-    debugPrint('   - amount: $amountWei');
-    debugPrint('   - leverage: $_oneXLeverage');
-
     try {
+      debugPrint('🟡 [VAULT_REPO] Fetching latest account collateral...');
+      final collateralData = await coreProxy.getAccountCollateral(
+        resolvedAccountId,
+        collateralAddress,
+      );
+      final totalDeposited = collateralData.totalDeposited;
+      debugPrint('✅ [VAULT_REPO] Current total deposited: $totalDeposited');
+
+      debugPrint('🟡 [VAULT_REPO] delegateCollateral parameters:');
+      debugPrint('   - accountId: $resolvedAccountId');
+      debugPrint('   - poolId: ${vault.poolId}');
+      debugPrint('   - collateralAddress: ${collateralAddress.hex}');
+      debugPrint('   - amount: $totalDeposited');
+      debugPrint('   - leverage: $_oneXLeverage');
+
       debugPrint('🟡 [VAULT_REPO] Calling coreProxy.delegateCollateral()...');
       final txHash = await coreProxy.delegateCollateral(
         resolvedAccountId,
         vault.poolId,
         collateralAddress,
-        amountWei,
+        totalDeposited,
         _oneXLeverage,
         credentials: credentials,
       );
@@ -591,17 +652,48 @@ class VaultRepository {
     final coreProxy =
         SynthetixCoreProxy(address: coreProxyAddress, client: _web3Client);
 
-    // Step 1: Undelegate collateral from pool
+    var resolvedAccountId = accountId;
+    if (resolvedAccountId == BigInt.zero) {
+      debugPrint('🟡 [VAULT_REPO] Stored accountId is zero, attempting to fetch from blockchain...');
+      final fetchedId = await _fetchActualAccountId(userAddress!);
+      if (fetchedId != null && fetchedId != BigInt.zero) {
+        resolvedAccountId = fetchedId;
+        accountId = fetchedId; // Cache it
+        debugPrint('✅ [VAULT_REPO] Found on-chain accountId: $resolvedAccountId');
+      }
+    }
+    debugPrint('🟧 [VAULT_REPO] Using resolved accountId: $resolvedAccountId');
+
+    if (resolvedAccountId == BigInt.zero) {
+      debugPrint('❌ [VAULT_REPO] No Synthetix account (accountId is zero)!');
+      throw Exception('No Synthetix account found');
+    }
+
+    // Step 1: Undelegate collateral from pool (via delegateCollateral with reduced amount)
     debugPrint('🟧 [VAULT_REPO] Step 1: Undelegating collateral...');
     try {
-      await coreProxy.undelegateCollateral(
-        accountId,
+      final collateralData = await coreProxy.getAccountCollateral(
+        resolvedAccountId,
+        collateralAddress,
+      );
+      final currentAssigned = collateralData.totalAssigned;
+      debugPrint('   - currentAssigned: $currentAssigned');
+      debugPrint('   - amount to undelegate (amountWei): $amountWei');
+      
+      final newAssigned = currentAssigned > amountWei ? (currentAssigned - amountWei) : BigInt.zero;
+      debugPrint('   - target newAssigned: $newAssigned');
+
+      final delegateTxHash = await coreProxy.delegateCollateral(
+        resolvedAccountId,
         vault.poolId,
         collateralAddress,
-        amountWei,
+        newAssigned,
+        _oneXLeverage,
         credentials: credentials,
       );
-      debugPrint('✅ [VAULT_REPO] Undelegate succeeded');
+      debugPrint('✅ [VAULT_REPO] Undelegate transaction submitted: $delegateTxHash');
+      await _waitForReceipt(delegateTxHash);
+      debugPrint('✅ [VAULT_REPO] Undelegate transaction confirmed');
     } on RPCError catch (e) {
       debugPrint('❌ [VAULT_REPO] Undelegate failed: ${e.message}');
       throw Exception('Undelegate failed: ${e.message}');
@@ -611,7 +703,7 @@ class VaultRepository {
     debugPrint('🟧 [VAULT_REPO] Step 2: Withdrawing to wallet...');
     try {
       final txHash = await coreProxy.withdrawCollateral(
-        accountId,
+        resolvedAccountId,
         collateralAddress,
         amountWei,
         credentials: credentials,
@@ -647,9 +739,17 @@ class VaultRepository {
       throw Exception('Wallet not connected');
     }
 
-    // Use the account ID already provided to VaultRepository (from AccountBloc).
-    final resolvedAccountId = accountId;
-    debugPrint('🟣 [VAULT_REPO] Using stored accountId: $resolvedAccountId');
+    var resolvedAccountId = accountId;
+    if (resolvedAccountId == BigInt.zero) {
+      debugPrint('🟡 [VAULT_REPO] Stored accountId is zero, attempting to fetch from blockchain...');
+      final fetchedId = await _fetchActualAccountId(userAddress!);
+      if (fetchedId != null && fetchedId != BigInt.zero) {
+        resolvedAccountId = fetchedId;
+        accountId = fetchedId; // Cache it
+        debugPrint('✅ [VAULT_REPO] Found on-chain accountId: $resolvedAccountId');
+      }
+    }
+    debugPrint('🟣 [VAULT_REPO] Using resolved accountId: $resolvedAccountId');
 
     if (resolvedAccountId == BigInt.zero) {
       debugPrint('❌ [VAULT_REPO] No Synthetix account (accountId is zero)!');

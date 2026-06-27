@@ -6,6 +6,7 @@ class SmartContextualAlerts extends StatelessWidget {
     required this.collateralAvailable,
     required this.debt,
     required this.onDepositTapped,
+    required this.onWithdrawTapped,
     super.key,
   });
 
@@ -13,6 +14,7 @@ class SmartContextualAlerts extends StatelessWidget {
   final BigInt collateralAvailable;
   final BigInt debt;
   final VoidCallback onDepositTapped;
+  final VoidCallback onWithdrawTapped;
 
   List<_Alert> _buildAlerts() {
     final alerts = <_Alert>[];
@@ -120,6 +122,8 @@ class SmartContextualAlerts extends StatelessWidget {
                 if (alert.actionLabel == 'Deposit More' ||
                     alert.actionLabel == 'Add Collateral') {
                   onDepositTapped();
+                } else if (alert.actionLabel == 'Withdraw') {
+                  onWithdrawTapped();
                 }
               },
             ),

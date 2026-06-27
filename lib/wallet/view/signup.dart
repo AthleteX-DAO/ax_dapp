@@ -1,6 +1,8 @@
 import 'package:ax_dapp/service/gold_theme.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:ax_dapp/wallet/models/status.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +23,15 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WalletBloc, WalletState>(
+    return BlocConsumer<WalletBloc, WalletState>(
+      listenWhen: (previous, current) =>
+          previous.walletViewStatus != current.walletViewStatus &&
+          current.walletViewStatus == WalletViewStatus.profile,
+      listener: (context, state) {
+        context.read<TrackingCubit>().trackSignUpSuccess(
+              walletId: state.walletAddress,
+            );
+      },
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<WalletBloc>();
@@ -169,8 +179,10 @@ class _SignUpViewState extends State<SignUpView> {
                 onEnter: (_) => setState(() => _hovering = true),
                 onExit: (_) => setState(() => _hovering = false),
                 child: GestureDetector(
-                  onTap: () =>
-                      bloc.add(const ProfileViewRequestedFromSignUp()),
+                  onTap: () {
+                      context.read<TrackingCubit>().trackSignUpPressed();
+                      bloc.add(const ProfileViewRequestedFromSignUp());
+                    },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     curve: Curves.easeOut,
