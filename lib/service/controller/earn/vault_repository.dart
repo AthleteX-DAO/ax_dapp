@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:typed_data';
 
 import 'package:ax_dapp/config/synthetix_config.dart';
 import 'package:ethereum_api/erc20_api.dart' as erc20_api;
@@ -462,6 +463,58 @@ class VaultRepository {
       await Future<void>.delayed(delay);
     }
     throw Exception('Transaction confirmation timeout after 60 s');
+  }
+
+  /// Sign and send an unsigned transaction from the API.
+  ///
+  /// Takes the raw `to`, `data`, and `value` fields from an
+  /// [UnsignedTxResponse] and uses the wallet's credentials to sign and
+  /// broadcast. Returns the transaction hash.
+  Future<String> signAndSendUnsignedTx({
+    required String to,
+    required String data,
+    String value = '0',
+    int? gasEstimate,
+  }) async {
+    debugPrint('🔷 [VAULT_REPO] signAndSendUnsignedTx');
+    debugPrint('   - to: $to');
+    debugPrint('   - data: ${data.substring(0, data.length > 20 ? 20 : data.length)}...');
+    debugPrint('   - value: $value');
+
+    if (userAddress == null) {
+      throw Exception('Wallet not connected');
+    }
+
+    final credentials = _walletRepository.credentials.value;
+    final toAddress = EthereumAddress.fromHex(to);
+    final txValue = EtherAmount.inWei(BigInt.parse(value));
+
+    // Build the raw transaction
+    final tx = web3.Transaction(
+      to: toAddress,
+      data: _hexToBytes(data),
+      value: txValue,
+      maxGas: gasEstimate,
+    );
+
+    final txHash = await _web3Client.sendTransaction(
+      credentials,
+      tx,
+      chainId: 137,
+    );
+    debugPrint('✅ [VAULT_REPO] TX sent: $txHash');
+    return txHash;
+  }
+
+  /// Convert hex string to Uint8List for transaction data.
+  static Uint8List _hexToBytes(String hex) {
+    final cleanHex = hex.startsWith('0x') ? hex.substring(2) : hex;
+    final length = cleanHex.length ~/ 2;
+    final bytes = Uint8List(length);
+    for (var i = 0; i < length; i++) {
+      bytes[i] = int.parse(cleanHex.substring(i * 2, i * 2 + 2), radix: 16);
+    }
+    return bytes;
   }
 
   /// Deposit into a vault.

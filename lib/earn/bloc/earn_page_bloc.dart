@@ -215,78 +215,115 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     }
   }
 
-  /// Submit deposit form and initiate transaction
+  /// Submit deposit form — API-first with VaultRepository fallback.
+  ///
+  /// API path: buildDeposit → signAndSendUnsignedTx → poll.
+  /// Fallback: VaultRepository.deposit() (handles approve+deposit+delegate).
   Future<void> _onSubmitDepositForm(
     SubmitDepositForm event,
     Emitter<EarnPageState> emit,
   ) async {
     try {
       debugPrint('🔵 [DEPOSIT] ===== STARTING DEPOSIT FLOW =====');
-      debugPrint('🔵 [DEPOSIT] Event: vaultSymbol=${event.vaultSymbol}, amount=${event.amount}, leverage=${event.leverage}');
-      
+      debugPrint('🔵 [DEPOSIT] Event: vaultSymbol=${event.vaultSymbol}, '
+          'amount=${event.amount}, leverage=${event.leverage}');
+
       emit(state.copyWith(
         showTransactionModal: true,
         transactionStatus: TransactionStatus.pending,
         transactionStep: TransactionStep.approve,
-      ),);
+      ));
 
-      // Store operation details
       _currentOperation = 'deposit';
       _currentOperationAmount = event.amount;
 
       if (_vaultRepository == null) {
-        debugPrint('❌ [DEPOSIT] Vault repository is NULL');
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault repository not available',
-        ),);
+        ));
         return;
       }
 
-      // Fetch vault to get details
-      debugPrint('🟡 [DEPOSIT] Fetching vault: ${event.vaultSymbol}');
       final vault = await _vaultRepository!.fetchVault(event.vaultSymbol);
       if (vault == null) {
-        debugPrint('❌ [DEPOSIT] Vault not found: ${event.vaultSymbol}');
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault not found',
-        ),);
+        ));
         return;
       }
-
-      debugPrint('✅ [DEPOSIT] Vault fetched: ${vault.toString()}');
-      debugPrint('✅ [DEPOSIT] Vault details:');
-      debugPrint('   - symbol: ${vault.symbol}');
-      debugPrint('   - collateralAddress: ${vault.collateralAddress}');
-      debugPrint('   - poolId: ${vault.poolId}');
-      debugPrint('   - vaultAddress: ${vault.vaultAddress}');
-
       _currentOperationCollateral = vault.collateralAddress;
 
-      // Emit confirm step
       emit(state.copyWith(transactionStep: TransactionStep.confirm));
 
-      // Call deposit with custom leverage
-      final leverageBigInt = BigInt.from((event.leverage * 1e18).toInt());
-      debugPrint('🟡 [DEPOSIT] Leverage calculation:');
-      debugPrint('   - leverage from UI: ${event.leverage}');
-      debugPrint('   - leverage * 1e18: ${(event.leverage * 1e18).toInt()}');
-      debugPrint('   - leverageBigInt: $leverageBigInt');
-      
-      debugPrint('🟡 [DEPOSIT] Calling vault_repository.deposit()...');
-      final txHash = await _vaultRepository!.deposit(
+      String txHash;
+
+      // ── API-first path ──────────────────────────────────────────
+      final wallet = _walletRepository.currentWallet.address;
+      final accountId = _vaultRepository!.accountId.toInt();
+      if (_axApiClient != null && wallet.isNotEmpty && accountId > 0) {
+        try {
+          debugPrint('🔷 [DEPOSIT] Trying API path...');
+          final amountWei =
+              BigInt.from(event.amount * 1e18).toString();
+
+          // Step 1: Build + send approve TX via API
+          final approveTx = await _axApiClient!.buildApprove(
+            tokenAddress: vault.collateralAddress,
+            spender: SynthetixConfig.coreProxy,
+            amount: amountWei,
+            wallet: wallet,
+          );
+          if (approveTx != null) {
+            debugPrint('🔷 [DEPOSIT] API approve TX built, signing...');
+            final approveHash = await _vaultRepository!.signAndSendUnsignedTx(
+              to: approveTx.to,
+              data: approveTx.data,
+              value: approveTx.value,
+              gasEstimate: approveTx.gasEstimate,
+            );
+            debugPrint('✅ [DEPOSIT] Approve sent: $approveHash');
+          }
+
+          // Step 2: Build + send deposit TX via API
+          emit(state.copyWith(transactionStep: TransactionStep.pending));
+          final depositTx = await _axApiClient!.buildDeposit(
+            accountId: accountId,
+            collateralType: vault.collateralAddress,
+            amount: amountWei,
+            wallet: wallet,
+          );
+          if (depositTx == null) throw Exception('API returned null deposit TX');
+
+          txHash = await _vaultRepository!.signAndSendUnsignedTx(
+            to: depositTx.to,
+            data: depositTx.data,
+            value: depositTx.value,
+            gasEstimate: depositTx.gasEstimate,
+          );
+          debugPrint('✅ [DEPOSIT] API deposit TX sent: $txHash');
+
+          emit(state.copyWith(transactionHash: txHash));
+          add(PollTransaction(txHash));
+          return;
+        } catch (apiError) {
+          debugPrint('⚠️ [DEPOSIT] API path failed, falling back: $apiError');
+        }
+      }
+
+      // ── VaultRepository fallback ────────────────────────────────
+      debugPrint('🟡 [DEPOSIT] Using VaultRepository fallback...');
+      txHash = await _vaultRepository!.deposit(
         vault: vault,
         amount: event.amount,
       );
-      debugPrint('✅ [DEPOSIT] Deposit transaction submitted: $txHash');
+      debugPrint('✅ [DEPOSIT] VaultRepo deposit submitted: $txHash');
 
-      // Move to pending step and start polling
       emit(state.copyWith(
         transactionStep: TransactionStep.pending,
         transactionHash: txHash,
-      ),);
-
+      ));
       add(PollTransaction(txHash));
     } catch (e, stackTrace) {
       debugPrint('❌ [DEPOSIT] ERROR: $e');
@@ -294,11 +331,11 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
-      ),);
+      ));
     }
   }
 
-  /// Submit withdraw form
+  /// Submit withdraw form — API-first with VaultRepository fallback.
   Future<void> _onSubmitWithdrawForm(
     SubmitWithdrawForm event,
     Emitter<EarnPageState> emit,
@@ -308,7 +345,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         showTransactionModal: true,
         transactionStatus: TransactionStatus.pending,
         transactionStep: TransactionStep.confirm,
-      ),);
+      ));
 
       _currentOperation = 'withdraw';
       _currentOperationAmount = event.amount;
@@ -317,7 +354,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault repository not available',
-        ),);
+        ));
         return;
       }
 
@@ -326,15 +363,50 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault not found',
-        ),);
+        ));
         return;
       }
-
       _currentOperationCollateral = vault.collateralAddress;
 
       emit(state.copyWith(transactionStep: TransactionStep.pending));
 
-      final txHash = await _vaultRepository!.withdraw(
+      String txHash;
+
+      // ── API-first path ──────────────────────────────────────────
+      final wallet = _walletRepository.currentWallet.address;
+      final accountId = _vaultRepository!.accountId.toInt();
+      if (_axApiClient != null && wallet.isNotEmpty && accountId > 0) {
+        try {
+          debugPrint('🔷 [WITHDRAW] Trying API path...');
+          final amountWei =
+              BigInt.from(event.amount * 1e18).toString();
+
+          final withdrawTx = await _axApiClient!.buildWithdraw(
+            accountId: accountId,
+            collateralType: vault.collateralAddress,
+            amount: amountWei,
+            wallet: wallet,
+          );
+          if (withdrawTx == null) throw Exception('API returned null');
+
+          txHash = await _vaultRepository!.signAndSendUnsignedTx(
+            to: withdrawTx.to,
+            data: withdrawTx.data,
+            value: withdrawTx.value,
+            gasEstimate: withdrawTx.gasEstimate,
+          );
+          debugPrint('✅ [WITHDRAW] API TX sent: $txHash');
+
+          emit(state.copyWith(transactionHash: txHash));
+          add(PollTransaction(txHash));
+          return;
+        } catch (apiError) {
+          debugPrint('⚠️ [WITHDRAW] API path failed, falling back: $apiError');
+        }
+      }
+
+      // ── VaultRepository fallback ────────────────────────────────
+      txHash = await _vaultRepository!.withdraw(
         vault: vault,
         amount: event.amount,
       );
@@ -345,26 +417,24 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
-      ),);
+      ));
     }
   }
 
-  /// Submit mint stablecoins form
+  /// Submit mint stablecoins form — API-first with VaultRepository fallback.
   Future<void> _onSubmitMintForm(
     SubmitMintForm event,
     Emitter<EarnPageState> emit,
   ) async {
-    debugPrint('🔵 [EARN_BLOC] _onSubmitMintForm called');
-    debugPrint('   amount: ${event.amount}');
-    debugPrint('   collateralAddress: ${event.collateralAddress}');
-    debugPrint('   vaultRepository: ${_vaultRepository != null ? "AVAILABLE" : "NULL"}');
-    
+    debugPrint('🔵 [MINT] _onSubmitMintForm: amount=${event.amount}, '
+        'collateral=${event.collateralAddress}');
+
     try {
       emit(state.copyWith(
         showTransactionModal: true,
         transactionStatus: TransactionStatus.pending,
         transactionStep: TransactionStep.confirm,
-      ),);
+      ));
 
       _currentOperation = 'mint';
       _currentOperationAmount = event.amount;
@@ -373,7 +443,6 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(transactionStep: TransactionStep.pending));
 
       if (_vaultRepository == null) {
-        debugPrint('❌ [EARN_BLOC] VaultRepository is NULL!');
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Vault repository not available',
@@ -381,12 +450,47 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         return;
       }
 
-      debugPrint('🟡 [EARN_BLOC] Calling mintStablecoins...');
-      final txHash = await _vaultRepository!.mintStablecoins(
+      String txHash;
+
+      // ── API-first path ──────────────────────────────────────────
+      final wallet = _walletRepository.currentWallet.address;
+      final accountId = _vaultRepository!.accountId.toInt();
+      if (_axApiClient != null && wallet.isNotEmpty && accountId > 0) {
+        try {
+          debugPrint('🔷 [MINT] Trying API path...');
+          final amountWei =
+              BigInt.from(event.amount * 1e18).toString();
+
+          final mintTx = await _axApiClient!.buildMintUsd(
+            accountId: accountId,
+            poolId: 1,
+            collateralType: event.collateralAddress,
+            amount: amountWei,
+            wallet: wallet,
+          );
+          if (mintTx == null) throw Exception('API returned null');
+
+          txHash = await _vaultRepository!.signAndSendUnsignedTx(
+            to: mintTx.to,
+            data: mintTx.data,
+            value: mintTx.value,
+            gasEstimate: mintTx.gasEstimate,
+          );
+          debugPrint('✅ [MINT] API TX sent: $txHash');
+
+          emit(state.copyWith(transactionHash: txHash));
+          add(PollTransaction(txHash));
+          return;
+        } catch (apiError) {
+          debugPrint('⚠️ [MINT] API path failed, falling back: $apiError');
+        }
+      }
+
+      // ── VaultRepository fallback ────────────────────────────────
+      txHash = await _vaultRepository!.mintStablecoins(
         amount: event.amount,
         collateralAddress: event.collateralAddress,
       );
-      debugPrint('✅ [EARN_BLOC] mintStablecoins returned: $txHash');
 
       if (txHash.isEmpty) {
         emit(state.copyWith(
@@ -399,8 +503,8 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(transactionHash: txHash));
       add(PollTransaction(txHash));
     } catch (e, stack) {
-      debugPrint('❌ [EARN_BLOC] Mint error: $e');
-      debugPrint('❌ [EARN_BLOC] Stack: $stack');
+      debugPrint('❌ [MINT] Error: $e');
+      debugPrint('❌ [MINT] Stack: $stack');
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
@@ -408,7 +512,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
     }
   }
 
-  /// Submit burn (repay) stablecoins form
+  /// Submit burn (repay) stablecoins form — API-first with VaultRepository fallback.
   Future<void> _onSubmitBurnForm(
     SubmitBurnForm event,
     Emitter<EarnPageState> emit,
@@ -418,7 +522,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         showTransactionModal: true,
         transactionStatus: TransactionStatus.pending,
         transactionStep: TransactionStep.confirm,
-      ),);
+      ));
 
       _currentOperation = 'burn';
       _currentOperationAmount = event.amount;
@@ -426,7 +530,44 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
 
       emit(state.copyWith(transactionStep: TransactionStep.pending));
 
-      final txHash = await _vaultRepository?.burnStablecoins(
+      String txHash;
+
+      // ── API-first path ──────────────────────────────────────────
+      final wallet = _walletRepository.currentWallet.address;
+      final accountId = _vaultRepository?.accountId.toInt() ?? 0;
+      if (_axApiClient != null && wallet.isNotEmpty && accountId > 0) {
+        try {
+          debugPrint('🔷 [BURN] Trying API path...');
+          final amountWei =
+              BigInt.from(event.amount * 1e18).toString();
+
+          final burnTx = await _axApiClient!.buildBurnUsd(
+            accountId: accountId,
+            poolId: 1,
+            collateralType: event.collateralAddress,
+            amount: amountWei,
+            wallet: wallet,
+          );
+          if (burnTx == null) throw Exception('API returned null');
+
+          txHash = await _vaultRepository!.signAndSendUnsignedTx(
+            to: burnTx.to,
+            data: burnTx.data,
+            value: burnTx.value,
+            gasEstimate: burnTx.gasEstimate,
+          );
+          debugPrint('✅ [BURN] API TX sent: $txHash');
+
+          emit(state.copyWith(transactionHash: txHash));
+          add(PollTransaction(txHash));
+          return;
+        } catch (apiError) {
+          debugPrint('⚠️ [BURN] API path failed, falling back: $apiError');
+        }
+      }
+
+      // ── VaultRepository fallback ────────────────────────────────
+      txHash = await _vaultRepository?.burnStablecoins(
         amount: event.amount,
         collateralAddress: event.collateralAddress,
       ) ?? '';
@@ -435,7 +576,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
         emit(state.copyWith(
           transactionStatus: TransactionStatus.error,
           transactionError: 'Failed to initiate burn transaction',
-        ),);
+        ));
         return;
       }
 
@@ -445,7 +586,7 @@ class EarnPageBloc extends Bloc<EarnPageEvent, EarnPageState> {
       emit(state.copyWith(
         transactionStatus: TransactionStatus.error,
         transactionError: e.toString(),
-      ),);
+      ));
     }
   }
 
