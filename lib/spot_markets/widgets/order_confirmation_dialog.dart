@@ -1,6 +1,7 @@
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/spot_markets/models/pending_order.dart';
+import 'package:ax_dapp/trade_slip/trade_slip.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -217,6 +218,28 @@ class OrderConfirmationDialog extends StatelessWidget {
                             walletId: '',
                           );
                           onConfirm();
+
+                          // Show trade slip after confirmation
+                          if (context.mounted) {
+                            Navigator.of(context).pop(); // Close this dialog
+                            TradeSlipDialog.show(
+                              context,
+                              slip: TradeSlipData(
+                                type: SlipType.spot,
+                                side: isBuy
+                                    ? SlipSide.buy
+                                    : SlipSide.sell,
+                                status: SlipStatus.pending,
+                                marketName: pendingOrder.market,
+                                amount: pendingOrder.totalCost,
+                                price: pendingOrder.price,
+                                quantity: pendingOrder.quantity,
+                                slippage: pendingOrder.slippage,
+                                txHash: pendingOrder.txHash,
+                                timestamp: DateTime.now(),
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: actionColor,

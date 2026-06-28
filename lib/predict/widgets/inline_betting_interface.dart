@@ -3,6 +3,7 @@ import 'package:ax_dapp/service/controller/usecases/get_total_token_balance_use_
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/responsive_constants.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/trade_slip/trade_slip.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -263,6 +264,37 @@ class _InlineBettingInterfaceState extends State<InlineBettingInterface> {
                             walletId: '',
                           );
                           widget.onPredict?.call(_sliderValue);
+
+                          // Show trade slip confirmation
+                          final price = widget.isYes
+                              ? widget.predictionModel.longTokenPrice
+                              : widget.predictionModel.shortTokenPrice;
+                          if (context.mounted) {
+                            TradeSlipDialog.show(
+                              context,
+                              slip: TradeSlipData(
+                                type: SlipType.prediction,
+                                side: widget.isYes
+                                    ? SlipSide.yes
+                                    : SlipSide.no,
+                                status: SlipStatus.pending,
+                                marketName:
+                                    widget.predictionModel.prompt,
+                                amount: _sliderValue,
+                                price: price,
+                                potentialPayout: price > 0
+                                    ? _sliderValue / price
+                                    : 0,
+                                yesPrice: widget
+                                    .predictionModel.longTokenPrice,
+                                noPrice: widget
+                                    .predictionModel.shortTokenPrice,
+                                marketAddress: widget
+                                    .predictionModel.marketAddress,
+                                timestamp: DateTime.now(),
+                              ),
+                            );
+                          }
                         },
                         child: Text(
                           'Predict ${widget.isYes ? 'Yes' : 'No'}',
